@@ -1,3 +1,3 @@
-ADMIN_EMAILS = 'saracarl@gmail.com, benwbrum@gmail.com'
-SENDING_EMAIL_ADDRESS = 'support@fromthepage.com'
+ADMIN_EMAILS = 'nokinina@eurac.edu'
+SENDING_EMAIL_ADDRESS = 'nokinina@eurac.edu'
 SMTP_ENABLED = true

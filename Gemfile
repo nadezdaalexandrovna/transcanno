@@ -72,3 +72,5 @@ gem 'newrelic_rpm'
 
 #Admin masquerade as a user
 gem 'devise_masquerade'
+
+gem 'chosen-rails'

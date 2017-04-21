@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
+//= require chosen-jquery
+//= require_self
 
 
 ;(function($, window, document, undefined) {

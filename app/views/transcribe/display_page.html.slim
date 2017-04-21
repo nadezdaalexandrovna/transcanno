@@ -82,7 +82,18 @@
             .page-editarea_title
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
-          =f.text_area :source_text
+          .card*{'id'=>'page_source_text', 'contenteditable'=>'true'}
+            = @page.source_text
+
+<div class="popupBody">
+<p>Select your offer:</p>
+<select class="chosen-select-no-results">
+  <option></option>
+  <option value="greeting" disabled="disabled">greeting</option>
+  <option value="closing">closing</option>
+  <option value="hyphen">hyphen</option>
+</select>
+</div>
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -113,5 +124,138 @@ h2.legend Page Notes
         var checked = this.checked ? 'yes' : 'no';
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
+
+
+      //from http://jakiestfu.github.io/Medium.js/docs/  Rich with insert HTML
+      
+      var article = document.getElementById('page_source_text'),
+        container = article.parentNode,
+        medium = new Medium({
+            element: article,
+            mode: Medium.richMode,
+            attributes: null,
+            tags: null,
+            beforeInsertHtml: function () {
+              //this = Medium.Html
+            },
+        });
+        
+
+      /*
+      $(document).ready(function() {
+        $('#page_source_text').wymeditor();
+      });
+      */
+
+      $(".popupBody").hide();
+
+      var config = {
+      '.chosen-select'           : {},
+      '.chosen-select-deselect'  : {allow_single_deselect:true},
+      '.chosen-select-no-single' : {disable_search_threshold:10},
+      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+      '.chosen-select-width'     : {width:"95%"}
+    }
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+
+    $(".chosen-select-no-results").chosen();
+
+
+      //Works
+      jQuery('#page_source_text').bind('keydown', 'alt+i', function(e) {  
+        // right arrow key pressed
+        console.log("i key pressed");
+        alert("i key pressed");
+
+        medium.focus();
+        medium.insertHtml('<p style="background-color: yellow;">\Happy day!  I can work with buttons too!\</p>');
+        console.log(medium);
+        alert(medium.toString());
+        alert(JSON.stringify(medium));
+        return false;
+      });
+
+
+      //Error
+      jQuery('#page_source_text').bind('keydown', 'alt+r', function(e) {  
+        // right arrow key pressed
+        alert("alt+r");
+        medium.focus();
+        medium.insertHtml('<error>');
+
+        return false;
+      });
+
+      //originalForm
+      jQuery('#page_source_text').bind('keydown', 'alt+o', function(e) {  
+        // right arrow key pressed
+        alert("alt+o");
+        medium.focus();
+        medium.insertHtml('<p class="originalForm">\originalForm\</p>');
+
+        //console.log(medium);
+        //window.console&&console.log('foo');
+        return false;
+      });
+
+
+      function moveCursorToEnd(el) {
+        if (typeof el.selectionStart == "number") {
+          el.selectionStart = el.selectionEnd = el.value.length;
+        } else if (typeof el.createTextRange != "undefined") {
+          el.focus();
+          var range = el.createTextRange();
+          range.collapse(false);
+          range.select();
+        }
+      }
+
+      //targetForm
+      jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
+        //medium.splitAtCaret();
+
+        $(".popupBody").show();
+        
+        var enableChosen = setTimeout(function() {
+          $(".chosen-select-no-results").trigger('chosen:activate');
+        }, 250);
+
+        $(".chosen-select-no-results").chosen().change(function(event){
+          if(event.target == this){
+              alert($(this).val());
+              $tag=$(this).val();
+
+              //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
+              //('#page_source_text').focus();
+              //moveCursorToEnd($(".chosen-select-no-results"));
+              medium.focus();
+              medium.caretToEnd();
+              //medium.moveCursorToEnd();
+              //medium.splitAtCaret();
+              //medium.paste($tag);
+              //medium.addTag($tag);
+              medium.insertHtml($tag);
+          }
+        });
+
+        //medium.focus();
+        //medium.insertHtml('<targetForm>');
+
+        return false;
+      });
+
+      //targetForm
+      jQuery('#page_source_text').bind('keydown', 'alt+j', function(e) {  
+        // right arrow key pressed
+        alert("alt+j");
+        medium.focus();
+        medium.insertHtml('</>');
+
+        return false;
+      });
+      
+
     });
 javascript:  mixpanel.track("Transcribe Page");
