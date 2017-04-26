@@ -136,11 +136,11 @@ h2.legend Page Notes
             attributes: null,
             tags: null,
             beforeInsertHtml: function () {
-            console.log("in display_page in medium constructor in beforeInsertHtml");
+            //console.log("in display_page in medium constructor in beforeInsertHtml");
               //this = Medium.Html
             },
             onFocus: function () {
-              moveCursorToEnd(this);
+              //moveCursorToEnd(this);
             }
         });
         
@@ -211,10 +211,16 @@ h2.legend Page Notes
         }
       }
 
+      jQuery.fn.chosen_reset = function(n){
+        $(this).chosen('destroy');
+        $(this).prop('selectedIndex', 0);
+        $(this).chosen(n)
+      }
+
       //targetForm
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret();
-
+        console.log("jquery function");
         $(".popupBody").show();
         
         var enableChosen = setTimeout(function() {
@@ -223,20 +229,23 @@ h2.legend Page Notes
 
         $(".chosen-select-no-results").chosen().change(function(event){
           if(event.target == this){
-              alert($(this).val());
+              //alert($(this).val());
               $tag=$(this).val();
-
+              console.log("chosen function");
+              $(".chosen-select-no-results").trigger('chosen:updated');
               //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
               //('#page_source_text').focus();
               //moveCursorToEnd($("#page_source_text"));
               medium.focus();
-              console.log("display_page between focus and insertHtml");
+              console.log("$tag : "+$tag);
               //medium.caretToEnd();
               //medium.moveCursorToEnd();
               //medium.splitAtCaret();
               //medium.paste($tag);
               //medium.addTag($tag);
               medium.insertHtml($tag);
+              $('.chosen-select-no-results').chosen_reset(config);
+              $(".popupBody").hide();
               return false;
           }
         });

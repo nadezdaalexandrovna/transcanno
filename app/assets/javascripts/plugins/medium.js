@@ -550,8 +550,6 @@ Medium.prototype = {
 	focus: function () {
 		var el = this.element;
 		el.focus();
-		console.log("in app/assets/javascripts/plugins/medium.js in focus");
-		console.log("el : "+el);
 		return this;
 	},
 
@@ -1809,7 +1807,6 @@ Medium.defaultSettings = {
 		//Thank you Tim Down (super uber genius): http://stackoverflow.com/questions/6690752/insert-html-at-caret-in-a-contenteditable-div/6691294#6691294
 		insertHTML: function (html, selectPastedContent) {
 			var sel, range;
-			console.log("in app/assets/javascripts/plugins/medium.js in insertHtml");
 			if (w.getSelection) {
 				// IE9 and non-IE
 				sel = w.getSelection();
