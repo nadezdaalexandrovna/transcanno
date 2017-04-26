@@ -136,8 +136,12 @@ h2.legend Page Notes
             attributes: null,
             tags: null,
             beforeInsertHtml: function () {
+            console.log("in display_page in medium constructor in beforeInsertHtml");
               //this = Medium.Html
             },
+            onFocus: function () {
+              moveCursorToEnd(this);
+            }
         });
         
 
@@ -171,9 +175,6 @@ h2.legend Page Notes
 
         medium.focus();
         medium.insertHtml('<p style="background-color: yellow;">\Happy day!  I can work with buttons too!\</p>');
-        console.log(medium);
-        alert(medium.toString());
-        alert(JSON.stringify(medium));
         return false;
       });
 
@@ -194,14 +195,12 @@ h2.legend Page Notes
         alert("alt+o");
         medium.focus();
         medium.insertHtml('<p class="originalForm">\originalForm\</p>');
-
-        //console.log(medium);
-        //window.console&&console.log('foo');
         return false;
       });
 
 
       function moveCursorToEnd(el) {
+      console.log("display_page moveCursorToEnd function from the internet");
         if (typeof el.selectionStart == "number") {
           el.selectionStart = el.selectionEnd = el.value.length;
         } else if (typeof el.createTextRange != "undefined") {
@@ -229,14 +228,16 @@ h2.legend Page Notes
 
               //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
               //('#page_source_text').focus();
-              //moveCursorToEnd($(".chosen-select-no-results"));
+              //moveCursorToEnd($("#page_source_text"));
               medium.focus();
-              medium.caretToEnd();
+              console.log("display_page between focus and insertHtml");
+              //medium.caretToEnd();
               //medium.moveCursorToEnd();
               //medium.splitAtCaret();
               //medium.paste($tag);
               //medium.addTag($tag);
               medium.insertHtml($tag);
+              return false;
           }
         });
 

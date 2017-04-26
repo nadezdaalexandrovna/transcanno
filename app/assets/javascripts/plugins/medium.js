@@ -550,6 +550,8 @@ Medium.prototype = {
 	focus: function () {
 		var el = this.element;
 		el.focus();
+		console.log("in app/assets/javascripts/plugins/medium.js in focus");
+		console.log("el : "+el);
 		return this;
 	},
 
@@ -850,6 +852,7 @@ Medium.defaultSettings = {
 	},
 	beforeInsertHtml: function () {
 		//this = Medium.Html
+		console.log("in app/assets/javascripts/plugins/medium.js in beforeInsertHtml");
 	},
 	maxLengthReached: function (element) {
 		//element
@@ -1789,11 +1792,13 @@ Medium.defaultSettings = {
 				}
 
 				while (html.length > 0) {
-          parent.insertBefore(html[0], wedge);
+          //parent.insertBefore(html[0], wedge);
+          parent.append(html[0]);
 				}
 			} else {
 				nodes.push(html);
-				parent.insertBefore(html, wedge);
+				//parent.insertBefore(html, wedge);
+				parent.append(html[0]);
 			}
 			parent.removeChild(wedge);
 			wedge = null;
@@ -1804,6 +1809,7 @@ Medium.defaultSettings = {
 		//Thank you Tim Down (super uber genius): http://stackoverflow.com/questions/6690752/insert-html-at-caret-in-a-contenteditable-div/6691294#6691294
 		insertHTML: function (html, selectPastedContent) {
 			var sel, range;
+			console.log("in app/assets/javascripts/plugins/medium.js in insertHtml");
 			if (w.getSelection) {
 				// IE9 and non-IE
 				sel = w.getSelection();
