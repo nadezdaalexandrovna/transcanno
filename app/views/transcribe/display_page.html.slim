@@ -2,8 +2,9 @@
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
-=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
+=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, :onsubmit=>'return AddMediumValue()' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
+  <input type="hidden" name="page[source_text]"/>
   =validation_summary @page.errors
   .page-toolbar
     .toolbar
@@ -43,7 +44,6 @@
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
-        =hidden_field_tag(:source_text)
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
@@ -139,7 +139,12 @@ h2.legend Page Notes
       });
 
 
-      //from http://jakiestfu.github.io/Medium.js/docs/  Rich with insert HTML
+      
+
+    });
+
+
+    //from http://jakiestfu.github.io/Medium.js/docs/  Rich with insert HTML
       
       var article = document.getElementById('page_source_text'),
         container = article.parentNode,
@@ -238,10 +243,9 @@ h2.legend Page Notes
                 //medium.paste($tag);
                 $('.chosen-select-no-results').chosen_reset(config);
                 $(".popupBody").hide();
-                var page_text=medium.value();
-                console.log("medium.value() : "+page_text);
+                
+                console.log("medium.value() : "+medium.value());
 
-                $(".source_text").val(page_text);
                 return false;
               }
           }
@@ -312,5 +316,8 @@ h2.legend Page Notes
       return false;
     });
 
-    });
+    function AddMediumValue() {
+        document.getElementsByName("page[source_text]")[0].value=medium.value();
+        return true;   // Returns Value
+      }
 javascript:  mixpanel.track("Transcribe Page");
