@@ -43,6 +43,7 @@
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
+        =hidden_field_tag(:source_text)
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
@@ -92,7 +93,19 @@
   <option value="greeting" disabled="disabled">greeting</option>
   <option value="closing">closing</option>
   <option value="hyphen">hyphen</option>
+  <option value="tre">tre</option>
 </select>
+</div>
+
+<div class="toolbar-top">
+  <span class="toolbar">
+    <span class="bold" style="font-weight: bold; color: #66d9ef">B</span>
+    <span class="underline" style="text-decoration: underline; color: #a6e22e">U</span>
+    <span class="italic" style="font-style: italic; color: #f92672">I</span>
+    <span class="strike" style="text-decoration: line-through; color: #0606ee">S</span>
+    <span class="hyphen" style="color: #0606ee">hyphen</span>
+    <span class="closing" style="color: #ee0606">closing</span>
+  </span>
 </div>
 
 .fgfaded ==@work.set_transcription_conventions
@@ -134,7 +147,9 @@ h2.legend Page Notes
             element: article,
             mode: Medium.richMode,
             attributes: null,
+            placeholder:"",
             tags: null,
+            pasteAsText: false,
             beforeInsertHtml: function () {
             //console.log("in display_page in medium constructor in beforeInsertHtml");
               //this = Medium.Html
@@ -167,49 +182,18 @@ h2.legend Page Notes
     $(".chosen-select-no-results").chosen();
 
 
-      //Works
-      jQuery('#page_source_text').bind('keydown', 'alt+i', function(e) {  
-        // right arrow key pressed
-        console.log("i key pressed");
-        alert("i key pressed");
-
-        medium.focus();
-        medium.insertHtml('<p style="background-color: yellow;">\Happy day!  I can work with buttons too!\</p>');
-        return false;
-      });
-
-
-      //Error
-      jQuery('#page_source_text').bind('keydown', 'alt+r', function(e) {  
-        // right arrow key pressed
-        alert("alt+r");
-        medium.focus();
-        medium.insertHtml('<error>');
-
-        return false;
-      });
 
       //originalForm
       jQuery('#page_source_text').bind('keydown', 'alt+o', function(e) {  
         // right arrow key pressed
         alert("alt+o");
         medium.focus();
-        medium.insertHtml('<p class="originalForm">\originalForm\</p>');
+        //medium.addTag($tag);
+        //medium.insertHtml('<p class="originalForm">\originalForm\</p>');
+        medium.insertHtml('<p class="originalForm">\originalForm');
         return false;
       });
 
-
-      function moveCursorToEnd(el) {
-      console.log("display_page moveCursorToEnd function from the internet");
-        if (typeof el.selectionStart == "number") {
-          el.selectionStart = el.selectionEnd = el.value.length;
-        } else if (typeof el.createTextRange != "undefined") {
-          el.focus();
-          var range = el.createTextRange();
-          range.collapse(false);
-          range.select();
-        }
-      }
 
       jQuery.fn.chosen_reset = function(n){
         $(this).chosen('destroy');
@@ -219,8 +203,13 @@ h2.legend Page Notes
 
       //targetForm
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
-        //medium.splitAtCaret();
-        console.log("jquery function");
+        //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
+        var offset=medium.returnOffset();
+        console.log("offset : "+offset);
+        //baseAtCaret
+        //var input = $('#page_source_text').get(0);
+        //console.log("input.selectionStart; : "+input.selectionStart);
+        var value=$('#page_source_text').value;
         $(".popupBody").show();
         
         var enableChosen = setTimeout(function() {
@@ -231,41 +220,97 @@ h2.legend Page Notes
           if(event.target == this){
               //alert($(this).val());
               $tag=$(this).val();
-              console.log("chosen function");
-              $(".chosen-select-no-results").trigger('chosen:updated');
-              //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
-              //('#page_source_text').focus();
-              //moveCursorToEnd($("#page_source_text"));
-              medium.focus();
-              console.log("$tag : "+$tag);
-              //medium.caretToEnd();
-              //medium.moveCursorToEnd();
-              //medium.splitAtCaret();
-              //medium.paste($tag);
-              //medium.addTag($tag);
-              medium.insertHtml($tag);
-              $('.chosen-select-no-results').chosen_reset(config);
-              $(".popupBody").hide();
-              return false;
+              if($tag!= null && $tag!=''){
+                //$(".chosen-select-no-results").trigger('chosen:updated');
+                //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
+                //('#page_source_text').focus();
+                //moveCursorToEnd($("#page_source_text"));
+                //medium.focus();
+                medium.focusNadya(offset);
+                console.log("$tag : "+$tag);
+                //medium.caretToEnd();
+                //medium.moveCursorToEnd();
+                //medium.splitAtCaret();
+                //medium.paste($tag);
+                //medium.addTag($tag);
+                //medium.insertHtmlNadya($tag, offset);
+                medium.insertHtml($tag);
+                //medium.paste($tag);
+                $('.chosen-select-no-results').chosen_reset(config);
+                $(".popupBody").hide();
+                var page_text=medium.value();
+                console.log("medium.value() : "+page_text);
+
+                $(".source_text").val(page_text);
+                return false;
+              }
           }
+
         });
 
-        //medium.focus();
-        //medium.insertHtml('<targetForm>');
-
         return false;
       });
 
-      //targetForm
-      jQuery('#page_source_text').bind('keydown', 'alt+j', function(e) {  
-        // right arrow key pressed
-        alert("alt+j");
-        medium.focus();
-        medium.insertHtml('</>');
 
-        return false;
+    article.highlight = function() {
+      if (document.activeElement !== article) {
+        medium.select();
+      }
+    };
+
+    $( ".bold" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('b', {
+        title: "I'm bold!",
+        style: "color: #66d9ef"
       });
-      
+      return false;
+    });
+
+    $( ".underline" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('u', {
+        title: "I'm underlined!",
+        style: "color: #a6e22e"
+      });
+      return false;
+    });
+
+    $( ".italic" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('i', {
+        title: "I'm italics!",
+        style: "color: #f92672"
+      });
+      return false;
+    });
+  
+    $( ".strike" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('strike', {
+        title: "I'm struck!",
+        style: "color: #0606ee"
+      });
+      return false;
+    });
+
+    $( ".hyphen" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('hyphen', {
+        title: "I'm hyphen!",
+        style: "color: #0606ee"
+      });
+      return false;
+    });
+
+    $( ".closing" ).mousedown(function() {
+      article.highlight();
+      medium.invokeElement('closing', {
+        title: "I'm closing!",
+        style: "color: #ee0606"
+      });
+      return false;
+    });
 
     });
 javascript:  mixpanel.track("Transcribe Page");

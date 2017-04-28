@@ -457,6 +457,41 @@ Medium.prototype = {
 		return this;
 	},
 
+	insertHtmlNadya: function (html,pos, callback, skipChangeEvent) {
+		var el = this.element;
+		//el.focus();
+		this.cursor.moveCursorToPosition(el.firstChild,pos);
+		var result = (new Medium.Html(this, html))
+			.insert(this.settings.beforeInsertHtml),
+			lastElement = result[result.length - 1];
+
+		if (skipChangeEvent === true) {
+			utils.triggerEvent(this.element, "change");
+		}
+
+		if (callback) {
+			callback.apply(result);
+		}
+
+		switch (lastElement.nodeName) {
+			//lists need their last child selected if it exists
+			case 'UL':
+			case 'OL':
+			case 'DL':
+				if (lastElement.lastChild !== null) {
+					this.cursor.moveCursorToEnd(lastElement.lastChild);
+					break;
+				}
+			default:
+				this.cursor.moveCursorToEnd(lastElement);
+		}
+		//I added this
+		var selection = rangy.getSelection();
+		selection.removeAllRanges();
+		//I added this
+		return this;
+	},
+
 	addTag: function (tag, shouldFocus, isEditable, afterElement) {
 		if (!this.settings.beforeAddTag(tag, shouldFocus, isEditable, afterElement)) {
 			var newEl = d.createElement(tag),
@@ -552,7 +587,15 @@ Medium.prototype = {
 		el.focus();
 		return this;
 	},
-
+	/**
+	 * I added this
+	 */
+	focusNadya: function (pos) {
+		var el = this.element;
+		el.focus();
+		this.cursor.moveCursorToPosition(el.firstChild,pos);
+		return this;
+	},
 	/**
 	 * Select all text
 	 * @returns {Medium}
@@ -659,6 +702,29 @@ Medium.prototype = {
 		contents = range.extractContents();
 
 		return contents;
+	},
+	/*
+	*I added this
+	*/
+	returnOffset: function() {
+		if (!this.isActive()) return null;
+
+		var selector = (w.getSelection || d.selection),
+			sel = selector(),
+			offset = sel.focusOffset,
+			node = sel.focusNode,
+			el = this.element,
+			range = d.createRange(),
+			endRange = d.createRange(),
+			contents;
+
+		//range.setStart(node, offset);
+		//endRange.selectNodeContents(el);
+		//range.setEnd(endRange.endContainer, endRange.endOffset);
+
+		//contents = range.extractContents();
+
+		return offset;
 	},
 
 	/**
@@ -1379,6 +1445,27 @@ Medium.defaultSettings = {
 			selection.removeAllRanges();
 			selection.addRange(range);
 		},
+		/*
+		* I added this
+		*/
+		moveCursorToPosition: function (el,pos) {
+			//get the browser selection object - it may or may not have a selected range
+			var selection = rangy.getSelection(),
+
+				//create a range object to set the caret positioning for
+				range = rangy.createRange();
+
+
+			//set the caret after the start node and at the end of the end node
+			//Note: the end is set using endNode.length when the node is of the text type
+			//and it is set using childNodes.length when the end node is of the element type
+			range.setStart(el,pos);
+			range.setEnd(el, pos);
+
+			//apply this range to the selection object
+			selection.removeAllRanges();
+			selection.addRange(range);
+		},
 		moveCursorToAfter: function (el) {
 			var sel = rangy.getSelection();
 			if (sel.rangeCount) {
@@ -1790,13 +1877,13 @@ Medium.defaultSettings = {
 				}
 
 				while (html.length > 0) {
-          //parent.insertBefore(html[0], wedge);
-          parent.append(html[0]);
+          parent.insertBefore(html[0], wedge);
+          //parent.append(html[0]);
 				}
 			} else {
 				nodes.push(html);
-				//parent.insertBefore(html, wedge);
-				parent.append(html[0]);
+				parent.insertBefore(html, wedge);
+				//parent.append(html[0]);
 			}
 			parent.removeChild(wedge);
 			wedge = null;
