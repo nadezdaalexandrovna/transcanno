@@ -81,7 +81,6 @@ class TranscribeController  < ApplicationController
       end
       begin
         if @page.save
-          puts "saved in transcribe_controller"
           log_transcript_success
           if @page.work.ocr_correction
             record_correction_deed
@@ -115,7 +114,6 @@ class TranscribeController  < ApplicationController
 
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
-          puts "NOT saved in transcribe_controller"
           log_transcript_error
           render :action => 'display_page'
         end

@@ -143,11 +143,33 @@ h2.legend Page Notes
 
     });
 
-
-    //from http://jakiestfu.github.io/Medium.js/docs/  Rich with insert HTML
       
-      var article = document.getElementById('page_source_text'),
-        container = article.parentNode,
+      var l=document.getElementById('page_source_text');
+      console.log("l : "+l);
+      console.log("l.textContent : "+l.textContent);
+      
+
+      var xml = "<div>"+l.textContent+"</div>";
+      //var result = $(xml).find("album").text();
+      //console.log("result : "+result);
+      var el_result=$(xml).find("closing").text();
+      console.log("el_result : "+el_result);
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(xml, "text/xml");
+      //var allDocContent=doc.documentElement.innerHTML;
+      var childNodes=doc.documentElement.childNodes;
+      var childNodes2=doc.childNodes;
+      var allDocContent=doc.childNodes[0];
+      var docChildNode=doc.documentElement.childNodes[0];
+      //var article=document.getElementById('page_source_text');
+      var article=l;
+      var firstChild=article.firstChild;
+      //console.log("article.firstChild : "+article.firstChild);
+      firstChild.parentNode.replaceChild(allDocContent,firstChild);
+
+      var closingElement=article.getElementsByTagName('closing')[0];
+
+        var container = article.parentNode,
         medium = new Medium({
             element: article,
             mode: Medium.richMode,
@@ -230,8 +252,8 @@ h2.legend Page Notes
                 //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
                 //('#page_source_text').focus();
                 //moveCursorToEnd($("#page_source_text"));
-                //medium.focus();
-                medium.focusNadya(offset);
+                medium.focus();
+                //medium.focusNadya(offset);
                 console.log("$tag : "+$tag);
                 //medium.caretToEnd();
                 //medium.moveCursorToEnd();
@@ -265,7 +287,7 @@ h2.legend Page Notes
     $( ".bold" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('b', {
-        title: "I'm bold!",
+        title: "here bold",
         style: "color: #66d9ef"
       });
       return false;
@@ -274,7 +296,7 @@ h2.legend Page Notes
     $( ".underline" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('u', {
-        title: "I'm underlined!",
+        title: "here underlined",
         style: "color: #a6e22e"
       });
       return false;
@@ -283,7 +305,7 @@ h2.legend Page Notes
     $( ".italic" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('i', {
-        title: "I'm italics!",
+        title: "here italics",
         style: "color: #f92672"
       });
       return false;
@@ -292,7 +314,7 @@ h2.legend Page Notes
     $( ".strike" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('strike', {
-        title: "I'm struck!",
+        title: "here struck",
         style: "color: #0606ee"
       });
       return false;
@@ -301,7 +323,7 @@ h2.legend Page Notes
     $( ".hyphen" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('hyphen', {
-        title: "I'm hyphen!",
+        title: "here hyphen",
         style: "color: #0606ee"
       });
       return false;
@@ -310,14 +332,15 @@ h2.legend Page Notes
     $( ".closing" ).mousedown(function() {
       article.highlight();
       medium.invokeElement('closing', {
-        title: "I'm closing!",
+        title: "here closing",
         style: "color: #ee0606"
       });
       return false;
     });
 
     function AddMediumValue() {
-        document.getElementsByName("page[source_text]")[0].value=medium.value();
+        var mediumValue = medium.value().replace(/<br>/g, '<br></br>');
+        document.getElementsByName("page[source_text]")[0].value=mediumValue;
         return true;   // Returns Value
       }
 javascript:  mixpanel.track("Transcribe Page");
