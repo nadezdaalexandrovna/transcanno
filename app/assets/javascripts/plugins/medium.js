@@ -405,7 +405,7 @@ Medium.prototype = {
 										break;
 									}
 									text = d.createTextNode("");
-									text.innerHTML = '&nbsp';
+									text.innerHTML = '&#160;'; //text.innerHTML = '&nbsp;';
 									child.parentNode.insertBefore(text, child);
 									break;
 								}
@@ -457,14 +457,26 @@ Medium.prototype = {
 		return this;
 	},
 
-	insertHtmlNadya: function (html,pos, callback, skipChangeEvent) {
+	insertHtmlNadya: function (html,pos, focusEl, callback, skipChangeEvent) {
 		var el = this.element;
+		var sel = rangy.getSelection();
 		//el.focus();
-		this.cursor.moveCursorToPosition(el.firstChild,pos);
+		//this.cursor.moveCursorToPosition(el.firstChild,pos);
+		/*
 		var result = (new Medium.Html(this, html))
 			.insert(this.settings.beforeInsertHtml),
 			lastElement = result[result.length - 1];
+		*/
+			var node = d.createTextNode(html);
+			var range, outerhtml;
 
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.collapse(false);
+            range.insertNode(node);
+        }
+ 		
+        /*
 		if (skipChangeEvent === true) {
 			utils.triggerEvent(this.element, "change");
 		}
@@ -485,9 +497,10 @@ Medium.prototype = {
 			default:
 				this.cursor.moveCursorToEnd(lastElement);
 		}
+		*/
 		//I added this
-		var selection = rangy.getSelection();
-		selection.removeAllRanges();
+		//var selection = rangy.getSelection();
+		//selection.removeAllRanges();
 		//I added this
 		return this;
 	},
@@ -590,10 +603,25 @@ Medium.prototype = {
 	/**
 	 * I added this
 	 */
-	focusNadya: function (pos) {
+	focusNadya: function (pos,focusEl) {
+		var thisThis=this;
 		var el = this.element;
-		el.focus();
-		this.cursor.moveCursorToPosition(el.firstChild,pos);
+
+		/*
+		var hisChild=el.getElementsByTagName('closing')[0];
+
+		var range = rangy.createRange();
+		range.selectNodeContents(hisChild);
+		var sel = rangy.getSelection();
+		sel.setSingleRange(range);
+		*/
+
+		var range = rangy.createRange();
+		range.selectNodeContents(focusEl);
+		var sel = rangy.getSelection();
+		sel.removeAllRanges();
+		sel.setSingleRange(range);
+		
 		return this;
 	},
 	/**
@@ -628,16 +656,16 @@ Medium.prototype = {
 		//has content, but no children
 		if (childNodes.length > 0) {
 			initialParagraph = d.createElement(s.tags.paragraph);
-			if (el.innerHTML.match('^[&]nbsp[;]')) {
+			if (el.innerHTML.match('^[&]#160[;]')) { //if (el.innerHTML.match('^[&]nbsp[;]')) {
 				el.innerHTML = el.innerHTML.substring(6, el.innerHTML.length - 1);
 			}
 			initialParagraph.innerHTML = el.innerHTML;
 			el.innerHTML = '';
 			el.appendChild(initialParagraph);
-			//this.cursor.set(this, initialParagraph.innerHTML.length, initialParagraph);
+			this.cursor.set(this, initialParagraph.innerHTML.length, initialParagraph);
 		} else {
 			initialParagraph = d.createElement(s.tags.paragraph);
-			initialParagraph.innerHTML = '&nbsp;';
+			initialParagraph.innerHTML = '&#160;'; //initialParagraph.innerHTML = '&nbsp;';
 			el.appendChild(initialParagraph);
 			this.cursor.set(this, 0, el.firstChild);
 		}
@@ -724,7 +752,7 @@ Medium.prototype = {
 
 		//contents = range.extractContents();
 
-		return offset;
+		return [offset,node];
 	},
 
 	/**

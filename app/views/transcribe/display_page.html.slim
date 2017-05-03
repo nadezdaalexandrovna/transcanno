@@ -147,13 +147,17 @@ h2.legend Page Notes
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
       console.log("l.textContent : "+l.textContent);
-      
 
-      var xml = "<div>"+l.textContent+"</div>";
+      var xml=l.textContent;
+      //xml = xml.replace(/(<br><\/br>)$/, '<br>\&#160\;<\/br>'); //Ne remplace rien
+      console.log("xml : "+xml);
+      xml = "<div>"+xml+"</div>";
+      //xml = xml.replace(/<\/br>/g, '');  // Esli dobavliaiu eto, to oshibka parsinga i voobshe nichego ne pokazyvaet v Transcribe
+      //xml = xml.replace(/&nbsp\;/g, '');
       //var result = $(xml).find("album").text();
       //console.log("result : "+result);
-      var el_result=$(xml).find("closing").text();
-      console.log("el_result : "+el_result);
+      //var el_result=$(xml).find("closing").text();
+      //console.log("el_result : "+el_result);
       var parser = new DOMParser();
       var doc = parser.parseFromString(xml, "text/xml");
       //var allDocContent=doc.documentElement.innerHTML;
@@ -231,7 +235,8 @@ h2.legend Page Notes
       //targetForm
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
-        var offset=medium.returnOffset();
+        var offset=medium.returnOffset()[0];
+        var focusEl=medium.returnOffset()[1];
         console.log("offset : "+offset);
         //baseAtCaret
         //var input = $('#page_source_text').get(0);
@@ -252,16 +257,17 @@ h2.legend Page Notes
                 //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
                 //('#page_source_text').focus();
                 //moveCursorToEnd($("#page_source_text"));
-                medium.focus();
-                //medium.focusNadya(offset);
+                //medium.focus();
+
+                medium.focusNadya(offset,focusEl);
                 console.log("$tag : "+$tag);
                 //medium.caretToEnd();
                 //medium.moveCursorToEnd();
                 //medium.splitAtCaret();
                 //medium.paste($tag);
                 //medium.addTag($tag);
-                //medium.insertHtmlNadya($tag, offset);
-                medium.insertHtml($tag);
+                medium.insertHtmlNadya($tag, offset, focusEl);
+                //medium.insertHtml($tag);
                 //medium.paste($tag);
                 $('.chosen-select-no-results').chosen_reset(config);
                 $(".popupBody").hide();
@@ -339,7 +345,12 @@ h2.legend Page Notes
     });
 
     function AddMediumValue() {
-        var mediumValue = medium.value().replace(/<br>/g, '<br></br>');
+        mediumValue = medium.value();
+        mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
+        mediumValue = mediumValue.replace(/<br>/g, '<br></br>');
+        mediumValue = mediumValue.replace(/<\/br><\/br>/g, '</br>');
+        mediumValue = mediumValue.replace(/^<div>/, '');
+        mediumValue = mediumValue.replace(/<\/div>$/, '');
         document.getElementsByName("page[source_text]")[0].value=mediumValue;
         return true;   // Returns Value
       }
