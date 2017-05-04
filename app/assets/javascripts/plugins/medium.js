@@ -473,48 +473,18 @@ Medium.prototype = {
         if (sel.getRangeAt && sel.rangeCount) {
             range = sel.getRangeAt(0);
             range.collapse(false);
-            range.insertNode(node);
+
+            var rangeNode = range.startContainer;
+            
+            Medium.activeElement=rangeNode;
+
+            var result = (new Medium.Html(this, html))
+			.insertNadya(this.settings.beforeInsertHtml),
+			lastElement = result[result.length - 1];
+
+            //range.insertNode(node); // Rabotaet i vstavliaet text
         }
- 		//sel.detach();
- 		//range.collapseToPoint(node, 2);
- 		//sel.collapse(node, 2);
- 		//console.log(sel.inspect());
 
-
- 		range.setStartAfter(node);
-		range.setEnd(node, node.length || node.childNodes.length);
-
-		//apply this range to the selection object
-		sel.removeAllRanges();
-		sel.addRange(range);
-
- 		
-        /*
-		if (skipChangeEvent === true) {
-			utils.triggerEvent(this.element, "change");
-		}
-
-		if (callback) {
-			callback.apply(result);
-		}
-
-		switch (lastElement.nodeName) {
-			//lists need their last child selected if it exists
-			case 'UL':
-			case 'OL':
-			case 'DL':
-				if (lastElement.lastChild !== null) {
-					this.cursor.moveCursorToEnd(lastElement.lastChild);
-					break;
-				}
-			default:
-				this.cursor.moveCursorToEnd(lastElement);
-		}
-		*/
-		//I added this
-		//var selection = rangy.getSelection();
-		//selection.removeAllRanges();
-		//I added this
 		return this;
 	},
 
@@ -617,8 +587,8 @@ Medium.prototype = {
 	 * I added this
 	 */
 	focusNadya: function (pos,focusEl) {
-		var thisThis=this;
-		var el = this.element;
+		//var thisThis=this;
+		//var el = this.element;
 
 		/*
 		var hisChild=el.getElementsByTagName('closing')[0];
@@ -635,7 +605,10 @@ Medium.prototype = {
 		sel.removeAllRanges();
 		sel.setSingleRange(range);
 		sel.collapse(focusEl, pos);
-		
+
+		//var rangeNode = range.startContainer;
+        Medium.activeElement=focusEl;
+
 		return this;
 	},
 	/**
@@ -749,7 +722,7 @@ Medium.prototype = {
 	*I added this
 	*/
 	returnOffset: function() {
-		if (!this.isActive()) return null;
+		//if (!this.isActive()) return null;
 
 		var selector = (w.getSelection || d.selection),
 			sel = selector(),
@@ -1861,6 +1834,35 @@ Medium.defaultSettings = {
 			}
 		},
 
+		insertNadya: function (fn, selectInserted) {
+			
+				if (fn) {
+					fn.apply(this);
+				}
+
+				var inserted = this.injector.inject(this.html, selectInserted);
+
+				if (this.clean) {
+					//cleanup
+					this.medium.clean();
+					this.medium.placeholders();
+				}
+
+				this.medium.makeUndoable();
+
+				Medium.activeElement=inserted[0];
+
+				var el=inserted[0];
+				var range = rangy.createRange();
+				//range.setStart(el.childNodes[0], 0); // If the element contains text
+				range.setStart(el, 0); // If the element doesn't contain text
+				range.collapse(true);
+				var sel = rangy.getSelection();
+				sel.setSingleRange(range);
+			
+				return inserted;
+			
+		},
 		/**
 		 * @methodOf Medium.Html
 		 * @param clean
