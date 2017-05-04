@@ -475,6 +475,19 @@ Medium.prototype = {
             range.collapse(false);
             range.insertNode(node);
         }
+ 		//sel.detach();
+ 		//range.collapseToPoint(node, 2);
+ 		//sel.collapse(node, 2);
+ 		//console.log(sel.inspect());
+
+
+ 		range.setStartAfter(node);
+		range.setEnd(node, node.length || node.childNodes.length);
+
+		//apply this range to the selection object
+		sel.removeAllRanges();
+		sel.addRange(range);
+
  		
         /*
 		if (skipChangeEvent === true) {
@@ -621,6 +634,7 @@ Medium.prototype = {
 		var sel = rangy.getSelection();
 		sel.removeAllRanges();
 		sel.setSingleRange(range);
+		sel.collapse(focusEl, pos);
 		
 		return this;
 	},

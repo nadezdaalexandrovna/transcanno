@@ -261,12 +261,10 @@ h2.legend Page Notes
 
                 medium.focusNadya(offset,focusEl);
                 console.log("$tag : "+$tag);
-                //medium.caretToEnd();
-                //medium.moveCursorToEnd();
-                //medium.splitAtCaret();
-                //medium.paste($tag);
-                //medium.addTag($tag);
+
+
                 medium.insertHtmlNadya($tag, offset, focusEl);
+                
                 //medium.insertHtml($tag);
                 //medium.paste($tag);
                 $('.chosen-select-no-results').chosen_reset(config);
