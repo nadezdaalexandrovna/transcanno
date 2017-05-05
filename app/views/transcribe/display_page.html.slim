@@ -227,12 +227,14 @@ h2.legend Page Notes
         $(this).chosen(n)
       }
 
+      var offset,focusEl; 
+
       //targetForm
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
 
-        var offset=medium.returnOffset()[0];
-        var focusEl=medium.returnOffset()[1];
+        offset=medium.returnOffset()[0];
+        focusEl=medium.returnOffset()[1];
         console.log("offset : "+offset);
 
         var value=$('#page_source_text').value;
