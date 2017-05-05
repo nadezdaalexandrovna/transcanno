@@ -143,6 +143,7 @@ h2.legend Page Notes
 
     });
 
+      var offset,focusEl;
       
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
@@ -227,7 +228,26 @@ h2.legend Page Notes
         $(this).chosen(n)
       }
 
-      var offset,focusEl; 
+
+      jQuery('#page_source_text').bind('keydown', 'alt+x', function(e) {
+        //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
+
+        offset=medium.returnOffset()[0];
+        focusEl=medium.returnOffset()[1];
+        console.log("offset : "+offset);
+
+        medium.focus();
+
+        medium.focusNadya(offset,focusEl);
+        medium.cursorAfterTag(focusEl);
+                
+        console.log("medium.value() : "+medium.value());
+
+        return false;
+
+      });
+
+       
 
       //targetForm
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {

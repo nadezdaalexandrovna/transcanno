@@ -488,6 +488,31 @@ Medium.prototype = {
 		return this;
 	},
 
+	cursorAfterTag: function (focusEl, callback, skipChangeEvent) {
+		//var el = this.element;
+		var sel = rangy.getSelection();
+
+			//var node = d.createTextNode(html);
+			var range, outerhtml;
+
+        if (sel.getRangeAt && sel.rangeCount) {
+        	range = sel.getRangeAt(0);
+        	range.setStartAfter(focusEl.parentNode); 
+			range.setEndAfter(focusEl.parentNode);
+			range.collapse(true);
+			var sel = rangy.getSelection();
+			sel.setSingleRange(range);
+            //range.collapse(false);
+
+            var rangeNode = range.startContainer;
+            
+            Medium.activeElement=rangeNode;
+
+        }
+
+		return this;
+	},
+
 	addTag: function (tag, shouldFocus, isEditable, afterElement) {
 		if (!this.settings.beforeAddTag(tag, shouldFocus, isEditable, afterElement)) {
 			var newEl = d.createElement(tag),
@@ -1863,6 +1888,7 @@ Medium.defaultSettings = {
 				return inserted;
 			
 		},
+
 		/**
 		 * @methodOf Medium.Html
 		 * @param clean
