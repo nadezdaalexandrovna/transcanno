@@ -488,6 +488,133 @@ Medium.prototype = {
 		return this;
 	},
 
+	tagSelection: function (tag, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
+		var el = document.createElement(tag);
+		var el2 = document.createElement(tag);
+		//var randomNumber = Math.floor(Math.random() * 1000);
+		var d = new Date();
+		var milliseconds = d.getTime();
+		//var tagCode=randomNumber.toString()+milliseconds.toString().substring(7,13);
+		var tagCode=milliseconds.toString();
+		el.setAttribute("tagCode",tagCode);
+		el2.setAttribute("tagCode",tagCode);
+		//var el2 = document.createElement(tag);
+		var range = rangy.createRange();
+		var	range2;
+		var sel;
+
+		if(anchorEl===focusEl){
+			//var html=focusEl.textContent.substring(beginningOfSelection, endOfSelection);
+			
+			//var node = d.createTextNode(html);
+			//el.appendChild(node);
+			
+			range.setStart(anchorEl, beginningOfSelection);
+			range.setEnd(anchorEl, endOfSelection);
+			range.surroundContents(el);
+			range.collapse(true);
+			sel = rangy.getSelection();
+			sel.setSingleRange(range);
+			return this;
+		//}else if (anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode){ //Overlapping selection
+			
+		}else{
+			sel = rangy.getSelection();
+			sel.removeAllRanges();
+			
+
+			if (!(anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode)){
+				var nodeToTag=anchorNode;
+				var rangeIn;
+				//var counter=0;
+
+				while(true){
+					/*
+					counter+=1;
+					if(counter==10){
+						range.setStart(anchorEl, beginningOfSelection);
+						range.setEndAfter(anchorEl);
+						range.surroundContents(el);
+						range.collapse(true);
+						range2 = rangy.createRange();
+						range2.setStartBefore(focusEl);
+						range2.setEnd(focusEl, endOfSelection);
+						range2.surroundContents(el2);
+						range2.collapse(true);
+						sel.setRanges([range,range2]);
+						sel.collapseToEnd();
+						return this;
+					}
+					*/
+					
+
+					if(nodeToTag.nextSibling!=null){
+						nodeToTag=nodeToTag.nextSibling;
+					}else{
+						nodeToTag=nodeToTag.parentNode.nextSibling;
+					}
+
+					if(nodeToTag===focusNode || nodeToTag===focusNode.parentNode){
+						range.setStart(anchorEl, beginningOfSelection);
+						range.setEndAfter(anchorEl);
+						range.surroundContents(el);
+						range.collapse(true);
+						range2 = rangy.createRange();
+						range2.setStartBefore(focusEl);
+						range2.setEnd(focusEl, endOfSelection);
+						range2.surroundContents(el2);
+						range2.collapse(true);
+						sel.setRanges([range,range2]);
+						sel.collapseToEnd();
+						return this;
+					}
+
+					rangeIn = rangy.createRange();
+					rangeIn.setStartBefore(nodeToTag);
+					rangeIn.setEndAfter(nodeToTag);
+					rangeIn.surroundContents(document.createElement(tag));
+					sel.addRange(rangeIn);
+				}
+
+			}else{
+				return this;	
+			}
+
+		}
+		
+	},
+
+	tagNodesBetween: function(anchorNode,focusNode,tag){
+		var nodeToTag=anchorNode;
+		var rangeIn;
+		var sel = rangy.getSelection();
+		var counter=0;
+
+		while(true){
+			counter+=1;
+			if(counter==10){
+				return this;
+			}
+
+			if(nodeToTag===focusNode || nodeToTag===focusNode.parentNode){
+				return this;
+			}
+
+			if(nodeToTag.nextSibling!=null){
+				nodeToTag=nodeToTag.nextSibling;
+			}else{
+				nodeToTag=nodeToTag.parentNode.nextSibling;
+			}
+
+			rangeIn = rangy.createRange();
+			rangeIn.setStartBefore(nodeToTag);
+			rangeIn.setEndAfter(nodeToTag);
+			rangeIn.surroundContents(document.createElement(tag));
+			sel.addRange(rangeIn);
+		}
+		
+	},
+
 	cursorAfterTag: function (focusEl, callback, skipChangeEvent) {
 		//var el = this.element;
 		var sel = rangy.getSelection();
@@ -751,12 +878,10 @@ Medium.prototype = {
 
 		var selector = (w.getSelection || d.selection),
 			sel = selector(),
-			offset = sel.focusOffset,
-			node = sel.focusNode,
-			el = this.element,
-			range = d.createRange(),
-			endRange = d.createRange(),
-			contents;
+			focusOffset = sel.focusOffset,
+			anchorOffset = sel.anchorOffset,
+			focusNode = sel.focusNode,
+			anchorNode = sel.anchorNode;
 
 		//range.setStart(node, offset);
 		//endRange.selectNodeContents(el);
@@ -764,7 +889,7 @@ Medium.prototype = {
 
 		//contents = range.extractContents();
 
-		return [offset,node];
+		return [focusOffset,focusNode,anchorOffset,anchorNode];
 	},
 
 	/**

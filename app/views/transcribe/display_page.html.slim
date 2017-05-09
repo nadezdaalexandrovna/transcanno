@@ -143,7 +143,7 @@ h2.legend Page Notes
 
     });
 
-      var offset,focusEl;
+      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen;
       
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
@@ -159,7 +159,7 @@ h2.legend Page Notes
       var parser = new DOMParser();
       var doc = parser.parseFromString(xml, "text/xml");
       var allDocContent=doc.childNodes[0];
-      var docChildNode=doc.documentElement.childNodes[0];
+      //var docChildNode=doc.documentElement.childNodes[0];
 
 
       var article=l;
@@ -253,16 +253,27 @@ h2.legend Page Notes
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
 
-        offset=medium.returnOffset()[0];
-        focusEl=medium.returnOffset()[1];
+        //offset=medium.returnOffset()[0];
+        //focusEl=medium.returnOffset()[1];
+        //beginningOfSelection=medium.returnOffset()[2];
+        //anchorNode=medium.returnOffset()[3];
+
+        [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
         console.log("offset : "+offset);
+        selection = window.getSelection();
 
         var value=$('#page_source_text').value;
+
+        if(selection.isCollapsed){
         $(".popupBody").show();
         
-        var enableChosen = setTimeout(function() {
+        /*
+        enableChosen = setTimeout(function() {
           $(".chosen-select-no-results").trigger('chosen:activate');
         }, 250);
+        */
+
+        $(".chosen-select-no-results").trigger('chosen:activate');
 
         $(".chosen-select-no-results").chosen().change(function(event){
           if(event.target == this){
@@ -275,8 +286,8 @@ h2.legend Page Notes
 
                 $tag='<'+$tag+' title="here '+$tag+'" style="color: #ee0606" class="medium-'+$tag+'"></'+$tag+'>';
 
-                medium.focusNadya(offset,focusEl);
-                medium.insertHtmlNadya($tag, offset, focusEl);
+                medium.focusNadya(focusOffset,focusNode);
+                medium.insertHtmlNadya($tag, focusOffset, focusNode);
 
                 $('.chosen-select-no-results').chosen_reset(config);
                 $(".popupBody").hide();
@@ -289,6 +300,33 @@ h2.legend Page Notes
           }
           return false;
         });
+        }else{ //If selection is not collapsed
+          $(".popupBody").show();
+        
+
+          //$(".chosen-select-no-results").trigger('chosen:activate');
+
+          enableChosen = setTimeout(function() {
+            $(".chosen-select-no-results").trigger('chosen:activate');
+          }, 250);
+
+
+          $(".chosen-select-no-results").chosen().change(function(event2){
+          if(event2.target == this){
+              $tag2=$(this).val();
+              if($tag2!= null && $tag2!=''){
+                //medium.focus();
+                medium.tagSelection($tag2,anchorNode,focusNode,anchorOffset, focusOffset);
+                $('.chosen-select-no-results').chosen_reset(config);
+                $(".popupBody").hide();
+                return false;
+              }
+              return false;
+          }
+          return false;
+        });
+
+        } // End if selection.isCollapsed
 
         return false;
       });
