@@ -97,6 +97,17 @@
 </select>
 </div>
 
+<div class="popupBody2">
+<p>Select your offer:</p>
+<select class="chosen-select-no-results2">
+  <option></option>
+  <option value="greeting" disabled="disabled">greeting</option>
+  <option value="closing">closing</option>
+  <option value="hyphen">hyphen</option>
+  <option value="tre">tre</option>
+</select>
+</div>
+
 <div class="toolbar-top">
   <span class="toolbar">
     <span class="bold" style="font-weight: bold; color: #66d9ef">B</span>
@@ -194,6 +205,7 @@ h2.legend Page Notes
       */
 
       $(".popupBody").hide();
+      $(".popupBody2").hide();
 
       var config = {
       '.chosen-select'           : {},
@@ -202,12 +214,13 @@ h2.legend Page Notes
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
       '.chosen-select-width'     : {width:"95%"}
     }
+
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
 
     $(".chosen-select-no-results").chosen();
-
+    $(".chosen-select-no-results2").chosen();
 
 
       //originalForm
@@ -259,24 +272,24 @@ h2.legend Page Notes
         //anchorNode=medium.returnOffset()[3];
 
         [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
-        
+
         selection = window.getSelection();
 
-        var value=$('#page_source_text').value;
+        //var value=$('#page_source_text').value;
 
         if(selection.isCollapsed){
-        $(".popupBody").show();
+          $(".popupBody").show();
         
-        /*
-        enableChosen = setTimeout(function() {
+          /*
+          enableChosen = setTimeout(function() {
+            $(".chosen-select-no-results").trigger('chosen:activate');
+          }, 250);
+          */
+
           $(".chosen-select-no-results").trigger('chosen:activate');
-        }, 250);
-        */
 
-        $(".chosen-select-no-results").trigger('chosen:activate');
-
-        $(".chosen-select-no-results").chosen().change(function(event){
-          if(event.target == this){
+          $(".chosen-select-no-results").chosen().change(function(event){
+            if(event.target == this){
               $tag=$(this).val();
               if($tag!= null && $tag!=''){
                 //$(".chosen-select-no-results").trigger('chosen:updated');
@@ -297,28 +310,29 @@ h2.legend Page Notes
                 return false;
               }
               return false;
-          }
-          return false;
-        });
+            }
+            return false;
+          });
+
         }else{ //If selection is not collapsed
-          $(".popupBody").show();
+          $(".popupBody2").show();
         
 
-          //$(".chosen-select-no-results").trigger('chosen:activate');
-
+          $(".chosen-select-no-results2").trigger('chosen:activate');
+          /*
           enableChosen = setTimeout(function() {
-            $(".chosen-select-no-results").trigger('chosen:activate');
+            $(".chosen-select-no-results2").trigger('chosen:activate');
           }, 250);
+          */
 
-
-          $(".chosen-select-no-results").chosen().change(function(event2){
+          $(".chosen-select-no-results2").chosen().change(function(event2){
           if(event2.target == this){
               $tag2=$(this).val();
               if($tag2!= null && $tag2!=''){
                 //medium.focus();
                 medium.tagSelection($tag2,anchorNode,focusNode,anchorOffset, focusOffset);
-                $('.chosen-select-no-results').chosen_reset(config);
-                $(".popupBody").hide();
+                $('.chosen-select-no-results2').chosen_reset(config);
+                $(".popupBody2").hide();
                 return false;
               }
               return false;
