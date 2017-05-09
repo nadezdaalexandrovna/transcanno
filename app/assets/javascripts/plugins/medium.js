@@ -888,8 +888,12 @@ Medium.prototype = {
 		//range.setEnd(endRange.endContainer, endRange.endOffset);
 
 		//contents = range.extractContents();
-
-		return [focusOffset,focusNode,anchorOffset,anchorNode];
+		if(anchorNode===focusNode && anchorOffset>focusOffset){
+			return [anchorOffset,focusNode,focusOffset,anchorNode];
+		}else{
+			return [focusOffset,focusNode,anchorOffset,anchorNode];
+		}
+		
 	},
 
 	/**
