@@ -1047,3 +1047,107 @@ button, .button, .dropdown dd a {
     content: attr(data-empty);
   }
 }
+
+.color, .decoration {
+  list-style-type:none;
+  margin:15px 0 25px 0;
+  padding:0;
+}
+
+.color li, .decoration li {
+    float:left;
+    margin:0 5px 0 0;
+    width:100px;
+    height:40px;
+    position:relative;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+
+.color label, .color input, .decoration label, .decoration input {
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.color input[type="radio"], .decoration input[type="radio"] {
+  opacity:0.011;
+  z-index:100;
+}
+
+.color input[type="radio"]:checked + label, .decoration input[type="radio"]:checked + label {
+  border: 3px solid black;
+}
+
+.color label, .decoration label {
+  padding:5px;
+  border:1px solid #CCC; 
+  cursor:pointer;
+  z-index:90;
+}
+
+.color label:hover, .decoration label:hover {
+  border: 3px solid gray;
+}
+
+
+label[for="1"]{
+      color:  #a93226 ;
+    }
+label[for="2"]{
+      color: #8e44ad;
+    }
+label[for="3"]{
+      color: #1a5276;
+    }
+label[for="4"]{
+      color: #3498db;
+    }
+label[for="5"]{
+      color: #1e8449;
+    }
+label[for="6"]{
+      color: auto;
+    }
+label[for="7"]{
+      color: #d4ac0d;
+    }
+label[for="8"]{
+      color: #F39201;
+    }
+label[for="9"]{
+      color:  #FF5733;
+    }
+label[for="10"]{
+      color:  #779e50;
+    }
+label[for="11"]{
+      color:  #0901F3;
+    }
+label[for="12"]{
+      color:  #24D201;
+    }
+
+
+
+label[for="111"]{
+      text-decoration: line-through;
+    }
+label[for="112"]{
+      text-decoration: underline;
+    }
+label[for="113"]{
+      text-decoration: overline;
+    }
+label[for="114"]{
+      text-decoration: none;
+    }
+
+#decoration_title{
+  margin-top: 1vh;
+}
+

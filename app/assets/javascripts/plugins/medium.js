@@ -498,6 +498,9 @@ Medium.prototype = {
 		var tagCode=milliseconds.toString();
 		el.setAttribute("tagCode",tagCode);
 		el2.setAttribute("tagCode",tagCode);
+		el.setAttribute("class","medium-"+tag);
+		el2.setAttribute("class","medium-"+tag);
+		
 		//var el2 = document.createElement(tag);
 		var range = rangy.createRange();
 		var	range2;

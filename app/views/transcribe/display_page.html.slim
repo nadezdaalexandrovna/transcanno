@@ -87,37 +87,38 @@
             = @page.source_text
 
 <div class="popupBody">
-<p>Select your offer:</p>
+<p>Select a tag:</p>
 <select class="chosen-select-no-results">
-  <option></option>
-  <option value="greeting" disabled="disabled">greeting</option>
-  <option value="closing">closing</option>
-  <option value="hyphen">hyphen</option>
-  <option value="tre">tre</option>
+  option[ value="" ] = ""
+  - @categories.each do |c|
+    option[ value=c.title ] =c.title
 </select>
 </div>
 
 <div class="popupBody2">
-<p>Select your offer:</p>
+<p>Select a tag:</p>
 <select class="chosen-select-no-results2">
-  <option></option>
-  <option value="greeting" disabled="disabled">greeting</option>
-  <option value="closing">closing</option>
-  <option value="hyphen">hyphen</option>
-  <option value="tre">tre</option>
+  option[ value="" ] = ""
+  - @categories.each do |c|
+    option[ value=c.title ] =c.title
 </select>
 </div>
 
 <div class="toolbar-top">
   <span class="toolbar">
-    <span class="bold" style="font-weight: bold; color: #66d9ef">B</span>
-    <span class="underline" style="text-decoration: underline; color: #a6e22e">U</span>
-    <span class="italic" style="font-style: italic; color: #f92672">I</span>
-    <span class="strike" style="text-decoration: line-through; color: #0606ee">S</span>
     <span class="hyphen" style="color: #0606ee">hyphen</span>
     <span class="closing" style="color: #ee0606">closing</span>
   </span>
 </div>
+
+
+table
+  - @categories.each do |c|
+    tr
+      td
+        = c.title
+
+
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -154,7 +155,7 @@ h2.legend Page Notes
 
     });
 
-      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen;
+      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, d;
       
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
@@ -297,7 +298,12 @@ h2.legend Page Notes
 
                 medium.focus();
 
-                $tag='<'+$tag+' title="here '+$tag+'" style="color: #ee0606" class="medium-'+$tag+'"></'+$tag+'>';
+                d = new Date();
+                milliseconds = d.getTime();
+                tagCode=milliseconds.toString();
+
+
+                $tag='<'+$tag+' tagcode="'+tagCode+'" class="medium-'+$tag+'"></'+$tag+'>';
 
                 medium.focusNadya(focusOffset,focusNode);
                 medium.insertHtmlNadya($tag, focusOffset, focusNode);
@@ -352,56 +358,20 @@ h2.legend Page Notes
       }
     };
 
-    $( ".bold" ).mousedown(function() {
-      article.highlight();
-      medium.invokeElement('b', {
-        title: "here bold",
-        style: "color: #66d9ef"
-      });
-      return false;
-    });
-
-    $( ".underline" ).mousedown(function() {
-      article.highlight();
-      medium.invokeElement('u', {
-        title: "here underlined",
-        style: "color: #a6e22e"
-      });
-      return false;
-    });
-
-    $( ".italic" ).mousedown(function() {
-      article.highlight();
-      medium.invokeElement('i', {
-        title: "here italics",
-        style: "color: #f92672"
-      });
-      return false;
-    });
-  
-    $( ".strike" ).mousedown(function() {
-      article.highlight();
-      medium.invokeElement('strike', {
-        title: "here struck",
-        style: "color: #0606ee"
-      });
-      return false;
-    });
-
     $( ".hyphen" ).mousedown(function() {
+      d = new Date();
       article.highlight();
       medium.invokeElement('hyphen', {
-        title: "here hyphen",
-        style: "color: #0606ee"
+        tagcode: d.getTime().toString()
       });
       return false;
     });
 
     $( ".closing" ).mousedown(function() {
+      d = new Date();
       article.highlight();
       medium.invokeElement('closing', {
-        title: "here closing",
-        style: "color: #ee0606"
+        tagcode: d.getTime().toString()
       });
       return false;
     });

@@ -17,6 +17,7 @@ class TranscribeController  < ApplicationController
   def display_page
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
+    @categories = Category.joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
   end
 
   def guest

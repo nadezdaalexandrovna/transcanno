@@ -33,6 +33,56 @@ class CategoryController < ApplicationController
     end
   end
 
+  def define_style
+    print @category.title
+  end
+
+  def define_style2
+    params[:tag_color]==nil ? tag_color="auto" : tag_color=params[:tag_color]
+    params[:tag_decoration]==nil ? tag_decoration="auto" : tag_decoration=params[:tag_decoration]
+    @category.style='color:'+tag_color+'; '+'text-decoration:'+tag_decoration+';'
+    if @category.save
+    #if @category.update_attributes(params[:category])
+      flash[:notice] = "Category style has been updated"
+      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+    else
+      render :action => 'define_style'
+    end
+  end
+
+  def apply_all_styles
+    @result=Category.select("title, style")
+    print "@result\n"
+    puts @result.inspect
+    styleInstructions=""
+    @result.each do |r|
+      (r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style 
+      styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
+    end
+    print "styleInstructions : \n"
+    print styleInstructions
+    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    anchor = "#category-#{@category.id}"
+    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+  end
+
+  def discard_all_styles
+    Category.update_all(style: "")
+    @result=Category.select("title")
+    print "@result\n"
+    puts @result.inspect
+    styleInstructions=""
+    @result.each do |r|
+      style="color: auto; text-decoration: none;"
+      styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
+    end
+    print "styleInstructions : \n"
+    print styleInstructions
+    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    anchor = "#category-#{@category.id}"
+    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+  end
+
   def delete
     anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
     @category.destroy #_but_attach_children_to_parent
