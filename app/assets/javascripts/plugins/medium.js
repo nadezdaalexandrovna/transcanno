@@ -491,6 +491,7 @@ Medium.prototype = {
 	tagSelection: function (tag, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
 		var el = document.createElement(tag);
 		var el2 = document.createElement(tag);
+		var el3;
 		//var randomNumber = Math.floor(Math.random() * 1000);
 		var d = new Date();
 		var milliseconds = d.getTime();
@@ -575,7 +576,10 @@ Medium.prototype = {
 					rangeIn = rangy.createRange();
 					rangeIn.setStartBefore(nodeToTag);
 					rangeIn.setEndAfter(nodeToTag);
-					rangeIn.surroundContents(document.createElement(tag));
+					el3=document.createElement(tag);
+					el3.setAttribute("tagCode",tagCode);
+					el3.setAttribute("class","medium-"+tag);
+					rangeIn.surroundContents(el3);
 					sel.addRange(rangeIn);
 				}
 

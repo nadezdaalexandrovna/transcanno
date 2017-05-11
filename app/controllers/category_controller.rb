@@ -55,13 +55,24 @@ class CategoryController < ApplicationController
     print "@result\n"
     puts @result.inspect
     styleInstructions=""
+    mediumOnmouseoverFunctions="var d;\n"
     @result.each do |r|
       (r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style 
       styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
+      mediumOnmouseoverFunctions+='$( ".medium-'+r.title+'" ).mousedown(function() {'+"\n"+
+                                  'd = new Date();'+"\n"+
+                                  'article.highlight();'+"\n"+
+                                  'medium.invokeElement(\''+r.title+'\', {'+"\n"+
+                                  'tagcode: d.getTime().toString()'+"\n"+
+                                  '});'+"\n"+
+                                  'return false;'+"\n"+
+                                  '});'+"\n"
     end
+    #mediumOnmouseoverFunctions+="};"
     print "styleInstructions : \n"
     print styleInstructions
     File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end

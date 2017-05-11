@@ -104,19 +104,19 @@
 </select>
 </div>
 
-<div class="toolbar-top">
-  <span class="toolbar">
-    <span class="hyphen" style="color: #0606ee">hyphen</span>
-    <span class="closing" style="color: #ee0606">closing</span>
-  </span>
-</div>
-
+<span class="undo">undo</span>
+div [ id="mediumClickableSpans" ]
+  - @categories.each do |c|
+    span[ class="medium-#{c.title}" ] = c.title
 
 table
+  tr
+    td [ class="overMediumButtonTD" ]
+      <span class="undo">undo</span>
   - @categories.each do |c|
     tr
-      td
-        = c.title
+      td [ class="overMediumButtonTD" ]
+        span[ class="medium-#{c.title}" ] = c.title
 
 
 
@@ -153,6 +153,11 @@ h2.legend Page Notes
 
       
 
+    });
+
+
+    $.getScript('../../../my-medium-onmousedown-functions.js', function(){
+      console.log("my-medium-onmousedown-functions.js loaded");
     });
 
       var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, d;
@@ -335,8 +340,16 @@ h2.legend Page Notes
           if(event2.target == this){
               $tag2=$(this).val();
               if($tag2!= null && $tag2!=''){
+                d = new Date();
+                //article.highlight();
+                medium.focusNadya(focusOffset,focusNode);
+                medium.invokeElement('hyphen', {
+                  tagcode: d.getTime().toString()
+                }, true);
+                /*
                 //medium.focus();
                 medium.tagSelection($tag2,anchorNode,focusNode,anchorOffset, focusOffset);
+                */
                 $('.chosen-select-no-results2').chosen_reset(config);
                 $(".popupBody2").hide();
                 return false;
@@ -376,6 +389,17 @@ h2.legend Page Notes
       return false;
     });
 
+    $( ".undo" ).mousedown(function() {
+      medium.undo();
+      return false;
+    });
+
+    /*
+    var imported = document.createElement('script');
+    imported.src = '../../../javascripts/my-medium-onmousedown-functions.js';
+    document.head.appendChild(imported);
+    */
+
     function AddMediumValue() {
         mediumValue = medium.value();
         mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
@@ -386,4 +410,5 @@ h2.legend Page Notes
         document.getElementsByName("page[source_text]")[0].value=mediumValue;
         return true;   // Returns Value
       }
+   
 javascript:  mixpanel.track("Transcribe Page");
