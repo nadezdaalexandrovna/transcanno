@@ -55,20 +55,21 @@ class CategoryController < ApplicationController
     print "@result\n"
     puts @result.inspect
     styleInstructions=""
-    mediumOnmouseoverFunctions="var d;\n"
+    mediumOnmouseoverFunctions="$(document).ready(function($) {\nvar da;\n"
     @result.each do |r|
       (r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style 
       styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
-      mediumOnmouseoverFunctions+='$( ".medium-'+r.title+'" ).mousedown(function() {'+"\n"+
-                                  'd = new Date();'+"\n"+
+      styleInstructions+="\n.button-"+r.title+"{"+style+"}"
+      mediumOnmouseoverFunctions+='$( ".button-'+r.title+'" ).mousedown(function() {'+"\n"+
+                                  'da = new Date();'+"\n"+
                                   'article.highlight();'+"\n"+
                                   'medium.invokeElement(\''+r.title+'\', {'+"\n"+
-                                  'tagcode: d.getTime().toString()'+"\n"+
+                                  'tagcode: da.getTime().toString()'+"\n"+
                                   '});'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"
     end
-    #mediumOnmouseoverFunctions+="};"
+    mediumOnmouseoverFunctions+="});"
     print "styleInstructions : \n"
     print styleInstructions
     File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)

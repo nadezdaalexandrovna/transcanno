@@ -104,10 +104,11 @@
 </select>
 </div>
 
+
 <span class="undo">undo</span>
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
-    span[ class="medium-#{c.title}" ] = c.title
+    span[ class="button-#{c.title}" ] = c.title
 
 table
   tr
@@ -116,7 +117,7 @@ table
   - @categories.each do |c|
     tr
       td [ class="overMediumButtonTD" ]
-        span[ class="medium-#{c.title}" ] = c.title
+        span[ class="button-#{c.title}" ] = c.title
 
 
 
@@ -156,11 +157,7 @@ h2.legend Page Notes
     });
 
 
-    $.getScript('../../../my-medium-onmousedown-functions.js', function(){
-      console.log("my-medium-onmousedown-functions.js loaded");
-    });
-
-      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, d;
+      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen;
       
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
@@ -169,7 +166,7 @@ h2.legend Page Notes
       var xml=l.textContent;
       //xml = xml.replace(/(<br><\/br>)$/, '<br>\&#160\;<\/br>'); //Ne remplace rien
       console.log("xml : "+xml);
-      xml = "<div>"+xml+"</div>";
+      xml = "<div id=\"bigDiv\">"+xml+"</div>";
       //xml = xml.replace(/<\/br>/g, '');  // Esli dobavliaiu eto, to oshibka parsinga i voobshe nichego ne pokazyvaet v Transcribe
       //xml = xml.replace(/&nbsp\;/g, '');
 
@@ -186,8 +183,9 @@ h2.legend Page Notes
 
       var closingElement=article.getElementsByTagName('closing')[0];
 
-        var container = article.parentNode,
-        medium = new Medium({
+        var container = article.parentNode;
+
+        var medium = new Medium({
             element: article,
             mode: Medium.richMode,
             attributes: null,
@@ -202,7 +200,7 @@ h2.legend Page Notes
               //moveCursorToEnd(this);
             }
         });
-        
+       
 
       /*
       $(document).ready(function() {
@@ -340,16 +338,17 @@ h2.legend Page Notes
           if(event2.target == this){
               $tag2=$(this).val();
               if($tag2!= null && $tag2!=''){
+                /*
                 d = new Date();
                 //article.highlight();
                 medium.focusNadya(focusOffset,focusNode);
                 medium.invokeElement('hyphen', {
                   tagcode: d.getTime().toString()
                 }, true);
-                /*
-                //medium.focus();
-                medium.tagSelection($tag2,anchorNode,focusNode,anchorOffset, focusOffset);
                 */
+                //medium.focus();
+                medium.tagSelection2($tag2,anchorNode,focusNode,anchorOffset, focusOffset);
+                console.log(medium.value());
                 $('.chosen-select-no-results2').chosen_reset(config);
                 $(".popupBody2").hide();
                 return false;
@@ -394,14 +393,10 @@ h2.legend Page Notes
       return false;
     });
 
-    /*
-    var imported = document.createElement('script');
-    imported.src = '../../../javascripts/my-medium-onmousedown-functions.js';
-    document.head.appendChild(imported);
-    */
 
     function AddMediumValue() {
         mediumValue = medium.value();
+        console.log(mediumValue);
         mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
         mediumValue = mediumValue.replace(/<br>/g, '<br></br>');
         mediumValue = mediumValue.replace(/<\/br><\/br>/g, '</br>');
