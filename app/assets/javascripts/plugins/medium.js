@@ -544,15 +544,51 @@ Medium.prototype = {
 			var nodeToTag=anchorEl;
 			var currentNode;
 			var nodes;
+			var childTextNodes, rangeIn;
 
 			while(nodeToTag!=closestCommonAncestor){
 				range = rangy.createRange();
 				
 				if(beginningOfSelection!=null){				
 					range.setStart(nodeToTag, beginningOfSelection);
+					range.setEndAfter(nodeToTag);
+					el=document.createElement(tag);
+					el.setAttribute("tagCode",tagCode);
+					el.setAttribute("class","medium-"+tag);
+					range.surroundContents(el);
+					sel.addRange(range);
+					
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					
+					nodeToTag=childTextNodes[0].parentNode;
+					//nodeToTag=nodeToTag.parentNode;
+
 				}else{
 					range.setStartBefore(nodeToTag);
+					range.setEndAfter(nodeToTag);
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					console.log("childTextNodes");
+					if(childTextNodes.length>0){
+						childTextNodes.forEach(function(child, index) {
+  							console.log(child);
+  							rangeIn = rangy.createRange();
+  							rangeIn.setStartBefore(child);
+							rangeIn.setEndAfter(child);
+							el=document.createElement(tag);
+							el.setAttribute("tagCode",tagCode);
+							el.setAttribute("class","medium-"+tag);
+							rangeIn.surroundContents(el);
+							sel.addRange(rangeIn);
+						});
+					}
+
+					nodeToTag=childTextNodes[0].parentNode;
 				}
+				/*
 				range.setEndAfter(nodeToTag);
 				el=document.createElement(tag);
 				el.setAttribute("tagCode",tagCode);
@@ -564,6 +600,7 @@ Medium.prototype = {
 				});
 
 				nodeToTag=nodes[0].parentNode;
+				*/
 
 				if(nodeToTag.parentNode===closestCommonAncestor){
 					break;
@@ -590,27 +627,65 @@ Medium.prototype = {
 			//Tag to the left till the common ancestor
 
 			var nodeToTag2=focusEl;
+			
 
 			while(nodeToTag2!=closestCommonAncestor){
 				range = rangy.createRange();
 				range.setStartBefore(nodeToTag2);
 				if(endOfSelection!=null){				
 					range.setEnd(nodeToTag2,endOfSelection);
+
+					el=document.createElement(tag);
+					el.setAttribute("tagCode",tagCode);
+					el.setAttribute("class","medium-"+tag);
+					range.surroundContents(el);
+					sel.addRange(range);
+					
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					
+					nodeToTag2=childTextNodes[0].parentNode;
+					//nodeToTag2=nodeToTag2.parentNode;
+
 				}else{
 					range.setEndAfter(nodeToTag2);
+
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					console.log("childTextNodes");
+					if(childTextNodes.length>0){
+						childTextNodes.forEach(function(child, index) {
+  							console.log(child);
+  							rangeIn = rangy.createRange();
+  							rangeIn.setStartBefore(child);
+							rangeIn.setEndAfter(child);
+							el=document.createElement(tag);
+							el.setAttribute("tagCode",tagCode);
+							el.setAttribute("class","medium-"+tag);
+							rangeIn.surroundContents(el);
+							sel.addRange(rangeIn);
+						});
+					}
+
+					nodeToTag2=childTextNodes[0].parentNode;
 				}
 
+				/*
 				el=document.createElement(tag);
 				el.setAttribute("tagCode",tagCode);
 				el.setAttribute("class","medium-"+tag);
 				range.surroundContents(el);
 				sel.addRange(range);
-
+				*/
+				/*
 				nodes = range.getNodes([3], function(node) {
     				return node.data;
 				});
+				*/
 
-				nodeToTag2=nodes[0].parentNode;
+				//nodeToTag2=nodes[0].parentNode;
 
 				/*
 				if(nodeToTag2.parentNode===closestCommonAncestor){
