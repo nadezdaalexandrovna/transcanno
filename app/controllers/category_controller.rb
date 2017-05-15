@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_types]
 
   def edit
   end
@@ -34,16 +34,57 @@ class CategoryController < ApplicationController
   end
 
   def define_style
-    print @category.title
+  end
+
+  def define_types
+    @categorytypes=Categorytype.joins(:category).where(category_id: params[:category_id])
+  end
+
+  def define_types2
+    @category.id=params[:category_id]
+    giveNotice=false
+    if params[:delete_type]!=nil
+      forSql=""
+      params[:delete_type].each do |type|
+        if type!=nil && type!=""
+          giveNotice=true
+          forSql+=type+", "
+        end
+      end
+      if forSql!=""
+        sql="delete from categorytypes where id in ("+forSql[0..-3]+");"
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+    if params[:type]!=nil
+      forSql=""
+      params[:type].each do |type|
+        if type!=nil && type!=""
+          giveNotice=true
+          forSql+="( '"+type+"', "+params[:category_id]+"), "
+        end
+      end
+      if forSql!=""
+        sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
+        sql+=forSql[0..-3]
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+    if giveNotice==true
+      flash[:notice] = "Category types have been defined."
+    end
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
 
   def define_style2
+    @category.id=params[:category_id]
     params[:tag_color]==nil ? tag_color="auto" : tag_color=params[:tag_color]
     params[:tag_decoration]==nil ? tag_decoration="auto" : tag_decoration=params[:tag_decoration]
-    @category.style='color:'+tag_color+'; '+'text-decoration:'+tag_decoration+';'
+    @category.style='color:'+tag_color+'; '+'text-decoration:'+tag_decoration+';'+params[:tag_font_style]
     if @category.save
-    #if @category.update_attributes(params[:category])
-      flash[:notice] = "Category style has been updated"
+      flash[:notice] = "Category style is ready to be applied."
       ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     else
       render :action => 'define_style'
@@ -52,8 +93,6 @@ class CategoryController < ApplicationController
 
   def apply_all_styles
     @result=Category.select("title, style")
-    print "@result\n"
-    puts @result.inspect
     styleInstructions=""
     mediumOnmouseoverFunctions="$(document).ready(function($) {\nvar da;\n"
     @result.each do |r|
@@ -70,10 +109,9 @@ class CategoryController < ApplicationController
                                   '});'+"\n"
     end
     mediumOnmouseoverFunctions+="});"
-    print "styleInstructions : \n"
-    print styleInstructions
     File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
     File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
+    flash[:notice] = "Category styles have been applied."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
@@ -81,16 +119,13 @@ class CategoryController < ApplicationController
   def discard_all_styles
     Category.update_all(style: "")
     @result=Category.select("title")
-    print "@result\n"
-    puts @result.inspect
     styleInstructions=""
     @result.each do |r|
       style="color: auto; text-decoration: none;"
       styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
     end
-    print "styleInstructions : \n"
-    print styleInstructions
     File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end

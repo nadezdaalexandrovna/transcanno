@@ -58,6 +58,22 @@
       li
         input[ type="radio" id="114" name="tag_decoration" value="none"]
         label [for="114"] text
+    hr
+    h5 [id="font_style_title"] Choose font style for
+      <span class="medium-#{@category.title}">#{@category.title}</span>
+    ul[ class="font_style" ]
+      li
+        input[ type="radio" id="200" name="tag_font_style" value="font-weight: bold;"]
+        label [for="200"] text
+      li
+        input[ type="radio" id="201" name="tag_font_style" value="font-style: italic;"]
+        label [for="201"] text
+      li
+        input[ type="radio" id="202" name="tag_font_style" value="font-weight: bold; font-style: italic;"]
+        label [for="202"] text
+      li
+        input[ type="radio" id="203" name="tag_font_style" value=""]
+        label [for="203"] text
 
 
     .toolbar

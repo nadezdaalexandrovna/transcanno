@@ -1048,13 +1048,13 @@ button, .button, .dropdown dd a {
   }
 }
 
-.color, .decoration {
+.color, .decoration, .font_style {
   list-style-type:none;
   margin:15px 0 25px 0;
   padding:0;
 }
 
-.color li, .decoration li {
+.color li, .decoration li, .font_style li {
     float:left;
     margin:0 5px 0 0;
     width:100px;
@@ -1065,7 +1065,7 @@ button, .button, .dropdown dd a {
 }
 
 
-.color label, .color input, .decoration label, .decoration input {
+.color label, .color input, .decoration label, .decoration input, .font_style label, .font_style input {
   display:block;
   position:absolute;
   top:0;
@@ -1074,23 +1074,23 @@ button, .button, .dropdown dd a {
   bottom:0;
 }
 
-.color input[type="radio"], .decoration input[type="radio"] {
+.color input[type="radio"], .decoration input[type="radio"], .font_style input[type="radio"] {
   opacity:0.011;
   z-index:100;
 }
 
-.color input[type="radio"]:checked + label, .decoration input[type="radio"]:checked + label {
+.color input[type="radio"]:checked + label, .decoration input[type="radio"]:checked + label, .font_style input[type="radio"]:checked + label {
   border: 3px solid black;
 }
 
-.color label, .decoration label {
+.color label, .decoration label, .font_style label {
   padding:5px;
   border:1px solid #CCC; 
   cursor:pointer;
   z-index:90;
 }
 
-.color label:hover, .decoration label:hover {
+.color label:hover, .decoration label:hover, .font_style label:hover {
   border: 3px solid gray;
 }
 
@@ -1147,6 +1147,17 @@ label[for="114"]{
       text-decoration: none;
     }
 
+label[for="200"]{
+      font-weight: bold;
+    }
+label[for="201"]{
+      font-style: italic;
+    }
+label[for="202"]{
+      font-weight: bold;
+      font-style: italic;
+    }
+
 #decoration_title{
   margin-top: 1vh;
 }
@@ -1161,4 +1172,15 @@ label[for="114"]{
     cursor: pointer;
     }
 
+.already_type td{
+    width: 100 px;
+}
+
+.delete_type_button{
+  margin-left: 5px;
+}
+
+#category_title_for_types{
+  font-weight: bold;
+}
 
