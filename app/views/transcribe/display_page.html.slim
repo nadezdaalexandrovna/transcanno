@@ -91,7 +91,7 @@
 <select class="chosen-select-no-results">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value=c.title ] =c.title
+    option[ value=c.title data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -100,10 +100,14 @@
 <select class="chosen-select-no-results2">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value=c.title ] =c.title
+    option[ value=c.title data-categoryid=c.id ] =c.title
 </select>
 </div>
 
+<div id="newDropdownDiv">
+  <select id="chosen-select-type">
+  </select>
+</div>
 
 <span class="undo">undo</span>
 div [ id="mediumClickableSpans" ]
@@ -117,7 +121,7 @@ table
   - @categories.each do |c|
     tr
       td [ class="overMediumButtonTD" ]
-        span[ class="button-#{c.title}" ] = c.title
+        span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
 
 
 
@@ -130,6 +134,8 @@ h2.legend Page Notes
 .page-notes
   =render :partial => "notes/notes"
 
+
+.foobar*{'id'=>'foobar', 'data'=>"#{@categoryTypesHash}"}
 
 -content_for :javascript
   javascript:
@@ -151,13 +157,22 @@ h2.legend Page Notes
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
 
-
-      
-
     });
 
 
-      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen;
+    
+    //var categoryTypesHash= JSON.parse('<%= @categoryTypesHash %>');
+    //var categoryTypesHash = <%= @categoryTypesHash.inspect.html_safe %>;
+    //var categoryTypesHash = $('#foobar').data;
+    var foobar=document.getElementById('foobar');
+    console.log(foobar);
+    var categoriesText=foobar.attributes[2].textContent;
+    var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
+    console.log(categoryTypesHash);
+    
+
+
+      var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType;
       
       var l=document.getElementById('page_source_text');
       console.log("l : "+l);
@@ -210,22 +225,23 @@ h2.legend Page Notes
 
       $(".popupBody").hide();
       $(".popupBody2").hide();
+      $("#newDropdownDiv").hide();
 
+      
       var config = {
-      '.chosen-select'           : {},
-      '.chosen-select-deselect'  : {allow_single_deselect:true},
-      '.chosen-select-no-single' : {disable_search_threshold:10},
-      '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-      '.chosen-select-width'     : {width:"95%"}
+      '.chosen-select-no-results': {width:"95%"},
+      '.chosen-select-no-results2'     : {width:"95%"},
+      '.chosen-select-type'     : {width:"95%"}
     }
 
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
+    
 
     $(".chosen-select-no-results").chosen();
     $(".chosen-select-no-results2").chosen();
-
+    //$(".chosen-select-type").chosen();
 
       //originalForm
       jQuery('#page_source_text').bind('keydown', 'alt+o', function(e) {  
@@ -245,7 +261,7 @@ h2.legend Page Notes
         $(this).chosen(n)
       }
 
-
+      //Go out of the current tag
       jQuery('#page_source_text').bind('keydown', 'alt+x', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
 
@@ -266,7 +282,7 @@ h2.legend Page Notes
 
        
 
-      //targetForm
+      //Add tag
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
 
@@ -293,9 +309,85 @@ h2.legend Page Notes
           $(".chosen-select-no-results").trigger('chosen:activate');
 
           $(".chosen-select-no-results").chosen().change(function(event){
+          //$(".chosen-select-no-results").unbind().click(function(event){
             if(event.target == this){
               $tag=$(this).val();
+              console.log("$tag=$(this).val();");
+              console.log($tag);
               if($tag!= null && $tag!=''){
+                varTag=$tag;
+                $tag='';
+                options = $( ".chosen-select-no-results option:selected" );
+                categoryid=options[0].attributes[1].value;
+                $('.chosen-select-no-results').chosen_reset(config);
+                $(".popupBody").hide();
+
+                if(categoryid in categoryTypesHash){
+                  console.log("categoryid in categoryTypesHash");
+                  //Create the new dropdown menu
+                  /*
+                  whereToPut = document.getElementById('newDropdownDiv');
+                  newDropdown = document.createElement('select');
+                  newDropdown.setAttribute('class',"chosen-select-type");
+                  whereToPut.appendChild(newDropdown);
+                  */
+                  newDropdown=document.getElementById('chosen-select-type');
+                  categoryTypesTable=categoryTypesHash[categoryid];
+
+
+                  for(i=0; i< categoryTypesTable.length; i++){
+                    typedata=categoryTypesTable[i];
+                    console.log(typedata);
+
+                    optionType=document.createElement("option");
+                    optionType.text=typedata;
+                    newDropdown.add(optionType,newDropdown.options[null]);
+                    
+
+                    if(i==(categoryTypesTable.length-1)){
+
+                      $("#newDropdownDiv").show();
+                      $("#chosen-select-type").chosen();
+                      $("#chosen-select-type").trigger('chosen:activate');
+                      $("#chosen-select-type").chosen().change(function(event3){
+                        if(event3.target == this){
+                          type=$(this).val();
+                          console.log("type: "+type);
+                          if(type!=null && type!=''){
+                            newType=type;
+                            type='';
+                          //$('.chosen-select-no-results').chosen_reset(config);
+                          $('#chosen-select-type').chosen_reset(config);
+                          //$(".popupBody").hide();
+                          $("#newDropdownDiv").hide();
+
+                          medium.focus();
+
+                          d = new Date();
+                          milliseconds = d.getTime();
+                          tagCode=milliseconds.toString();
+
+                tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" type="'+newType+'"></'+varTag+'>';
+                          //$tag='';
+                          console.log(tagWithType);
+
+                          medium.focusNadya(focusOffset,focusNode);
+                          medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+                          tagWithType='';
+                          
+                          //newDropdown.parentNode.removeChild(newDropdown);
+                          console.log("medium.value() : "+medium.value());
+
+                          return false;
+                          }
+                        }
+                      
+                      });
+                    }
+                  }
+
+                }else{
+
                 //$(".chosen-select-no-results").trigger('chosen:updated');
                 //$(".chosen-select-no-results").focus().val($(".chosen-select-no-results").val());
 
@@ -317,6 +409,8 @@ h2.legend Page Notes
                 console.log("medium.value() : "+medium.value());
 
                 return false;
+              
+              }
               }
               return false;
             }

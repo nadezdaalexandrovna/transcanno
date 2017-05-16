@@ -17,7 +17,24 @@ class TranscribeController  < ApplicationController
   def display_page
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
-    @categories = Category.joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
+    #@categories = Category.joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
+    @categories = Category.select(:title,:style,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
+    print "\n@categories.inspect:\n"
+    puts @categories.inspect
+    @categorytypes=Categorytype.joins(:category)
+    print "\n@categorytypes.inspect:\n"
+    puts @categorytypes.inspect
+    @categoryTypesHash=Hash.new()
+    @categorytypes.each do |row|
+      if @categoryTypesHash.key?(row.category_id)
+        @categoryTypesHash[row.category_id].push(row.categorytype)
+      else
+        @categoryTypesHash[row.category_id]=[row.categorytype]
+      end
+    end
+    print "\n@categoryTypesHash.inspect\n"
+    puts @categoryTypesHash.inspect
+    @categoryTypesHash=@categoryTypesHash.to_json
   end
 
   def guest
