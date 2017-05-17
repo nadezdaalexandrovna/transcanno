@@ -26,6 +26,16 @@
     return caretOffset;
 }
 
+function createElementForTagSelection2(tag, tagCode, type){
+	var el=document.createElement(tag);
+	el.setAttribute("tagCode",tagCode);
+	el.setAttribute("class","medium-"+tag);
+	if(type!=""){
+		el.setAttribute("type",type);
+	}
+	return el;
+}
+
 (function (w, d) {
 	'use strict';
 
@@ -506,7 +516,7 @@ Medium.prototype = {
 		return this;
 	},
 
-	tagSelection2: function (tag, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
+	tagSelection2: function (tag, type, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
 		var range,
 			el3,
 			sel;
@@ -525,9 +535,13 @@ Medium.prototype = {
 			range = rangy.createRange();		
 			range.setStart(anchorEl, beginningOfSelection);
 			range.setEnd(anchorEl, endOfSelection);
+			el=createElementForTagSelection2(tag, tagCode, type);
+			/*
 			el=document.createElement(tag);
 			el.setAttribute("tagCode",tagCode);
 			el.setAttribute("class","medium-"+tag);
+			el.setAttribute("type",type);
+			*/
 			range.surroundContents(el);
 			range.collapse(true);
 			sel = rangy.getSelection();
@@ -552,9 +566,13 @@ Medium.prototype = {
 				if(beginningOfSelection!=null){				
 					range.setStart(nodeToTag, beginningOfSelection);
 					range.setEndAfter(nodeToTag);
+					el=createElementForTagSelection2(tag, tagCode, type);
+					/*
 					el=document.createElement(tag);
 					el.setAttribute("tagCode",tagCode);
 					el.setAttribute("class","medium-"+tag);
+					el.setAttribute("type",type);
+					*/
 					range.surroundContents(el);
 					sel.addRange(range);
 					
@@ -578,9 +596,13 @@ Medium.prototype = {
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
+							el=createElementForTagSelection2(tag, tagCode, type);
+							/*
 							el=document.createElement(tag);
 							el.setAttribute("tagCode",tagCode);
 							el.setAttribute("class","medium-"+tag);
+							el.setAttribute("type",type);
+							*/
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
@@ -588,20 +610,7 @@ Medium.prototype = {
 
 					nodeToTag=childTextNodes[0].parentNode;
 				}
-				/*
-				range.setEndAfter(nodeToTag);
-				el=document.createElement(tag);
-				el.setAttribute("tagCode",tagCode);
-				el.setAttribute("class","medium-"+tag);
-				range.surroundContents(el);
-				sel.addRange(range);
-				nodes = range.getNodes([3], function(node) {
-    				return node.data;
-				});
-
-				nodeToTag=nodes[0].parentNode;
-				*/
-
+				
 				if(nodeToTag.parentNode===closestCommonAncestor){
 					break;
 				}
@@ -634,10 +643,13 @@ Medium.prototype = {
 				range.setStartBefore(nodeToTag2);
 				if(endOfSelection!=null){				
 					range.setEnd(nodeToTag2,endOfSelection);
-
+					el=createElementForTagSelection2(tag, tagCode, type);
+					/*
 					el=document.createElement(tag);
 					el.setAttribute("tagCode",tagCode);
 					el.setAttribute("class","medium-"+tag);
+					el.setAttribute("type",type);
+					*/
 					range.surroundContents(el);
 					sel.addRange(range);
 					
@@ -661,9 +673,13 @@ Medium.prototype = {
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
+							el=createElementForTagSelection2(tag, tagCode, type);
+							/*
 							el=document.createElement(tag);
 							el.setAttribute("tagCode",tagCode);
 							el.setAttribute("class","medium-"+tag);
+							el.setAttribute("type",type);
+							*/
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
@@ -672,27 +688,7 @@ Medium.prototype = {
 					nodeToTag2=childTextNodes[0].parentNode;
 				}
 
-				/*
-				el=document.createElement(tag);
-				el.setAttribute("tagCode",tagCode);
-				el.setAttribute("class","medium-"+tag);
-				range.surroundContents(el);
-				sel.addRange(range);
-				*/
-				/*
-				nodes = range.getNodes([3], function(node) {
-    				return node.data;
-				});
-				*/
-
-				//nodeToTag2=nodes[0].parentNode;
-
-				/*
-				if(nodeToTag2.parentNode===closestCommonAncestor){
-					break;
-				}
-				*/
-
+				
 				while(true){
 					if(nodeToTag2===closestCommonAncestor){break;}
 
