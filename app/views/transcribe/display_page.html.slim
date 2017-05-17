@@ -285,7 +285,7 @@ h2.legend Page Notes
       //Add tag
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
         //medium.splitAtCaret(); //ostavliaet tolko to, chto do kursora, ostalnoe udaliaet
-
+        console.log("alt+g");
         //offset=medium.returnOffset()[0];
         //focusEl=medium.returnOffset()[1];
         //beginningOfSelection=medium.returnOffset()[2];
@@ -309,6 +309,10 @@ h2.legend Page Notes
           $(".chosen-select-no-results").trigger('chosen:activate');
 
           $(".chosen-select-no-results").chosen().change(function(event){
+          //$(".chosen-select-no-results").chosen().unbind().change(function(event){
+          //$(".chosen-select-no-results").chosen().off().change(function(event){
+          //$(".chosen-select-no-results").on('change', 'select', function(event){
+          //$(".chosen-select-no-results").off().change(function(event){
           //$(".chosen-select-no-results").unbind().click(function(event){
             if(event.target == this){
               $tag=$(this).val();
@@ -347,17 +351,19 @@ h2.legend Page Notes
                     if(i==(categoryTypesTable.length-1)){
 
                       $("#newDropdownDiv").show();
-                      $("#chosen-select-type").chosen();
-                      $("#chosen-select-type").trigger('chosen:activate');
-                      $("#chosen-select-type").chosen().change(function(event3){
+                      $('#chosen-select-type').focus();
+
+                      $("#chosen-select-type").off().change(function(event3){                        
+    
                         if(event3.target == this){
                           type=$(this).val();
                           console.log("type: "+type);
                           if(type!=null && type!=''){
                             newType=type;
                             type='';
+                            setTimeout(function(){
                           //$('.chosen-select-no-results').chosen_reset(config);
-                          $('#chosen-select-type').chosen_reset(config);
+                          //$('#chosen-select-type').chosen_reset(config);
                           //$(".popupBody").hide();
                           $("#newDropdownDiv").hide();
 
@@ -376,16 +382,18 @@ h2.legend Page Notes
                           tagWithType='';
                           
                           //newDropdown.parentNode.removeChild(newDropdown);
+                          $('#chosen-select-type').empty();
                           console.log("medium.value() : "+medium.value());
 
                           return false;
+                          }, 1000);
                           }
                         }
                       
                       });
                     }
                   }
-
+                  
                 }else{
 
                 //$(".chosen-select-no-results").trigger('chosen:updated');
@@ -398,11 +406,11 @@ h2.legend Page Notes
                 tagCode=milliseconds.toString();
 
 
-                $tag='<'+$tag+' tagcode="'+tagCode+'" class="medium-'+$tag+'"></'+$tag+'>';
+                tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'"></'+varTag+'>';
 
                 medium.focusNadya(focusOffset,focusNode);
-                medium.insertHtmlNadya($tag, focusOffset, focusNode);
-
+                medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+                tagWithType='';
                 $('.chosen-select-no-results').chosen_reset(config);
                 $(".popupBody").hide();
                 
