@@ -105,6 +105,7 @@
 </div>
 
 <div id="newDropdownDiv">
+  <input id="select-type-input" type="text" placeholder="Select the category type"></input>
   <select id="chosen-select-type">
   </select>
 </div>
@@ -280,7 +281,63 @@ h2.legend Page Notes
 
       });
 
-       
+       jQuery.fn.filterByText = function(textbox, medium, varTag, focusOffset,focusNode) {
+          return this.each(function() {
+        var select = this;
+        var options = [];
+        $(select).find('option').each(function() {
+            options.push({value: $(this).val(), text: $(this).text()});
+        });
+        $(select).data('options', options);
+
+        $(textbox).bind('change keyup', function(e) {
+            var options = $(select).empty().data('options');
+            var search = $.trim($(this).val());
+            if(search!=null && search!=""){
+              var regex = new RegExp("^"+search,"gi");
+
+              $.each(options, function(i) {
+                var option = options[i];
+                if(option.value!="" && option.value.match(regex) !== null) {
+                    $(select).append(
+                        $('<option>').text(option.text).val(option.value)
+                    );
+
+                    if (e.which == 13) {
+                      //alert("enter key pressed "+option.value);
+                      addCategoryWithType (medium, varTag, option.value, focusOffset,focusNode)
+                    }
+                }
+              });
+            }
+        });
+      });
+    };
+
+
+    function addCategoryWithType (medium, varTag, newType, focusOffset,focusNode) {
+      setTimeout(function(){
+        $("#newDropdownDiv").hide();
+
+        medium.focus();
+
+        d = new Date();
+        milliseconds = d.getTime();
+        tagCode=milliseconds.toString();
+
+        tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" type="'+newType+'"></'+varTag+'>';
+
+
+        medium.focusNadya(focusOffset,focusNode);
+        medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+        tagWithType='';
+
+        $('#chosen-select-type').empty();
+        console.log("medium.value() : "+medium.value());
+
+        return false;
+      }, 100);
+    }
 
       //Add tag
       jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
@@ -338,6 +395,11 @@ h2.legend Page Notes
                   newDropdown=document.getElementById('chosen-select-type');
                   categoryTypesTable=categoryTypesHash[categoryid];
 
+                  optionType=document.createElement("option");
+                  optionType.text="Select category type";
+                  optionType.value="";
+                  optionType.setAttribute("selected", "selected");
+                  newDropdown.add(optionType,newDropdown.options[null]);
 
                   for(i=0; i< categoryTypesTable.length; i++){
                     typedata=categoryTypesTable[i];
@@ -345,22 +407,38 @@ h2.legend Page Notes
 
                     optionType=document.createElement("option");
                     optionType.text=typedata;
+                    optionType.value=typedata;
                     newDropdown.add(optionType,newDropdown.options[null]);
                     
 
                     if(i==(categoryTypesTable.length-1)){
 
                       $("#newDropdownDiv").show();
-                      $('#chosen-select-type').focus();
+                      //$('#chosen-select-type').focus();
+
+                      
+                      $('#select-type-input').focus();
+                      $('#chosen-select-type').filterByText($('#select-type-input'),medium, varTag, focusOffset,focusNode);
+                      
+                      /*
+                      $("#select-type-input").keyup(function(e){
+                          if (e.which == 13) {
+                            alert("enter key pressed");
+                          }
+                        });
+                        */
 
                       $("#chosen-select-type").off().change(function(event3){                        
-    
+                        
                         if(event3.target == this){
                           type=$(this).val();
                           console.log("type: "+type);
                           if(type!=null && type!=''){
                             newType=type;
                             type='';
+
+                            addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
+                            /*
                             setTimeout(function(){
                           //$('.chosen-select-no-results').chosen_reset(config);
                           //$('#chosen-select-type').chosen_reset(config);
@@ -387,6 +465,8 @@ h2.legend Page Notes
 
                           return false;
                           }, 1000);
+                          */
+
                           }
                         }
                       
