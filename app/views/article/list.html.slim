@@ -87,7 +87,7 @@
 
 
     function addField() {
-      var html = "<input name='type[]' type='text'><br>";
+      var html = "<input name='type[]' class='type_input_field' type='text'><br>";
       $('#fields').append(html);
     }
 
@@ -105,4 +105,20 @@
       console.log("value: "+value);
       document.getElementById('category_title').value=value;
       return value;
+    }
+
+    
+    function verifyValueType(){
+      var val, i;
+      var elms=document.getElementsByClassName('type_input_field');
+
+      for (i = 0; i < elms.length; i++) {
+        val=elms[i].value;
+        val=val.replace(/[ ]+/g, "_");
+        val=val.replace(/[^a-zA-Z0-9_\-]+/g, "");
+        elms[i].value = val;
+        
+      }
+
+      return;
     }
