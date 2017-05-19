@@ -319,41 +319,48 @@ h2.legend Page Notes
       }, 100);
     }
 
-    function tagSelectionWithType(categoryid, categoryTypesHash, medium, categoryName, focusOffset,focusNode, notCollapsedArgsTable){
+
+    function tagSelectionWithType (categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable){
       categoryTypesTable=categoryTypesHash[categoryid];
 
-       //Create the new dropdown menu for category types
-       var newDropdown=addNewDropdown();
+                //Create the new dropdown menu for category types
+                newDropdown=addNewDropdown();
 
-       for(i=0; i< categoryTypesTable.length; i++){
-           //Add an option for the category types dropdown menu
-           addAnOption(newDropdown,categoryTypesTable[i]);
+                for(i=0; i< categoryTypesTable.length; i++){
+                  //Add an option for the category types dropdown menu
+                  addAnOption(newDropdown,categoryTypesTable[i]);
 
-            if(i==(categoryTypesTable.length-1)){
+                  if(i==(categoryTypesTable.length-1)){
 
-               $("#newDropdownDiv").show();
-               $("#select-type-input").show();
+                    $("#newDropdownDiv").show();
+                      $('#select-type-input').show();
+                    $('#select-type-input').focus();
+                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
+
+                    $("#chosen-select-type").off().change(function(event5){                        
+                       $("#select-type-input").hide();
+                        $("#select-type-input")[0].value=""; 
+                      if(event5.target == this){
+                        type=$(this).val();
+                        if(type!=null && type!=''){
+                          newType=type;
+                          type='';
+                          console.log("newType: "+newType);
+                          medium.tagSelection2(varTag, newType, anchorNode,focusNode,anchorOffset, focusOffset);
+
+                          $("#newDropdownDiv").hide();
+                          $("#select-type-input").hide();
+                          $("#select-type-input")[0].value="";
+                          $('#chosen-select-type').empty();
+
+                          console.log(medium.value());
+                          return false;
+                        }
+                      }
                       
-               $('#select-type-input').focus();
-               $('#chosen-select-type').filterByText($('#select-type-input'), medium, categoryName, focusOffset,focusNode, notCollapsedArgsTable);
-
-               $("#chosen-select-type").off().change(function(event5){                        
-                        
-                  if(event5.target == this){
-                    type=$(this).val();
-                    if(type!=null && type!=''){
-                      newType=type;
-                      type='';
-                      console.log("newType: "+newType);
-                      medium.tagSelection2(categoryName, newType, anchorNode,focusNode,anchorOffset, focusOffset);
-                          
-                      return false;
-                    }
+                    });
                   }
-                      
-                });
-          }
-        }
+                }
     }
 
     //Create the new dropdown menu for category types
@@ -481,42 +488,7 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHash){
-                //tagSelectionWithType(categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
-                
-                categoryTypesTable=categoryTypesHash[categoryid];
-
-                //Create the new dropdown menu for category types
-                newDropdown=addNewDropdown();
-
-                for(i=0; i< categoryTypesTable.length; i++){
-                  //Add an option for the category types dropdown menu
-                  addAnOption(newDropdown,categoryTypesTable[i]);
-
-                  if(i==(categoryTypesTable.length-1)){
-
-                    $("#newDropdownDiv").show();
-                      $('#select-type-input').show();
-                    $('#select-type-input').focus();
-                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
-
-                    $("#chosen-select-type").off().change(function(event5){                        
-                       $("#select-type-input").hide();
-                        $("#select-type-input")[0].value=""; 
-                      if(event5.target == this){
-                        type=$(this).val();
-                        if(type!=null && type!=''){
-                          newType=type;
-                          type='';
-                          console.log("newType: "+newType);
-                          medium.tagSelection2(varTag, newType, anchorNode,focusNode,anchorOffset, focusOffset);
-                          console.log(medium.value());
-                          return false;
-                        }
-                      }
-                      
-                    });
-                  }
-                }
+                tagSelectionWithType(categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
                   
               }else{ //If the category doesn't have types
 
@@ -574,7 +546,7 @@ h2.legend Page Notes
       mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
       mediumValue = mediumValue.replace(/<br>/g, '<br></br>');
       mediumValue = mediumValue.replace(/<\/br><\/br>/g, '</br>');
-      mediumValue = mediumValue.replace(/^<div>/, '');
+      mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
       mediumValue = mediumValue.replace(/<\/div>$/, '');
       document.getElementsByName("page[source_text]")[0].value=mediumValue;
       return true;   // Returns Value

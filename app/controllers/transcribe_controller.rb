@@ -18,7 +18,8 @@ class TranscribeController  < ApplicationController
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
     #@categories = Category.joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
-    @categories = Category.select(:title,:style,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
+    
+    @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
     print "\n@categories.inspect:\n"
     puts @categories.inspect
     @categorytypes=Categorytype.joins(:category)
@@ -77,6 +78,7 @@ class TranscribeController  < ApplicationController
   end
 
   def save_transcription
+    print "\nin save transcription\n"
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 

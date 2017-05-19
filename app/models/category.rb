@@ -1,6 +1,7 @@
 class Category < ActiveRecord::Base
   extend ActsAsTree::TreeWalker
   has_many :categorytypes
+  has_one :categorystyle
   acts_as_tree :order => 'title'
   belongs_to :collection
   has_and_belongs_to_many :articles, -> { order('title').uniq }

@@ -79,11 +79,21 @@ class CategoryController < ApplicationController
   end
 
   def define_style2
-    @category.id=params[:category_id]
-    params[:tag_color]==nil ? tag_color="auto" : tag_color=params[:tag_color]
-    params[:tag_decoration]==nil ? tag_decoration="auto" : tag_decoration=params[:tag_decoration]
-    @category.style='color:'+tag_color+'; '+'text-decoration:'+tag_decoration+';'+params[:tag_font_style]
-    if @category.save
+    style=Categorystyle.find_or_create_by(category_id: params[:category_id])
+
+    if params[:tag_color]!=nil
+      style.colour=params[:tag_color]
+    end
+
+    if params[:tag_decoration]!=nil
+      style.textdecoration=params[:tag_decoration]
+    end
+
+    if params[:tag_font_style]!=nil
+      style.fontstyle=params[:tag_font_style]
+    end
+    
+    if style.save
       flash[:notice] = "Category style is ready to be applied."
       ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     else
@@ -91,27 +101,69 @@ class CategoryController < ApplicationController
     end
   end
 
+
   def apply_all_styles
-    @result=Category.select("title, style")
+    #@result=Category.select("title").includes(:categorystyle) # SELECT `categories`.`title` FROM `categories`
+    #@result=Category.includes(:categorystyle) # SELECT `categories`.* FROM `categories`  SELECT `categorystyles`.* FROM `categorystyles`  WHERE `categorystyles`.`category_id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
+    print "\nnext\n"
+    #res=Categorystyle.includes(:category)
+    sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
+    #res=Categorystyle.joins(:category).select("categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle")
+    connection = ActiveRecord::Base.connection
+    res=connection.execute(sqlS)
+    puts res.inspect
+    print "\n\n"
     styleInstructions=""
     mediumOnmouseoverFunctions="$(document).ready(function($) {\nvar da;\n"
-    @result.each do |r|
-      (r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style 
-      styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
-      styleInstructions+="\n.button-"+r.title+"{"+style+"}"
-      mediumOnmouseoverFunctions+='$( ".button-'+r.title+'" ).mousedown(function() {'+"\n"+
+    #@result.each do |r|
+    res.each do |r|
+      puts r.inspect
+      print "\n\n"
+      
+      #(r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style
+      if r[1]!=nil
+        color = 'color:'+r[1]+';'
+      else
+        color = ''
+      end
+
+      if r[2]!=nil
+        textdecoration = 'text-decoration:'+r[2]+';'
+      else
+        textdecoration =''
+      end
+
+      if r[3]!=nil
+        fontstyle = r[3]
+      else
+        fontstyle = ''
+      end
+      print "color: "+color
+      print "textdecoration: "+textdecoration
+      print "fontstyle: "+fontstyle
+      style = color+textdecoration+fontstyle
+      title=r[0]
+      styleInstructions+="\n.medium-"+title+"{"+style+"}"
+      styleInstructions+="\n.button-"+title+"{"+style+"}"
+      mediumOnmouseoverFunctions+='$( ".button-'+title+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
+                                  'var categoryid=$(this).attr("data-categoryid");'+"\n"+
+                                  'if(categoryid in categoryTypesHash){'+"\n"+
+                                  '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+
+                                  '}else{'+"\n"+
                                   'article.highlight();'+"\n"+
-                                  'medium.invokeElement(\''+r.title+'\', {'+"\n"+
+                                  'medium.invokeElement(\''+title+'\', {'+"\n"+
                                   'tagcode: da.getTime().toString()'+"\n"+
                                   '});'+"\n"+
+                                  '}'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"
     end
     mediumOnmouseoverFunctions+="});"
     File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
     File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    flash[:notice] = "Category styles have been applied."
+    flash[:notice] = "Category changes have been applied."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
