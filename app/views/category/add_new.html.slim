@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px")
   h1 Create Category
 
-  =form_for(@new_category, :url => { :action => 'create' }) do |f|
+  =form_for(@new_category, :url => { :action => 'create' }, :html => { :onsubmit=>'return verifyValue()' }) do |f|
     =hidden_field_tag(:collection_id, @collection.id)
     =f.hidden_field(:collection_id)
     =f.hidden_field(:parent_id)
@@ -9,7 +9,7 @@
     table.form
       tr.big
         th =f.label :title
-        td.w100 =f.text_field :title
+        td.w100=f.text_field :title
 
     .toolbar
       .toolbar_group.aright =f.button 'Create Category'

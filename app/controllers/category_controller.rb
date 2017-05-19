@@ -103,24 +103,12 @@ class CategoryController < ApplicationController
 
 
   def apply_all_styles
-    #@result=Category.select("title").includes(:categorystyle) # SELECT `categories`.`title` FROM `categories`
-    #@result=Category.includes(:categorystyle) # SELECT `categories`.* FROM `categories`  SELECT `categorystyles`.* FROM `categorystyles`  WHERE `categorystyles`.`category_id` IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
-    print "\nnext\n"
-    #res=Categorystyle.includes(:category)
     sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
-    #res=Categorystyle.joins(:category).select("categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle")
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
-    puts res.inspect
-    print "\n\n"
     styleInstructions=""
     mediumOnmouseoverFunctions="$(document).ready(function($) {\nvar da;\n"
-    #@result.each do |r|
     res.each do |r|
-      puts r.inspect
-      print "\n\n"
-      
-      #(r.style==nil || r.style=="") ? style="color: auto; text-decoration: none;" : style=r.style
       if r[1]!=nil
         color = 'color:'+r[1]+';'
       else
@@ -138,9 +126,7 @@ class CategoryController < ApplicationController
       else
         fontstyle = ''
       end
-      print "color: "+color
-      print "textdecoration: "+textdecoration
-      print "fontstyle: "+fontstyle
+
       style = color+textdecoration+fontstyle
       title=r[0]
       styleInstructions+="\n.medium-"+title+"{"+style+"}"
@@ -169,14 +155,8 @@ class CategoryController < ApplicationController
   end
 
   def discard_all_styles
-    Category.update_all(style: "")
-    @result=Category.select("title")
-    styleInstructions=""
-    @result.each do |r|
-      style="color: auto; text-decoration: none;"
-      styleInstructions+="\n.medium-"+r.title+"{"+style+"}"
-    end
-    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    Categorystyle.delete_all()
+    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', '')
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
@@ -184,6 +164,8 @@ class CategoryController < ApplicationController
 
   def delete
     anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
+    Categorystyle.destroy_all(category_id: @category.id)
+    Categorytype.destroy_all(category_id: @category.id)
     @category.destroy #_but_attach_children_to_parent
     flash[:notice] = "Category has been deleted"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"

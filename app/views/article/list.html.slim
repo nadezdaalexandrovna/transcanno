@@ -96,3 +96,13 @@
       $('#fields').append(html);
       document.getElementById("delete_type_"+id).disabled=true;
     }
+
+    function verifyValue(){
+      var value=document.getElementById('category_title').value;
+      console.log("value: "+value);
+      value=value.replace(/[ ]+/g, "_");
+      value=value.replace(/[^a-zA-Z0-9_\-]+/g, "");
+      console.log("value: "+value);
+      document.getElementById('category_title').value=value;
+      return value;
+    }
