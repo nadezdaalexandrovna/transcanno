@@ -519,13 +519,14 @@ Medium.prototype = {
 	tagSelection2: function (tag, type, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
 		var range,
 			el3,
-			sel;
+			sel,
+			el;
 
 		var d = new Date();
 		var milliseconds = d.getTime();
 		var tagCode=milliseconds.toString();
 
-		var el = document.createElement(tag);
+		//var el = document.createElement(tag);
 
 		//[commonAncestor, ancestorsPosInAnchor, ancestorsPosInFocus]=get_common_ancestor(parentsAnchor,parentsFocus);
 		var closestCommonAncestor = $(anchorEl).parents().has($(focusEl)).first()[0];

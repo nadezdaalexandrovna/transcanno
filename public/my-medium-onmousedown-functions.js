@@ -33,13 +33,25 @@ tagcode: da.getTime().toString()
 return false;
 });
 $( ".button-correction" ).mousedown(function() {
-da = new Date();
-article.highlight();
-medium.invokeElement('correction', {
-tagcode: da.getTime().toString()
-});
+	da = new Date();
+
+	var categoryid=$(this).attr("data-categoryid");
+	console.log("categoryid: "+categoryid);
+
+	if(categoryid in categoryTypesHash){
+
+      tagSelectionWithType(categoryid, categoryTypesHash, medium, categoryName, focusOffset,focusNode, anchorNode, anchorOffset);
+                  
+    }else{
+    	article.highlight();
+		medium.invokeElement('correction', {
+			tagcode: da.getTime().toString()
+		});
+    }
+
 return false;
 });
+
 $( ".button-insertion" ).mousedown(function() {
 da = new Date();
 article.highlight();

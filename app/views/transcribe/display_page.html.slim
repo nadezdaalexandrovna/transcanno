@@ -113,7 +113,7 @@
 <span class="undo">undo</span>
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
-    span[ class="button-#{c.title}" ] = c.title
+    span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
 
 table
   tr
@@ -166,7 +166,7 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable;
       
     var l=document.getElementById('page_source_text');
     console.log("l : "+l);
@@ -243,22 +243,30 @@ h2.legend Page Notes
 
     //If the user types text in the input field of the category type select box in order to select one of the options
     jQuery.fn.filterByText = function(textbox, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable) {
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
+
       return this.each(function() {
-        var select = this;
-        var options = [];
+        select = this;
+        options = [];
         $(select).find('option').each(function() {
           options.push({value: $(this).val(), text: $(this).text()});
         });
         $(select).data('options', options);
 
-        $(textbox).bind('change keyup', function(e) {
-          var options = $(select).empty().data('options');
-          var search = $.trim($(this).val());
+        $(textbox).off().on('change keyup', function(e) {
+        //$(textbox).bind('change keyup', function(e) {
+          options2 = $(select).empty().data('options');
+          search = $.trim($(this).val());
           if(search!=null && search!=""){
-            var regex = new RegExp("^"+search,"gi");
+            regex = new RegExp("^"+search,"gi");
 
-            $.each(options, function(i) {
-              var option = options[i];
+            $.each(options2, function(i) {
+              option = options2[i];
               if(option.value!="" && option.value.match(regex) !== null) {
                 $(select).append(
                   $('<option>').text(option.text).val(option.value)
@@ -269,7 +277,13 @@ h2.legend Page Notes
                   if(notCollapsedArgsTable==null){
                     addCategoryWithType (medium, varTag, option.value, focusOffset,focusNode)
                   }else{
+                    $("#newDropdownDiv").hide();
+                    $("#select-type-input").hide();
+                    $("#select-type-input")[0].value="";
+                    $('#chosen-select-type').empty();
                     medium.tagSelection2(varTag, option.value, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                    aNode=null;
+                    fNode=null;
                   }
                 }
               }
@@ -279,7 +293,6 @@ h2.legend Page Notes
       });
     };
 
-    //$('#chosen-select-type').filterByTextNotCollapsed($('#select-type-input'), medium, $tag2, newType, anchorNode,focusNode,anchorOffset, focusOffset);
 
 
     function addCategoryWithType (medium, varTag, newType, focusOffset,focusNode) {
@@ -306,6 +319,43 @@ h2.legend Page Notes
       }, 100);
     }
 
+    function tagSelectionWithType(categoryid, categoryTypesHash, medium, categoryName, focusOffset,focusNode, notCollapsedArgsTable){
+      categoryTypesTable=categoryTypesHash[categoryid];
+
+       //Create the new dropdown menu for category types
+       var newDropdown=addNewDropdown();
+
+       for(i=0; i< categoryTypesTable.length; i++){
+           //Add an option for the category types dropdown menu
+           addAnOption(newDropdown,categoryTypesTable[i]);
+
+            if(i==(categoryTypesTable.length-1)){
+
+               $("#newDropdownDiv").show();
+               $("#select-type-input").show();
+                      
+               $('#select-type-input').focus();
+               $('#chosen-select-type').filterByText($('#select-type-input'), medium, categoryName, focusOffset,focusNode, notCollapsedArgsTable);
+
+               $("#chosen-select-type").off().change(function(event5){                        
+                        
+                  if(event5.target == this){
+                    type=$(this).val();
+                    if(type!=null && type!=''){
+                      newType=type;
+                      type='';
+                      console.log("newType: "+newType);
+                      medium.tagSelection2(categoryName, newType, anchorNode,focusNode,anchorOffset, focusOffset);
+                          
+                      return false;
+                    }
+                  }
+                      
+                });
+          }
+        }
+    }
+
     //Create the new dropdown menu for category types
     function addNewDropdown (){
       newDropdown=document.getElementById('chosen-select-type');
@@ -314,6 +364,7 @@ h2.legend Page Notes
       optionType.value="";
       optionType.setAttribute("selected", "selected");
       newDropdown.add(optionType,newDropdown.options[null]);
+      return newDropdown;
     }
 
     //Add an option to the dropdown menu of category types
@@ -328,7 +379,7 @@ h2.legend Page Notes
     jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
 
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
-
+      notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
 
       //If the cursor is in the medium, but nothing has been selected
@@ -353,7 +404,7 @@ h2.legend Page Notes
                 categoryTypesTable=categoryTypesHash[categoryid];
 
                 //Create the new dropdown menu for category types
-                addNewDropdown();
+                newDropdown=addNewDropdown();
 
                 for(i=0; i< categoryTypesTable.length; i++){
                   //Add an option for the category types dropdown menu
@@ -362,7 +413,7 @@ h2.legend Page Notes
                   if(i==(categoryTypesTable.length-1)){
 
                     $("#newDropdownDiv").show();
-                      
+                    $('#select-type-input').show();
                     $('#select-type-input').focus();
                     $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
 
@@ -421,17 +472,21 @@ h2.legend Page Notes
           if(event4.target == this){
             $tag2=$(this).val();
             if($tag2!= null && $tag2!=''){
+              varTag=$tag2;
+              $tag2='';
               options = $( ".chosen-select-no-results2 option:selected" );
               categoryid=options[0].attributes[1].value;
               $('.chosen-select-no-results2').chosen_reset(config);
-              $(".popupBody").hide();
+              $(".popupBody2").hide();
 
               //If the category has types
               if(categoryid in categoryTypesHash){
+                //tagSelectionWithType(categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
+                
                 categoryTypesTable=categoryTypesHash[categoryid];
 
                 //Create the new dropdown menu for category types
-                addNewDropdown();
+                newDropdown=addNewDropdown();
 
                 for(i=0; i< categoryTypesTable.length; i++){
                   //Add an option for the category types dropdown menu
@@ -440,20 +495,21 @@ h2.legend Page Notes
                   if(i==(categoryTypesTable.length-1)){
 
                     $("#newDropdownDiv").show();
-                      
+                      $('#select-type-input').show();
                     $('#select-type-input').focus();
-                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, $tag2, focusOffset,focusNode, [anchorNode, anchorOffset]);
+                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
 
                     $("#chosen-select-type").off().change(function(event5){                        
-                        
+                       $("#select-type-input").hide();
+                        $("#select-type-input")[0].value=""; 
                       if(event5.target == this){
                         type=$(this).val();
                         if(type!=null && type!=''){
                           newType=type;
                           type='';
                           console.log("newType: "+newType);
-                          medium.tagSelection2($tag2, newType, anchorNode,focusNode,anchorOffset, focusOffset);
-                          
+                          medium.tagSelection2(varTag, newType, anchorNode,focusNode,anchorOffset, focusOffset);
+                          console.log(medium.value());
                           return false;
                         }
                       }
@@ -464,7 +520,7 @@ h2.legend Page Notes
                   
               }else{ //If the category doesn't have types
 
-                medium.tagSelection2($tag2, "",anchorNode,focusNode,anchorOffset, focusOffset);
+                medium.tagSelection2(varTag, "",anchorNode,focusNode,anchorOffset, focusOffset);
                 console.log(medium.value());
                 $('.chosen-select-no-results2').chosen_reset(config);
                 $(".popupBody2").hide();
