@@ -182,7 +182,9 @@ h2.legend Page Notes
     var parser = new DOMParser();
     var doc = parser.parseFromString(xml, "text/html");
     //var doc = parser.parseFromString(xml, "text/xml");
-    var allDocContent=doc.childNodes[0];
+
+    //var allDocContent=doc.childNodes[0];
+    var allDocContent=doc.childNodes[0].childNodes[1].childNodes[0];
 
     var article=l;
     var firstChild=article.firstChild;
@@ -248,10 +250,6 @@ h2.legend Page Notes
     jQuery('#page_source_text').bind('keydown', 'alt+y', function(e) {
 
       var m = medium.value();
-      console.log(m);
-      m = m.replace(/\&nbsp\;/g, '\&#160\;');
-      m = m.replace(/<br>(?!\<)/g, "<br></br>");
-      m = m.replace(/<br><br>/g, '<br>');
       console.log(m);
       return false;
 
