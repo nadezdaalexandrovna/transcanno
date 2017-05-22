@@ -530,7 +530,6 @@ Medium.prototype = {
 
 		//[commonAncestor, ancestorsPosInAnchor, ancestorsPosInFocus]=get_common_ancestor(parentsAnchor,parentsFocus);
 		var closestCommonAncestor = $(anchorEl).parents().has($(focusEl)).first()[0];
-		console.log("line 571");
 
 		if(anchorEl===focusEl){
 			range = rangy.createRange();		

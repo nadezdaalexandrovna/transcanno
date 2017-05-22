@@ -173,14 +173,15 @@ h2.legend Page Notes
     console.log("l.textContent : "+l.textContent);
 
     var xml=l.textContent;
-    //xml = xml.replace(/(<br><\/br>)$/, '<br>\&#160\;<\/br>'); //Ne remplace rien
+    //xml = xml.replace(/<br><\/br>/g, '<br>'); // Esli dobavliaiu eto, to oshibka parsinga
     console.log("xml : "+xml);
     xml = "<div id=\"bigDiv\">"+xml+"</div>";
-    //xml = xml.replace(/<\/br>/g, '');  // Esli dobavliaiu eto, to oshibka parsinga i voobshe nichego ne pokazyvaet v Transcribe
+    xml = xml.replace(/<\/br>/g, '');  // Esli dobavliaiu eto, to oshibka parsinga i voobshe nichego ne pokazyvaet v Transcribe
     //xml = xml.replace(/&nbsp\;/g, '');
 
     var parser = new DOMParser();
-    var doc = parser.parseFromString(xml, "text/xml");
+    var doc = parser.parseFromString(xml, "text/html");
+    //var doc = parser.parseFromString(xml, "text/xml");
     var allDocContent=doc.childNodes[0];
 
     var article=l;
@@ -230,16 +231,33 @@ h2.legend Page Notes
       offset=medium.returnOffset()[0];
       focusEl=medium.returnOffset()[1];
 
-      medium.focus();
-
-      medium.focusNadya(offset,focusEl);
-      medium.cursorAfterTag(focusEl);
-                
+      if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv"){
+        medium.focus();
+        medium.focusNadya(offset,focusEl);
+        medium.cursorAfterTag(focusEl);
+        console.log("medium.value() : "+medium.value());
+        return false;
+      }
+              
       console.log("medium.value() : "+medium.value());
 
       return false;
 
     });
+
+    jQuery('#page_source_text').bind('keydown', 'alt+y', function(e) {
+
+      var m = medium.value();
+      console.log(m);
+      m = m.replace(/\&nbsp\;/g, '\&#160\;');
+      m = m.replace(/<br>(?!\<)/g, "<br></br>");
+      m = m.replace(/<br><br>/g, '<br>');
+      console.log(m);
+      return false;
+
+    });
+
+
 
     //If the user types text in the input field of the category type select box in order to select one of the options
     jQuery.fn.filterByText = function(textbox, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable) {
@@ -544,10 +562,11 @@ h2.legend Page Notes
       mediumValue = medium.value();
       console.log(mediumValue);
       mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
-      mediumValue = mediumValue.replace(/<br>/g, '<br></br>');
-      mediumValue = mediumValue.replace(/<\/br><\/br>/g, '</br>');
-      mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
-      mediumValue = mediumValue.replace(/<\/div>$/, '');
+      mediumValue = mediumValue.replace(/(<br>)+/g, '<br>');
+      mediumValue = mediumValue.replace(/<br>(?!\<)/g, "<br></br>");
+      mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
+      mediumValue = mediumValue.replace(/<\/div>/, '');
+      console.log(mediumValue);
       document.getElementsByName("page[source_text]")[0].value=mediumValue;
       return true;   // Returns Value
     }
