@@ -166,7 +166,7 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY;
       
     var l=document.getElementById('page_source_text');
     console.log("l : "+l);
@@ -233,7 +233,7 @@ h2.legend Page Notes
       offset=medium.returnOffset()[0];
       focusEl=medium.returnOffset()[1];
 
-      if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv"){
+      if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv" && focusEl.id!="page_source_text" && focusEl.id!="bigDiv"){
         medium.focus();
         medium.focusNadya(offset,focusEl);
         medium.cursorAfterTag(focusEl);
@@ -247,7 +247,7 @@ h2.legend Page Notes
 
     });
 
-    jQuery('#page_source_text').bind('keydown', 'alt+y', function(e) {
+    jQuery('#page_source_text').bind('keydown', 'alt+h', function(e) {
 
       var m = medium.value();
       console.log(m);
@@ -294,6 +294,8 @@ h2.legend Page Notes
                     addCategoryWithType (medium, varTag, option.value, focusOffset,focusNode)
                   }else{
                     $("#newDropdownDiv").hide();
+                    nowX=0;
+                    nowY=0;
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
@@ -347,15 +349,19 @@ h2.legend Page Notes
                   addAnOption(newDropdown,categoryTypesTable[i]);
 
                   if(i==(categoryTypesTable.length-1)){
-
+                    $("#newDropdownDiv").css({'top':nowY, 'left': nowX});
                     $("#newDropdownDiv").show();
-                      $('#select-type-input').show();
+                    $('#select-type-input').show();
                     $('#select-type-input').focus();
                     $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
 
                     $("#chosen-select-type").off().change(function(event5){                        
                        $("#select-type-input").hide();
-                        $("#select-type-input")[0].value=""; 
+                        $("#select-type-input")[0].value="";
+                        $('#chosen-select-type').empty();
+                        $("#newDropdownDiv").hide();
+                        nowX=null;
+                        nowY=null;
                       if(event5.target == this){
                         type=$(this).val();
                         if(type!=null && type!=''){
@@ -364,10 +370,10 @@ h2.legend Page Notes
                           console.log("newType: "+newType);
                           medium.tagSelection2(varTag, newType, anchorNode,focusNode,anchorOffset, focusOffset);
 
-                          $("#newDropdownDiv").hide();
-                          $("#select-type-input").hide();
-                          $("#select-type-input")[0].value="";
-                          $('#chosen-select-type').empty();
+                          //$("#newDropdownDiv").hide();
+                          //$("#select-type-input").hide();
+                          //$("#select-type-input")[0].value="";
+                          //$('#chosen-select-type').empty();
 
                           console.log(medium.value());
                           return false;
@@ -398,15 +404,86 @@ h2.legend Page Notes
       newDropdown.add(optionType,newDropdown.options[null]);
     }
 
-    //Add tag
-    jQuery('#page_source_text').bind('keydown', 'alt+g', function(e) {
+    var mousePosition = {x:0, y:0};
+    $(document).bind('mousemove',function(mouseMoveEvent){
+      mouseX = mouseMoveEvent.pageX;
+      mouseY = mouseMoveEvent.pageY;
+    });
 
+    //Press alt+y to make a dropdown select disappear without selecting anything
+    $(document).keydown(function(e){
+      if (e.altKey && e.keyCode == 89) {
+        $('.chosen-select-no-results').chosen_reset(config);
+        $(".popupBody").hide();
+        $("#select-type-input").hide();
+        $("#select-type-input")[0].value="";
+        $('#chosen-select-type').empty();
+        $("#newDropdownDiv").hide();
+
+        medium.focus();
+        medium.focusNadya(focusOffset,focusNode);
+        
+      }
+    }); 
+
+    //Add tag
+    jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
+      //nowX=mouseX; 
+      //nowY=mouseY;
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
 
+      
+      $org=$(this);
+      $el=$org.clone();
+      var html='<span class="ins_str">h</span>';
+      $el.html($el.text().substr(0,focusOffset-1)+html+$el.text().substr(offset));
+      var x=$org.offset().left,
+          y=$org.offset().top,
+          width=$org.outerWidth()-22,
+          height=$org.outerHeight()-22;
+
+      $el.css({'top':y,'left': x,'width':width,'height':height});
+
+      $org.before($el);
+      var $span=$el.find('span.ins_str');
+      $offsetTop=$span[0].offsetTop;
+      $offsetLeft=$span[0].offsetLeft;
+      nowX=x+$offsetLeft;
+      nowY=y+$offsetTop;
+
+      
+      if($span.length>0){
+        var offset=$span.offset(),
+        char_x=offset.left-$(this).scrollLeft(),
+        char_y=offset.top-$(this).scrollTop();
+        $('span.cursor').css({
+          'left':char_x,
+          'top':char_y
+        });
+        console.log($span.offset(),$span.position());
+        $el.remove();
+      }
+      
+
+      //var range = selection.getRangeAt(0);
+
+      // will give you top, left, width, height
+      //console.log("range.getBoundingClientRect()");
+      //console.log(range.getBoundingClientRect())
+      //nowX=range.getBoundingClientRect().x; // inogda daet pravilnye zifry, a inogda nepravilnye
+      //nowY=range.getBoundingClientRect().y;
+
+      //nowX=$("#page_source_text").offset().left+focusOffset;
+      //nowY=$("#page_source_text").offset().top;
+
+      //nowX=char_x;
+      //nowY=char_y;
+
       //If the cursor is in the medium, but nothing has been selected
       if(selection.isCollapsed){
+        $(".popupBody").css({'top':nowY,'left':nowX});
         $(".popupBody").show();
 
         $(".chosen-select-no-results").trigger('chosen:activate');
@@ -421,6 +498,7 @@ h2.legend Page Notes
               categoryid=options[0].attributes[1].value;
               $('.chosen-select-no-results').chosen_reset(config);
               $(".popupBody").hide();
+              $(".popupBody").css({'top':0,'left':0});
 
               //If the category has types
               if(categoryid in categoryTypesHash){
@@ -434,7 +512,7 @@ h2.legend Page Notes
                   addAnOption(newDropdown,categoryTypesTable[i]);
 
                   if(i==(categoryTypesTable.length-1)){
-
+                    $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
                     $("#newDropdownDiv").show();
                     $('#select-type-input').show();
                     $('#select-type-input').focus();

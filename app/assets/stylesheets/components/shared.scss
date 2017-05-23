@@ -1189,4 +1189,16 @@ label[for="202"]{
   text-align: left;
   background-color: white;
   padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+#page_source_text{
+  height: 100%;
+  width: 100%;
+}
+
+.popupBody{
+  position: absolute;
+  display:none;
 }
