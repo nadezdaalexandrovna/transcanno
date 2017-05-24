@@ -87,8 +87,7 @@
             = @page.source_text
 
 <div class="popupBody">
-<p>Select a tag:</p>
-<select class="chosen-select-no-results">
+<select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
     option[ value=c.title data-categoryid=c.id ] =c.title
@@ -96,8 +95,7 @@
 </div>
 
 <div class="popupBody2">
-<p>Select a tag:</p>
-<select class="chosen-select-no-results2">
+<select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
     option[ value=c.title data-categoryid=c.id ] =c.title
@@ -105,6 +103,7 @@
 </div>
 
 <div id="newDropdownDiv">
+  <div class="select_a_tag">Select a type:</div>
   <input id="select-type-input" type="text" placeholder="Select the category type"></input>
   <select id="chosen-select-type">
   </select>
@@ -405,11 +404,6 @@ h2.legend Page Notes
       newDropdown.add(optionType,newDropdown.options[null]);
     }
 
-    var mousePosition = {x:0, y:0};
-    $(document).bind('mousemove',function(mouseMoveEvent){
-      mouseX = mouseMoveEvent.pageX;
-      mouseY = mouseMoveEvent.pageY;
-    });
 
     //Press alt+y to make a dropdown select disappear without selecting anything
     $(document).keydown(function(e){
@@ -588,6 +582,7 @@ h2.legend Page Notes
         });
 
       }else{ //If selection is not collapsed: if something has been selected
+        $(".popupBody2").css({'top':nowY,'left':nowX});
         $(".popupBody2").show();
 
         $(".chosen-select-no-results2").trigger('chosen:activate');
@@ -603,6 +598,7 @@ h2.legend Page Notes
               categoryid=options[0].attributes[1].value;
               $('.chosen-select-no-results2').chosen_reset(config);
               $(".popupBody2").hide();
+              $(".popupBody2").css({'top':0,'left':0});
 
               //If the category has types
               if(categoryid in categoryTypesHash){
@@ -612,8 +608,8 @@ h2.legend Page Notes
 
                 medium.tagSelection2(varTag, "",anchorNode,focusNode,anchorOffset, focusOffset);
                 console.log(medium.value());
-                $('.chosen-select-no-results2').chosen_reset(config);
-                $(".popupBody2").hide();
+                //$('.chosen-select-no-results2').chosen_reset(config);
+                //$(".popupBody2").hide();
                 return false;
               }
             }

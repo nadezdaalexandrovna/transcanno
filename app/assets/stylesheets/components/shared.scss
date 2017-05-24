@@ -1198,7 +1198,89 @@ label[for="202"]{
   width: 100%;
 }
 
-.popupBody{
+.popupBody, .popupBody2, #newDropdownDiv {
   position: absolute;
   display:none;
+  padding-top: 20px;
+  //background-color: #faf5eb;
+}
+
+#newDropdownDiv {
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  //background-image: linear-gradient(#eee 20%,#fff 80%);
+  box-shadow: 0 1px 0 #fff inset;
+  //width: 133px;
+  padding: 4px;
+}
+
+.select_a_tag{
+  //width: 100%;
+  //height: 50px;
+  //background-color: #faf5eb;
+  //padding: 4px;
+  //border: solid gray 1px;
+  border-radius: 4px;
+  color: gray;
+}
+
+
+#chosen-select-type {
+  //margin: 50px;
+  border: 1px solid #111;
+  //background: transparent;
+  //width: 150px;
+  width: 100%;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  //border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  //background: url(http://www.stackoverflow.com/favicon.ico) 96% / 15% no-repeat #eee;
+
+  border: 1px solid #5897fb;
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
+
+  color: #444;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 4px 4px 0;
+  padding: 0 0 0 4px;
+  max-height: 240px;
+}
+
+#chosen-select-type::-ms-expand { 
+    display: none; /* remove default arrow in IE 10 and 11 */
+}
+
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+    #chosen-select-type {
+        background:none\9;
+        padding: 5px\9;
+    }
+}
+
+#select-type-input{
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 0 0 0 8px;
+  height: 25px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  //background-color: #fff;
+  background: linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%);
+  //background: transparent;
+  background-clip: padding-box;
+  box-shadow: 0 0 3px #fff inset,0 1px 1px rgba(0,0,0,.1);
+  color: #444;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 24px;
 }

@@ -136,6 +136,9 @@ class CategoryController < ApplicationController
                                   'var categoryid=$(this).attr("data-categoryid");'+"\n"+
                                   'if(categoryid in categoryTypesHash){'+"\n"+
                                   '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
+                                  'var position = $(this).offset();'+"\n"+
+                                  'nowX=position.left;'+"\n"+
+                                  'nowY=position.top;'+"\n"+
                                   'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+
                                   '}else{'+"\n"+
                                   'article.highlight();'+"\n"+

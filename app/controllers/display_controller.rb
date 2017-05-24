@@ -6,7 +6,6 @@ class DisplayController < ApplicationController
   PAGES_PER_SCREEN = 5
 
   def read_work
-    print "\n!!!!!!!!!!!!!!!!!!!!!\nin display_controller read_work\n"
     if params.has_key?(:work_id)
       @work = Work.find_by(id: params[:work_id])
     elsif params.has_key?(:url)
@@ -33,7 +32,6 @@ class DisplayController < ApplicationController
   end
 
   def read_all_works
-    print "\n!!!!!!!!!!!!!!!!!!!!!\nin display_controller read_all_works\n"
     if @article
       # restrict to pages that include that subject
       @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
@@ -51,7 +49,6 @@ end
 
 =end
   def search
-    print "\n!!!!!!!!!!!!!!!!!!!!!\nin display_controller search\n"
     if @article
       # get the unique search terms
       terms = []
