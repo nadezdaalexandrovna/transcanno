@@ -166,8 +166,9 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY;
-      
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, ch;
+
+
     var l=document.getElementById('page_source_text');
     console.log("l : "+l);
     console.log("l.textContent : "+l.textContent);
@@ -424,7 +425,71 @@ h2.legend Page Notes
         medium.focusNadya(focusOffset,focusNode);
         
       }
-    }); 
+    });
+
+    function getSelectionCoords(win) {
+      win = win || window;
+      docF = win.document;
+      selF = docF.selection;
+      rangeF=null;
+      rectsF=null;
+      rectF=null;
+      spanF=null;
+      spanParentF=null;
+
+      xF = 0, yF = 0;
+      if (selF) {
+        if (selF.type != "Control") {
+            rangeF = selF.createRange();
+            rangeF.collapse(true);
+            xF = rangeF.boundingLeft;
+            yF = rangeF.boundingTop;
+        }
+      } else if (win.getSelection) {
+        selF = win.getSelection();
+        if (selF.rangeCount) {
+            rangeF = selF.getRangeAt(0).cloneRange();
+            if (rangeF.getClientRects.length>0) {
+                rangeF.collapse(true);
+                rectsF = rangeF.getClientRects();
+                if (rectsF.length > 0) {
+                    rectF = rects[0];
+                }
+                xF = rectF.left;
+                yF = rectF.top;
+            }else{
+              // Fall back to inserting a temporary element
+              if (xF == 0 && yF == 0) {
+                spanF = docF.createElement("span");
+                if (spanF.getClientRects) {
+                    // Ensure span has dimensions and position by
+                    // adding a zero-width space character
+                    spanF.appendChild( docF.createTextNode("\u200b") );
+                    rangeF.insertNode(spanF); // inserts a node at the end of the range
+                    rangeChildNodes=rangeF.endContainer.childNodes;
+                    for (var ch in rangeChildNodes) {
+                      if (ch.tagName=="SPAN"){
+                        spanF=ch;
+                      }
+                    }
+                    //rangeLength=rangeChildNodes.length;
+                    //spanF=rangeF.endContainer.childNodes[rangeChildNodes.length-2];
+                    rectF = spanF.getClientRects()[0];
+                    xF = rectF.left;
+                    yF = rectF.top;
+                    spanParentF = spanF.parentNode;
+                    spanParentF.removeChild(spanF);
+
+                    // Glue any broken text nodes back together
+                    spanParentF.normalize();
+                }
+              }
+            }
+        }
+      }
+      return { x: xF, y: yF };
+    }
+
 
     //Add tag
     jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
@@ -434,7 +499,7 @@ h2.legend Page Notes
       notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
 
-      
+      /*
       $org=$(this);
       $el=$org.clone();
       var html='<span class="ins_str">h</span>';
@@ -453,7 +518,11 @@ h2.legend Page Notes
       nowX=x+$offsetLeft;
       nowY=y+$offsetTop;
 
+      $el.remove();
       
+      console.log("nowX: "+nowX+" nowY: "+nowY);
+      */
+      /*
       if($span.length>0){
         var offset=$span.offset(),
         char_x=offset.left-$(this).scrollLeft(),
@@ -465,15 +534,19 @@ h2.legend Page Notes
         console.log($span.offset(),$span.position());
         $el.remove();
       }
-      
+      */
 
-      //var range = selection.getRangeAt(0);
+      var range = selection.getRangeAt(0);
 
       // will give you top, left, width, height
-      //console.log("range.getBoundingClientRect()");
-      //console.log(range.getBoundingClientRect())
-      //nowX=range.getBoundingClientRect().x; // inogda daet pravilnye zifry, a inogda nepravilnye
-      //nowY=range.getBoundingClientRect().y;
+      console.log("range.getBoundingClientRect()");
+      console.log(range.getBoundingClientRect())
+      nowX=range.getBoundingClientRect().x; // inogda daet pravilnye zifry, a inogda nepravilnye
+      nowY=range.getBoundingClientRect().y;
+
+      var coords = getSelectionCoords();
+      nowX=coords.x;
+      nowY=coords.y;
 
       //nowX=$("#page_source_text").offset().left+focusOffset;
       //nowY=$("#page_source_text").offset().top;
