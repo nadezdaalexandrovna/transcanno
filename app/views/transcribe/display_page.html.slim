@@ -166,7 +166,7 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, ch;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength;
 
 
     var l=document.getElementById('page_source_text');
@@ -499,60 +499,11 @@ h2.legend Page Notes
       notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
 
-      /*
-      $org=$(this);
-      $el=$org.clone();
-      var html='<span class="ins_str">h</span>';
-      $el.html($el.text().substr(0,focusOffset-1)+html+$el.text().substr(offset));
-      var x=$org.offset().left,
-          y=$org.offset().top,
-          width=$org.outerWidth()-22,
-          height=$org.outerHeight()-22;
-
-      $el.css({'top':y,'left': x,'width':width,'height':height});
-
-      $org.before($el);
-      var $span=$el.find('span.ins_str');
-      $offsetTop=$span[0].offsetTop;
-      $offsetLeft=$span[0].offsetLeft;
-      nowX=x+$offsetLeft;
-      nowY=y+$offsetTop;
-
-      $el.remove();
-      
-      console.log("nowX: "+nowX+" nowY: "+nowY);
-      */
-      /*
-      if($span.length>0){
-        var offset=$span.offset(),
-        char_x=offset.left-$(this).scrollLeft(),
-        char_y=offset.top-$(this).scrollTop();
-        $('span.cursor').css({
-          'left':char_x,
-          'top':char_y
-        });
-        console.log($span.offset(),$span.position());
-        $el.remove();
-      }
-      */
-
-      var range = selection.getRangeAt(0);
-
-      // will give you top, left, width, height
-      console.log("range.getBoundingClientRect()");
-      console.log(range.getBoundingClientRect())
-      nowX=range.getBoundingClientRect().x; // inogda daet pravilnye zifry, a inogda nepravilnye
-      nowY=range.getBoundingClientRect().y;
 
       var coords = getSelectionCoords();
       nowX=coords.x;
       nowY=coords.y;
 
-      //nowX=$("#page_source_text").offset().left+focusOffset;
-      //nowY=$("#page_source_text").offset().top;
-
-      //nowX=char_x;
-      //nowY=char_y;
 
       //If the cursor is in the medium, but nothing has been selected
       if(selection.isCollapsed){
@@ -710,9 +661,10 @@ h2.legend Page Notes
     function AddMediumValue() {
       mediumValue = medium.value();
       console.log(mediumValue);
-      mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
-      mediumValue = mediumValue.replace(/(<br>)+/g, '<br>');
-      mediumValue = mediumValue.replace(/<br>(?!\<)/g, "<br></br>");
+      //mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
+      //mediumValue = mediumValue.replace(/(<br>)+/g, '<br>');
+      //mediumValue = mediumValue.replace(/<br>(?!\<)/g, "<br></br>");
+      mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
       mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
       mediumValue = mediumValue.replace(/<\/div>/, '');
       console.log(mediumValue);

@@ -86,6 +86,8 @@ module AbstractXmlHelper
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
 
+    my_display_html.gsub!("&amp\;nbsp\;","&nbsp\;") # I added this
+
     return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
   end
 
