@@ -1200,9 +1200,12 @@ label[for="202"]{
 
 .popupBody, .popupBody2, #newDropdownDiv {
   position: absolute;
-  display:none;
-  padding-top: 20px;
+  //display:none;
+  //padding-top: 20px;
+  margin-top:20px;
+  background-color: white;
   //background-color: #faf5eb;
+  box-shadow: 0 1px 0 #fff inset;
 }
 
 #newDropdownDiv {
@@ -1214,6 +1217,7 @@ label[for="202"]{
   box-shadow: 0 1px 0 #fff inset;
   //width: 133px;
   padding: 4px;
+  margin-top:20px;
 }
 
 .select_a_tag{
@@ -1228,13 +1232,13 @@ label[for="202"]{
 
 
 #chosen-select-type {
+  //overflow:auto;
   //margin: 50px;
   border: 1px solid #111;
   //background: transparent;
   //width: 150px;
   width: 100%;
-  padding: 5px 35px 5px 5px;
-  font-size: 16px;
+  //font-size: 16px;
   //border: 1px solid #ccc;
   height: 34px;
   -webkit-appearance: none;
@@ -1250,7 +1254,7 @@ label[for="202"]{
   overflow-x: hidden;
   overflow-y: auto;
   margin: 0 4px 4px 0;
-  padding: 0 0 0 4px;
+  padding: 4px;
   max-height: 240px;
 }
 
@@ -1283,4 +1287,30 @@ label[for="202"]{
   text-decoration: none;
   white-space: nowrap;
   line-height: 24px;
+}
+
+
+#mediumClickableSpans {
+  display: none;
+  //position: absolute;
+  //right: 50 px;
+  //top: 300px;
+}
+
+
+#verticalMediumClickableSpans {
+  //position: fixed;
+  position: absolute;
+  right: 10px;
+  top: 330px;
+  width: 250px;
+  z-index: 1000;
+}
+
+.undo{
+  font-size: xx-large;
+}
+
+.page-column_actions{
+  display: none;
 }

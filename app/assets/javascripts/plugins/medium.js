@@ -1108,6 +1108,14 @@ Medium.prototype = {
 			focusNode = sel.focusNode,
 			anchorNode = sel.anchorNode;
 
+			if(anchorNode.id=="page_source_text"){
+				anchorNode=focusNode;
+			}
+
+			if(focusNode.id=="page_source_text"){
+				focusNode=anchorNode;
+			}
+
 		//range.setStart(node, offset);
 		//endRange.selectNodeContents(el);
 		//range.setEnd(endRange.endContainer, endRange.endOffset);

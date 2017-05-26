@@ -133,10 +133,10 @@ class CategoryController < ApplicationController
       styleInstructions+="\n.button-"+title+"{"+style+"}"
       mediumOnmouseoverFunctions+='$( ".button-'+title+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
-                                  'var categoryid=$(this).attr("data-categoryid");'+"\n"+
+                                  'categoryid=$(this).attr("data-categoryid");'+"\n"+
                                   'if(categoryid in categoryTypesHash){'+"\n"+
                                   '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
-                                  'var position = $(this).offset();'+"\n"+
+                                  'position = $(this).offset();'+"\n"+
                                   'nowX=position.left;'+"\n"+
                                   'nowY=position.top;'+"\n"+
                                   'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+

@@ -109,19 +109,20 @@
   </select>
 </div>
 
-<span class="undo">undo</span>
+<span class="undo" style="display:none;">undo</span>
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
     span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
 
-table
-  tr
-    td [ class="overMediumButtonTD" ]
-      <span class="undo">undo</span>
-  - @categories.each do |c|
+div [ id="verticalMediumClickableSpans" ]
+  table
     tr
       td [ class="overMediumButtonTD" ]
-        span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
+        <span class="undo">&#8630;</span>
+    - @categories.each do |c|
+      tr
+        td [ class="overMediumButtonTD" ]
+          span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
 
 
 
@@ -165,7 +166,7 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues;
 
 
     var l=document.getElementById('page_source_text');
@@ -230,8 +231,9 @@ h2.legend Page Notes
 
     //Go out of the current tag
     jQuery('#page_source_text').bind('keydown', 'alt+x', function(e) {
-      offset=medium.returnOffset()[0];
-      focusEl=medium.returnOffset()[1];
+      returnOffsetvalues=medium.returnOffset();
+      offset=returnOffsetvalues[0];
+      focusEl=returnOffsetvalues[1];
 
       if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv" && focusEl.id!="page_source_text" && focusEl.id!="bigDiv"){
         medium.focus();
@@ -306,6 +308,15 @@ h2.legend Page Notes
                 }
               }
             });
+          }else{ // if search==null || search==""
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="") {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+              }
+            });
           }
         });
       });
@@ -342,7 +353,7 @@ h2.legend Page Notes
       categoryTypesTable=categoryTypesHash[categoryid];
 
                 //Create the new dropdown menu for category types
-                newDropdown=addNewDropdown();
+                newDropdown=addNewDropdown(categoryTypesTable.length);
 
                 for(i=0; i< categoryTypesTable.length; i++){
                   //Add an option for the category types dropdown menu
@@ -356,24 +367,19 @@ h2.legend Page Notes
                     $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
 
                     $("#chosen-select-type").off().change(function(event5){                        
-                       $("#select-type-input").hide();
-                        $("#select-type-input")[0].value="";
-                        $('#chosen-select-type').empty();
-                        $("#newDropdownDiv").hide();
-                        nowX=null;
-                        nowY=null;
                       if(event5.target == this){
-                        type=$(this).val();
+                        //type=$(this).val();
+                        type=this.value;
                         if(type!=null && type!=''){
-                          newType=type;
-                          type='';
-                          console.log("newType: "+newType);
-                          medium.tagSelection2(varTag, newType, anchorNode,focusNode,anchorOffset, focusOffset);
+                          //newType=type;
+                          //type='';
+                          //console.log("newType: "+newType);
+                          medium.tagSelection2(varTag, type, notCollapsedArgsTable[0],focusNode,notCollapsedArgsTable[1], focusOffset);
 
-                          //$("#newDropdownDiv").hide();
-                          //$("#select-type-input").hide();
-                          //$("#select-type-input")[0].value="";
-                          //$('#chosen-select-type').empty();
+                          $("#newDropdownDiv").hide();
+                          $("#select-type-input").hide();
+                          $("#select-type-input")[0].value="";
+                          $('#chosen-select-type').empty();
 
                           console.log(medium.value());
                           return false;
@@ -386,13 +392,14 @@ h2.legend Page Notes
     }
 
     //Create the new dropdown menu for category types
-    function addNewDropdown (){
+    function addNewDropdown (length){
       newDropdown=document.getElementById('chosen-select-type');
-      optionType=document.createElement("option");
-      optionType.text="Select category type";
-      optionType.value="";
-      optionType.setAttribute("selected", "selected");
-      newDropdown.add(optionType,newDropdown.options[null]);
+      newDropdown.setAttribute("size", length);
+      //optionType=document.createElement("option");
+      //optionType.text="Select category type";
+      //optionType.value="";
+      //optionType.setAttribute("selected", "selected");
+      //newDropdown.add(optionType,newDropdown.options[null]);
       return newDropdown;
     }
 
@@ -431,7 +438,9 @@ h2.legend Page Notes
       spanF=null;
       spanParentF=null;
 
-      xF = 0, yF = 0;
+      xF = 0;
+      yF = 0;
+
       if (selF) {
         if (selF.type != "Control") {
             rangeF = selF.createRange();
@@ -460,18 +469,29 @@ h2.legend Page Notes
                     // adding a zero-width space character
                     spanF.appendChild( docF.createTextNode("\u200b") );
                     rangeF.insertNode(spanF); // inserts a node at the end of the range
+
                     rangeChildNodes=rangeF.endContainer.childNodes;
-                    for (var ch in rangeChildNodes) {
-                      if (ch.tagName=="SPAN"){
-                        spanF=ch;
+                    for (ch=0; ch<rangeChildNodes.length; ch++) {
+                      console.log(ch);
+                      var he=rangeChildNodes[ch];
+                      console.log(he);
+                      if (he.tagName=="SPAN"){
+                        spanF=he;
+                        break;
                       }
                     }
                     //rangeLength=rangeChildNodes.length;
                     //spanF=rangeF.endContainer.childNodes[rangeChildNodes.length-2];
+                    //rectF = getCoords2(spanF);
                     rectF = spanF.getClientRects()[0];
                     xF = rectF.left;
                     yF = rectF.top;
                     spanParentF = spanF.parentNode;
+                    /*
+                    if(spanParentF.id!="bigDiv"){
+                      crds=getCoords(spanParentF);
+                    }
+                    */
                     spanParentF.removeChild(spanF);
 
                     // Glue any broken text nodes back together
@@ -484,19 +504,49 @@ h2.legend Page Notes
       return { x: xF, y: yF };
     }
 
+    function findUnderBigDivParent(el){
+      if(el.parentNode.id=="bigDiv"){
+        return el;
+      }else{
+        return findUnderBigDivParent(el.parentNode);
+      }
+    }
+
+    function getCoords2(spanF){
+      spanParentF = spanF.parentNode;
+      if(spanParentF.id!="bigDiv"){
+        //var underBigDivParent=findUnderBigDivParent(spanParentF);
+        //return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top+underBigDivParent.getClientRects()[0].top};
+        //return {'left':spanF.getClientRects()[0].left, 'top':underBigDivParent.getClientRects()[0].top};
+        return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top};
+      }else{
+        return spanF.getClientRects()[0];
+      }
+    }
+
+    function getCoords(spanF){
+      spanParentF = spanF.parentNode;
+      if(spanParentF.id!="bigDiv"){
+        crds=getCoords(spanParentF);
+        return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top+crds.top};
+      }else{
+        return spanF.getClientRects()[0];
+      }
+    }
 
     //Add tag
     jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
-      //nowX=mouseX; 
-      //nowY=mouseY;
+
+      var coords = getSelectionCoords();
+      nowX=coords.x;
+      nowY=coords.y;
+
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
 
 
-      var coords = getSelectionCoords();
-      nowX=coords.x;
-      nowY=coords.y;
+      
 
 
       //If the cursor is in the medium, but nothing has been selected
@@ -523,7 +573,7 @@ h2.legend Page Notes
                 categoryTypesTable=categoryTypesHash[categoryid];
 
                 //Create the new dropdown menu for category types
-                newDropdown=addNewDropdown();
+                newDropdown=addNewDropdown(categoryTypesTable.length);
 
                 for(i=0; i< categoryTypesTable.length; i++){
                   //Add an option for the category types dropdown menu
