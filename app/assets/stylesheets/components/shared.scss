@@ -1218,6 +1218,7 @@ label[for="202"]{
   //width: 133px;
   padding: 4px;
   margin-top:20px;
+  z-index: 9999;
 }
 
 .select_a_tag{
@@ -1240,7 +1241,7 @@ label[for="202"]{
   width: 100%;
   //font-size: 16px;
   //border: 1px solid #ccc;
-  height: 34px;
+  //height: 34px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -1301,10 +1302,13 @@ label[for="202"]{
 #verticalMediumClickableSpans {
   //position: fixed;
   position: absolute;
-  right: 10px;
+  right: 4vw;
   top: 330px;
-  width: 250px;
-  z-index: 1000;
+  max-width: 20vw;
+  z-index: 9998;
+  background-color: #faf5eb;
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .undo{

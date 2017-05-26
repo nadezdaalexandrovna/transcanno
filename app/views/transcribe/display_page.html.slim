@@ -239,11 +239,11 @@ h2.legend Page Notes
         medium.focus();
         medium.focusNadya(offset,focusEl);
         medium.cursorAfterTag(focusEl);
-        console.log("medium.value() : "+medium.value());
-        return false;
+        //console.log("medium.value() : "+medium.value());
+        //return false;
       }
               
-      console.log("medium.value() : "+medium.value());
+      //console.log("medium.value() : "+medium.value());
 
       return false;
 
@@ -270,6 +270,8 @@ h2.legend Page Notes
 
       return this.each(function() {
         select = this;
+        var length=$(select).attr("size");
+        console.log("length: "+length);
         options = [];
         $(select).find('option').each(function() {
           options.push({value: $(this).val(), text: $(this).text()});
@@ -279,6 +281,7 @@ h2.legend Page Notes
         $(textbox).off().on('change keyup', function(e) {
         //$(textbox).bind('change keyup', function(e) {
           options2 = $(select).empty().data('options');
+          $(select).attr("size", 0);
           search = $.trim($(this).val());
           if(search!=null && search!=""){
             regex = new RegExp("^"+search,"gi");
@@ -289,7 +292,7 @@ h2.legend Page Notes
                 $(select).append(
                   $('<option>').text(option.text).val(option.value)
                 );
-
+                $(select).attr("size", $(select).attr("size")+1);
                 //If the user presses enter
                 if (e.which == 13) {
                   if(notCollapsedArgsTable==null){
@@ -309,12 +312,14 @@ h2.legend Page Notes
               }
             });
           }else{ // if search==null || search==""
+            $(select).attr("size", length);
             $.each(options2, function(i) {
               option = options2[i];
               if(option.value!="") {
                 $(select).append(
                   $('<option>').text(option.text).val(option.value)
                 );
+
               }
             });
           }
@@ -512,6 +517,7 @@ h2.legend Page Notes
       }
     }
 
+    /*
     function getCoords2(spanF){
       spanParentF = spanF.parentNode;
       if(spanParentF.id!="bigDiv"){
@@ -533,6 +539,7 @@ h2.legend Page Notes
         return spanF.getClientRects()[0];
       }
     }
+    */
 
     //Add tag
     jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {

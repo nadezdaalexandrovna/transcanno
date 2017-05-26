@@ -606,9 +606,13 @@ Medium.prototype = {
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
+
+						nodeToTag=childTextNodes[0].parentNode;
+					}else{
+						nodeToTag=nodeToTag.parentNode;
 					}
 
-					nodeToTag=childTextNodes[0].parentNode;
+					
 				}
 				
 				if(nodeToTag.parentNode===closestCommonAncestor){
@@ -683,9 +687,12 @@ Medium.prototype = {
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
+						nodeToTag2=childTextNodes[0].parentNode;
+					}else{
+						nodeToTag2=nodeToTag2.parentNode;
 					}
 
-					nodeToTag2=childTextNodes[0].parentNode;
+					
 				}
 
 				
