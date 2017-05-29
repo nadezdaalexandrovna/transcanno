@@ -862,7 +862,7 @@ Medium.prototype = {
 			var sel = rangy.getSelection();
 			sel.setSingleRange(range);
             //range.collapse(false);
-            if(focusEl.nextSibling.nodeName=="BR"){
+            if(focusEl.nextSibling!==null && focusEl.nextSibling.nodeName=="BR"){
             	var followingBR=focusEl.nextSibling;
             	var par=followingBR.parentNode;
             	par.removeChild(followingBR);

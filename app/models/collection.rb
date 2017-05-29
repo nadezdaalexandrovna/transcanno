@@ -19,7 +19,7 @@ class Collection < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 3 }
   
   before_create :set_transcription_conventions
-  after_save :create_categories
+  #after_save :create_categories
 
   mount_uploader :picture, PictureUploader
 

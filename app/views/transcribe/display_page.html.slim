@@ -90,7 +90,7 @@
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value=c.title data-categoryid=c.id ] =c.title
+    option[ value="#{c.title}-id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -98,7 +98,7 @@
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value=c.title data-categoryid=c.id ] =c.title
+    option[ value="#{c.title}-id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -112,7 +112,7 @@
 <span class="undo" style="display:none;">undo</span>
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
-    span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
+    span[ class="button-#{c.title}-id#{c.id}" data-categoryid=c.id ] = c.title
 
 div [ id="verticalMediumClickableSpans" ]
   table
@@ -122,7 +122,7 @@ div [ id="verticalMediumClickableSpans" ]
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}-id#{c.id}" data-categoryid=c.id ] = c.title
 
 
 

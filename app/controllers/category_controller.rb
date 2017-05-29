@@ -103,7 +103,7 @@ class CategoryController < ApplicationController
 
 
   def apply_all_styles
-    sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
+    sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
     styleInstructions=""
@@ -127,10 +127,12 @@ class CategoryController < ApplicationController
         fontstyle = ''
       end
 
+      id=r[4].to_s
+
       style = color+textdecoration+fontstyle
       title=r[0]
-      styleInstructions+="\n.medium-"+title+"{"+style+"}"
-      styleInstructions+="\n.button-"+title+"{"+style+"}"
+      styleInstructions+="\n.medium-"+title+'-id'+id+"{"+style+"}"
+      styleInstructions+="\n.button-"+title+'-id'+id+"{"+style+"}"
       mediumOnmouseoverFunctions+='$( ".button-'+title+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
                                   'categoryid=$(this).attr("data-categoryid");'+"\n"+
@@ -139,10 +141,10 @@ class CategoryController < ApplicationController
                                   'position = $(this).offset();'+"\n"+
                                   'nowX=position.left;'+"\n"+
                                   'nowY=position.top;'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'-id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+
                                   '}else{'+"\n"+
                                   'article.highlight();'+"\n"+
-                                  'medium.invokeElement(\''+title+'\', {'+"\n"+
+                                  'medium.invokeElement(\''+title+'-id'+id+'\', {'+"\n"+
                                   'tagcode: da.getTime().toString()'+"\n"+
                                   '});'+"\n"+
                                   '}'+"\n"+
