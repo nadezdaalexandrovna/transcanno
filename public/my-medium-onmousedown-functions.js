@@ -1,6 +1,6 @@
 $(document).ready(function($) {
 var da;
-$( ".button-correction" ).mousedown(function() {
+$( ".button-correction-id5" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -17,7 +17,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-ambiguous" ).mousedown(function() {
+$( ".button-ambiguous-id1" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -34,7 +34,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-closing" ).mousedown(function() {
+$( ".button-closing-id2" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -51,7 +51,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-comment" ).mousedown(function() {
+$( ".button-comment-id4" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -68,7 +68,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-error" ).mousedown(function() {
+$( ".button-error-id8" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -85,7 +85,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-greeting" ).mousedown(function() {
+$( ".button-greeting-id12" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -102,7 +102,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-hyphen" ).mousedown(function() {
+$( ".button-hyphen-id13" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -119,7 +119,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-indirect_speech" ).mousedown(function() {
+$( ".button-indirect_speech-id14" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -136,7 +136,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-greeting" ).mousedown(function() {
+$( ".button-greeting-id26" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -153,7 +153,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-correction" ).mousedown(function() {
+$( ".button-correction-id27" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -170,7 +170,7 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
-$( ".button-error" ).mousedown(function() {
+$( ".button-error-id28" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
@@ -182,6 +182,125 @@ tagSelectionWithType(categoryid, categoryTypesHash, medium, 'error-id28', focusO
 }else{
 article.highlight();
 medium.invokeElement('error-id28', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-deletion-id29" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'deletion-id29', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('deletion-id29', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-insertion-id30" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'insertion-id30', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('insertion-id30', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-orthographic_error-id31" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'orthographic_error-id31', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('orthographic_error-id31', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-orthographic_error_target-id32" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'orthographic_error_target-id32', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('orthographic_error_target-id32', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-punctuation_error_missings-id34" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'punctuation_error_missings-id34', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('punctuation_error_missings-id34', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-punctuation_error_wrongly_set-id35" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'punctuation_error_wrongly_set-id35', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('punctuation_error_wrongly_set-id35', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
+$( ".button-grammatic_error-id33" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'grammatic_error-id33', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('grammatic_error-id33', {
 tagcode: da.getTime().toString()
 });
 }

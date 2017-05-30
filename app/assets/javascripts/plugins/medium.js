@@ -2248,16 +2248,23 @@ Medium.defaultSettings = {
 
 				this.medium.makeUndoable();
 
-				Medium.activeElement=inserted[0];
+				//Medium.activeElement=inserted[0];
 
 				var el=inserted[0];
 				var range = rangy.createRange();
 				//range.setStart(el.childNodes[0], 0); // If the element contains text
+				/*
 				range.setStart(el, 0); // If the element doesn't contain text
 				range.collapse(true);
+				*/
 				var sel = rangy.getSelection();
+				
+				range.selectNodeContents(el);
+				range.collapse(false);
+
 				sel.setSingleRange(range);
-			
+
+				Medium.activeElement=el;
 				return inserted;
 			
 		},

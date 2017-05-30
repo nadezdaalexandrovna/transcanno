@@ -1099,31 +1099,31 @@ label[for="1"]{
       color:  #a93226 ;
     }
 label[for="2"]{
-      color: #8e44ad;
+      color: #8e00ad;
     }
 label[for="3"]{
-      color: #1a5276;
+      color: #6a6266; //#1a5276;
     }
 label[for="4"]{
-      color: #3498db;
+      color: #0098db; //#3498db;
     }
 label[for="5"]{
-      color: #1e8449;
+      color: #008449;
     }
 label[for="6"]{
       color: auto;
     }
 label[for="7"]{
-      color: #d4ac0d;
+      color: #e4cc0d; //#d4ac0d;
     }
 label[for="8"]{
-      color: #F39201;
+      color: #f39200;
     }
 label[for="9"]{
-      color:  #FF5733;
+      color:  #FF0000;
     }
 label[for="10"]{
-      color:  #779e50;
+      color:  #ff66ff; //#779e50;
     }
 label[for="11"]{
       color:  #0901F3;
@@ -1146,6 +1146,43 @@ label[for="113"]{
 label[for="114"]{
       text-decoration: none;
     }
+label[for="115"]{
+      text-decoration: underline;
+      text-decoration-style: wavy;
+    }
+label[for="116"]{
+      text-decoration: underline;
+      text-decoration-style: double;
+    }
+label[for="117"]{
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+label[for="118"]{
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+
+
+label[for="119"]{
+      text-decoration: overline;
+      text-decoration-style: wavy;
+    }
+label[for="120"]{
+      text-decoration: overline;
+      text-decoration-style: double;
+    }
+label[for="121"]{
+      text-decoration: overline;
+      text-decoration-style: dotted;
+    }
+
+label[for="122"]{
+      text-decoration: overline;
+      text-decoration-style: dashed;
+    }
+
 
 label[for="200"]{
       font-weight: bold;
@@ -1157,6 +1194,25 @@ label[for="202"]{
       font-weight: bold;
       font-style: italic;
     }
+label[for="204"] span {
+      position: relative;
+      vertical-align: super;
+    }
+label[for="205"] span {
+      position: relative;
+      vertical-align: sub;
+    }
+label[for="206"] span {
+      position: relative;
+      vertical-align: super;
+      font-style: italic;
+    }
+label[for="207"] span {
+      position: relative;
+      vertical-align: sub;
+      font-style: italic;
+    }
+  
 
 #decoration_title{
   margin-top: 1vh;

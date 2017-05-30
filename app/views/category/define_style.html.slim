@@ -4,37 +4,37 @@
   =form_for(@category, :url => { :action => 'define_style2' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     h5 Choose text color for
-      <span class="medium-#{@category.title}">#{@category.title}</span>
+      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
     ul[ class="color" ]
       li
         input[ type="radio" id="1" name="tag_color" value="#c0392b"]
         label [for="1"] text
       li
-        input[ type="radio" id="2" name="tag_color" value="#8e44ad"]
+        input[ type="radio" id="2" name="tag_color" value="#8e00ad"]
         label [for="2"] text
       li
-        input[ type="radio" id="3" name="tag_color" value="#1a5276"]
+        input[ type="radio" id="3" name="tag_color" value="#6a6266"]
         label [for="3"] text
       li
-        input[ type="radio" id="4" name="tag_color" value="#3498db"]
+        input[ type="radio" id="4" name="tag_color" value="#0098db"]
         label [for="4"] text
       li
-        input[ type="radio" id="5" name="tag_color" value="#17a589"]
+        input[ type="radio" id="5" name="tag_color" value="#008449"]
         label [for="5"] text
       li
         input[ type="radio" id="6" name="tag_color" value="auto"]
         label [for="6"] text
       li
-        input[ type="radio" id="7" name="tag_color" value="#d4ac0d"]
+        input[ type="radio" id="7" name="tag_color" value="#e4cc0d"]
         label [for="7"] text
       li
-        input[ type="radio" id="8" name="tag_color" value="#F39201"]
+        input[ type="radio" id="8" name="tag_color" value="#f39200"]
         label [for="8"] text
       li
-        input[ type="radio" id="9" name="tag_color" value="#FF5733"]
+        input[ type="radio" id="9" name="tag_color" value="#FF0000"]
         label [for="9"] text
       li
-        input[ type="radio" id="10" name="tag_color" value="#779e50"]
+        input[ type="radio" id="10" name="tag_color" value="#ff66ff"]
         label [for="10"] text
       li
         input[ type="radio" id="11" name="tag_color" value="#0901F3"]
@@ -44,23 +44,47 @@
         label [for="12"] text
     hr
     h5 [id="decoration_title"] Choose text decoration for
-      <span class="medium-#{@category.title}">#{@category.title}</span>
+      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
     ul[ class="decoration" ]
       li
-        input[ type="radio" id="111" name="tag_decoration" value="line-through"]
+        input[ type="radio" id="111" name="tag_decoration" value="text-decoration: line-through;"]
         label [for="111"] text
       li
-        input[ type="radio" id="112" name="tag_decoration" value="underline"]
+        input[ type="radio" id="112" name="tag_decoration" value="text-decoration: underline;"]
         label [for="112"] text
       li
-        input[ type="radio" id="113" name="tag_decoration" value="overline"]
+        input[ type="radio" id="113" name="tag_decoration" value="text-decoration: overline;"]
         label [for="113"] text
       li
-        input[ type="radio" id="114" name="tag_decoration" value="none"]
+        input[ type="radio" id="114" name="tag_decoration" value="text-decoration: none;"]
         label [for="114"] text
+      li
+        input[ type="radio" id="115" name="tag_decoration" value="text-decoration: underline; text-decoration-style: wavy;"]
+        label [for="115"] text
+      li
+        input[ type="radio" id="116" name="tag_decoration" value="text-decoration: underline; text-decoration-style: double;"]
+        label [for="116"] text
+      li
+        input[ type="radio" id="117" name="tag_decoration" value="text-decoration: underline; text-decoration-style: dotted;"]
+        label [for="117"] text
+      li
+        input[ type="radio" id="118" name="tag_decoration" value="text-decoration: underline; text-decoration-style: dashed;"]
+        label [for="118"] text
+      li
+        input[ type="radio" id="119" name="tag_decoration" value="text-decoration: overline; text-decoration-style: wavy;"]
+        label [for="119"] text
+      li
+        input[ type="radio" id="120" name="tag_decoration" value="text-decoration: overline; text-decoration-style: double;"]
+        label [for="120"] text
+      li
+        input[ type="radio" id="121" name="tag_decoration" value="text-decoration: overline; text-decoration-style: dotted;"]
+        label [for="121"] text
+      li
+        input[ type="radio" id="122" name="tag_decoration" value="text-decoration: overline; text-decoration-style: dashed;"]
+        label [for="122"] text
     hr
     h5 [id="font_style_title"] Choose font style for
-      <span class="medium-#{@category.title}">#{@category.title}</span>
+      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
     ul[ class="font_style" ]
       li
         input[ type="radio" id="200" name="tag_font_style" value="font-weight: bold;"]
@@ -74,7 +98,18 @@
       li
         input[ type="radio" id="203" name="tag_font_style" value=""]
         label [for="203"] text
-
+      li
+        input[ type="radio" id="204" name="tag_font_style" value="vertical-align: super; position: relative;"]
+        label [for="204"] . <span>upper</span>
+      li
+        input[ type="radio" id="205" name="tag_font_style" value="vertical-align: sub; position: relative;"]
+        label [for="205"] . <span>lower</span>
+      li
+        input[ type="radio" id="206" name="tag_font_style" value="vertical-align: super; position: relative; font-style: italic;"]
+        label [for="206"] . <span>upper</span>
+      li
+        input[ type="radio" id="207" name="tag_font_style" value="vertical-align: sub; position: relative; font-style: italic;"]
+        label [for="207"] . <span>lower</span>
 
     .toolbar
       .toolbar_group.aright =f.button 'Define Style'

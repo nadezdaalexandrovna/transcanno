@@ -116,7 +116,7 @@ class CategoryController < ApplicationController
       end
 
       if r[2]!=nil
-        textdecoration = 'text-decoration:'+r[2]+';'
+        textdecoration = r[2]
       else
         textdecoration =''
       end
@@ -133,7 +133,7 @@ class CategoryController < ApplicationController
       title=r[0]
       styleInstructions+="\n.medium-"+title+'-id'+id+"{"+style+"}"
       styleInstructions+="\n.button-"+title+'-id'+id+"{"+style+"}"
-      mediumOnmouseoverFunctions+='$( ".button-'+title+'" ).mousedown(function() {'+"\n"+
+      mediumOnmouseoverFunctions+='$( ".button-'+title+'-id'+id+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
                                   'categoryid=$(this).attr("data-categoryid");'+"\n"+
                                   'if(categoryid in categoryTypesHash){'+"\n"+
