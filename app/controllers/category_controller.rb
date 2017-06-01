@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assing_category_scope]
 
   def edit
   end
@@ -33,31 +33,51 @@ class CategoryController < ApplicationController
     end
   end
 
+  def assing_category_scope
+    scope=Categoryscope.where(category_id: params[:category_id])
+    print "scope: \n"
+    puts scope.inspect
+    
+    @scopehash={0=>'',1=>'',2=>''}
+    unless scope.empty?
+      scope.each do |s|
+        @scopehash[s.mode]='checked'
+      end
+    end
+    
+    print "@scopehash: \n"
+    puts @scopehash.inspect
+  end
+
+  def assing_category_scope2
+    scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
+    scope.mode=params[:category_scope].to_i
+    #Categoryscope.mode(params[:category_scope].to_i).where(category_id:params[:category_id])
+    #Categoryscope.save()
+    if scope.save
+      flash[:notice] = "Category scope has been assigned."
+      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+    else
+      render :action => 'assing_category_scope'
+    end
+  end
+
   def define_style
   end
 
   def define_attribute_values
     @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
-    #@attributevalues=Attributevalue.joins(:categoryattribute).joins(:category).where(category_id: params[:category_id])
-
     @attributeValuesHash={}
     sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
-    print "\nres:\n"
-    puts res.inspect
     res.each do |r|
-      print "\nr:\n"
-      puts r.inspect
       if @attributeValuesHash.key?(r[0].to_s)
         @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
       else
         @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
       end
     end
-    print "\n@attributeValuesHash:\n"
-    puts @attributeValuesHash.inspect
-
   end
 
   def define_attribute_values2
@@ -101,8 +121,6 @@ class CategoryController < ApplicationController
     if params[:add_attribute_value]!=nil
       forSql=""
       params[:add_attribute_value].each do |attrid|
-        print "attrid"
-        puts attrid.inspect
         attrid[1].each do |attrValue|
           if attrValue.length>0
             forSql+='("'+attrid[0]+'","'+attrValue+'"), '
@@ -140,7 +158,6 @@ class CategoryController < ApplicationController
         end
       end
       if forSql!=""
-        #sql="delete from categorytypes where id in ("+forSql[0..-3]+");"
         sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
         connection = ActiveRecord::Base.connection
         connection.execute(sql)

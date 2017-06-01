@@ -39,6 +39,8 @@
                       =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
 
                       hr
+                      =link_to 'Assign Category Scope', { :controller => 'category', :action => 'assing_category_scope', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      hr
                       =link_to 'Define Category Style', { :controller => 'category', :action => 'define_style', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
                       =link_to 'Define Category Attributes', { :controller => 'category', :action => 'define_attributes', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
@@ -87,7 +89,7 @@
 
     });
 
-
+    //Functions for the attributes menu
     function addField() {
       var html = "<input name='attribute[]' class='attribute_input_field' type='text'><br>";
       $('#fields').append(html);
@@ -99,6 +101,7 @@
       document.getElementById("delete_attribute_"+id).disabled=true;
     }
 
+    //Function for the category creation menu normalising the category name
     function verifyValue(){
       var value=document.getElementById('category_title').value;
       console.log("value: "+value);
@@ -109,7 +112,7 @@
       return value;
     }
 
-    
+    //Function for the attribute creation menu normalising the attribute name
     function verifyValueType(){
       var val, i;
       var elms=document.getElementsByClassName('attribute_input_field');
@@ -125,8 +128,11 @@
       return;
     }
 
+
+    //Functions for the attribute values menu
     var previousAttrId=null;
 
+    //Show the menu for the chosen attribute
     function showAttributeValues(attributeId){
       if(previousAttrId!=null){
         $("#show_attribute_values"+previousAttrId).removeClass('show_attribute_values_active');
@@ -141,10 +147,11 @@
       $("#one_attribute_div_"+attributeId).show();
       $("#big_new_values_div_"+attributeId).show();
       $("#allow_input_div_"+attributeId).show();
-      
+
       return false;
     }
 
+    //Delete an existing value of the chosen attribute
     function deleteAttributeValue(attributeValueid,attributeId){
       var html = "<input type='hidden' name='delete_attribute_value[]' value='"+attributeValueid+"'>";
       $('#one_attribute_div_'+attributeId).append(html);
@@ -152,6 +159,7 @@
 
     }
 
+    //Create a new value of the chosen attribute
     function addAttributeValue(attributeId){
       var html = '<input name="add_attribute_value['+attributeId+'][]" class="attribute_value_input_field" type="text"><br>';
       $('#new_values_div_'+attributeId).append(html);

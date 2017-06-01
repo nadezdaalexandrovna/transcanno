@@ -59,6 +59,7 @@ Fromthepage::Application.routes.draw do
   patch 'category/define_style2', :to => 'category#define_style2'
   patch 'category/define_attribute_values2', :to => 'category#define_attribute_values2'
   patch 'category/define_attributes2', :to => 'category#define_attributes2'
+  patch 'category/assing_category_scope2', :to => 'category#assing_category_scope2'
   patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'
