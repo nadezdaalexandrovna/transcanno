@@ -1228,15 +1228,15 @@ label[for="207"] span {
     cursor: pointer;
     }
 
-.already_type td{
+.already_attribute td{
     width: 100 px;
 }
 
-.delete_type_button{
+.delete_attribute_button{
   margin-left: 5px;
 }
 
-#category_title_for_types{
+#category_title_for_attributes{
   font-weight: bold;
 }
 
@@ -1373,4 +1373,30 @@ label[for="207"] span {
 
 .page-column_actions{
   display: none;
+}
+
+.show_attribute_values_active{
+  //border: solid black 1px;
+  border-color: black !important;
+}
+
+.show_attribute_values:active{
+  //border: solid black 1px;
+  border-color: black !important;
+}
+
+.attribute_name_span{
+  font-weight: bold;
+}
+
+#one_attribute_big_div{
+  margin-top: 40px;
+}
+
+.one_attribute_div, .big_new_values_div{
+  margin-top: 20px;
+}
+
+.already_value td{
+  padding: 4px;
 }

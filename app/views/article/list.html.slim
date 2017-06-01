@@ -41,7 +41,9 @@
                       hr
                       =link_to 'Define Category Style', { :controller => 'category', :action => 'define_style', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
-                      =link_to 'Define Category Types', { :controller => 'category', :action => 'define_types', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      =link_to 'Define Category Attributes', { :controller => 'category', :action => 'define_attributes', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      hr
+                      =link_to 'Define Category Attribute Values', { :controller => 'category', :action => 'define_attribute_values', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
                       =link_to 'Apply All Categories Changes', { :controller => 'category', :action => 'apply_all_styles', :collection_id => @collection.id, :category_id => category.id }
                       hr
@@ -87,14 +89,14 @@
 
 
     function addField() {
-      var html = "<input name='type[]' class='type_input_field' type='text'><br>";
+      var html = "<input name='attribute[]' class='attribute_input_field' type='text'><br>";
       $('#fields').append(html);
     }
 
     function deleteField(id) {
-      var html = "<input type='hidden' name='delete_type[]' value='"+id+"'>";
+      var html = "<input type='hidden' name='delete_attribute[]' value='"+id+"'>";
       $('#fields').append(html);
-      document.getElementById("delete_type_"+id).disabled=true;
+      document.getElementById("delete_attribute_"+id).disabled=true;
     }
 
     function verifyValue(){
@@ -110,7 +112,7 @@
     
     function verifyValueType(){
       var val, i;
-      var elms=document.getElementsByClassName('type_input_field');
+      var elms=document.getElementsByClassName('attribute_input_field');
 
       for (i = 0; i < elms.length; i++) {
         val=elms[i].value;
@@ -121,4 +123,36 @@
       }
 
       return;
+    }
+
+    var previousAttrId=null;
+
+    function showAttributeValues(attributeId){
+      if(previousAttrId!=null){
+        $("#show_attribute_values"+previousAttrId).removeClass('show_attribute_values_active');
+        $("#show_attribute_values"+previousAttrId).addClass('show_attribute_values');
+        $("#one_attribute_div_"+previousAttrId).hide();
+        $("#big_new_values_div_"+previousAttrId).hide();
+        $("#allow_input_div_"+previousAttrId).hide();
+      }
+      previousAttrId=attributeId;
+      $("#show_attribute_values"+previousAttrId).removeClass('show_attribute_values');
+      $("#show_attribute_values"+attributeId).addClass('show_attribute_values_active');
+      $("#one_attribute_div_"+attributeId).show();
+      $("#big_new_values_div_"+attributeId).show();
+      $("#allow_input_div_"+attributeId).show();
+      
+      return false;
+    }
+
+    function deleteAttributeValue(attributeValueid,attributeId){
+      var html = "<input type='hidden' name='delete_attribute_value[]' value='"+attributeValueid+"'>";
+      $('#one_attribute_div_'+attributeId).append(html);
+      document.getElementById("delete_attribute_value_"+attributeValueid).disabled=true;
+
+    }
+
+    function addAttributeValue(attributeId){
+      var html = '<input name="add_attribute_value['+attributeId+'][]" class="attribute_value_input_field" type="text"><br>';
+      $('#new_values_div_'+attributeId).append(html);
     }

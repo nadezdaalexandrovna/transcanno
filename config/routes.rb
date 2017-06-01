@@ -57,7 +57,8 @@ Fromthepage::Application.routes.draw do
   put   'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
   patch 'category/define_style2', :to => 'category#define_style2'
-  patch 'category/define_types2', :to => 'category#define_types2'
+  patch 'category/define_attribute_values2', :to => 'category#define_attribute_values2'
+  patch 'category/define_attributes2', :to => 'category#define_attributes2'
   patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'

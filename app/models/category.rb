@@ -1,6 +1,7 @@
 class Category < ActiveRecord::Base
   extend ActsAsTree::TreeWalker
   has_many :categorytypes
+  has_many :categoryattributes
   has_one :categorystyle
   acts_as_tree :order => 'title'
   belongs_to :collection

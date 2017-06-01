@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_types]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values]
 
   def edit
   end
@@ -36,44 +36,134 @@ class CategoryController < ApplicationController
   def define_style
   end
 
-  def define_types
-    @categorytypes=Categorytype.joins(:category).where(category_id: params[:category_id])
+  def define_attribute_values
+    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+    #@attributevalues=Attributevalue.joins(:categoryattribute).joins(:category).where(category_id: params[:category_id])
+
+    @attributeValuesHash={}
+    sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
+    connection = ActiveRecord::Base.connection
+    res=connection.execute(sqlS)
+    print "\nres:\n"
+    puts res.inspect
+    res.each do |r|
+      print "\nr:\n"
+      puts r.inspect
+      if @attributeValuesHash.key?(r[0].to_s)
+        @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
+      else
+        @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+      end
+    end
+    print "\n@attributeValuesHash:\n"
+    puts @attributeValuesHash.inspect
+
   end
 
-  def define_types2
+  def define_attribute_values2
     @category.id=params[:category_id]
     giveNotice=false
-    if params[:delete_type]!=nil
+
+    if params[:delete_attribute_value]!=nil
       forSql=""
-      params[:delete_type].each do |type|
+      params[:delete_attribute_value].each do |valueid|
+        if valueid!=nil && valueid!=""
+          giveNotice=true
+          forSql+=valueid+", "
+        end
+      end
+      if forSql!=""
+        sql="delete from attributevalues where id in ("+forSql[0..-3]+");"
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+
+    sql="update categoryattributes set allow_user_input=false;"
+    connection = ActiveRecord::Base.connection
+    connection.execute(sql)
+
+    if params[:allow_user_input]!=nil
+      forSql=""
+      params[:allow_user_input].each do |attrid|
+        if attrid!=nil && attrid!=""
+          giveNotice=true
+          forSql+=attrid+", "
+        end
+      end
+      if forSql!=""
+        sql="update categoryattributes set allow_user_input=true where id in ("+forSql[0..-3]+");"
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+
+    if params[:add_attribute_value]!=nil
+      forSql=""
+      params[:add_attribute_value].each do |attrid|
+        print "attrid"
+        puts attrid.inspect
+        attrid[1].each do |attrValue|
+          if attrValue.length>0
+            forSql+='("'+attrid[0]+'","'+attrValue+'"), '
+          end
+        end
+      end
+      if forSql!=""
+        sql="INSERT INTO attributevalues (categoryattribute_id, value) VALUES "
+        sql+=forSql[0..-3]
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end 
+    end
+
+    if giveNotice==true
+      flash[:notice] = "Category attributes have been defined."
+    end
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+  end
+
+  def define_attributes
+    #@categorytypes=Categorytype.joins(:category).where(category_id: params[:category_id])
+    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+  end
+
+  def define_attributes2
+    @category.id=params[:category_id]
+    giveNotice=false
+    if params[:delete_attribute]!=nil
+      forSql=""
+      params[:delete_attribute].each do |type|
         if type!=nil && type!=""
           giveNotice=true
           forSql+=type+", "
         end
       end
       if forSql!=""
-        sql="delete from categorytypes where id in ("+forSql[0..-3]+");"
+        #sql="delete from categorytypes where id in ("+forSql[0..-3]+");"
+        sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
         connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end
     end
-    if params[:type]!=nil
+    if params[:attribute]!=nil
       forSql=""
-      params[:type].each do |type|
+      params[:attribute].each do |type|
         if type!=nil && type!=""
           giveNotice=true
           forSql+="( '"+type+"', "+params[:category_id]+"), "
         end
       end
       if forSql!=""
-        sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
+        #sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
+        sql="INSERT INTO categoryattributes (name, category_id) VALUES "
         sql+=forSql[0..-3]
         connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end
     end
     if giveNotice==true
-      flash[:notice] = "Category types have been defined."
+      flash[:notice] = "Category attributes have been defined."
     end
     ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end

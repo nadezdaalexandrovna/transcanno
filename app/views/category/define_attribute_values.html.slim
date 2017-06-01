@@ -1,0 +1,41 @@
+.litebox-embed(style="width:450px;")
+  h1 Define Category Attribute Values
+
+  =form_for(@category, :url => { :action => 'define_attribute_values2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
+    =hidden_field_tag(:category_id, @category.id)
+    h5 Define attribute values for the category
+      <span id="category_title_for_attributes">#{@category.title}</span>
+    h5 Existing attributes
+    table[ class="already_type" ]
+      tr
+        -@categoryattributes.each do |r|
+          <td>
+            <button type="button" id="show_attribute_values#{r.id}" class="show_attribute_values"  onclick="showAttributeValues(#{r.id})">#{r.name}</button>
+          </td>
+    <div id="one_attribute_big_div">
+      -@categoryattributes.each do |r|
+        <div  id="allow_input_div_#{r.id}" style="display: none;">
+          h5 Allow user input for the attribute <span class="attribute_name_span">#{r.name}</span>
+          =check_box_tag 'allow_user_input[]', r.id.to_s, (r.allow_user_input ? 'checked' : nil)
+        </div>
+        -if @attributeValuesHash.has_key?("#{r.id}")
+          <div id="one_attribute_div_#{r.id}" class="one_attribute_div" style="display: none;">
+            h5 Existing values of the attribute <span class="attribute_name_span">#{r.name}</span>:
+            table [ class="already_value" ]
+              -@attributeValuesHash.fetch("#{r.id}").each do |v|
+                tr
+                  <td>#{v.fetch(:value)}</td>
+                  <td><button type="button" class="delete_attributevalue_button" id="delete_attribute_value_#{v.fetch(:valueid)}" value="#{v.fetch(:valueid)}" onclick="deleteAttributeValue(#{v.fetch(:valueid)},#{r.id})">Delete</button></td>
+          </div>
+        <div  id="big_new_values_div_#{r.id}" class="big_new_values_div" style="display: none;">
+          h5 Add new values for the attribute <span class="attribute_name_span">#{r.name}</span>
+          <div id="new_values_div_#{r.id}">
+            <input name="add_attribute_value[#{r.id}][]" class="attribute_value_input_field" type="text">
+          </div>
+          <button type="button" id="add_field"  onclick="addAttributeValue(#{r.id})">Add another value</button><br><br>
+        </div>
+    </div>   
+    
+    .toolbar
+      .toolbar_group.aright =f.button "Apply all changes to the attribute values of the category \"#{@category.title}\""
+
