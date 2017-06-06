@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assing_category_scope]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences]
 
   def edit
   end
@@ -33,15 +33,22 @@ class CategoryController < ApplicationController
     end
   end
 
-  def assing_category_scope
+  def define_attribute_sequences
+    define_attribute_values
+  end
+
+  def define_attribute_sequences2
+  end
+
+  def assign_category_scope
     scope=Categoryscope.where(category_id: params[:category_id])
     print "scope: \n"
     puts scope.inspect
     
-    @scopehash={0=>'',1=>'',2=>''}
+    @scopehash={0=>false,1=>false,2=>false}
     unless scope.empty?
       scope.each do |s|
-        @scopehash[s.mode]='checked'
+        @scopehash[s.mode]=true
       end
     end
     
@@ -49,16 +56,20 @@ class CategoryController < ApplicationController
     puts @scopehash.inspect
   end
 
-  def assing_category_scope2
+  def assign_category_scope2
     scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
-    scope.mode=params[:category_scope].to_i
+    print " mode:"
+    print params[:category][:category_scope].to_i
+    print "\n"
+    scope.mode=params[:category][:category_scope].to_i
+    #scope.update_column(mode: params[:category_scope].to_i)
     #Categoryscope.mode(params[:category_scope].to_i).where(category_id:params[:category_id])
     #Categoryscope.save()
     if scope.save
       flash[:notice] = "Category scope has been assigned."
       ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     else
-      render :action => 'assing_category_scope'
+      render :action => 'assign_category_scope'
     end
   end
 
@@ -68,9 +79,10 @@ class CategoryController < ApplicationController
   def define_attribute_values
     @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
     @attributeValuesHash={}
-    sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
+    sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
+
     res.each do |r|
       if @attributeValuesHash.key?(r[0].to_s)
         @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
@@ -143,7 +155,29 @@ class CategoryController < ApplicationController
 
   def define_attributes
     #@categorytypes=Categorytype.joins(:category).where(category_id: params[:category_id])
+    scope=Categoryscope.where(category_id: params[:category_id])
+    print "scope: \n"
+    puts scope.inspect
+    @categoryScope=2
+    unless scope.empty?
+      scope.each do |s|
+        @categoryScope=s.mode
+      end
+    end
+
+    @disableScopeChoice=""
+    #If the category scope is restricted, there is no use to choose its attributes' scope: it will be the same
+    if @categoryScope==0 || @categoryScope==1
+      @disableScopeChoice='display:none;'
+    end
+
     @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+    @attrscopehash={}
+    @categoryattributes.each do |r|
+      @attrscopehash[r.id]={0=>false,1=>false,2=>false}
+      @attrscopehash[r.id][r.mode]=true
+    end
+    puts @attrscopehash.inspect
   end
 
   def define_attributes2
@@ -165,16 +199,53 @@ class CategoryController < ApplicationController
     end
     if params[:attribute]!=nil
       forSql=""
+      numberNews=0
       params[:attribute].each do |type|
         if type!=nil && type!=""
+          if params[:category_scope]!=2
+            mode=params[:category_scope]
+          else
+            mode=params[:new_attr_scope][numberNews.to_s]
+          end
+          print 
           giveNotice=true
-          forSql+="( '"+type+"', "+params[:category_id]+"), "
+          forSql+="( '"+type+"', "+mode+", "+params[:category_id]+"), "
+          numberNews+=1
         end
       end
       if forSql!=""
         #sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
-        sql="INSERT INTO categoryattributes (name, category_id) VALUES "
+        sql="INSERT INTO categoryattributes (name, mode, category_id) VALUES "
         sql+=forSql[0..-3]
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+    #Apply scopes of attributes
+    if params[:category]!=nil
+      forSql=""
+      ids=""
+      if params[:category_scope]=="2"
+        params[:category].each do |scope|
+          if scope!=nil && scope!=""
+            giveNotice=true
+            forSql+="WHEN id="+scope[0]+" THEN "+scope[1]+" "
+            ids+=scope[0]+", "
+          end
+        end
+      else
+        params[:category].each do |scope|
+          if scope!=nil && scope!=""
+            giveNotice=true
+            forSql+="WHEN id="+scope[0]+" THEN "+params[:category_scope]+" "
+            ids+=scope[0]+", "
+          end
+        end
+      end
+      if forSql!=""
+        sql="update categoryattributes set mode=CASE "
+        sql+=forSql
+        sql+="end where id in ("+ids[0..-3]+");"
         connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end

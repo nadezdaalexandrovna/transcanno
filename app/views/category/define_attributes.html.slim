@@ -3,19 +3,43 @@
 
   =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    =hidden_field_tag(:category_scope, @categoryScope)
+    <div id="hidden">
+    </div>
     h5 Define attributes of
       <span id="category_title_for_attributes">#{@category.title}</span>
     h5 Existing attributes
     table[ class="already_attribute" ]
-      -@categoryattributes.each do |r|
+      head
         tr
-          <td>#{r.name}</td>
-          <td><button type="button" class="delete_attribute_button" id="delete_attribute_#{r.id}" value="#{r.id}" onclick="deleteField(#{r.id})">Delete</button></td>
+          th name
+          th mode
+          th delete
+      body
+        -@categoryattributes.each do |r|
+          tr
+            <td>#{r.name}</td>
+            <td>
+              <div style="#{@disableScopeChoice}">   
+                = f.radio_button :"#{r.id}", '0', :checked => @attrscopehash[r.id][0]
+                |simple<br>
+                = f.radio_button :"#{r.id}", '1', :checked => @attrscopehash[r.id][1]
+                |advanced<br>
+                = f.radio_button :"#{r.id}", '2', :checked => @attrscopehash[r.id][2]
+                |both
+              </div>
+            </td>
+            <td><button type="button" class="delete_attribute_button" id="delete_attribute_#{r.id}" onclick="deleteAttribute(#{r.id})">Delete</button></td>
     h5 Add new attributes
     <div id="fields">
       <input name="attribute[]" class="attribute_input_field" type="text"><br>
+      <div style="#{@disableScopeChoice}">
+        <input id="category_new_attr_scope_0" name="new_attr_scope[0]" value="0" type="radio">simple<br>
+        <input id="category_new_attr_scope_1" name="new_attr_scope[0]" value="1" type="radio">advanced<br>
+        <input id="category_new_attr_scope_2" name="new_attr_scope[0]" value="2" type="radio" checked>both<br>
+      </div>
     </div>
-    <button type="button" id="add_field"  onclick="addField()">Add another attribute</button><br><br>
+    <button type="button" id="add_field"  onclick="addField('#{@disableScopeChoice}')">Add another attribute</button><br><br>
  
     .toolbar
       .toolbar_group.aright =f.button 'Define Attributes'

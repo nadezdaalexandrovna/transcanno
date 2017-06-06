@@ -1,0 +1,24 @@
+.litebox-embed(style="width:450px;")
+  h1 Define Attributes Sequences
+
+  =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
+    =hidden_field_tag(:category_id, @category.id)
+    h5 Define attribute sequences for the category
+      <span id="category_title_for_attributes">#{@category.title}</span>
+    h5 Existing attributes
+    -@categoryattributes.each do |r|
+      <br><span class="attribute_name_span">#{r.name}:</span><br>
+      -if @attributeValuesHash.has_key?("#{r.id}")
+        <div id="one_attribute_div_#{r.id}" class="one_attribute_div">
+          h5 Existing values of the attribute <span class="attribute_name_span">#{r.name}</span>:
+          table [ class="already_value" ]
+            -@attributeValuesHash.fetch("#{r.id}").each do |v|
+              tr
+                <td>#{v.fetch(:value)}</td>
+        </div>
+    
+ 
+    .toolbar
+      .toolbar_group.aright =f.button 'Define Attribute Sequences'
+
+
