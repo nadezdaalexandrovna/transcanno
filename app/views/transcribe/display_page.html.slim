@@ -166,7 +166,7 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, property, caT, caTT;
 
 
     var l=document.getElementById('page_source_text');
@@ -354,6 +354,36 @@ h2.legend Page Notes
     }
 
 
+    function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode){
+      var couple;
+      var attrString="";
+
+      $("#newDropdownDiv").hide();
+
+        medium.focus();
+
+        d = new Date();
+        milliseconds = d.getTime();
+        tagCode=milliseconds.toString();
+
+        for (couple in userChosenAttributesAndValues){
+          attrString+=" "+couple[0]+"=\""+couple[1]+"\"";
+        }
+
+        tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'></'+varTag+'>';
+
+
+        medium.focusNadya(focusOffset,focusNode);
+        medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+        tagWithType='';
+
+        $('#chosen-select-type').empty();
+        console.log("medium.value() : "+medium.value());
+
+        return false;
+    }
+
+
     function tagSelectionWithType (categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable){
       categoryTypesTable=categoryTypesHash[categoryid];
 
@@ -492,11 +522,7 @@ h2.legend Page Notes
                     xF = rectF.left;
                     yF = rectF.top;
                     spanParentF = spanF.parentNode;
-                    /*
-                    if(spanParentF.id!="bigDiv"){
-                      crds=getCoords(spanParentF);
-                    }
-                    */
+                    
                     spanParentF.removeChild(spanF);
 
                     // Glue any broken text nodes back together
@@ -517,30 +543,7 @@ h2.legend Page Notes
       }
     }
 
-    /*
-    function getCoords2(spanF){
-      spanParentF = spanF.parentNode;
-      if(spanParentF.id!="bigDiv"){
-        //var underBigDivParent=findUnderBigDivParent(spanParentF);
-        //return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top+underBigDivParent.getClientRects()[0].top};
-        //return {'left':spanF.getClientRects()[0].left, 'top':underBigDivParent.getClientRects()[0].top};
-        return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top};
-      }else{
-        return spanF.getClientRects()[0];
-      }
-    }
-
-    function getCoords(spanF){
-      spanParentF = spanF.parentNode;
-      if(spanParentF.id!="bigDiv"){
-        crds=getCoords(spanParentF);
-        return {'left':spanF.getClientRects()[0].left, 'top':spanF.getClientRects()[0].top+crds.top};
-      }else{
-        return spanF.getClientRects()[0];
-      }
-    }
-    */
-
+    
     //Add tag
     jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
 
@@ -577,39 +580,77 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHash){
-                categoryTypesTable=categoryTypesHash[categoryid];
+                userChosenAttributesAndValues=[];
 
-                //Create the new dropdown menu for category types
-                newDropdown=addNewDropdown(categoryTypesTable.length);
-
-                for(i=0; i< categoryTypesTable.length; i++){
-                  //Add an option for the category types dropdown menu
-                  addAnOption(newDropdown,categoryTypesTable[i]);
-
-                  if(i==(categoryTypesTable.length-1)){
-                    $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
-                    $("#newDropdownDiv").show();
-                    $('#select-type-input').show();
-                    $('#select-type-input').focus();
-                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
-
-                    $("#chosen-select-type").off().change(function(event3){                        
-                        
-                      if(event3.target == this){
-                        type=$(this).val();
-                        if(type!=null && type!=''){
-                          newType=type;
-                          type='';
-
-                          addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
-
-                        }
-                      }
-                      
-                    });
-                  }
+                numberOfAttributes=0;
+                catHashLength=0;
+                for ( property in categoryTypesHash[categoryid] ){
+                  catHashLength+=1;
                 }
-                  
+
+                if (catHashLength>0){
+                for (caTT in categoryTypesHash[categoryid]){
+                  console.log("caTT");
+                  console.log(caTT);
+
+                  (function(caT) {
+                    console.log('iterator: ' + caT);
+                  categoryTypesTable=categoryTypesHash[categoryid][caT]['values'];
+
+                  //Create the new dropdown menu for category types
+                  newDropdown=addNewDropdown(categoryTypesTable.length);
+
+                  for(i=0; i< categoryTypesTable.length; i++){
+                    //Add an option for the category types dropdown menu
+                    addAnOption(newDropdown,categoryTypesTable[i]);
+
+                    if(i==(categoryTypesTable.length-1)){
+                      $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
+                      $("#newDropdownDiv").show();
+                      $('#select-type-input').show();
+                      $('#select-type-input').focus();
+                      //$('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
+
+                      $("#chosen-select-type").off().change(function(event3){                        
+                        
+                        if(event3.target == this){
+                          type=$(this).val();
+                          if(type!=null && type!=''){
+                            newType=type;
+                            type='';
+
+                            userChosenAttributesAndValues.push([caT,newType]);
+                            numberOfAttributes+=1;
+
+                            $("#newDropdownDiv").hide();
+                            $('#chosen-select-type').empty();
+
+                            
+                            console.log("userChosenAttributesAndValues");
+                            console.log(userChosenAttributesAndValues);
+                            
+                            console.log("numberOfAttributes");
+                            console.log(numberOfAttributes);
+
+                            console.log("caT");
+                            console.log(caT);
+                            console.log("newType");
+                            console.log(newType);
+
+                            //addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
+                            if (numberOfAttributes==catHashLength){
+                              addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                            }
+                            
+                          }
+                        }
+                      
+                      });
+                    }
+                  }
+                  })(caTT);
+                }
+                } 
               }else{ //If the category doesn't have types
 
                 medium.focus();
@@ -687,26 +728,7 @@ h2.legend Page Notes
       }
     };
 
-    /*
-    $( ".hyphen" ).mousedown(function() {
-      d = new Date();
-      article.highlight();
-      medium.invokeElement('hyphen', {
-        tagcode: d.getTime().toString()
-      });
-      return false;
-    });
-
-    $( ".closing" ).mousedown(function() {
-      d = new Date();
-      article.highlight();
-      medium.invokeElement('closing', {
-        tagcode: d.getTime().toString()
-      });
-      return false;
-    });
-    */
-
+    
     $( ".undo" ).mousedown(function() {
       medium.undo();
       return false;
@@ -715,10 +737,7 @@ h2.legend Page Notes
 
     function AddMediumValue() {
       mediumValue = medium.value();
-      console.log(mediumValue);
-      //mediumValue = mediumValue.replace(/\&nbsp\;/g, '\&#160\;');
-      //mediumValue = mediumValue.replace(/(<br>)+/g, '<br>');
-      //mediumValue = mediumValue.replace(/<br>(?!\<)/g, "<br></br>");
+      
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
       mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
       mediumValue = mediumValue.replace(/<\/div>/, '');

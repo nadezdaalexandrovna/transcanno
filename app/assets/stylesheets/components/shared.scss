@@ -1375,12 +1375,12 @@ label[for="207"] span {
   display: none;
 }
 
-.show_attribute_values_active{
+.show_attribute_values_active, .seq_attr_name_button_active{
   //border: solid black 1px;
   border-color: black !important;
 }
 
-.show_attribute_values:active{
+.show_attribute_values:active, .seq_attr_name_button:active{
   //border: solid black 1px;
   border-color: black !important;
 }
@@ -1397,8 +1397,12 @@ label[for="207"] span {
   margin-top: 40px;
 }
 
-.one_attribute_div, .big_new_values_div{
+.one_attribute_div, one_attribute_div_seq, .big_new_values_div{
   margin-top: 20px;
+}
+
+.one_attribute_div_seq{
+  margin-bottom: 20px;
 }
 
 .already_value td{
@@ -1407,5 +1411,14 @@ label[for="207"] span {
 
 .already_attribute td{
   padding: 4px;
+}
+
+.sequences_of_value{
+  background-color: white;
+  min-height: 7vh;
+  width: 15vw;
+  border-radius: 0.25em;
+  //border-color: rgba(0, 0, 0, 0.2);
+  border: solid 1px rgba(0, 0, 0, 0.2);
 }
 

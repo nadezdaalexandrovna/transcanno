@@ -1,21 +1,48 @@
 .litebox-embed(style="width:450px;")
   h1 Define Attributes Sequences
 
-  =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
+  =form_for(@category, :url => { :action => 'define_attribute_sequences2' }, :html => { :onsubmit=>'return beforeSubmitSequences()' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    <div id="sequences" style="display:none;">
+    </div>
     h5 Define attribute sequences for the category
       <span id="category_title_for_attributes">#{@category.title}</span>
     h5 Existing attributes
+    table[ class="already_type" ]
+      tr
+        -@categoryattributes.each do |r|
+          td
+            <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r.id}" onclick="showSeqAttrValues(#{r.id})">#{r.name}</button>
+
     -@categoryattributes.each do |r|
-      <br><span class="attribute_name_span">#{r.name}:</span><br>
+      <div id="set_initial_div_#{r.id}" class="set_initial_div" style="display:none;">
+        h5 Set the attribute <span class="attribute_name_span">#{r.name}</span> as initial
+        =check_box_tag 'initial[]', r.id.to_s, (r.initial ? 'checked' : nil)
+      </div>
       -if @attributeValuesHash.has_key?("#{r.id}")
-        <div id="one_attribute_div_#{r.id}" class="one_attribute_div">
+        <div id="seq_one_attribute_div_#{r.id}" class="one_attribute_div_seq" style="display:none;">
           h5 Existing values of the attribute <span class="attribute_name_span">#{r.name}</span>:
           table [ class="already_value" ]
             -@attributeValuesHash.fetch("#{r.id}").each do |v|
               tr
-                <td>#{v.fetch(:value)}</td>
+                td
+                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r.id}" onclick="activateSequence(#{v.fetch(:valueid)})">#{v.fetch(:value)}</button>
+                td
+                  <div id="title_of_value_#{v.fetch(:valueid)}" class="title_of_value" style="display:none;">
+                  h5 Consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
+                  </div>
+                  <div id="sequences_of_value_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
+                  </div>
         </div>
+    <div id="possible_consequent_attrs_div" class="possible_consequent_attrs_div" style="display:none;">
+      h5 Possible consequent attributes
+      table[ class="already_type" ]
+        tr
+          -@categoryattributes.each do |ca|
+            td
+              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca.id}" onclick="addToValueSequences(#{ca.id})">#{ca.name}</button>
+
+    </div>
     
  
     .toolbar

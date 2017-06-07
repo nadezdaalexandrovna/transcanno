@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px;")
   h1 Define Category Attribute Values
 
-  =form_for(@category, :url => { :action => 'define_attribute_values2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
+  =form_for(@category, :url => { :action => 'define_attribute_values2' }, :html => { :onsubmit=>'return verifyValueType2()' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     h5 Define attribute values for the category
       <span id="category_title_for_attributes">#{@category.title}</span>

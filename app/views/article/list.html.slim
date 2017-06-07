@@ -143,11 +143,27 @@
       return;
     }
 
+    //Function for the attribute values creation menu normalising the values names
+    function verifyValueType2(){
+      var val, i;
+      var elms=document.getElementsByClassName('attribute_value_input_field');
+
+      for (i = 0; i < elms.length; i++) {
+        val=elms[i].value;
+        val=val.replace(/[ ]+/g, "_");
+        val=val.replace(/[^a-zA-Z0-9_\-]+/g, "");
+        elms[i].value = val;
+        
+      }
+
+      return;
+    }
+
 
     //Functions for the attribute values menu
     var previousAttrId=null;
 
-    //Show the menu for the chosen attribute
+    //Show the menu for the chosen attribute in the attributes values popup
     function showAttributeValues(attributeId){
       if(previousAttrId!=null){
         $("#show_attribute_values"+previousAttrId).removeClass('show_attribute_values_active');
@@ -162,6 +178,31 @@
       $("#one_attribute_div_"+attributeId).show();
       $("#big_new_values_div_"+attributeId).show();
       $("#allow_input_div_"+attributeId).show();
+
+      return false;
+    }
+
+    var previousSeqAttrId=null;
+    var activeValueId=null;
+
+    //Show possible values of the chosen attribute in the sequences menu
+    function showSeqAttrValues(attributeId){
+      if(previousSeqAttrId!=null){
+        $("#set_initial_div_"+previousSeqAttrId).hide();
+        $("#seq_attr_name_button"+previousSeqAttrId).removeClass('seq_attr_name_button_active');
+        $("#seq_attr_name_button"+previousSeqAttrId).addClass('seq_attr_name_button');
+        $("#seq_one_attribute_div_"+previousSeqAttrId).hide();
+      }
+      previousSeqAttrId=attributeId;
+
+      $("#set_initial_div_"+attributeId).show();
+
+      $("#seq_attr_name_button"+attributeId).removeClass('seq_attr_name_button');
+      $("#seq_attr_name_button"+attributeId).addClass('seq_attr_name_button_active');
+      $("#seq_one_attribute_div_"+attributeId).show();
+
+      $("#possible_consequent_attrs_div").hide();
+      activeValueId=null;
 
       return false;
     }
@@ -189,5 +230,50 @@
 
     }
 
+    var previousvalueId=null;
+    //Sequences functions
+    function activateSequence(valueId){
+      if (previousvalueId!=null){
+        $("#sequences_of_value_"+previousvalueId).hide();
+        $("#title_of_value_"+previousvalueId).hide();
+      }
+      $("#title_of_value_"+valueId).show();
+      $("#sequences_of_value_"+valueId).show();
+      $("#possible_consequent_attrs_div").show();
+      activeValueId=valueId;
+      previousvalueId=valueId;
+
+      return false;
+    }
+
+
+    function addToValueSequences(attributeId){
+      var attributeName=$("#seq_attr_name_button"+attributeId).html();
+      var sequenceButton='<button type="button" id="button_'+activeValueId+'_'+attributeId+'" oncĺick="deleteSequenceFromAttrValue('+activeValueId+','+attributeId+')">'+attributeName+'</button>';
+      console.log("sequenceButton: "+sequenceButton);
+      //Add the values to a hidden input form field
+      var newInput='<input type="hidden" id="seq_'+activeValueId+'_'+attributeId+'" name="seq['+activeValueId+'][]" value="'+attributeId+'"/>';
+      $("#sequences").append(newInput);
+
+      $("#sequences_of_value_"+activeValueId).append(sequenceButton);
+      return false;
+    }
+
+    //Delete the values from the hidden input form field
+    function deleteSequenceFromAttrValue(activeValueId,attributeId){
+      console.log("activeValueId: "+activeValueId);
+      //console.log("attributeId: "+attributeId);
+      //var element=document.getElementById("seq_"+activeValueId+"_"+attributeId);
+      //var par=element.parentNode;
+      //par.removeChild(element);
+      //var el=document.getElementById("button_"+activeValueId+"_"+attributeId);
+      //var para=el.parentNode;
+      //para.removeChild(el);
+      //return false;
+    }
+
+    function beforeSubmitSequences(){
+     
+    }
 
     

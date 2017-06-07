@@ -38,12 +38,36 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_sequences2
+    giveNotice=false
+
+    sql="update categoryattributes set initial=false;"
+    connection = ActiveRecord::Base.connection
+    connection.execute(sql)
+
+    if params[:initial]!=nil
+      giveNotice=true
+      forSql=""
+      params[:initial].each do |attrid|
+        if attrid!=nil && attrid!=""
+          giveNotice=true
+          forSql+=attrid+", "
+        end
+      end
+      if forSql!=""
+        sql="update categoryattributes set initial=true where id in ("+forSql[0..-3]+");"
+        connection = ActiveRecord::Base.connection
+        connection.execute(sql)
+      end
+    end
+
+    if giveNotice==true
+      flash[:notice] = "Attribute sequences have been defined."
+    end
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
 
   def assign_category_scope
     scope=Categoryscope.where(category_id: params[:category_id])
-    print "scope: \n"
-    puts scope.inspect
     
     @scopehash={0=>false,1=>false,2=>false}
     unless scope.empty?
@@ -51,16 +75,10 @@ class CategoryController < ApplicationController
         @scopehash[s.mode]=true
       end
     end
-    
-    print "@scopehash: \n"
-    puts @scopehash.inspect
   end
 
   def assign_category_scope2
     scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
-    print " mode:"
-    print params[:category][:category_scope].to_i
-    print "\n"
     scope.mode=params[:category][:category_scope].to_i
     #scope.update_column(mode: params[:category_scope].to_i)
     #Categoryscope.mode(params[:category_scope].to_i).where(category_id:params[:category_id])

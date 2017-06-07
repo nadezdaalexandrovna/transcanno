@@ -18,16 +18,27 @@ class TranscribeController  < ApplicationController
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
-    @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id])
-    @categorytypes=Categorytype.joins(:category)
+    @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('inner join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1')
+    
+    sqlS="SELECT categoryattributes.category_id, categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value, categoryattributes.allow_user_input FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=2 and pages.id="+params[:page_id];
+    connection = ActiveRecord::Base.connection
+    categorytypes=connection.execute(sqlS)
+
+    #categorytypes=Categoryattribute.joins(:category).joins('inner join attributevalues on categoryattributes.id=attributevalues.categoryattribute_id').where.not(mode: 1)
     @categoryTypesHash=Hash.new()
-    @categorytypes.each do |row|
-      if @categoryTypesHash.key?(row.category_id)
-        @categoryTypesHash[row.category_id].push(row.categorytype)
-      else
-        @categoryTypesHash[row.category_id]=[row.categorytype]
+    categorytypes.each do |row|
+      puts row.inspect
+      if @categoryTypesHash.key?(row[0]) #If this category is already in the hash
+        if @categoryTypesHash[row[0]].key?(row[2]) #If this attribute is already in the hash
+          @categoryTypesHash[row[0]][row[2]]['values'].push(row[4])
+        else
+          @categoryTypesHash[row[0]][row[2]]={'allow_user_input'=>row[5],'values'=>[row[4]]}
+        end
+      else #If this category is not yet in the hash
+        @categoryTypesHash[row[0]]={row[2]=>{'allow_user_input'=>row[5], 'values'=>[row[4]]}}
       end
     end
+    puts @categoryTypesHash.inspect
     @categoryTypesHash=@categoryTypesHash.to_json
   end
 
