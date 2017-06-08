@@ -554,7 +554,7 @@ h2.legend Page Notes
     }
 
 
-    function getNext(num, categoryTable){
+    function getNext(num, categoryTable, focusOffset,focusNode){
 
         console.log("num");
         console.log(num);
@@ -607,7 +607,7 @@ h2.legend Page Notes
                             console.log(newType);
 
                             if (num<(categoryTable.length-1)){
-                              getNext(num+1, categoryTable);
+                              getNext(num+1, categoryTable, focusOffset,focusNode);
                             }
 
                             //addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
@@ -666,7 +666,7 @@ h2.legend Page Notes
 
                 var categoryTable=categoriesInfo[categoryid];
                 
-                getNext(0, categoryTable);
+                getNext(0, categoryTable,focusOffset,focusNode);
                 
               }else{ //If the category doesn't have types
 

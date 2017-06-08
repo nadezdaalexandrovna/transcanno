@@ -306,4 +306,21 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
+$( ".button-verb-id36" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+nowX=position.left;
+nowY=position.top;
+tagSelectionWithType(categoryid, categoryTypesHash, medium, 'verb-id36', focusOffset, focusNode, [anchorNode, anchorOffset]);
+}else{
+article.highlight();
+medium.invokeElement('verb-id36', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
 });
