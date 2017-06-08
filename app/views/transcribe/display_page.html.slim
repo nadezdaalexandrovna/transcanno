@@ -339,7 +339,97 @@ h2.legend Page Notes
       });
     };
 
+    //If the user types text in the input field of the category type select box in order to select one of the options
+    jQuery.fn.filterByTextS = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable) {
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
 
+      return this.each(function() {
+        select = this;
+        var length=$(select).attr("size");
+        console.log("length: "+length);
+        options = [];
+        $(select).find('option').each(function() {
+          options.push({value: $(this).val(), text: $(this).text()});
+        });
+        $(select).data('options', options);
+
+        $(textbox).off().on('change keyup', function(e) {
+        //$(textbox).bind('change keyup', function(e) {
+          options2 = $(select).empty().data('options');
+          $(select).attr("size", 0);
+          search = $.trim($(this).val());
+          if(search!=null && search!=""){
+            regex = new RegExp("^"+search,"gi");
+
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="" && option.value.match(regex) !== null) {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+                $(select).attr("size", $(select).attr("size")+1);
+                //If the user presses enter
+                if (e.which == 13) {
+                  if(notCollapsedArgsTable==null){
+                    $("#newDropdownDiv").hide();
+                    nowX=0;
+                    nowY=0;
+
+                    userChosenAttributesAndValues.push([caT,option.value]);
+
+                    if (num<(categoryTable.length-1)){
+                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                    }
+
+                    if (num==(categoryTable.length-1)){
+                      medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                      aNode=null;
+                      fNode=null;
+                    }
+                  }else{
+                    $("#newDropdownDiv").hide();
+                    nowX=0;
+                    nowY=0;
+                    $("#select-type-input").hide();
+                    $("#select-type-input")[0].value="";
+                    $('#chosen-select-type').empty();
+
+
+                    userChosenAttributesAndValues.push([caT,option.value]);
+
+                    if (num<(categoryTable.length-1)){
+                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                    }
+
+                    if (num==(categoryTable.length-1)){
+                      medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                      aNode=null;
+                      fNode=null;
+                    }
+                  }
+                }
+              }
+            });
+          }else{ // if search==null || search==""
+            $(select).attr("size", length);
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="") {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+
+              }
+            });
+          }
+        });
+      });
+    };
 
     function addCategoryWithType (medium, varTag, newType, focusOffset,focusNode) {
       setTimeout(function(){
@@ -554,75 +644,52 @@ h2.legend Page Notes
     }
 
 
-    function getNext(num, categoryTable, focusOffset,focusNode){
-
-        console.log("num");
-        console.log(num);
+    function getNext(num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable){
             
         var categoryTypesTable=categoryTable[num][2];
         var caT=categoryTable[num][0];
-                  
+        
+        //Create the new dropdown menu for category types
+        newDropdown=addNewDropdown(categoryTypesTable.length);
 
-                  console.log("caT: "+caT);
-                  console.log(categoryTypesTable);
-
-                  
-                  //Create the new dropdown menu for category types
-                  newDropdown=addNewDropdown(categoryTypesTable.length);
-
-                  for(i=0; i< categoryTypesTable.length; i++){
-                    //Add an option for the category types dropdown menu
-                    addAnOption(newDropdown,categoryTypesTable[i]);
-                    console.log('caT line 606: ' + caT);
-                    if(i==(categoryTypesTable.length-1)){
-                      $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
-                      $("#newDropdownDiv").show();
-                      $('#select-type-input').show();
-                      $('#select-type-input').focus();
-                      //$('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
-                      console.log('caT just before change(): ' + caT);
-                      $("#chosen-select-type").off().change(caT,function(event3){                        
-                        console.log('caT line 615: ' + caT);
-                        
-                        if(event3.target == this){
-                          type=$(this).val();
-                          if(type!=null && type!=''){
-                            newType=type;
-                            type='';
-
-                            userChosenAttributesAndValues.push([caT,newType]);
-                            
-
-                            $("#newDropdownDiv").hide();
-                            $('#chosen-select-type').empty();
-                            
-                            
-                            console.log("userChosenAttributesAndValues");
-                            console.log(userChosenAttributesAndValues);
-                            
-
-                            console.log("caT");
-                            console.log(caT);
-                            console.log("newType");
-                            console.log(newType);
-
-                            if (num<(categoryTable.length-1)){
-                              getNext(num+1, categoryTable, focusOffset,focusNode);
-                            }
-
-                            //addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
-                            if (num==(categoryTable.length-1)){
-                              addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                            }
-                            
-                          }
-                        }
+        for(i=0; i< categoryTypesTable.length; i++){
+          //Add an option for the category types dropdown menu
+          addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+          if(i==(categoryTypesTable.length-1)){
+            $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
+            $("#newDropdownDiv").show();
+            $('#select-type-input').show();
+            $('#select-type-input').focus();
+            $('#chosen-select-type').filterByTextS($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
                       
-                      });
-                    }
+            $("#chosen-select-type").off().change(caT,function(event3){                        
+                                                
+              if(event3.target == this){
+                type=$(this).val();
+                if(type!=null && type!=''){
+                  newType=type;
+                  type='';
+
+                  userChosenAttributesAndValues.push([caT,newType]);
+                            
+                  $("#newDropdownDiv").hide();
+                  $('#chosen-select-type').empty();
+                            
+                  if (num<(categoryTable.length-1)){
+                    getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
                   }
-                  
-                
+
+                  if (num==(categoryTable.length-1)){
+                    addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                  }
+                            
+                }
+              }
+                      
+            });
+          }
+        }       
     }
 
     
@@ -666,7 +733,7 @@ h2.legend Page Notes
 
                 var categoryTable=categoriesInfo[categoryid];
                 
-                getNext(0, categoryTable,focusOffset,focusNode);
+                getNext(0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
                 
               }else{ //If the category doesn't have types
 

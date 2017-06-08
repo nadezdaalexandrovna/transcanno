@@ -36,6 +36,16 @@ function createElementForTagSelection2(tag, tagCode, type){
 	return el;
 }
 
+function createElementForTagSelection3(tag, tagCode, attrValuesTable){
+	var el=document.createElement(tag);
+	el.setAttribute("tagCode",tagCode);
+	el.setAttribute("class","medium-"+tag);
+	for(i=0; i<attrValuesTable.length; i++){
+		el.setAttribute(attrValuesTable[i][0],attrValuesTable[i][1]);
+	}
+	return el;
+}
+
 (function (w, d) {
 	'use strict';
 
@@ -514,6 +524,213 @@ Medium.prototype = {
         }
 
 		return this;
+	},
+
+	tagSelection3: function (tag, attrValuesTable, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
+		var range,
+			el3,
+			sel,
+			el;
+
+		var d = new Date();
+		var milliseconds = d.getTime();
+		var tagCode=milliseconds.toString();
+
+		//var el = document.createElement(tag);
+
+		//[commonAncestor, ancestorsPosInAnchor, ancestorsPosInFocus]=get_common_ancestor(parentsAnchor,parentsFocus);
+		var closestCommonAncestor = $(anchorEl).parents().has($(focusEl)).first()[0];
+
+		if(anchorEl===focusEl){
+			range = rangy.createRange();		
+			range.setStart(anchorEl, beginningOfSelection);
+			range.setEnd(anchorEl, endOfSelection);
+			el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+			/*
+			el=document.createElement(tag);
+			el.setAttribute("tagCode",tagCode);
+			el.setAttribute("class","medium-"+tag);
+			el.setAttribute("type",type);
+			*/
+			range.surroundContents(el);
+			range.collapse(true);
+			sel = rangy.getSelection();
+			sel.setSingleRange(range);
+			return this;
+		//}else if (anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode){ //Overlapping selection
+			
+		}else{
+			sel = rangy.getSelection();
+			sel.removeAllRanges();
+
+			//Tag to the right till the common ancestor
+
+			var nodeToTag=anchorEl;
+			var currentNode;
+			var nodes;
+			var childTextNodes, rangeIn;
+
+			while(nodeToTag!=closestCommonAncestor){
+				range = rangy.createRange();
+				
+				if(beginningOfSelection!=null){				
+					range.setStart(nodeToTag, beginningOfSelection);
+					range.setEndAfter(nodeToTag);
+					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					/*
+					el=document.createElement(tag);
+					el.setAttribute("tagCode",tagCode);
+					el.setAttribute("class","medium-"+tag);
+					el.setAttribute("type",type);
+					*/
+					range.surroundContents(el);
+					sel.addRange(range);
+					
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					
+					nodeToTag=childTextNodes[0].parentNode;
+					//nodeToTag=nodeToTag.parentNode;
+
+				}else{
+					range.setStartBefore(nodeToTag);
+					range.setEndAfter(nodeToTag);
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					console.log("childTextNodes");
+					if(childTextNodes.length>0){
+						childTextNodes.forEach(function(child, index) {
+  							console.log(child);
+  							rangeIn = rangy.createRange();
+  							rangeIn.setStartBefore(child);
+							rangeIn.setEndAfter(child);
+							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							/*
+							el=document.createElement(tag);
+							el.setAttribute("tagCode",tagCode);
+							el.setAttribute("class","medium-"+tag);
+							el.setAttribute("type",type);
+							*/
+							rangeIn.surroundContents(el);
+							sel.addRange(rangeIn);
+						});
+
+						nodeToTag=childTextNodes[0].parentNode;
+					}else{
+						nodeToTag=nodeToTag.parentNode;
+					}
+
+					
+				}
+				
+				if(nodeToTag.parentNode===closestCommonAncestor){
+					break;
+				}
+
+				while(true){
+					if(nodeToTag===closestCommonAncestor){break;}
+
+					if(nodeToTag.nextSibling!=null){
+						nodeToTag=nodeToTag.nextSibling;
+						break;
+					}else{
+						nodeToTag=nodeToTag.parentNode;
+					}
+				}
+
+				if(nodeToTag.nodeType==3){
+					beginningOfSelection=0;
+				}else{
+					beginningOfSelection=null;
+				}
+			}
+
+			//Tag to the left till the common ancestor
+
+			var nodeToTag2=focusEl;
+			
+
+			while(nodeToTag2!=closestCommonAncestor){
+				range = rangy.createRange();
+				range.setStartBefore(nodeToTag2);
+				if(endOfSelection!=null){				
+					range.setEnd(nodeToTag2,endOfSelection);
+					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					/*
+					el=document.createElement(tag);
+					el.setAttribute("tagCode",tagCode);
+					el.setAttribute("class","medium-"+tag);
+					el.setAttribute("type",type);
+					*/
+					range.surroundContents(el);
+					sel.addRange(range);
+					
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					
+					nodeToTag2=childTextNodes[0].parentNode;
+					//nodeToTag2=nodeToTag2.parentNode;
+
+				}else{
+					range.setEndAfter(nodeToTag2);
+
+					childTextNodes = range.getNodes([3], function(node) {
+    					return node.data;
+					});
+					console.log("childTextNodes");
+					if(childTextNodes.length>0){
+						childTextNodes.forEach(function(child, index) {
+  							console.log(child);
+  							rangeIn = rangy.createRange();
+  							rangeIn.setStartBefore(child);
+							rangeIn.setEndAfter(child);
+							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							/*
+							el=document.createElement(tag);
+							el.setAttribute("tagCode",tagCode);
+							el.setAttribute("class","medium-"+tag);
+							el.setAttribute("type",type);
+							*/
+							rangeIn.surroundContents(el);
+							sel.addRange(rangeIn);
+						});
+						nodeToTag2=childTextNodes[0].parentNode;
+					}else{
+						nodeToTag2=nodeToTag2.parentNode;
+					}
+
+					
+				}
+
+				
+				while(true){
+					if(nodeToTag2===closestCommonAncestor){break;}
+
+					if(nodeToTag2.previousSibling!=null){
+						nodeToTag2=nodeToTag2.previousSibling;
+						break;
+					}else{
+						nodeToTag2=nodeToTag2.parentNode;
+					}
+				}
+
+				if(nodeToTag2===nodeToTag){
+					return this;
+				}
+
+				if(nodeToTag2.nodeType==3){
+					endOfSelection=nodeToTag2.length;
+				}else{
+					endOfSelection=null;
+				}
+				
+			}
+			return this;
+		}
+		
 	},
 
 	tagSelection2: function (tag, type, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
