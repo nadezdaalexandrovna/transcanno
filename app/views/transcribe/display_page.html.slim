@@ -164,7 +164,19 @@ h2.legend Page Notes
     
     var categoryTypesDiv=document.getElementById('categoryTypesDiv');
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
-    var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);   
+    var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
+
+    var catID, attr_name;
+    var categoriesInfo={};
+    for (catID in categoryTypesHash){
+      categoriesInfo[catID]=[];
+      console.log(categoryTypesHash[catID]);
+      for (attr_name in categoryTypesHash[catID]){
+        categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values']]);
+      }
+    }
+
+    console.log(categoriesInfo);
 
     var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, property, caT, caTT;
 
@@ -358,8 +370,6 @@ h2.legend Page Notes
       var couple;
       var attrString="";
 
-      $("#newDropdownDiv").hide();
-
         medium.focus();
 
         d = new Date();
@@ -367,7 +377,7 @@ h2.legend Page Notes
         tagCode=milliseconds.toString();
 
         for (couple in userChosenAttributesAndValues){
-          attrString+=" "+couple[0]+"=\""+couple[1]+"\"";
+          attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
         }
 
         tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'></'+varTag+'>';
@@ -543,6 +553,78 @@ h2.legend Page Notes
       }
     }
 
+
+    function getNext(num, categoryTable){
+
+        console.log("num");
+        console.log(num);
+            
+        var categoryTypesTable=categoryTable[num][2];
+        var caT=categoryTable[num][0];
+                  
+
+                  console.log("caT: "+caT);
+                  console.log(categoryTypesTable);
+
+                  
+                  //Create the new dropdown menu for category types
+                  newDropdown=addNewDropdown(categoryTypesTable.length);
+
+                  for(i=0; i< categoryTypesTable.length; i++){
+                    //Add an option for the category types dropdown menu
+                    addAnOption(newDropdown,categoryTypesTable[i]);
+                    console.log('caT line 606: ' + caT);
+                    if(i==(categoryTypesTable.length-1)){
+                      $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
+                      $("#newDropdownDiv").show();
+                      $('#select-type-input').show();
+                      $('#select-type-input').focus();
+                      //$('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
+                      console.log('caT just before change(): ' + caT);
+                      $("#chosen-select-type").off().change(caT,function(event3){                        
+                        console.log('caT line 615: ' + caT);
+                        
+                        if(event3.target == this){
+                          type=$(this).val();
+                          if(type!=null && type!=''){
+                            newType=type;
+                            type='';
+
+                            userChosenAttributesAndValues.push([caT,newType]);
+                            
+
+                            $("#newDropdownDiv").hide();
+                            $('#chosen-select-type').empty();
+                            
+                            
+                            console.log("userChosenAttributesAndValues");
+                            console.log(userChosenAttributesAndValues);
+                            
+
+                            console.log("caT");
+                            console.log(caT);
+                            console.log("newType");
+                            console.log(newType);
+
+                            if (num<(categoryTable.length-1)){
+                              getNext(num+1, categoryTable);
+                            }
+
+                            //addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
+                            if (num==(categoryTable.length-1)){
+                              addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                            }
+                            
+                          }
+                        }
+                      
+                      });
+                    }
+                  }
+                  
+                
+    }
+
     
     //Add tag
     jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
@@ -579,78 +661,13 @@ h2.legend Page Notes
               $(".popupBody").css({'top':0,'left':0});
 
               //If the category has types
-              if(categoryid in categoryTypesHash){
+              if(categoryid in categoriesInfo){
                 userChosenAttributesAndValues=[];
 
-                numberOfAttributes=0;
-                catHashLength=0;
-                for ( property in categoryTypesHash[categoryid] ){
-                  catHashLength+=1;
-                }
-
-                if (catHashLength>0){
-                for (caTT in categoryTypesHash[categoryid]){
-                  console.log("caTT");
-                  console.log(caTT);
-
-                  (function(caT) {
-                    console.log('iterator: ' + caT);
-                  categoryTypesTable=categoryTypesHash[categoryid][caT]['values'];
-
-                  //Create the new dropdown menu for category types
-                  newDropdown=addNewDropdown(categoryTypesTable.length);
-
-                  for(i=0; i< categoryTypesTable.length; i++){
-                    //Add an option for the category types dropdown menu
-                    addAnOption(newDropdown,categoryTypesTable[i]);
-
-                    if(i==(categoryTypesTable.length-1)){
-                      $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
-                      $("#newDropdownDiv").show();
-                      $('#select-type-input').show();
-                      $('#select-type-input').focus();
-                      //$('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode);
-
-                      $("#chosen-select-type").off().change(function(event3){                        
-                        
-                        if(event3.target == this){
-                          type=$(this).val();
-                          if(type!=null && type!=''){
-                            newType=type;
-                            type='';
-
-                            userChosenAttributesAndValues.push([caT,newType]);
-                            numberOfAttributes+=1;
-
-                            $("#newDropdownDiv").hide();
-                            $('#chosen-select-type').empty();
-
-                            
-                            console.log("userChosenAttributesAndValues");
-                            console.log(userChosenAttributesAndValues);
-                            
-                            console.log("numberOfAttributes");
-                            console.log(numberOfAttributes);
-
-                            console.log("caT");
-                            console.log(caT);
-                            console.log("newType");
-                            console.log(newType);
-
-                            //addCategoryWithType (medium, varTag, newType, focusOffset,focusNode);
-                            if (numberOfAttributes==catHashLength){
-                              addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                            }
-                            
-                          }
-                        }
-                      
-                      });
-                    }
-                  }
-                  })(caTT);
-                }
-                } 
+                var categoryTable=categoriesInfo[categoryid];
+                
+                getNext(0, categoryTable);
+                
               }else{ //If the category doesn't have types
 
                 medium.focus();
