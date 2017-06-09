@@ -4,7 +4,7 @@
   =form_for(@category, :url => { :action => 'define_style2' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     h5 Choose text color for
-      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
+      <span class="medium-#{@category.title}_id#{@category.id}">#{@category.title}</span>
     ul[ class="color" ]
       li
         input[ type="radio" id="1" name="tag_color" value="#c0392b"]
@@ -44,7 +44,7 @@
         label [for="12"] text
     hr
     h5 [id="decoration_title"] Choose text decoration for
-      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
+      <span class="medium-#{@category.title}_id#{@category.id}">#{@category.title}</span>
     ul[ class="decoration" ]
       li
         input[ type="radio" id="111" name="tag_decoration" value="text-decoration: line-through;"]
@@ -84,7 +84,7 @@
         label [for="122"] text
     hr
     h5 [id="font_style_title"] Choose font style for
-      <span class="medium-#{@category.title}-id#{@category.id}">#{@category.title}</span>
+      <span class="medium-#{@category.title}_id#{@category.id}">#{@category.title}</span>
     ul[ class="font_style" ]
       li
         input[ type="radio" id="200" name="tag_font_style" value="font-weight: bold;"]

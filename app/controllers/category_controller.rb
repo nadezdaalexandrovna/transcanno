@@ -327,9 +327,9 @@ class CategoryController < ApplicationController
 
       style = color+textdecoration+fontstyle
       title=r[0]
-      styleInstructions+="\n.medium-"+title+'-id'+id+"{"+style+"}"
-      styleInstructions+="\n.button-"+title+'-id'+id+"{"+style+"}"
-      mediumOnmouseoverFunctions+='$( ".button-'+title+'-id'+id+'" ).mousedown(function() {'+"\n"+
+      styleInstructions+="\n.medium-"+title+'_id'+id+"{"+style+"}"
+      styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
+      mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
                                   'categoryid=$(this).attr("data-categoryid");'+"\n"+
                                   'if(categoryid in categoryTypesHash){'+"\n"+
@@ -338,10 +338,10 @@ class CategoryController < ApplicationController
                                   #'nowX=position.left;'+"\n"+
                                   #'nowY=position.top;'+"\n"+
                                   'var coords = {x:position.left, y:position.top};'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'-id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords);'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords);'+"\n"+
                                   '}else{'+"\n"+
                                   'article.highlight();'+"\n"+
-                                  'medium.invokeElement(\''+title+'-id'+id+'\', {'+"\n"+
+                                  'medium.invokeElement(\''+title+'_id'+id+'\', {'+"\n"+
                                   'tagcode: da.getTime().toString()'+"\n"+
                                   '});'+"\n"+
                                   '}'+"\n"+

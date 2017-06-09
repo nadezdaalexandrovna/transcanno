@@ -121,7 +121,8 @@
       var value=document.getElementById('category_title').value;
       console.log("value: "+value);
       value=value.replace(/[ ]+/g, "_");
-      value=value.replace(/[^a-zA-Z0-9_\-]+/g, "");
+      value=value.replace(/[\-]+/g, "_");
+      value=value.replace(/[^a-zA-Z0-9_]+/g, "");
       console.log("value: "+value);
       document.getElementById('category_title').value=value;
       return value;
@@ -135,7 +136,8 @@
       for (i = 0; i < elms.length; i++) {
         val=elms[i].value;
         val=val.replace(/[ ]+/g, "_");
-        val=val.replace(/[^a-zA-Z0-9_\-]+/g, "");
+        val=val.replace(/[\-]+/g, "_");
+        val=val.replace(/[^a-zA-Z0-9_]+/g, "");
         elms[i].value = val;
         
       }

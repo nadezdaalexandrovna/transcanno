@@ -1,304 +1,304 @@
 $(document).ready(function($) {
 var da;
-$( ".button-correction-id5" ).mousedown(function() {
+$( ".button-correction_id5" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction-id5', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id5', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('correction-id5', {
+medium.invokeElement('correction_id5', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-ambiguous-id1" ).mousedown(function() {
+$( ".button-ambiguous_id1" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'ambiguous-id1', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'ambiguous_id1', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('ambiguous-id1', {
+medium.invokeElement('ambiguous_id1', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-closing-id2" ).mousedown(function() {
+$( ".button-closing_id2" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'closing-id2', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'closing_id2', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('closing-id2', {
+medium.invokeElement('closing_id2', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-comment-id4" ).mousedown(function() {
+$( ".button-comment_id4" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'comment-id4', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'comment_id4', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('comment-id4', {
+medium.invokeElement('comment_id4', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-error-id8" ).mousedown(function() {
+$( ".button-error_id8" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'error-id8', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id8', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('error-id8', {
+medium.invokeElement('error_id8', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-greeting-id12" ).mousedown(function() {
+$( ".button-greeting_id12" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting-id12', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id12', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('greeting-id12', {
+medium.invokeElement('greeting_id12', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-hyphen-id13" ).mousedown(function() {
+$( ".button-hyphen_id13" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'hyphen-id13', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'hyphen_id13', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('hyphen-id13', {
+medium.invokeElement('hyphen_id13', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-indirect_speech-id14" ).mousedown(function() {
+$( ".button-indirect_speech_id14" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'indirect_speech-id14', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'indirect_speech_id14', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('indirect_speech-id14', {
+medium.invokeElement('indirect_speech_id14', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-greeting-id26" ).mousedown(function() {
+$( ".button-greeting_id26" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting-id26', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id26', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('greeting-id26', {
+medium.invokeElement('greeting_id26', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-correction-id27" ).mousedown(function() {
+$( ".button-correction_id27" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction-id27', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id27', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('correction-id27', {
+medium.invokeElement('correction_id27', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-error-id28" ).mousedown(function() {
+$( ".button-error_id28" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'error-id28', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id28', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('error-id28', {
+medium.invokeElement('error_id28', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-deletion-id29" ).mousedown(function() {
+$( ".button-deletion_id29" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'deletion-id29', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'deletion_id29', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('deletion-id29', {
+medium.invokeElement('deletion_id29', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-insertion-id30" ).mousedown(function() {
+$( ".button-insertion_id30" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'insertion-id30', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'insertion_id30', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('insertion-id30', {
+medium.invokeElement('insertion_id30', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-orthographic_error-id31" ).mousedown(function() {
+$( ".button-orthographic_error_id31" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error-id31', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_id31', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('orthographic_error-id31', {
+medium.invokeElement('orthographic_error_id31', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-orthographic_error_target-id32" ).mousedown(function() {
+$( ".button-orthographic_error_target_id32" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_target-id32', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_target_id32', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('orthographic_error_target-id32', {
+medium.invokeElement('orthographic_error_target_id32', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-punctuation_error_missings-id34" ).mousedown(function() {
+$( ".button-punctuation_error_missings_id34" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_missings-id34', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_missings_id34', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('punctuation_error_missings-id34', {
+medium.invokeElement('punctuation_error_missings_id34', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-punctuation_error_wrongly_set-id35" ).mousedown(function() {
+$( ".button-punctuation_error_wrongly_set_id35" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_wrongly_set-id35', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_wrongly_set_id35', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('punctuation_error_wrongly_set-id35', {
+medium.invokeElement('punctuation_error_wrongly_set_id35', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-grammatic_error-id33" ).mousedown(function() {
+$( ".button-grammatic_error_id33" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'grammatic_error-id33', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'grammatic_error_id33', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('grammatic_error-id33', {
+medium.invokeElement('grammatic_error_id33', {
 tagcode: da.getTime().toString()
 });
 }
 return false;
 });
-$( ".button-verb-id36" ).mousedown(function() {
+$( ".button-verb_id36" ).mousedown(function() {
 da = new Date();
 categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'verb-id36', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'verb_id36', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
-medium.invokeElement('verb-id36', {
+medium.invokeElement('verb_id36', {
 tagcode: da.getTime().toString()
 });
 }

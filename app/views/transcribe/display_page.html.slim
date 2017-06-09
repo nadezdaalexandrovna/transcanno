@@ -90,7 +90,7 @@
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value="#{c.title}-id#{c.id}" data-categoryid=c.id ] =c.title
+    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -98,12 +98,12 @@
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
-    option[ value="#{c.title}-id#{c.id}" data-categoryid=c.id ] =c.title
+    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
 <div id="newDropdownDiv">
-  <div class="select_a_tag">Select a type:</div>
+  <div class="select_a_tag" id="select_a_tag"></div>
   <input id="select-type-input" type="text" placeholder="Select the category type"></input>
   <select id="chosen-select-type">
   </select>
@@ -112,7 +112,7 @@
 <span class="undo" style="display:none;">undo</span>
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
-    span[ class="button-#{c.title}-id#{c.id}" data-categoryid=c.id ] = c.title
+    span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
 
 div [ id="verticalMediumClickableSpans" ]
   table
@@ -122,7 +122,7 @@ div [ id="verticalMediumClickableSpans" ]
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}-id#{c.id}" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
 
 
 
@@ -250,11 +250,8 @@ h2.legend Page Notes
         medium.focus();
         medium.focusNadya(offset,focusEl);
         medium.cursorAfterTag(focusEl);
-        //console.log("medium.value() : "+medium.value());
-        //return false;
+
       }
-              
-      //console.log("medium.value() : "+medium.value());
 
       return false;
 
@@ -310,14 +307,13 @@ h2.legend Page Notes
                     addCategoryWithType (medium, varTag, option.value, focusOffset,focusNode)
                   }else{
                     $("#newDropdownDiv").hide();
+                    document.getElementById('select_a_tag').innerHTML = "";
                     nowX=0;
                     nowY=0;
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
                     medium.tagSelection2(varTag, option.value, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                    //aNode=null;
-                    //fNode=null;
                   }
                 }
               }
@@ -350,7 +346,6 @@ h2.legend Page Notes
       return this.each(function() {
         select = this;
         var length=$(select).attr("size");
-        console.log("length: "+length);
         options = [];
         $(select).find('option').each(function() {
           options.push({value: $(this).val(), text: $(this).text()});
@@ -376,9 +371,7 @@ h2.legend Page Notes
                 if (e.which == 13) {
                   if(notCollapsedArgsTable==null){
                     $("#newDropdownDiv").hide();
-                    //nowX=0;
-                    //nowY=0;
-
+                    document.getElementById('select_a_tag').innerHTML = "";
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
@@ -387,17 +380,14 @@ h2.legend Page Notes
 
                     if (num==(categoryTable.length-1)){
                       medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                      //aNode=null;
-                      //fNode=null;
                     }
                   }else{
                     $("#newDropdownDiv").hide();
-                    //nowX=0;
-                    //nowY=0;
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
 
+                    document.getElementById('select_a_tag').innerHTML = "";
 
                     userChosenAttributesAndValues.push([caT,option.value]);
 
@@ -407,8 +397,6 @@ h2.legend Page Notes
 
                     if (num==(categoryTable.length-1)){
                       medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                      //aNode=null;
-                      //fNode=null;
                     }
                   }
                 }
@@ -469,9 +457,7 @@ h2.legend Page Notes
                 if (e.which == 13) {
                   if(notCollapsedArgsTable==null){
                     $("#newDropdownDiv").hide();
-                    //nowX=0;
-                    //nowY=0;
-
+                    document.getElementById('select_a_tag').innerHTML = "";
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
@@ -479,18 +465,17 @@ h2.legend Page Notes
                     }
 
                     if (num==(categoryTable.length-1)){
+                      document.getElementById('select_a_tag').innerHTML = "";
                       addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                      //aNode=null;
-                      //fNode=null;
+
                     }
                   }else{
                     $("#newDropdownDiv").hide();
-                    //nowX=0;
-                    //nowY=0;
+
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
-
+                    document.getElementById('select_a_tag').innerHTML = "";
 
                     userChosenAttributesAndValues.push([caT,option.value]);
 
@@ -500,8 +485,7 @@ h2.legend Page Notes
 
                     if (num==(categoryTable.length-1)){
                       addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                      //aNode=null;
-                      //fNode=null;
+
                     }
                   }
                 }
@@ -526,7 +510,7 @@ h2.legend Page Notes
     function addCategoryWithType (medium, varTag, newType, focusOffset,focusNode) {
       setTimeout(function(){
         $("#newDropdownDiv").hide();
-
+        document.getElementById('select_a_tag').innerHTML = "";
         medium.focus();
 
         d = new Date();
@@ -583,47 +567,7 @@ h2.legend Page Notes
       var categoryTable=categoriesInfo[categoryid];
                 
       getNextSomethingSelected(varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
-      /*
-      categoryTypesTable=categoryTypesHash[categoryid];
-
-                //Create the new dropdown menu for category types
-                newDropdown=addNewDropdown(categoryTypesTable.length);
-
-                for(i=0; i< categoryTypesTable.length; i++){
-                  //Add an option for the category types dropdown menu
-                  addAnOption(newDropdown,categoryTypesTable[i]);
-
-                  if(i==(categoryTypesTable.length-1)){
-                    $("#newDropdownDiv").css({'top':nowY, 'left': nowX});
-                    $("#newDropdownDiv").show();
-                    $('#select-type-input').show();
-                    $('#select-type-input').focus();
-                    $('#chosen-select-type').filterByText($('#select-type-input'), medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
-
-                    $("#chosen-select-type").off().change(function(event5){                        
-                      if(event5.target == this){
-                        //type=$(this).val();
-                        type=this.value;
-                        if(type!=null && type!=''){
-                          //newType=type;
-                          //type='';
-                          //console.log("newType: "+newType);
-                          medium.tagSelection2(varTag, type, notCollapsedArgsTable[0],focusNode,notCollapsedArgsTable[1], focusOffset);
-
-                          $("#newDropdownDiv").hide();
-                          $("#select-type-input").hide();
-                          $("#select-type-input")[0].value="";
-                          $('#chosen-select-type').empty();
-
-                          console.log(medium.value());
-                          return false;
-                        }
-                      }
-                      
-                    });
-                  }
-                }
-                */
+      
     }
 
 
@@ -636,7 +580,7 @@ h2.legend Page Notes
         var nowX=coords.x;
         
         //Create the new dropdown menu for category types
-        newDropdown=addNewDropdown(categoryTypesTable.length);
+        newDropdown=addNewDropdown(categoryTypesTable.length, caT);
 
         for(i=0; i< categoryTypesTable.length; i++){
           //Add an option for the category types dropdown menu
@@ -661,6 +605,7 @@ h2.legend Page Notes
                             
                   $("#newDropdownDiv").hide();
                   $('#chosen-select-type').empty();
+                  document.getElementById('select_a_tag').innerHTML = "";
                             
                   if (num<(categoryTable.length-1)){
                     getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
@@ -679,14 +624,13 @@ h2.legend Page Notes
     }
 
     //Create the new dropdown menu for category types
-    function addNewDropdown (length){
+    function addNewDropdown (length, attr_name){
       newDropdown=document.getElementById('chosen-select-type');
       newDropdown.setAttribute("size", length);
-      //optionType=document.createElement("option");
-      //optionType.text="Select category type";
-      //optionType.value="";
-      //optionType.setAttribute("selected", "selected");
-      //newDropdown.add(optionType,newDropdown.options[null]);
+      
+      var title=document.getElementById('select_a_tag');
+      var content = document.createTextNode("Select "+attr_name);
+      title.appendChild(content);
       return newDropdown;
     }
 
@@ -805,7 +749,7 @@ h2.legend Page Notes
         var nowX=coords.x;
         
         //Create the new dropdown menu for category types
-        newDropdown=addNewDropdown(categoryTypesTable.length);
+        newDropdown=addNewDropdown(categoryTypesTable.length,caT);
 
         for(i=0; i< categoryTypesTable.length; i++){
           //Add an option for the category types dropdown menu
@@ -819,7 +763,7 @@ h2.legend Page Notes
             $('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
                       
             $("#chosen-select-type").off().change(caT,function(event3){                        
-                                                
+              document.getElementById('select_a_tag').innerHTML = "";                      
               if(event3.target == this){
                 type=$(this).val();
                 if(type!=null && type!=''){
