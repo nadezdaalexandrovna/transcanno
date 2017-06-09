@@ -304,4 +304,20 @@ tagcode: da.getTime().toString()
 }
 return false;
 });
+$( ".button-new_category_id37" ).mousedown(function() {
+da = new Date();
+categoryid=$(this).attr("data-categoryid");
+if(categoryid in categoryTypesHash){
+[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'new_category_id37', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+}else{
+article.highlight();
+medium.invokeElement('new_category_id37', {
+tagcode: da.getTime().toString()
+});
+}
+return false;
+});
 });

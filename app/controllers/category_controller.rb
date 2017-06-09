@@ -129,7 +129,7 @@ class CategoryController < ApplicationController
       end
     end
 
-    sql="update categoryattributes set allow_user_input=false;"
+    sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"
     connection = ActiveRecord::Base.connection
     connection.execute(sql)
 
@@ -172,10 +172,7 @@ class CategoryController < ApplicationController
   end
 
   def define_attributes
-    #@categorytypes=Categorytype.joins(:category).where(category_id: params[:category_id])
     scope=Categoryscope.where(category_id: params[:category_id])
-    print "scope: \n"
-    puts scope.inspect
     @categoryScope=2
     unless scope.empty?
       scope.each do |s|
@@ -195,7 +192,6 @@ class CategoryController < ApplicationController
       @attrscopehash[r.id]={0=>false,1=>false,2=>false}
       @attrscopehash[r.id][r.mode]=true
     end
-    puts @attrscopehash.inspect
   end
 
   def define_attributes2
@@ -225,15 +221,14 @@ class CategoryController < ApplicationController
           else
             mode=params[:new_attr_scope][numberNews.to_s]
           end
-          print 
           giveNotice=true
-          forSql+="( '"+type+"', "+mode+", "+params[:category_id]+"), "
+          forSql+="( '"+type+"', "+mode+", "+params[:category_id]+", false, false), "
           numberNews+=1
         end
       end
       if forSql!=""
         #sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
-        sql="INSERT INTO categoryattributes (name, mode, category_id) VALUES "
+        sql="INSERT INTO categoryattributes (name, mode, category_id, allow_user_input, initial) VALUES "
         sql+=forSql[0..-3]
         connection = ActiveRecord::Base.connection
         connection.execute(sql)
