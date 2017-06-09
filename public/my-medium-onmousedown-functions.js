@@ -6,9 +6,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'correction-id5', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction-id5', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('correction-id5', {
@@ -23,9 +22,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'ambiguous-id1', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'ambiguous-id1', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('ambiguous-id1', {
@@ -40,9 +38,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'closing-id2', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'closing-id2', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('closing-id2', {
@@ -57,9 +54,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'comment-id4', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'comment-id4', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('comment-id4', {
@@ -74,9 +70,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'error-id8', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error-id8', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('error-id8', {
@@ -91,9 +86,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'greeting-id12', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting-id12', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('greeting-id12', {
@@ -108,9 +102,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'hyphen-id13', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'hyphen-id13', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('hyphen-id13', {
@@ -125,9 +118,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'indirect_speech-id14', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'indirect_speech-id14', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('indirect_speech-id14', {
@@ -142,9 +134,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'greeting-id26', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting-id26', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('greeting-id26', {
@@ -159,9 +150,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'correction-id27', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction-id27', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('correction-id27', {
@@ -176,9 +166,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'error-id28', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error-id28', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('error-id28', {
@@ -193,9 +182,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'deletion-id29', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'deletion-id29', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('deletion-id29', {
@@ -210,9 +198,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'insertion-id30', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'insertion-id30', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('insertion-id30', {
@@ -227,9 +214,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'orthographic_error-id31', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error-id31', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('orthographic_error-id31', {
@@ -244,9 +230,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'orthographic_error_target-id32', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_target-id32', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('orthographic_error_target-id32', {
@@ -261,9 +246,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'punctuation_error_missings-id34', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_missings-id34', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('punctuation_error_missings-id34', {
@@ -278,9 +262,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'punctuation_error_wrongly_set-id35', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_wrongly_set-id35', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('punctuation_error_wrongly_set-id35', {
@@ -295,9 +278,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'grammatic_error-id33', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'grammatic_error-id33', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('grammatic_error-id33', {
@@ -312,9 +294,8 @@ categoryid=$(this).attr("data-categoryid");
 if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
-nowX=position.left;
-nowY=position.top;
-tagSelectionWithType(categoryid, categoryTypesHash, medium, 'verb-id36', focusOffset, focusNode, [anchorNode, anchorOffset]);
+var coords = {x:position.left, y:position.top};
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'verb-id36', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
 }else{
 article.highlight();
 medium.invokeElement('verb-id36', {

@@ -170,7 +170,6 @@ h2.legend Page Notes
     var categoriesInfo={};
     for (catID in categoryTypesHash){
       categoriesInfo[catID]=[];
-      console.log(categoryTypesHash[catID]);
       for (attr_name in categoryTypesHash[catID]){
         categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values']]);
       }
@@ -317,8 +316,8 @@ h2.legend Page Notes
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
                     medium.tagSelection2(varTag, option.value, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                    aNode=null;
-                    fNode=null;
+                    //aNode=null;
+                    //fNode=null;
                   }
                 }
               }
@@ -340,7 +339,7 @@ h2.legend Page Notes
     };
 
     //If the user types text in the input field of the category type select box in order to select one of the options
-    jQuery.fn.filterByTextS = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable) {
+    jQuery.fn.filterByTextS = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
       var option;
       var select;
       var options;
@@ -377,24 +376,24 @@ h2.legend Page Notes
                 if (e.which == 13) {
                   if(notCollapsedArgsTable==null){
                     $("#newDropdownDiv").hide();
-                    nowX=0;
-                    nowY=0;
+                    //nowX=0;
+                    //nowY=0;
 
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
                     }
 
                     if (num==(categoryTable.length-1)){
                       medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                      aNode=null;
-                      fNode=null;
+                      //aNode=null;
+                      //fNode=null;
                     }
                   }else{
                     $("#newDropdownDiv").hide();
-                    nowX=0;
-                    nowY=0;
+                    //nowX=0;
+                    //nowY=0;
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
@@ -403,13 +402,13 @@ h2.legend Page Notes
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
                     }
 
                     if (num==(categoryTable.length-1)){
                       medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
-                      aNode=null;
-                      fNode=null;
+                      //aNode=null;
+                      //fNode=null;
                     }
                   }
                 }
@@ -432,7 +431,7 @@ h2.legend Page Notes
     };
 
     //If the user types text in the input field of the category type select box in order to select one of the options
-    jQuery.fn.filterByTextCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable) {
+    jQuery.fn.filterByTextCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
       var option;
       var select;
       var options;
@@ -440,6 +439,7 @@ h2.legend Page Notes
       var search;
       var regex;
 
+      
       return this.each(function() {
         select = this;
         var length=$(select).attr("size");
@@ -469,24 +469,24 @@ h2.legend Page Notes
                 if (e.which == 13) {
                   if(notCollapsedArgsTable==null){
                     $("#newDropdownDiv").hide();
-                    nowX=0;
-                    nowY=0;
+                    //nowX=0;
+                    //nowY=0;
 
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                      getNextCollapsed(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
                     }
 
                     if (num==(categoryTable.length-1)){
                       addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                      aNode=null;
-                      fNode=null;
+                      //aNode=null;
+                      //fNode=null;
                     }
                   }else{
                     $("#newDropdownDiv").hide();
-                    nowX=0;
-                    nowY=0;
+                    //nowX=0;
+                    //nowY=0;
                     $("#select-type-input").hide();
                     $("#select-type-input")[0].value="";
                     $('#chosen-select-type').empty();
@@ -495,13 +495,13 @@ h2.legend Page Notes
                     userChosenAttributesAndValues.push([caT,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                      getNextCollapsed(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
                     }
 
                     if (num==(categoryTable.length-1)){
                       addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                      aNode=null;
-                      fNode=null;
+                      //aNode=null;
+                      //fNode=null;
                     }
                   }
                 }
@@ -576,7 +576,14 @@ h2.legend Page Notes
     }
 
 
-    function tagSelectionWithType (categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable){
+    function tagSelectionWithType (categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords){
+
+      userChosenAttributesAndValues=[];
+
+      var categoryTable=categoriesInfo[categoryid];
+                
+      getNextSomethingSelected(varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
+      /*
       categoryTypesTable=categoryTypesHash[categoryid];
 
                 //Create the new dropdown menu for category types
@@ -616,6 +623,59 @@ h2.legend Page Notes
                     });
                   }
                 }
+                */
+    }
+
+
+    function getNextSomethingSelected(varTag, num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords){
+            
+        var categoryTypesTable=categoryTable[num][2];
+        var caT=categoryTable[num][0];
+
+        var nowY=coords.y;
+        var nowX=coords.x;
+        
+        //Create the new dropdown menu for category types
+        newDropdown=addNewDropdown(categoryTypesTable.length);
+
+        for(i=0; i< categoryTypesTable.length; i++){
+          //Add an option for the category types dropdown menu
+          addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+          if(i==(categoryTypesTable.length-1)){
+            $("#newDropdownDiv").css({'top':nowY,'left':nowX, 'position':'absolute'});
+            $("#newDropdownDiv").show();
+            $('#select-type-input').show();
+            $('#select-type-input').focus();
+            $('#chosen-select-type').filterByTextS($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
+                      
+            $("#chosen-select-type").off().change(caT,function(event3){                        
+                                                
+              if(event3.target == this){
+                type=$(this).val();
+                if(type!=null && type!=''){
+                  newType=type;
+                  type='';
+
+                  userChosenAttributesAndValues.push([caT,newType]);
+                            
+                  $("#newDropdownDiv").hide();
+                  $('#chosen-select-type').empty();
+                            
+                  if (num<(categoryTable.length-1)){
+                    getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                  }
+
+                  if (num==(categoryTable.length-1)){
+                    medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                  }
+                            
+                }
+              }
+                      
+            });
+          }
+        }       
     }
 
     //Create the new dropdown menu for category types
@@ -736,10 +796,13 @@ h2.legend Page Notes
     }
 
 
-    function getNext(num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable){
+    function getNextCollapsed(num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords){
             
         var categoryTypesTable=categoryTable[num][2];
         var caT=categoryTable[num][0];
+
+        var nowY=coords.y;
+        var nowX=coords.x;
         
         //Create the new dropdown menu for category types
         newDropdown=addNewDropdown(categoryTypesTable.length);
@@ -753,7 +816,7 @@ h2.legend Page Notes
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
             $('#select-type-input').focus();
-            $('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
+            $('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
                       
             $("#chosen-select-type").off().change(caT,function(event3){                        
                                                 
@@ -769,7 +832,7 @@ h2.legend Page Notes
                   $('#chosen-select-type').empty();
                             
                   if (num<(categoryTable.length-1)){
-                    getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                    getNextCollapsed(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
                   }
 
                   if (num==(categoryTable.length-1)){
@@ -797,9 +860,6 @@ h2.legend Page Notes
       selection = window.getSelection();
 
 
-      
-
-
       //If the cursor is in the medium, but nothing has been selected
       if(selection.isCollapsed){
         $(".popupBody").css({'top':nowY,'left':nowX});
@@ -825,7 +885,7 @@ h2.legend Page Notes
 
                 var categoryTable=categoriesInfo[categoryid];
                 
-                getNext(0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
+                getNextCollapsed(0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
                 
               }else{ //If the category doesn't have types
 
@@ -876,7 +936,7 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHash){
-                tagSelectionWithType(categoryid, categoryTypesHash, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable);
+                tagSelectionWithType(categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords);
                   
               }else{ //If the category doesn't have types
 

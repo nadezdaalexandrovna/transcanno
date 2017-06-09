@@ -335,9 +335,10 @@ class CategoryController < ApplicationController
                                   'if(categoryid in categoryTypesHash){'+"\n"+
                                   '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
                                   'position = $(this).offset();'+"\n"+
-                                  'nowX=position.left;'+"\n"+
-                                  'nowY=position.top;'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoryTypesHash, medium, \''+title+'-id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset]);'+"\n"+
+                                  #'nowX=position.left;'+"\n"+
+                                  #'nowY=position.top;'+"\n"+
+                                  'var coords = {x:position.left, y:position.top};'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'-id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords);'+"\n"+
                                   '}else{'+"\n"+
                                   'article.highlight();'+"\n"+
                                   'medium.invokeElement(\''+title+'-id'+id+'\', {'+"\n"+
