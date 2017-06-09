@@ -431,6 +431,98 @@ h2.legend Page Notes
       });
     };
 
+    //If the user types text in the input field of the category type select box in order to select one of the options
+    jQuery.fn.filterByTextCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable) {
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
+
+      return this.each(function() {
+        select = this;
+        var length=$(select).attr("size");
+        console.log("length: "+length);
+        options = [];
+        $(select).find('option').each(function() {
+          options.push({value: $(this).val(), text: $(this).text()});
+        });
+        $(select).data('options', options);
+
+        $(textbox).off().on('change keyup', function(e) {
+        //$(textbox).bind('change keyup', function(e) {
+          options2 = $(select).empty().data('options');
+          $(select).attr("size", 0);
+          search = $.trim($(this).val());
+          if(search!=null && search!=""){
+            regex = new RegExp("^"+search,"gi");
+
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="" && option.value.match(regex) !== null) {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+                $(select).attr("size", $(select).attr("size")+1);
+                //If the user presses enter
+                if (e.which == 13) {
+                  if(notCollapsedArgsTable==null){
+                    $("#newDropdownDiv").hide();
+                    nowX=0;
+                    nowY=0;
+
+                    userChosenAttributesAndValues.push([caT,option.value]);
+
+                    if (num<(categoryTable.length-1)){
+                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                    }
+
+                    if (num==(categoryTable.length-1)){
+                      addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                      aNode=null;
+                      fNode=null;
+                    }
+                  }else{
+                    $("#newDropdownDiv").hide();
+                    nowX=0;
+                    nowY=0;
+                    $("#select-type-input").hide();
+                    $("#select-type-input")[0].value="";
+                    $('#chosen-select-type').empty();
+
+
+                    userChosenAttributesAndValues.push([caT,option.value]);
+
+                    if (num<(categoryTable.length-1)){
+                      getNext(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable);
+                    }
+
+                    if (num==(categoryTable.length-1)){
+                      addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                      aNode=null;
+                      fNode=null;
+                    }
+                  }
+                }
+              }
+            });
+          }else{ // if search==null || search==""
+            $(select).attr("size", length);
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="") {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+
+              }
+            });
+          }
+        });
+      });
+    };
+
     function addCategoryWithType (medium, varTag, newType, focusOffset,focusNode) {
       setTimeout(function(){
         $("#newDropdownDiv").hide();
@@ -661,7 +753,7 @@ h2.legend Page Notes
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
             $('#select-type-input').focus();
-            $('#chosen-select-type').filterByTextS($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
+            $('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, caT, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable);
                       
             $("#chosen-select-type").off().change(caT,function(event3){                        
                                                 

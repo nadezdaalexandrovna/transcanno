@@ -536,9 +536,6 @@ Medium.prototype = {
 		var milliseconds = d.getTime();
 		var tagCode=milliseconds.toString();
 
-		//var el = document.createElement(tag);
-
-		//[commonAncestor, ancestorsPosInAnchor, ancestorsPosInFocus]=get_common_ancestor(parentsAnchor,parentsFocus);
 		var closestCommonAncestor = $(anchorEl).parents().has($(focusEl)).first()[0];
 
 		if(anchorEl===focusEl){
@@ -546,18 +543,12 @@ Medium.prototype = {
 			range.setStart(anchorEl, beginningOfSelection);
 			range.setEnd(anchorEl, endOfSelection);
 			el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
-			/*
-			el=document.createElement(tag);
-			el.setAttribute("tagCode",tagCode);
-			el.setAttribute("class","medium-"+tag);
-			el.setAttribute("type",type);
-			*/
+
 			range.surroundContents(el);
 			range.collapse(true);
 			sel = rangy.getSelection();
 			sel.setSingleRange(range);
 			return this;
-		//}else if (anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode){ //Overlapping selection
 			
 		}else{
 			sel = rangy.getSelection();
@@ -577,12 +568,7 @@ Medium.prototype = {
 					range.setStart(nodeToTag, beginningOfSelection);
 					range.setEndAfter(nodeToTag);
 					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
-					/*
-					el=document.createElement(tag);
-					el.setAttribute("tagCode",tagCode);
-					el.setAttribute("class","medium-"+tag);
-					el.setAttribute("type",type);
-					*/
+
 					range.surroundContents(el);
 					sel.addRange(range);
 					
@@ -591,7 +577,6 @@ Medium.prototype = {
 					});
 					
 					nodeToTag=childTextNodes[0].parentNode;
-					//nodeToTag=nodeToTag.parentNode;
 
 				}else{
 					range.setStartBefore(nodeToTag);
@@ -599,20 +584,14 @@ Medium.prototype = {
 					childTextNodes = range.getNodes([3], function(node) {
     					return node.data;
 					});
-					console.log("childTextNodes");
+
 					if(childTextNodes.length>0){
 						childTextNodes.forEach(function(child, index) {
-  							console.log(child);
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
 							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
-							/*
-							el=document.createElement(tag);
-							el.setAttribute("tagCode",tagCode);
-							el.setAttribute("class","medium-"+tag);
-							el.setAttribute("type",type);
-							*/
+
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
@@ -658,12 +637,7 @@ Medium.prototype = {
 				if(endOfSelection!=null){				
 					range.setEnd(nodeToTag2,endOfSelection);
 					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
-					/*
-					el=document.createElement(tag);
-					el.setAttribute("tagCode",tagCode);
-					el.setAttribute("class","medium-"+tag);
-					el.setAttribute("type",type);
-					*/
+
 					range.surroundContents(el);
 					sel.addRange(range);
 					
@@ -672,7 +646,6 @@ Medium.prototype = {
 					});
 					
 					nodeToTag2=childTextNodes[0].parentNode;
-					//nodeToTag2=nodeToTag2.parentNode;
 
 				}else{
 					range.setEndAfter(nodeToTag2);
@@ -680,20 +653,14 @@ Medium.prototype = {
 					childTextNodes = range.getNodes([3], function(node) {
     					return node.data;
 					});
-					console.log("childTextNodes");
+
 					if(childTextNodes.length>0){
 						childTextNodes.forEach(function(child, index) {
-  							console.log(child);
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
 							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
-							/*
-							el=document.createElement(tag);
-							el.setAttribute("tagCode",tagCode);
-							el.setAttribute("class","medium-"+tag);
-							el.setAttribute("type",type);
-							*/
+
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
 						});
