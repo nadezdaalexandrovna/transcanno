@@ -113,6 +113,12 @@
 <div id="deletion_div">
 </div>
 
+<div id="change_div">
+</div>
+
+<div id="change_selected_div">
+</div>
+
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
     span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
@@ -121,10 +127,13 @@ div [ id="verticalMediumClickableSpans" ]
   table
     tr
       td [ class="overMediumButtonTD" ]
-        <span class="undo">&#8630;</span>
+        <span title="undo" class="undo">&#8630;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span class="delete_tag">&#9932;</span>
+        <span  title="delete tag(s) at cursor position" class="delete_tag">&#9932;</span>
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span  title="change tag(s) at cursor position" class="change_tag">&#11156;</span>
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
@@ -226,6 +235,9 @@ h2.legend Page Notes
     $(".popupBody2").hide();
     $("#newDropdownDiv").hide();
     $("#deletion_div").hide();
+    $("#change_div").hide();
+    $("#change_selected_div").hide();
+    
 
       
     var config = {
@@ -786,6 +798,7 @@ h2.legend Page Notes
       return false;
     }
 
+    //Remove forbidden characters from an attribute's value
     function cleanAttrValue(val){
       return val.replace(/[<&"'>]+/g, "_");
     }
@@ -1032,8 +1045,13 @@ h2.legend Page Notes
       deleteTag(coords);
     });
 
-    //Delete a tag
-    function deleteTag(coords){
+    $( ".change_tag" ).mousedown(function() {
+      position = $(this).offset();
+      var coords = {x:position.left, y:position.top};
+      changeTag(coords);
+    });
+
+    function findParents(){
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var els = [];
       var a=anchorNode;
@@ -1046,10 +1064,151 @@ h2.legend Page Notes
         }
         els.unshift(a);
       }
-      
+      return els;
+    }
+
+    //Change a tag
+    function changeTag(coords){
+      var els = findParents();
+      console.log(els);
       //If the node has parent nodes (=tags)
       if(els.length>0){
 
+        var i,
+          name,
+          nameTag,
+          menuDiv=document.getElementById("change_div"),
+          radio,
+          label,
+          button;
+
+        //Create a menu
+        for(i=0; i<els.length; i++){
+          nameTag=els[i].nodeName;
+          name=nameTag.replace(/_ID\d+$/g, "");
+          radio = document.createElement('input');
+          radio.type = "radio";
+          radio.name = "change_tag_radio";
+          radio.value = els[i].getAttribute('tagcode');
+          radio.id = "change_radio_"+nameTag;
+          label = document.createElement('label');
+          label.htmlFor = "change_radio_"+nameTag;
+          label.appendChild(document.createTextNode(name));
+          menuDiv.appendChild(radio);
+          menuDiv.appendChild(label);
+          menuDiv.appendChild(document.createElement('br'));        
+        }
+
+        button = document.createElement('button');
+        button.onclick = function(){
+          changeSelectedTag(coords);
+        };
+
+        button.appendChild(document.createTextNode("Change the chosen tag"));
+        menuDiv.appendChild(button);
+
+        $("#change_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        $("#change_div").show();
+      }
+      
+    }
+
+    //Get all attributes of a node
+    function getAttributes ($node) {
+      var attrs = {};
+      $.each( $node[0].attributes, function ( index, attribute ) {
+        attrs[attribute.name] = attribute.value;
+      } );
+
+      return attrs;
+    }
+
+    //Functions that calls medium.js in order to remove the tags chosen via the popup menu checkboxes
+    function changeSelectedTag(coords){
+
+      //Get the checked tagcode
+      var tagCodeToChange = $("input[name=change_tag_radio]:checked").val();
+
+      //Delete the radios from the menu div
+      $('#change_div').empty();
+      //Hide the menu
+      $("#change_div").hide();
+
+      var attrs=getAttributes($("[tagcode="+tagCodeToChange+"]"));
+
+      var div = document.getElementById("change_selected_div"),
+          input,
+          label,
+          attrName,
+          button,
+          numberOfChangableAttrs=0;
+
+      for (attrName in attrs){
+        if(attrName!='class' && attrName!='tagcode'){
+          input = document.createElement("input");
+          input.type = "text";
+          input.id = "value_"+attrName;
+          input.value = attrs[attrName];
+          input.name=tagCodeToChange;
+          
+          label = document.createElement('label');
+          label.setAttribute("for","value_"+attrName);
+          label.innerHTML = attrName;
+          div.appendChild(label);
+          div.appendChild(input);
+          numberOfChangableAttrs+=1;
+        }
+      }
+
+      if(numberOfChangableAttrs<0){
+        button = document.createElement('button');
+        button.onclick = function(){
+          saveChangesInAttributeValues(tagCodeToChange);
+        };
+
+        button.appendChild(document.createTextNode("Save changes"));
+        div.appendChild(button);
+      
+        $("#change_selected_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        $("#change_selected_div").show();
+      }else{
+        var tagName=$("[tagcode="+tagCodeToChange+"]").prop("tagName");
+        tagName=tagName.replace("/(_ID\d+)$/","");
+        alert("The tag "+tagName+" has no attributes you could change.");
+      }
+            
+    }
+
+    //Save changes the user made in the values of attributes of the chosen tag
+    function saveChangesInAttributeValues(tagCode){
+      //Get new values
+      var el,
+        nodeList=document.getElementsByName(tagCode),
+        newAttrsValuesTable={},
+        id;
+      //Create a hash with attribute names and their new values
+      for (el=0; el<nodeList.length; el++){
+        id=nodeList[el].id.substring(6);
+        console.log("id: "+id);
+        newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
+
+        if(el==(nodeList.length-1)){
+          $("#change_selected_div").hide();
+          $("#change_selected_div").empty();
+      
+          medium.changeSelectedTag(tagCode,newAttrsValuesTable);
+          return false;
+        }
+      }
+      
+    }
+
+    //Delete a tag
+    function deleteTag(coords){
+      var els = findParents();
+
+      //If the node has parent nodes (=tags)
+      if(els.length>0){
         var i,
           name,
           nameTag,
@@ -1067,7 +1226,7 @@ h2.legend Page Notes
           checkbox.name = "delete_tag_checkbox";
           checkbox.value = els[i].getAttribute('tagcode');
           checkbox.id = "delete_checkbox_"+nameTag;
-          label = document.createElement('label')
+          label = document.createElement('label');
           label.htmlFor = "delete_checkbox_"+nameTag;
           label.appendChild(document.createTextNode(name));
           menuDiv.appendChild(checkbox);

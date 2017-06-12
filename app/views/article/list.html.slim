@@ -122,7 +122,7 @@
       console.log("value: "+value);
       value=value.replace(/[ ]+/g, "_");
       value=value.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
-      val=val.replace(/^[^a-zA-Z_]/, "");
+      val=val.replace(/^([^a-zA-Z_])/, "");
       value=value.replace(/[^a-zA-Z0-9_]+/g, "");
       console.log("value: "+value);
       document.getElementById('category_title').value=value;
@@ -138,7 +138,7 @@
         val=elms[i].value;
         val=val.replace(/[ ]+/g, "_");
         val=val.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
-        val=val.replace(/^[^a-zA-Z_]/, "");
+        val=val.replace(/^([^a-zA-Z_])/, "");
         val=val.replace(/[^a-zA-Z0-9_\.]+/g, "");
         elms[i].value = val;
         

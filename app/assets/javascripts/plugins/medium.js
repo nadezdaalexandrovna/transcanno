@@ -526,6 +526,14 @@ Medium.prototype = {
 		return this;
 	},
 
+	changeSelectedTag: function (tagCode, newAttrsValuesTable, callback, skipChangeEvent){
+		var attr;
+		for (attr in newAttrsValuesTable){
+			$("[tagcode="+tagCode+"]").attr(attr,newAttrsValuesTable[attr]);
+		}
+		return this;
+	},
+
 	removeTags: function (checkedTagcodes, callback, skipChangeEvent){
 		console.log("in removeTags");
 		console.log(checkedTagcodes);

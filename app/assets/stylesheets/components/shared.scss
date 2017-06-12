@@ -1254,7 +1254,7 @@ label[for="207"] span {
   width: 100%;
 }
 
-.popupBody, .popupBody2, #newDropdownDiv, #deletion_div {
+.popupBody, .popupBody2, #newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
   position: absolute;
   //display:none;
   //padding-top: 20px;
@@ -1264,7 +1264,7 @@ label[for="207"] span {
   box-shadow: 0 1px 0 #fff inset;
 }
 
-#newDropdownDiv, #deletion_div {
+#newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
   border: 1px solid #aaa;
   border-radius: 4px;
   border-bottom-right-radius: 0;
@@ -1367,7 +1367,7 @@ label[for="207"] span {
   border-radius: 4px;
 }
 
-.undo, .delete_tag{
+.undo, .delete_tag, .change_tag{
   font-size: xx-large;
 }
 
