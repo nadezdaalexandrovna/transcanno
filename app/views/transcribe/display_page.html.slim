@@ -1027,9 +1027,14 @@ h2.legend Page Notes
     });
 
     //Delete a tag
+    jQuery('#page_source_text').bind('keydown', 'alt+d', function(e) {
+      var coords = getSelectionCoords();
+      deleteTag(coords);
+    });
+
+    //Delete a tag
     function deleteTag(coords){
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
-      console.log(coords);
       var els = [];
       var a=anchorNode;
 
@@ -1041,44 +1046,46 @@ h2.legend Page Notes
         }
         els.unshift(a);
       }
-      console.log(els);
       
-      var i,
-        name,
-        nameTag,
-        menuDiv=document.getElementById("deletion_div"),
-        checkbox,
-        label,button;
+      //If the node has parent nodes (=tags)
+      if(els.length>0){
 
-      for(i=0; i<els.length; i++){
-        nameTag=els[i].nodeName;
-        console.log(els[i]);
-        name=nameTag.replace(/_ID\d+$/g, "");
-        checkbox = document.createElement('input');
-        checkbox.type = "checkbox";
-        checkbox.name = "delete_tag_checkbox";
-        console.log(els[i].getAttribute('tagcode'));
-        checkbox.value = els[i].getAttribute('tagcode');
-        checkbox.id = "delete_checkbox_"+nameTag;
-        label = document.createElement('label')
-        label.htmlFor = "delete_checkbox_"+nameTag;
-        label.appendChild(document.createTextNode(name));
-        menuDiv.appendChild(checkbox);
-        menuDiv.appendChild(label);
-        menuDiv.appendChild(document.createElement('br'));        
+        var i,
+          name,
+          nameTag,
+          menuDiv=document.getElementById("deletion_div"),
+          checkbox,
+          label,
+          button;
+
+        //Create a menu
+        for(i=0; i<els.length; i++){
+          nameTag=els[i].nodeName;
+          name=nameTag.replace(/_ID\d+$/g, "");
+          checkbox = document.createElement('input');
+          checkbox.type = "checkbox";
+          checkbox.name = "delete_tag_checkbox";
+          checkbox.value = els[i].getAttribute('tagcode');
+          checkbox.id = "delete_checkbox_"+nameTag;
+          label = document.createElement('label')
+          label.htmlFor = "delete_checkbox_"+nameTag;
+          label.appendChild(document.createTextNode(name));
+          menuDiv.appendChild(checkbox);
+          menuDiv.appendChild(label);
+          menuDiv.appendChild(document.createElement('br'));        
+        }
+
+        button = document.createElement('button');
+        button.onclick = function(){
+          removeTag();
+        };
+
+        button.appendChild(document.createTextNode("Delete the chosen tag(s)"));
+        menuDiv.appendChild(button);
+
+        $("#deletion_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        $("#deletion_div").show();
       }
-
-      button = document.createElement('button');
-      button.onclick = function(){
-        removeTag();
-      };
-
-      button.appendChild(document.createTextNode("Delete the chosen tag(s)"));
-      menuDiv.appendChild(button);
-
-      $("#deletion_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
-      $("#deletion_div").show();
-      
       
     }
 
@@ -1097,13 +1104,11 @@ h2.legend Page Notes
       return checkboxesChecked.length > 0 ? checkboxesChecked : null;
     }
 
-
+    //Functions that calls medium.js in order to remove the tags chosen via the popup menu checkboxes
     function removeTag(){
-      console.log("in removeTag()");
 
       //Get the checked options
       var checkedTagcodes = getCheckedBoxes("delete_tag_checkbox");
-      console.log(checkedTagcodes);
       //Delete the checkboxes from the menu div
       $('#deletion_div').empty();
       //Hide the menu
@@ -1114,6 +1119,7 @@ h2.legend Page Notes
       
     }
 
+    //Add the transcription text to the form before sending it to the server
     function AddMediumValue() {
       mediumValue = medium.value();
       
