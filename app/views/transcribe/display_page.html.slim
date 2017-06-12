@@ -110,7 +110,9 @@
   </select>
 </div>
 
-<span class="undo" style="display:none;">undo</span>
+<div id="deletion_div">
+</div>
+
 div [ id="mediumClickableSpans" ]
   - @categories.each do |c|
     span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
@@ -120,6 +122,9 @@ div [ id="verticalMediumClickableSpans" ]
     tr
       td [ class="overMediumButtonTD" ]
         <span class="undo">&#8630;</span>
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span class="delete_tag">&#9932;</span>
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
@@ -220,6 +225,7 @@ h2.legend Page Notes
     $(".popupBody").hide();
     $(".popupBody2").hide();
     $("#newDropdownDiv").hide();
+    $("#deletion_div").hide();
 
       
     var config = {
@@ -780,6 +786,9 @@ h2.legend Page Notes
       return false;
     }
 
+    function cleanAttrValue(val){
+      return val.replace(/[<&"'>]+/g, "_");
+    }
 
     //If the user types text in the input field of the category type select box in order to select one of the options
     jQuery.fn.userInputAttrValueSomethingSelected = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
@@ -789,9 +798,6 @@ h2.legend Page Notes
       var options2;
       var search;
       var regex;
-
-      console.log("textbox");
-      console.log(textbox);
 
         $(textbox).off().on('change keyup', function(e) {
           //If the user presses enter
@@ -806,7 +812,8 @@ h2.legend Page Notes
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,$(textbox).val()]);
+
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
               if (num<(categoryTable.length-1)){
                 getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
@@ -825,7 +832,7 @@ h2.legend Page Notes
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,$(textbox).val()]);
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
 
               if (num<(categoryTable.length-1)){
@@ -868,7 +875,7 @@ h2.legend Page Notes
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,$(textbox).val()]);
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
               if (num<(categoryTable.length-1)){
                 getNextCollapsed(num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
@@ -887,7 +894,7 @@ h2.legend Page Notes
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,$(textbox).val()]);
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
 
               if (num<(categoryTable.length-1)){
@@ -1013,6 +1020,99 @@ h2.legend Page Notes
       return false;
     });
 
+    $( ".delete_tag" ).mousedown(function() {
+      position = $(this).offset();
+      var coords = {x:position.left, y:position.top};
+      deleteTag(coords);
+    });
+
+    //Delete a tag
+    function deleteTag(coords){
+      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      console.log(coords);
+      var els = [];
+      var a=anchorNode;
+
+      //Find all the parents of the anchorNode (the node where the cursor or the beginning of the selection is)
+      while (a) {
+        a = a.parentNode;
+        if(a.id=="page_source_text"){
+          break;
+        }
+        els.unshift(a);
+      }
+      console.log(els);
+      
+      var i,
+        name,
+        nameTag,
+        menuDiv=document.getElementById("deletion_div"),
+        checkbox,
+        label,button;
+
+      for(i=0; i<els.length; i++){
+        nameTag=els[i].nodeName;
+        console.log(els[i]);
+        name=nameTag.replace(/_ID\d+$/g, "");
+        checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.name = "delete_tag_checkbox";
+        console.log(els[i].getAttribute('tagcode'));
+        checkbox.value = els[i].getAttribute('tagcode');
+        checkbox.id = "delete_checkbox_"+nameTag;
+        label = document.createElement('label')
+        label.htmlFor = "delete_checkbox_"+nameTag;
+        label.appendChild(document.createTextNode(name));
+        menuDiv.appendChild(checkbox);
+        menuDiv.appendChild(label);
+        menuDiv.appendChild(document.createElement('br'));        
+      }
+
+      button = document.createElement('button');
+      button.onclick = function(){
+        removeTag();
+      };
+
+      button.appendChild(document.createTextNode("Delete the chosen tag(s)"));
+      menuDiv.appendChild(button);
+
+      $("#deletion_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+      $("#deletion_div").show();
+      
+      
+    }
+
+    // Pass the checkbox name to the function
+    function getCheckedBoxes(chkboxName) {
+      var checkboxes = document.getElementsByName(chkboxName);
+      var checkboxesChecked = [];
+      // loop over them all
+      for (var i=0; i<checkboxes.length; i++) {
+        // And stick the checked ones onto an array...
+        if (checkboxes[i].checked) {
+          checkboxesChecked.push(checkboxes[i].value);
+        }
+      }
+      // Return the array if it is non-empty, or null
+      return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+    }
+
+
+    function removeTag(){
+      console.log("in removeTag()");
+
+      //Get the checked options
+      var checkedTagcodes = getCheckedBoxes("delete_tag_checkbox");
+      console.log(checkedTagcodes);
+      //Delete the checkboxes from the menu div
+      $('#deletion_div').empty();
+      //Hide the menu
+      $("#deletion_div").hide();
+      if(checkedTagcodes!=null && checkedTagcodes.length>0){
+        medium.removeTags(checkedTagcodes);
+      }
+      
+    }
 
     function AddMediumValue() {
       mediumValue = medium.value();

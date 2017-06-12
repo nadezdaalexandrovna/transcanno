@@ -1254,7 +1254,7 @@ label[for="207"] span {
   width: 100%;
 }
 
-.popupBody, .popupBody2, #newDropdownDiv {
+.popupBody, .popupBody2, #newDropdownDiv, #deletion_div {
   position: absolute;
   //display:none;
   //padding-top: 20px;
@@ -1264,7 +1264,7 @@ label[for="207"] span {
   box-shadow: 0 1px 0 #fff inset;
 }
 
-#newDropdownDiv {
+#newDropdownDiv, #deletion_div {
   border: 1px solid #aaa;
   border-radius: 4px;
   border-bottom-right-radius: 0;
@@ -1367,8 +1367,12 @@ label[for="207"] span {
   border-radius: 4px;
 }
 
-.undo{
+.undo, .delete_tag{
   font-size: xx-large;
+}
+
+.delete_tag{
+  color: red;
 }
 
 .page-column_actions{

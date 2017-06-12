@@ -526,6 +526,19 @@ Medium.prototype = {
 		return this;
 	},
 
+	removeTags: function (checkedTagcodes, callback, skipChangeEvent){
+		console.log("in removeTags");
+		console.log(checkedTagcodes);
+		var i;
+		for (i=0; i<checkedTagcodes.length; i++){
+			console.log(i);
+			console.log(checkedTagcodes[i]);
+			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
+		}
+		
+		return this;
+	},
+
 	tagSelection3: function (tag, attrValuesTable, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
 		var range,
 			el3,
