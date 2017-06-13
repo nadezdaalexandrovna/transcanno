@@ -1,9 +1,10 @@
 .litebox-embed(style="width:450px;")
   h1 Define Category Attributes
 
-  =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>'return verifyValueType()' }) do |f|
+  =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>"return verifyValueType('#{@category.title}','#{@categoryattributesHash}')" }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     =hidden_field_tag(:category_scope, @categoryScope)
+    .categoryAttributesDiv*{'id'=>'categoryAttributesDiv', 'data'=>"#{@categoryattributesHash}"}
     <div id="hidden">
     </div>
     h5 Define attributes of

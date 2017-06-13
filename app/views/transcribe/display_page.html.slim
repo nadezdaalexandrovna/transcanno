@@ -181,6 +181,8 @@ h2.legend Page Notes
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
 
+    console.log(categoryTypesHash);
+
     var catID, attr_name;
     var categoriesInfo={};
     for (catID in categoryTypesHash){
@@ -287,7 +289,7 @@ h2.legend Page Notes
 
 
     //If the user types text in the input field of the category type select box in order to select one of the options
-    jQuery.fn.filterByTextS = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
+    jQuery.fn.filterByTextS = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
       var option;
       var select;
       var options;
@@ -327,7 +329,7 @@ h2.legend Page Notes
                     userChosenAttributesAndValues.push([attrName,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                     }
 
                     if (num==(categoryTable.length-1)){
@@ -344,7 +346,7 @@ h2.legend Page Notes
                     userChosenAttributesAndValues.push([attrName,option.value]);
 
                     if (num<(categoryTable.length-1)){
-                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                      getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                     }
 
                     if (num==(categoryTable.length-1)){
@@ -488,18 +490,18 @@ h2.legend Page Notes
     }
 
 
-    function tagSelectionWithType (categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords){
+    function tagSelectionWithType (categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords,onButton){
 
       userChosenAttributesAndValues=[];
 
       var categoryTable=categoriesInfo[categoryid];
                 
-      getNextSomethingSelected(varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
+      getNextSomethingSelected(varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
       
     }
 
 
-    function getNextSomethingSelected(varTag, num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords){
+    function getNextSomethingSelected(varTag, num, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
             
         var categoryTypesTable=categoryTable[num][2];
         var attrName=categoryTable[num][0];
@@ -516,17 +518,22 @@ h2.legend Page Notes
           addAnOption(newDropdown,categoryTypesTable[i]);
                     
           if(i==(categoryTypesTable.length-1)){
-            $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+            if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
             $('#select-type-input').focus();
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              jQuery.fn.userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+              jQuery.fn.userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
-            $('#chosen-select-type').filterByTextS($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
+            $('#chosen-select-type').filterByTextS($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       
             $("#chosen-select-type").off().change(attrName,function(event3){                        
                                                 
@@ -543,7 +550,7 @@ h2.legend Page Notes
                   document.getElementById('select_a_tag').innerHTML = "";
                             
                   if (num<(categoryTable.length-1)){
-                    getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                    getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                   }
 
                   if (num==(categoryTable.length-1)){
@@ -561,13 +568,18 @@ h2.legend Page Notes
           //Create the new dropdown menu for category types
           newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
 
-          $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+          if(onButton==true){
+            $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+          }else{
+            $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
+          }
+          
           $("#newDropdownDiv").show();
           $("#select-type-input").hide();
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
           $('#user-type-input').focus();
-          jQuery.fn.userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+          jQuery.fn.userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
           alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
@@ -607,6 +619,12 @@ h2.legend Page Notes
         $("#select-type-input")[0].value="";
         $('#chosen-select-type').empty();
         $("#newDropdownDiv").hide();
+        $("#deletion_div").hide();
+        $("#deletion_div").empty();
+        $("#change_div").hide();
+        $("#change_div").empty();
+        $("#change_selected_div").hide();
+        $("#change_selected_div").empty();
 
         medium.focus();
         medium.focusNadya(focusOffset,focusNode);
@@ -715,7 +733,7 @@ h2.legend Page Notes
           addAnOption(newDropdown,categoryTypesTable[i]);
                     
           if(i==(categoryTypesTable.length-1)){
-            $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+            $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
             $('#select-type-input').focus();
@@ -760,7 +778,7 @@ h2.legend Page Notes
           //Create the new dropdown menu for category types
           newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
 
-          $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+          $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
           $("#newDropdownDiv").show();
           $("#select-type-input").hide();
           $("#chosen-select-type").hide();          
@@ -804,7 +822,7 @@ h2.legend Page Notes
     }
 
     //If the user types text in the input field of the category type select box in order to select one of the options
-    jQuery.fn.userInputAttrValueSomethingSelected = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
+    jQuery.fn.userInputAttrValueSomethingSelected = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
       var option;
       var select;
       var options;
@@ -829,7 +847,7 @@ h2.legend Page Notes
               userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
               if (num<(categoryTable.length-1)){
-                getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
               if (num==(categoryTable.length-1)){
@@ -849,7 +867,7 @@ h2.legend Page Notes
               $(textbox).val('');
 
               if (num<(categoryTable.length-1)){
-                getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords);
+                getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
               if (num==(categoryTable.length-1)){
@@ -999,7 +1017,7 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHash){
-                tagSelectionWithType(categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords);
+                tagSelectionWithType(categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords, false);
                   
               }else{ //If the category doesn't have types
 
@@ -1048,7 +1066,13 @@ h2.legend Page Notes
     $( ".change_tag" ).mousedown(function() {
       position = $(this).offset();
       var coords = {x:position.left, y:position.top};
-      changeTag(coords);
+      changeTag(coords,true);
+    });
+
+    //Change a tag
+    jQuery('#page_source_text').bind('keydown', 'alt+m', function(e) {
+      var coords = getSelectionCoords();
+      changeTag(coords,false);
     });
 
     function findParents(){
@@ -1057,7 +1081,7 @@ h2.legend Page Notes
       var a=anchorNode;
 
       //Find all the parents of the anchorNode (the node where the cursor or the beginning of the selection is)
-      while (a) {
+      while (a!=null) {
         a = a.parentNode;
         if(a.id=="page_source_text"){
           break;
@@ -1068,9 +1092,9 @@ h2.legend Page Notes
     }
 
     //Change a tag
-    function changeTag(coords){
+    function changeTag(coords,onButton){
       var els = findParents();
-      console.log(els);
+
       //If the node has parent nodes (=tags)
       if(els.length>0){
 
@@ -1081,6 +1105,10 @@ h2.legend Page Notes
           radio,
           label,
           button;
+
+          var titlediv = document.createElement("div");
+          titlediv.appendChild(document.createTextNode("Choose the tag to modify:"));
+          menuDiv.appendChild(titlediv);
 
         //Create a menu
         for(i=0; i<els.length; i++){
@@ -1093,6 +1121,7 @@ h2.legend Page Notes
           radio.id = "change_radio_"+nameTag;
           label = document.createElement('label');
           label.htmlFor = "change_radio_"+nameTag;
+          label.className=("medium-"+nameTag).toLowerCase();
           label.appendChild(document.createTextNode(name));
           menuDiv.appendChild(radio);
           menuDiv.appendChild(label);
@@ -1101,13 +1130,17 @@ h2.legend Page Notes
 
         button = document.createElement('button');
         button.onclick = function(){
-          changeSelectedTag(coords);
+          changeSelectedTag(coords,onButton);
         };
 
         button.appendChild(document.createTextNode("Change the chosen tag"));
         menuDiv.appendChild(button);
-
-        $("#change_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        if(onButton==true){
+          $("#change_div").css({'top':coords.y+20,'left':'','right':'4vw', 'position':'absolute'});
+        }else{
+          $("#change_div").css({'top':coords.y+20,'left':coords.x, 'right':'', 'position':'absolute'});
+        }
+        
         $("#change_div").show();
       }
       
@@ -1123,8 +1156,12 @@ h2.legend Page Notes
       return attrs;
     }
 
+    function updateCorrespondingInput(inputId,newvalue){
+      $("#"+inputId).val(newvalue);
+    }
+
     //Functions that calls medium.js in order to remove the tags chosen via the popup menu checkboxes
-    function changeSelectedTag(coords){
+    function changeSelectedTag(coords,onButton){
 
       //Get the checked tagcode
       var tagCodeToChange = $("input[name=change_tag_radio]:checked").val();
@@ -1135,32 +1172,70 @@ h2.legend Page Notes
       $("#change_div").hide();
 
       var attrs=getAttributes($("[tagcode="+tagCodeToChange+"]"));
+      var tagName=$("[tagcode="+tagCodeToChange+"]").prop("tagName");
+
+      var catId=tagName.match(/_ID(\d+)$/)[1];
 
       var div = document.getElementById("change_selected_div"),
           input,
           label,
           attrName,
           button,
-          numberOfChangableAttrs=0;
+          numberOfChangableAttrs=0,
+          i,
+          option;
 
+      var attrsHash=categoryTypesHash[catId];
+
+      //Loop through all attributes of the chosen category
       for (attrName in attrs){
         if(attrName!='class' && attrName!='tagcode'){
-          input = document.createElement("input");
-          input.type = "text";
-          input.id = "value_"+attrName;
-          input.value = attrs[attrName];
-          input.name=tagCodeToChange;
-          
           label = document.createElement('label');
           label.setAttribute("for","value_"+attrName);
           label.innerHTML = attrName;
           div.appendChild(label);
-          div.appendChild(input);
-          numberOfChangableAttrs+=1;
+
+          //If the user is allowed to type attribute values
+          if(attrsHash[attrName]['allow_user_input']==1){
+            input = document.createElement("input");
+            input.type = "text";
+            input.id = "value_"+attrName;
+            input.value = attrs[attrName];
+            input.name=tagCodeToChange;
+          
+            div.appendChild(input);
+            numberOfChangableAttrs+=1;
+          }
+
+          //If there are predefined attributes
+          if(attrsHash[attrName]['values'].length>0){
+            //Create a dropdown to let the user select an attribute value from the list
+            var select = document.createElement("select");
+            select.id = "value_"+attrName;
+            select.name='select_'+tagCodeToChange;
+            select.onchange=function(){
+              updateCorrespondingInput(this.id,this.value);
+            };
+
+            for (i=0; i<attrsHash[attrName]['values'].length; i++){
+              option = document.createElement("option");
+              option.value=attrsHash[attrName]['values'][i];
+              if(attrsHash[attrName]['values'][i]==attrs[attrName]){
+                option.selected="checked";
+              }else{
+                option.selected="";
+              }
+              option.innerHTML=attrsHash[attrName]['values'][i];
+
+              select.appendChild(option);
+            }
+
+            div.appendChild(select);
+          }
         }
       }
 
-      if(numberOfChangableAttrs<0){
+      if(numberOfChangableAttrs>0){
         button = document.createElement('button');
         button.onclick = function(){
           saveChangesInAttributeValues(tagCodeToChange);
@@ -1168,13 +1243,16 @@ h2.legend Page Notes
 
         button.appendChild(document.createTextNode("Save changes"));
         div.appendChild(button);
-      
-        $("#change_selected_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        
+        if(onButton==true){
+          $("#change_selected_div").css({'top':coords.y+20,'left':'','right':'4vw', 'position':'absolute'});
+        }else{
+          $("#change_selected_div").css({'top':coords.y+20,'left':coords.x,'right':'', 'position':'absolute'});
+        }
+        
         $("#change_selected_div").show();
       }else{
-        var tagName=$("[tagcode="+tagCodeToChange+"]").prop("tagName");
-        tagName=tagName.replace("/(_ID\d+)$/","");
-        alert("The tag "+tagName+" has no attributes you could change.");
+        alert("The tag "+tagName.match(/^(.+)_ID\d+$/)[1]+" has no attributes.");
       }
             
     }
@@ -1184,22 +1262,54 @@ h2.legend Page Notes
       //Get new values
       var el,
         nodeList=document.getElementsByName(tagCode),
+        nodeListSelect=document.getElementsByName('select_'+tagCode),
         newAttrsValuesTable={},
         id;
-      //Create a hash with attribute names and their new values
-      for (el=0; el<nodeList.length; el++){
-        id=nodeList[el].id.substring(6);
-        console.log("id: "+id);
-        newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
 
-        if(el==(nodeList.length-1)){
-          $("#change_selected_div").hide();
-          $("#change_selected_div").empty();
-      
-          medium.changeSelectedTag(tagCode,newAttrsValuesTable);
-          return false;
+      //Create a hash with attribute names and their new values
+      //First put inside values from the drop down select
+      if(nodeListSelect.length>0){
+      for (el=0; el<nodeListSelect.length; el++){
+        id=nodeListSelect[el].id.substring(6);
+        newAttrsValuesTable[id]=nodeListSelect[el].value;
+
+        if(el==(nodeListSelect.length-1)){
+          if(nodeList.length>0){
+          //Next put inside values from the input fields
+          for (el=0; el<nodeList.length; el++){
+            id=nodeList[el].id.substring(6);
+            newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
+
+            if(el==(nodeList.length-1)){
+              $("#change_selected_div").hide();
+              $("#change_selected_div").empty();
+              medium.changeSelectedTag(tagCode,newAttrsValuesTable);
+              return false;
+            }
+          }
+          }else{
+              $("#change_selected_div").hide();
+              $("#change_selected_div").empty();
+              medium.changeSelectedTag(tagCode,newAttrsValuesTable);
+              return false;
+          }
         }
       }
+      }else{
+        //Next put inside values from the input fields
+          for (el=0; el<nodeList.length; el++){
+            id=nodeList[el].id.substring(6);
+            newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
+
+            if(el==(nodeList.length-1)){
+              $("#change_selected_div").hide();
+              $("#change_selected_div").empty();
+              medium.changeSelectedTag(tagCode,newAttrsValuesTable);
+              return false;
+          }
+        }
+      }
+      
       
     }
 
@@ -1242,7 +1352,7 @@ h2.legend Page Notes
         button.appendChild(document.createTextNode("Delete the chosen tag(s)"));
         menuDiv.appendChild(button);
 
-        $("#deletion_div").css({'top':coords.y,'left':coords.x, 'position':'absolute'});
+        $("#deletion_div").css({'top':coords.y+20,'left':'','right':'4vw', 'position':'absolute'});
         $("#deletion_div").show();
       }
       

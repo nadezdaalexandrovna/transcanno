@@ -7,7 +7,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id5', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id5', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('correction_id5', {
@@ -23,7 +23,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'ambiguous_id1', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'ambiguous_id1', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('ambiguous_id1', {
@@ -39,7 +39,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'closing_id2', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'closing_id2', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('closing_id2', {
@@ -55,7 +55,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'comment_id4', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'comment_id4', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('comment_id4', {
@@ -71,7 +71,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id8', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id8', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('error_id8', {
@@ -87,7 +87,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id12', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id12', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('greeting_id12', {
@@ -103,7 +103,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'hyphen_id13', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'hyphen_id13', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('hyphen_id13', {
@@ -119,7 +119,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'indirect_speech_id14', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'indirect_speech_id14', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('indirect_speech_id14', {
@@ -135,7 +135,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id26', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'greeting_id26', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('greeting_id26', {
@@ -151,7 +151,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id27', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'correction_id27', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('correction_id27', {
@@ -167,7 +167,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id28', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'error_id28', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('error_id28', {
@@ -183,7 +183,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'deletion_id29', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'deletion_id29', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('deletion_id29', {
@@ -199,7 +199,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'insertion_id30', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'insertion_id30', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('insertion_id30', {
@@ -215,7 +215,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_id31', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_id31', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('orthographic_error_id31', {
@@ -231,7 +231,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_target_id32', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'orthographic_error_target_id32', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('orthographic_error_target_id32', {
@@ -247,7 +247,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_missings_id34', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_missings_id34', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('punctuation_error_missings_id34', {
@@ -263,7 +263,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_wrongly_set_id35', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'punctuation_error_wrongly_set_id35', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('punctuation_error_wrongly_set_id35', {
@@ -279,7 +279,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'grammatic_error_id33', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'grammatic_error_id33', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('grammatic_error_id33', {
@@ -295,7 +295,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'verb_id36', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'verb_id36', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('verb_id36', {
@@ -311,7 +311,7 @@ if(categoryid in categoryTypesHash){
 [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 position = $(this).offset();
 var coords = {x:position.left, y:position.top};
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'new_category_id37', focusOffset, focusNode, [anchorNode, anchorOffset], coords);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'new_category_id37', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }else{
 article.highlight();
 medium.invokeElement('new_category_id37', {

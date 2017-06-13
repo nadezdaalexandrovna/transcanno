@@ -96,6 +96,15 @@ class CategoryController < ApplicationController
 
   def define_attribute_values
     @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+    gon.categoryattributes=@categoryattributes.as_json.to_json
+    @categoryattributesHash=@categoryattributes.as_json.to_json
+
+    gon.categoryattributes=@categoryattributes.to_a.map(&:serializable_hash)
+    @categoryattributesHash=@categoryattributes.to_a.map(&:serializable_hash)
+
+    puts "@categoryattributesHash:\n"
+    @categoryattributesHash.inspect
+
     @attributeValuesHash={}
     sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
     connection = ActiveRecord::Base.connection
@@ -227,11 +236,12 @@ class CategoryController < ApplicationController
         end
       end
       if forSql!=""
-        #sql="INSERT INTO categorytypes (categorytype, category_id) VALUES "
-        sql="INSERT INTO categoryattributes (name, mode, category_id, allow_user_input, initial) VALUES "
-        sql+=forSql[0..-3]
-        connection = ActiveRecord::Base.connection
-        connection.execute(sql)
+        begin
+          sql="INSERT INTO categoryattributes (name, mode, category_id, allow_user_input, initial) VALUES "
+          sql+=forSql[0..-3]
+          connection = ActiveRecord::Base.connection
+          connection.execute(sql)
+        end
       end
     end
     #Apply scopes of attributes
@@ -333,7 +343,7 @@ class CategoryController < ApplicationController
                                   #'nowX=position.left;'+"\n"+
                                   #'nowY=position.top;'+"\n"+
                                   'var coords = {x:position.left, y:position.top};'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords);'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);'+"\n"+
                                   '}else{'+"\n"+
                                   'article.highlight();'+"\n"+
                                   'medium.invokeElement(\''+title+'_id'+id+'\', {'+"\n"+

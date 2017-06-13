@@ -1262,6 +1262,7 @@ label[for="207"] span {
   background-color: white;
   //background-color: #faf5eb;
   box-shadow: 0 1px 0 #fff inset;
+
 }
 
 #newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
@@ -1275,6 +1276,7 @@ label[for="207"] span {
   padding: 4px;
   margin-top:20px;
   z-index: 9999;
+  width:15vw;
 }
 
 .select_a_tag{
@@ -1415,6 +1417,7 @@ label[for="207"] span {
 
 .already_attribute td{
   padding: 4px;
+  max-width: 13vw;
 }
 
 .sequences_of_value{
@@ -1424,5 +1427,9 @@ label[for="207"] span {
   border-radius: 0.25em;
   //border-color: rgba(0, 0, 0, 0.2);
   border: solid 1px rgba(0, 0, 0, 0.2);
+}
+
+#add_field{
+  margin-top: 20px;
 }
 

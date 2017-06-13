@@ -119,18 +119,39 @@
     //Function for the category creation menu normalising the category name
     function verifyValue(){
       var value=document.getElementById('category_title').value;
-      console.log("value: "+value);
       value=value.replace(/[ ]+/g, "_");
       value=value.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
-      val=val.replace(/^([^a-zA-Z_])/, "");
+
+      if(value.match(/^[^a-zA-Z_]+(.+)$/)!=null){
+          value=value.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
+        }
+
       value=value.replace(/[^a-zA-Z0-9_]+/g, "");
-      console.log("value: "+value);
+      //The values can't be longer than 255
+      if(value.length>250){
+        value=value.substr(0,250);
+      }
       document.getElementById('category_title').value=value;
       return value;
     }
 
     //Function for the attribute creation menu normalising the attribute name
-    function verifyValueType(){
+    function verifyValueType(categoryTitle,hash){
+      console.log(categoryTitle);
+
+      console.log("hash: ");
+      console.log(hash);
+
+      console.log("gon.categoryattributes: ");
+      console.log(gon.categoryattributes);
+      
+      var categoryAttributesDiv=document.getElementById('categoryAttributesDiv');
+      console.log(categoryAttributesDiv);
+      var categoriesAttributesText=categoryAttributesDiv.attributes[2].textContent;
+      console.log(categoriesAttributesText);
+      var categoryAttributesHash=JSON && JSON.parse(categoriesAttributesText) || $.parseJSON(categoriesAttributesText);
+      console.log(categoryAttributesHash);
+
       var val, i;
       var elms=document.getElementsByClassName('attribute_input_field');
 
@@ -138,10 +159,21 @@
         val=elms[i].value;
         val=val.replace(/[ ]+/g, "_");
         val=val.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
-        val=val.replace(/^([^a-zA-Z_])/, "");
+
+        if(val.match(/^[^a-zA-Z_]+(.+)$/)!=null){
+          val=val.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
+        }
         val=val.replace(/[^a-zA-Z0-9_\.]+/g, "");
-        elms[i].value = val;
-        
+
+        //The values can't be longer than 255
+        if(val.length>250){
+          val=val.substr(0,250);
+          console.log(">250      "+val);
+        }
+
+
+
+        elms[i].value = val; 
       }
 
       return;
