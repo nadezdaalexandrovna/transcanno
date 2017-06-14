@@ -821,7 +821,7 @@ h2.legend Page Notes
       return val.replace(/[<&"'>]+/g, "_");
     }
 
-    //If the user types text in the input field of the category type select box in order to select one of the options
+    //The user types the value of a category attribute in an input field
     jQuery.fn.userInputAttrValueSomethingSelected = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
       var option;
       var select;
@@ -881,7 +881,7 @@ h2.legend Page Notes
     }
 
 
-    //If the user types text in the input field of the category type select box in order to select one of the options
+    //The user types the value of a category attribute
     jQuery.fn.userInputAttrValueCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords) {
       var option;
       var select;
@@ -1104,10 +1104,19 @@ h2.legend Page Notes
           menuDiv=document.getElementById("change_div"),
           radio,
           label,
-          button;
+          button,
+          hideDivButton=document.createElement('button');
+
+          hideDivButton.className="hide_popup_button";
+          hideDivButton.appendChild(document.createTextNode("\u26cc"));
+          hideDivButton.onclick=function(){
+            hideChangePopup(); 
+          };
+          menuDiv.appendChild(hideDivButton);
 
           var titlediv = document.createElement("div");
           titlediv.appendChild(document.createTextNode("Choose the tag to modify:"));
+          titlediv.className="popup_title_div";
           menuDiv.appendChild(titlediv);
 
         //Create a menu
@@ -1160,6 +1169,25 @@ h2.legend Page Notes
       $("#"+inputId).val(newvalue);
     }
 
+    function hideDeletionPopup(){
+      $("#deletion_div").empty();
+      $("#deletion_div").hide();
+    }
+
+    function hideChangePopup(){
+      //Delete the radios from the menu div
+      $('#change_div').empty();
+      //Hide the menu
+      $("#change_div").hide();
+    }
+
+    function hideChangeAttributesPopup(){
+      //Delete the radios from the menu div
+      $("#change_selected_div").empty();
+      //Hide the menu
+      $("#change_selected_div").hide();
+    }
+
     //Functions that calls medium.js in order to remove the tags chosen via the popup menu checkboxes
     function changeSelectedTag(coords,onButton){
 
@@ -1183,7 +1211,27 @@ h2.legend Page Notes
           button,
           numberOfChangableAttrs=0,
           i,
-          option;
+          option,
+          hideDivButton=document.createElement('button');
+
+
+      hideDivButton.className="hide_popup_button";
+      hideDivButton.appendChild(document.createTextNode("\u26cc"));
+      hideDivButton.onclick=function(){
+        hideChangeAttributesPopup(); 
+      };
+      div.appendChild(hideDivButton);
+
+      var titlediv = document.createElement("div");
+      var span=document.createElement("span");
+      span.className=("medium-"+tagName).toLowerCase();
+      span.appendChild(document.createTextNode(tagName.match(/^(.+)_ID\d+$/)[1]));
+          
+      titlediv.appendChild(document.createTextNode("Modify attribute values of the "));
+      titlediv.appendChild(span);
+      titlediv.appendChild(document.createTextNode(" tag:"));
+      titlediv.className="popup_title_div";
+      div.appendChild(titlediv);
 
       var attrsHash=categoryTypesHash[catId];
 
@@ -1202,7 +1250,7 @@ h2.legend Page Notes
             input.id = "value_"+attrName;
             input.value = attrs[attrName];
             input.name=tagCodeToChange;
-          
+            input.className="input_attribute_value_transcribe";
             div.appendChild(input);
             numberOfChangableAttrs+=1;
           }
@@ -1325,7 +1373,21 @@ h2.legend Page Notes
           menuDiv=document.getElementById("deletion_div"),
           checkbox,
           label,
-          button;
+          button,
+          hideDivButton=document.createElement('button');
+
+          hideDivButton.className="hide_popup_button";
+          hideDivButton.appendChild(document.createTextNode("\u26cc"));
+          hideDivButton.onclick=function(){
+            hideDeletionPopup(); 
+          };
+          menuDiv.appendChild(hideDivButton);
+
+          var titlediv = document.createElement("div");
+          titlediv.appendChild(document.createTextNode("Choose tag(s) to delete:"));
+          titlediv.className="popup_title_div";
+          menuDiv.appendChild(titlediv);
+
 
         //Create a menu
         for(i=0; i<els.length; i++){
@@ -1338,6 +1400,7 @@ h2.legend Page Notes
           checkbox.id = "delete_checkbox_"+nameTag;
           label = document.createElement('label');
           label.htmlFor = "delete_checkbox_"+nameTag;
+          label.className = "medium-"+nameTag.toLowerCase();
           label.appendChild(document.createTextNode(name));
           menuDiv.appendChild(checkbox);
           menuDiv.appendChild(label);
