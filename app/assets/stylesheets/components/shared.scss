@@ -1252,6 +1252,7 @@ label[for="207"] span {
 #page_source_text{
   height: 100%;
   width: 100%;
+  overflow-y: scroll;
 }
 
 .popupBody, .popupBody2, #newDropdownDiv, #deletion_div, #change_div, #change_selected_div {

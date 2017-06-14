@@ -119,9 +119,6 @@
 <div id="change_selected_div">
 </div>
 
-div [ id="mediumClickableSpans" ]
-  - @categories.each do |c|
-    span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
 
 div [ id="verticalMediumClickableSpans" ]
   table
@@ -1451,16 +1448,40 @@ h2.legend Page Notes
       
     }
 
+    //Check if a string contains valid XML
+    function isXML(xml){
+      try {
+        xmlDoc = $.parseXML(xml); //is valid XML
+        return true;
+      } catch (err) {
+        // was not XML
+        console.log(err);
+        return false;
+      }
+    }
+   
+
     //Add the transcription text to the form before sending it to the server
     function AddMediumValue() {
       mediumValue = medium.value();
       
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
-      mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
-      mediumValue = mediumValue.replace(/<\/div>/, '');
-      console.log(mediumValue);
-      document.getElementsByName("page[source_text]")[0].value=mediumValue;
-      return true;   // Returns Value
+
+      if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
+        mediumValue = "<div id=\"bigDiv\">"+mediumValue+"<\/div>";
+      }
+
+      if(isXML(mediumValue)){
+        mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
+        mediumValue = mediumValue.replace(/<\/div>/, '');
+        document.getElementsByName("page[source_text]")[0].value=mediumValue;
+        return true;   // Returns Value
+      }else{
+        alert("The transcription contains tagging erros and can't be saved:\n"+mediumValue);
+        return false;
+      }
+
+      
     }
    
 javascript:  mixpanel.track("Transcribe Page");
