@@ -220,15 +220,16 @@ h2.legend Page Notes
 
     var container = article.parentNode;
 
+    
     var medium = new Medium({
       element: article,
       mode: Medium.richMode,
       attributes: null,
       placeholder:"",
-      tags: null,
+      tags:null,
       pasteAsText: false
     });
-       
+        
 
     $(".popupBody").hide();
     $(".popupBody2").hide();
@@ -804,6 +805,27 @@ h2.legend Page Notes
 
       medium.focusNadya(focusOffset,focusNode);
       medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+
+
+      var win = win || window,
+      docF = win.document,
+      selF = docF.selection,
+      rangeF=null,
+      rectsF=null,
+      rectF=null,
+      spanF=null,
+      spanParentF=null;
+
+
+      if (selF) {
+        console.log("selF");
+        console.log(selF);
+      } else if (win.getSelection) {
+        selF = win.getSelection();
+        console.log("win.getSelection()");
+        console.log(selF);
+      }
+
       tagWithType='';
       $('.chosen-select-no-results').chosen_reset(config);
       $(".popupBody").hide();
@@ -1018,7 +1040,8 @@ h2.legend Page Notes
                   
               }else{ //If the category doesn't have types
 
-                medium.tagSelection2(varTag, "",anchorNode,focusNode,anchorOffset, focusOffset);
+                medium.tagSelection3(varTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
+                
                 console.log(medium.value());
                 //$('.chosen-select-no-results2').chosen_reset(config);
                 //$(".popupBody2").hide();

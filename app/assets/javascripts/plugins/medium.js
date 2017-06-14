@@ -26,22 +26,15 @@
     return caretOffset;
 }
 
-function createElementForTagSelection2(tag, tagCode, type){
-	var el=document.createElement(tag);
-	el.setAttribute("tagCode",tagCode);
-	el.setAttribute("class","medium-"+tag);
-	if(type!=""){
-		el.setAttribute("type",type);
-	}
-	return el;
-}
 
 function createElementForTagSelection3(tag, tagCode, attrValuesTable){
 	var el=document.createElement(tag);
 	el.setAttribute("tagCode",tagCode);
 	el.setAttribute("class","medium-"+tag);
-	for(i=0; i<attrValuesTable.length; i++){
-		el.setAttribute(attrValuesTable[i][0],attrValuesTable[i][1]);
+	if(attrValuesTable.length>0){
+		for(i=0; i<attrValuesTable.length; i++){
+			el.setAttribute(attrValuesTable[i][0],attrValuesTable[i][1]);
+		}
 	}
 	return el;
 }
@@ -568,7 +561,9 @@ Medium.prototype = {
 			range.surroundContents(el);
 			range.collapse(true);
 			sel = rangy.getSelection();
-			sel.setSingleRange(range);
+			sel.removeAllRanges();
+
+			//medium.makeUndoable();
 			return this;
 			
 		}else{
@@ -704,13 +699,20 @@ Medium.prototype = {
 
 					if(nodeToTag2.previousSibling!=null){
 						nodeToTag2=nodeToTag2.previousSibling;
-						break;
+
+						if(nodeToTag2.tagName!="BR"){
+							break;
+						}
+						
 					}else{
 						nodeToTag2=nodeToTag2.parentNode;
 					}
 				}
 
 				if(nodeToTag2===nodeToTag){
+					sel.removeAllRanges();
+
+					//medium.makeUndoable();
 					return this;
 				}
 
@@ -721,310 +723,14 @@ Medium.prototype = {
 				}
 				
 			}
-			return this;
-		}
-		
-	},
-
-	tagSelection2: function (tag, type, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
-		var range,
-			el3,
-			sel,
-			el;
-
-		var d = new Date();
-		var milliseconds = d.getTime();
-		var tagCode=milliseconds.toString();
-
-		//var el = document.createElement(tag);
-
-		//[commonAncestor, ancestorsPosInAnchor, ancestorsPosInFocus]=get_common_ancestor(parentsAnchor,parentsFocus);
-		var closestCommonAncestor = $(anchorEl).parents().has($(focusEl)).first()[0];
-
-		if(anchorEl===focusEl){
-			range = rangy.createRange();		
-			range.setStart(anchorEl, beginningOfSelection);
-			range.setEnd(anchorEl, endOfSelection);
-			el=createElementForTagSelection2(tag, tagCode, type);
-			/*
-			el=document.createElement(tag);
-			el.setAttribute("tagCode",tagCode);
-			el.setAttribute("class","medium-"+tag);
-			el.setAttribute("type",type);
-			*/
-			range.surroundContents(el);
-			range.collapse(true);
-			sel = rangy.getSelection();
-			sel.setSingleRange(range);
-			return this;
-		//}else if (anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode){ //Overlapping selection
-			
-		}else{
-			sel = rangy.getSelection();
 			sel.removeAllRanges();
 
-			//Tag to the right till the common ancestor
-
-			var nodeToTag=anchorEl;
-			var currentNode;
-			var nodes;
-			var childTextNodes, rangeIn;
-
-			while(nodeToTag!=closestCommonAncestor){
-				range = rangy.createRange();
-				
-				if(beginningOfSelection!=null){				
-					range.setStart(nodeToTag, beginningOfSelection);
-					range.setEndAfter(nodeToTag);
-					el=createElementForTagSelection2(tag, tagCode, type);
-					/*
-					el=document.createElement(tag);
-					el.setAttribute("tagCode",tagCode);
-					el.setAttribute("class","medium-"+tag);
-					el.setAttribute("type",type);
-					*/
-					range.surroundContents(el);
-					sel.addRange(range);
-					
-					childTextNodes = range.getNodes([3], function(node) {
-    					return node.data;
-					});
-					
-					nodeToTag=childTextNodes[0].parentNode;
-					//nodeToTag=nodeToTag.parentNode;
-
-				}else{
-					range.setStartBefore(nodeToTag);
-					range.setEndAfter(nodeToTag);
-					childTextNodes = range.getNodes([3], function(node) {
-    					return node.data;
-					});
-					console.log("childTextNodes");
-					if(childTextNodes.length>0){
-						childTextNodes.forEach(function(child, index) {
-  							console.log(child);
-  							rangeIn = rangy.createRange();
-  							rangeIn.setStartBefore(child);
-							rangeIn.setEndAfter(child);
-							el=createElementForTagSelection2(tag, tagCode, type);
-							/*
-							el=document.createElement(tag);
-							el.setAttribute("tagCode",tagCode);
-							el.setAttribute("class","medium-"+tag);
-							el.setAttribute("type",type);
-							*/
-							rangeIn.surroundContents(el);
-							sel.addRange(rangeIn);
-						});
-
-						nodeToTag=childTextNodes[0].parentNode;
-					}else{
-						nodeToTag=nodeToTag.parentNode;
-					}
-
-					
-				}
-				
-				if(nodeToTag.parentNode===closestCommonAncestor){
-					break;
-				}
-
-				while(true){
-					if(nodeToTag===closestCommonAncestor){break;}
-
-					if(nodeToTag.nextSibling!=null){
-						nodeToTag=nodeToTag.nextSibling;
-						break;
-					}else{
-						nodeToTag=nodeToTag.parentNode;
-					}
-				}
-
-				if(nodeToTag.nodeType==3){
-					beginningOfSelection=0;
-				}else{
-					beginningOfSelection=null;
-				}
-			}
-
-			//Tag to the left till the common ancestor
-
-			var nodeToTag2=focusEl;
-			
-
-			while(nodeToTag2!=closestCommonAncestor){
-				range = rangy.createRange();
-				range.setStartBefore(nodeToTag2);
-				if(endOfSelection!=null){				
-					range.setEnd(nodeToTag2,endOfSelection);
-					el=createElementForTagSelection2(tag, tagCode, type);
-					/*
-					el=document.createElement(tag);
-					el.setAttribute("tagCode",tagCode);
-					el.setAttribute("class","medium-"+tag);
-					el.setAttribute("type",type);
-					*/
-					range.surroundContents(el);
-					sel.addRange(range);
-					
-					childTextNodes = range.getNodes([3], function(node) {
-    					return node.data;
-					});
-					
-					nodeToTag2=childTextNodes[0].parentNode;
-					//nodeToTag2=nodeToTag2.parentNode;
-
-				}else{
-					range.setEndAfter(nodeToTag2);
-
-					childTextNodes = range.getNodes([3], function(node) {
-    					return node.data;
-					});
-					console.log("childTextNodes");
-					if(childTextNodes.length>0){
-						childTextNodes.forEach(function(child, index) {
-  							console.log(child);
-  							rangeIn = rangy.createRange();
-  							rangeIn.setStartBefore(child);
-							rangeIn.setEndAfter(child);
-							el=createElementForTagSelection2(tag, tagCode, type);
-							/*
-							el=document.createElement(tag);
-							el.setAttribute("tagCode",tagCode);
-							el.setAttribute("class","medium-"+tag);
-							el.setAttribute("type",type);
-							*/
-							rangeIn.surroundContents(el);
-							sel.addRange(rangeIn);
-						});
-						nodeToTag2=childTextNodes[0].parentNode;
-					}else{
-						nodeToTag2=nodeToTag2.parentNode;
-					}
-
-					
-				}
-
-				
-				while(true){
-					if(nodeToTag2===closestCommonAncestor){break;}
-
-					if(nodeToTag2.previousSibling!=null){
-						nodeToTag2=nodeToTag2.previousSibling;
-						break;
-					}else{
-						nodeToTag2=nodeToTag2.parentNode;
-					}
-				}
-
-				if(nodeToTag2===nodeToTag){
-					return this;
-				}
-
-				if(nodeToTag2.nodeType==3){
-					endOfSelection=nodeToTag2.length;
-				}else{
-					endOfSelection=null;
-				}
-				
-			}
+			//medium.makeUndoable();
 			return this;
 		}
 		
 	},
 
-	tagSelection: function (tag, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
-		var caret=getCaretCharacterOffsetWithin(document.getElementById("bigDiv"));
-
-		var depthAnchorEl = $(anchorEl,"#page_source_text").parents().length;
-		var depthFocusEl = $(focusEl,"#page_source_text").parents().length;
-
-		var el = document.createElement(tag);
-		var el2 = document.createElement(tag);
-		var el3;
-
-		var d = new Date();
-		var milliseconds = d.getTime();
-		var tagCode=milliseconds.toString();
-		el.setAttribute("tagCode",tagCode);
-		el2.setAttribute("tagCode",tagCode);
-		el.setAttribute("class","medium-"+tag);
-		el2.setAttribute("class","medium-"+tag);
-		
-		var range = rangy.createRange();
-		var	range2;
-		var sel;
-
-		var wholeRange = rangy.createRange();
-		wholeRange.setStart(anchorEl,beginningOfSelection);
-		wholeRange.setEnd(focusEl,endOfSelection);
-		console.log(wholeRange);
-		var commonAncestorContainer = wholeRange.commonAncestorContainer;
-		console.log(commonAncestorContainer);
-		var parentsAnchor=$(anchorEl).parentsUntil("#bigDiv");
-		var parentsFocus = $(focusEl).parentsUntil("#bigDiv");
-		var depthAnchorEl2 = $(anchorEl).parents("#bigDiv").length;
-		var depthFocusEl2 = $(focusEl).parents("#bigDiv").length;
-
-		if(anchorEl===focusEl){			
-			range.setStart(anchorEl, beginningOfSelection);
-			range.setEnd(anchorEl, endOfSelection);
-			range.surroundContents(el);
-			range.collapse(true);
-			sel = rangy.getSelection();
-			sel.setSingleRange(range);
-			return this;
-		//}else if (anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode){ //Overlapping selection
-			
-		}else{
-			sel = rangy.getSelection();
-			sel.removeAllRanges();
-			
-
-			if (!(anchorNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode.parentNode || anchorNode.parentNode.nextSibling===focusNode)){
-				var nodeToTag=anchorNode;
-				var rangeIn;
-
-				while(true){				
-
-					if(nodeToTag.nextSibling!=null){
-						nodeToTag=nodeToTag.nextSibling;
-					}else{
-						nodeToTag=nodeToTag.parentNode.nextSibling;
-					}
-
-					if(nodeToTag===focusNode || nodeToTag===focusNode.parentNode){
-						range.setStart(anchorEl, beginningOfSelection);
-						range.setEndAfter(anchorEl);
-						range.surroundContents(el);
-						range.collapse(true);
-						range2 = rangy.createRange();
-						range2.setStartBefore(focusEl);
-						range2.setEnd(focusEl, endOfSelection);
-						range2.surroundContents(el2);
-						range2.collapse(true);
-						sel.setRanges([range,range2]);
-						sel.collapseToEnd();
-						return this;
-					}
-
-					rangeIn = rangy.createRange();
-					rangeIn.setStartBefore(nodeToTag);
-					rangeIn.setEndAfter(nodeToTag);
-					el3=document.createElement(tag);
-					el3.setAttribute("tagCode",tagCode);
-					el3.setAttribute("class","medium-"+tag);
-					rangeIn.surroundContents(el3);
-					sel.addRange(rangeIn);
-				}
-
-			}else{
-				return this;	
-			}
-
-		}
-		
-	},
 
 	tagNodesBetween: function(anchorNode,focusNode,tag){
 		var nodeToTag=anchorNode;
@@ -1324,10 +1030,11 @@ Medium.prototype = {
 
 		var selector = (w.getSelection || d.selection),
 			sel = selector(),
-			focusOffset = sel.focusOffset,
-			anchorOffset = sel.anchorOffset,
-			focusNode = sel.focusNode,
-			anchorNode = sel.anchorNode;
+			range = sel.getRangeAt(0),
+			focusNode=range.endContainer,
+			anchorNode = range.startContainer,
+			focusOffset=range.endOffset,
+			anchorOffset = range.startOffset;
 
 			if(anchorNode.id=="page_source_text"){
 				anchorNode=focusNode;
@@ -1337,11 +1044,6 @@ Medium.prototype = {
 				focusNode=anchorNode;
 			}
 
-		//range.setStart(node, offset);
-		//endRange.selectNodeContents(el);
-		//range.setEnd(endRange.endContainer, endRange.endOffset);
-
-		//contents = range.extractContents();
 		if(anchorNode===focusNode && anchorOffset>focusOffset){
 			return [anchorOffset,focusNode,focusOffset,anchorNode];
 		}else{
