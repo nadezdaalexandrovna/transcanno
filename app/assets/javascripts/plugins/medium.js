@@ -582,7 +582,7 @@ Medium.prototype = {
 			var nodes;
 			var childTextNodes, rangeIn;
 
-			while(nodeToTag!=closestCommonAncestor){
+			while(nodeToTag!=closestCommonAncestor ){
 				range = rangy.createRange();
 				
 				if(beginningOfSelection!=null){				
@@ -629,16 +629,21 @@ Medium.prototype = {
 					break;
 				}
 
+				
+
 				while(true){
 					if(nodeToTag===closestCommonAncestor){break;}
 
 					if(nodeToTag.nextSibling!=null){
+						if(nodeToTag.nextSibling===focusEl){break;}
 						nodeToTag=nodeToTag.nextSibling;
 						break;
 					}else{
 						nodeToTag=nodeToTag.parentNode;
 					}
 				}
+
+				if(nodeToTag.nextSibling!=null && nodeToTag.nextSibling===focusEl){break;}
 
 				if(nodeToTag.nodeType==3){
 					beginningOfSelection=0;
