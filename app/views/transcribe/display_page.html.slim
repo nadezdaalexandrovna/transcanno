@@ -294,6 +294,7 @@ h2.legend Page Notes
       var options2;
       var search;
       var regex;
+      var arrowPosition=0;
 
       return this.each(function() {
         select = this;
@@ -304,7 +305,29 @@ h2.legend Page Notes
         });
         $(select).data('options', options);
 
+        console.log("options");
+        console.log(options);
+
         $(textbox).off().on('change keyup', function(e) {
+
+        if (e.which == 40) {
+          console.log("pressed down arrow");
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=(options.length-1)){
+              arrowPosition+=1;
+            }
+          }
+        }else if(e.which == 38){
+          console.log("pressed up arrow");
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=0){
+              arrowPosition=arrowPosition-1;
+            }
+          }
+        }else{
+
         //$(textbox).bind('change keyup', function(e) {
           options2 = $(select).empty().data('options');
           $(select).attr("size", 0);
@@ -366,6 +389,7 @@ h2.legend Page Notes
               }
             });
           }
+        }
         });
       });
     };
@@ -613,10 +637,22 @@ h2.legend Page Notes
       if (e.altKey && e.keyCode == 89) {
         $('.chosen-select-no-results').chosen_reset(config);
         $(".popupBody").hide();
+
+        /*
+        $("#newDropdownDiv").hide();
+        $("#select_a_tag").empty();
         $("#select-type-input").hide();
         $("#select-type-input")[0].value="";
         $('#chosen-select-type').empty();
+        */
+
         $("#newDropdownDiv").hide();
+        $("#select-type-input").show();
+        $("#select-type-input")[0].value="";
+        $("#chosen-select-type").show();
+        $('#chosen-select-type').empty();
+        $('#user-type-input').hide();
+
         $("#deletion_div").hide();
         $("#deletion_div").empty();
         $("#change_div").hide();
@@ -853,7 +889,7 @@ h2.legend Page Notes
           //If the user presses enter
           if (e.which == 13) {
             console.log("user pressed enter");
-            if(notCollapsedArgsTable==null){
+            //if(notCollapsedArgsTable==null){
               $("#newDropdownDiv").hide();
               $("#select-type-input").show();
               $("#select-type-input")[0].value="";
@@ -873,6 +909,7 @@ h2.legend Page Notes
                 medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
 
               }
+            /*
             }else{
               $("#newDropdownDiv").hide();
               $("#select-type-input").show();
@@ -894,6 +931,7 @@ h2.legend Page Notes
 
               }
             }
+            */
           }
       });
       
@@ -916,7 +954,7 @@ h2.legend Page Notes
           //If the user presses enter
           if (e.which == 13) {
             console.log("user pressed enter");
-            if(notCollapsedArgsTable==null){
+            //if(notCollapsedArgsTable==null){
               $("#newDropdownDiv").hide();
               $("#select-type-input").show();
               $("#select-type-input")[0].value="";
@@ -934,7 +972,7 @@ h2.legend Page Notes
               if (num==(categoryTable.length-1)){
                 addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
               }
-
+            /*
             }else{
               $("#newDropdownDiv").hide();
               $("#select-type-input").show();
@@ -956,6 +994,7 @@ h2.legend Page Notes
 
               }
             }
+            */
           }
       });
       
@@ -997,10 +1036,8 @@ h2.legend Page Notes
               //If the category has types
               if(categoryid in categoriesInfo){
                 userChosenAttributesAndValues=[];
-                console.log("categoryid in categoriesInfo"+categoryid);
+
                 var categoryTable=categoriesInfo[categoryid];
-                console.log("categoryTable");
-                console.log(categoryTable);
                 
                 getNextCollapsed(0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords);
                 
@@ -1041,10 +1078,7 @@ h2.legend Page Notes
               }else{ //If the category doesn't have types
 
                 medium.tagSelection3(varTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
-                
-                console.log(medium.value());
-                //$('.chosen-select-no-results2').chosen_reset(config);
-                //$(".popupBody2").hide();
+
                 return false;
               }
             }
