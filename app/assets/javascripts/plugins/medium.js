@@ -629,6 +629,10 @@ Medium.prototype = {
 				while(true){
 					if(nodeToTag===closestCommonAncestor){break;}
 
+					if(nodeToTag.parentNode===closestCommonAncestor){
+						break;
+					}
+
 					if(nodeToTag.nextSibling!=null){
 						if(nodeToTag.nextSibling===focusEl){break;}
 						nodeToTag=nodeToTag.nextSibling;
@@ -637,6 +641,10 @@ Medium.prototype = {
 						nodeToTag=nodeToTag.parentNode;
 					}
 				}
+
+				if(nodeToTag.parentNode===closestCommonAncestor){
+						break;
+					}
 
 				if(nodeToTag.nextSibling!=null && nodeToTag.nextSibling===focusEl){break;}
 
