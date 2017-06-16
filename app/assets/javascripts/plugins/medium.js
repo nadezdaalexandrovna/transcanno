@@ -775,6 +775,27 @@ Medium.prototype = {
 		//var el = this.element;
 		var sel = rangy.getSelection();
 
+		var emptyElement = document.createTextNode('\u200B');
+        var parentOfFocus=focusEl.parentNode;
+        var grandParentofFocus=parentOfFocus.parentNode;
+
+        grandParentofFocus.insertBefore(emptyElement, parentOfFocus.nextSibling);
+
+        var range = document.createRange()
+        range.setStartAfter(emptyElement); 
+          
+        sel.removeAllRanges();
+        sel.addRange(range);
+            
+        Medium.activeElement=emptyElement;
+
+		return this;
+	},
+	/*
+	cursorAfterTagBefore: function (focusEl, callback, skipChangeEvent) {
+		//var el = this.element;
+		var sel = rangy.getSelection();
+
 			//var node = d.createTextNode(html);
 			var range, outerhtml;
 
@@ -783,9 +804,8 @@ Medium.prototype = {
         	range.setStartAfter(focusEl.parentNode); 
 			range.setEndAfter(focusEl.parentNode);
 			range.collapse(true);
-			var sel = rangy.getSelection();
 			sel.setSingleRange(range);
-            //range.collapse(false);
+            
             if(focusEl.nextSibling!==null && focusEl.nextSibling.nodeName=="BR"){
             	var followingBR=focusEl.nextSibling;
             	var par=followingBR.parentNode;
@@ -799,7 +819,7 @@ Medium.prototype = {
 
 		return this;
 	},
-
+	*/
 	addTag: function (tag, shouldFocus, isEditable, afterElement) {
 		if (!this.settings.beforeAddTag(tag, shouldFocus, isEditable, afterElement)) {
 			var newEl = d.createElement(tag),
