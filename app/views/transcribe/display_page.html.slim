@@ -499,7 +499,7 @@ h2.legend Page Notes
           attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
         }
 
-        tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'></'+varTag+'>';
+        tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
 
 
         medium.focusNadya(focusOffset,focusNode);
@@ -838,30 +838,10 @@ h2.legend Page Notes
       tagCode=milliseconds.toString();
 
 
-      tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'"></'+varTag+'>';
+      tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'">\u200B</'+varTag+'>';
 
       medium.focusNadya(focusOffset,focusNode);
       medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
-
-
-      var win = win || window,
-      docF = win.document,
-      selF = docF.selection,
-      rangeF=null,
-      rectsF=null,
-      rectF=null,
-      spanF=null,
-      spanParentF=null;
-
-
-      if (selF) {
-        console.log("selF");
-        console.log(selF);
-      } else if (win.getSelection) {
-        selF = win.getSelection();
-        console.log("win.getSelection()");
-        console.log(selF);
-      }
 
       tagWithType='';
       $('.chosen-select-no-results').chosen_reset(config);
