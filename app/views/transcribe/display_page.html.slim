@@ -1303,6 +1303,8 @@ h2.legend Page Notes
         
         $("#change_selected_div").show();
       }else{
+        $("#change_selected_div").hide();
+        $("#change_selected_div").empty();
         alert("The tag "+tagName.match(/^(.+)_ID\d+$/)[1]+" has no attributes.");
       }
             
