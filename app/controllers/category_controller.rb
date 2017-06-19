@@ -336,19 +336,25 @@ class CategoryController < ApplicationController
       styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
       mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
+                                  'selection = window.getSelection();'+"\n"+
                                   'categoryid=$(this).attr("data-categoryid");'+"\n"+
-                                  'if(categoryid in categoryTypesHash){'+"\n"+
                                   '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
+                                  'if(categoryid in categoryTypesHash){'+"\n"+                                  
                                   'position = $(this).offset();'+"\n"+
-                                  #'nowX=position.left;'+"\n"+
-                                  #'nowY=position.top;'+"\n"+
                                   'var coords = {x:position.left, y:position.top};'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);'+"\n"+
+                                  'if(selection.isCollapsed){'+"\n"+
+                                  'userChosenAttributesAndValues=[];'+"\n"+
+                                  'var categoryTable=categoriesInfo[categoryid];'+"\n"+
+                                  'getNextCollapsed(\''+title+'_id'+id+'\',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);'+"\n"+
                                   '}else{'+"\n"+
-                                  'article.highlight();'+"\n"+
-                                  'medium.invokeElement(\''+title+'_id'+id+'\', {'+"\n"+
-                                  'tagcode: da.getTime().toString()'+"\n"+
-                                  '});'+"\n"+
+                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);'+"\n"+
+                                  '}'+"\n"+
+                                  '}else{'+"\n"+
+                                  'if(selection.isCollapsed){'+"\n"+
+                                  'collapsedNoAttributesInsertTag(\''+title+'_id'+id+'\',focusOffset,focusNode);'+"\n"+
+                                  '}else{'+"\n"+
+                                  'medium.tagSelection3(\''+title+'_id'+id+'\', [], anchorNode,focusNode,anchorOffset, focusOffset);'+"\n"+
+                                  '}'+"\n"+
                                   '}'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"

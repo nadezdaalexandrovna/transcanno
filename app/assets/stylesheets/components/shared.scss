@@ -1260,8 +1260,8 @@ label[for="207"] span {
   //display:none;
   //padding-top: 20px;
   margin-top:20px;
-  background-color: white;
-  //background-color: #faf5eb;
+  //background-color: white;
+  background-color: #faf5eb;
   box-shadow: 0 1px 0 #fff inset;
 
 }
@@ -1439,9 +1439,15 @@ label[for="207"] span {
 }
 
 .popup_title_div{
-  margin-bottom: 15px;
+  margin-bottom: 7px;
 }
 
 .input_attribute_value_transcribe{
   margin-bottom: 7px;
 }
+
+.popup_attribute_label{
+  margin-top: 7px;
+  padding: 2px;
+}
+
