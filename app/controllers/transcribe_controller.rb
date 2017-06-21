@@ -19,7 +19,9 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('inner join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1')
-    
+    puts "\n@categories\n"
+    print @categories.inspect
+    puts "\n"
     sqlS="SELECT categoryattributes.category_id, categoryattributes.name, categoryattributes.allow_user_input FROM `categoryattributes` inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
     categorytypes=connection.execute(sqlS)
@@ -34,7 +36,7 @@ class TranscribeController  < ApplicationController
       end
     end
 
-    sqlS="SELECT categoryattributes.category_id, categoryattributes.name, attributevalues.value FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
+    sqlS="SELECT categoryattributes.category_id, categoryattributes.name, attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values ON attributevalues.id=attributes_to_values.value_id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`attribute_id` inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
     typesAttributes=connection.execute(sqlS)
 

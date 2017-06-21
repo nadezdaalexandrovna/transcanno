@@ -24,6 +24,10 @@ class CategoryController < ApplicationController
 
   def create
     @new_category = Category.new(params[:category])
+
+    #I added this line: assign a default scope for the new category: by default, the new category can be used in both modes: simple and advanced
+    Categoryscope.new(category_id: @new_category.id, mode: 2)
+
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
       flash[:notice] = "Category has been created"
@@ -35,12 +39,51 @@ class CategoryController < ApplicationController
 
   def define_attribute_sequences
     define_attribute_values
+
+    #Select sequences for the values of each attribute of this category
+    sql="SELECT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.category_id="+params[:category_id]
+    connection = ActiveRecord::Base.connection
+    already_relations=connection.execute(sql)
+
+    excludeFromPossibleRelationsIds={}
+
+    #Relations defined for each attribute value of each attribute of this category
+    @alreadyRelsHash={}
+    already_relations.each do |already_rel|
+      if @alreadyRelsHash.key?(already_rel[0])
+        @alreadyRelsHash[already_rel[0]].push([already_rel[2],already_rel[3]])
+        excludeFromPossibleRelationsIds[already_rel[3]]=0
+      else
+        @alreadyRelsHash[already_rel[0]]=[[already_rel[2],already_rel[3]]]
+        excludeFromPossibleRelationsIds[already_rel[3]]=0
+      end
+    end
+
+    #All the possible consequent attributes of each value, if these attributes can belong to this category
+    #sqlS="SELECT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations inner join attributevalues on valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN categoryattributes on categoryattributes.name=valuestoattributesrelations.consequent_attr_name INNER JOIN attributes_to_values ON attributevalues.id=attributes_to_values.value_id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.attribute_id where categoryattributes.category_id="+params[:category_id];
+    
+    sqlS="SELECT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE category_id="+params[:category_id]
+    possible_relations=connection.execute(sqlS)
+
+    #All the possible consequent attributes of each value. Key: attribute_value, value: array of consequent attributes
+    @possibleRelationsHash={} 
+    possible_relations.each do |pr|
+      unless excludeFromPossibleRelationsIds.key?(pr[0])
+        if @possibleRelationsHash.key?(pr[1])
+          @possibleRelationsHash[pr[1]].push(pr[2])
+        else
+          @possibleRelationsHash[pr[1]]=[pr[2]]
+        end
+      end
+    end
+
   end
 
   def define_attribute_sequences2
     giveNotice=false
 
-    sql="update categoryattributes set initial=false;"
+    #Update the initial column: set and unset initial attributes
+    sql="update categoryattributes set initial=false where category_id="+params[:category_id]
     connection = ActiveRecord::Base.connection
     connection.execute(sql)
 
@@ -55,8 +98,67 @@ class CategoryController < ApplicationController
       end
       if forSql!=""
         sql="update categoryattributes set initial=true where id in ("+forSql[0..-3]+");"
-        connection = ActiveRecord::Base.connection
         connection.execute(sql)
+      end
+    end
+
+    #Update the sequences
+    if params[:seq]!=nil
+      giveNotice=true
+      forSql=""
+      params[:seq].each do |valueIdandName, attrsArray|
+        arrayIdName=valueIdandName.split("*#*")
+        activeAttrId=arrayIdName[0]
+        valueId=arrayIdName[1]
+        valueName=arrayIdName[2]
+        puts "\nactiveAttrId\n"
+        print activeAttrId.inspect
+        puts "\nvalueId\n"
+        print valueId.inspect
+        puts "\nvalueName\n"
+        print valueName.inspect
+        #sql="select id, consequent_attr_name from valuestoattributesrelations where attributevalue_id=\""+valueId+"\"";
+        #reply=connection.execute(sql)
+        #if reply.any?
+        attrsArray.each do |attr|
+          rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr)
+          attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId).update_all(valuestoattributesrelation_id: rel.id)
+          puts "\nrel.id\n"
+          puts rel.id
+          puts "\n"
+          #attr_to_value.value_to_attr_relation_id=rel.id
+          #attr_to_value.save
+          #AttributesToValue.find_or_create_by(attribute_id: ,value_id:valueId,value_to_attr_relation_id:rel.id)
+        end
+        #else
+          #arrayValueAttr=[]
+          #attrsArray.each do |attr|
+            #rel = Valuestoattributesrelation.create(attributevalue_id: valueId, consequent_attr_name: attr)
+            #Attributevaluestorelation.create(attributevalue_id:valueId,relation_id:rel.id)
+          #end
+       # end
+      end
+    end
+
+    #Delete already existing sequences
+    if params[:seqdelete]!=nil
+      giveNotice=true
+      params[:seqdelete].each do |valueIdandName, relsArray|
+        arrayIdName=valueIdandName.split("*#*")
+        activeAttrId=arrayIdName[0]
+        valueId=arrayIdName[1]
+        valueName=arrayIdName[2]
+        puts "relsArray\n"
+        print relsArray.inspect
+        puts "\n"
+        #Array of relation ids
+        #relsArray=attrsArray.map{ |e| "'" + e + "'" }
+        attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId, value_to_attr_relation_id:relsArray).update_all(value_to_attr_relation_id: nil)
+        #sql2="DELETE FROM valuestoattributesrelations WHERE valuestoattributesrelations.id NOT IN (SELECT attributes_to_values.value_to_attr_relation_id FROM attributes_to_values)"
+        sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+        connection.execute(sql2)
+        #sql="update attributes_to_values set value_to_attr_relation_id=null where attribute_id="+activeAttrId+" and value_id="+valueId+" 
+        #connection.execute(sql)
       end
     end
 
@@ -80,9 +182,7 @@ class CategoryController < ApplicationController
   def assign_category_scope2
     scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
     scope.mode=params[:category][:category_scope].to_i
-    #scope.update_column(mode: params[:category_scope].to_i)
-    #Categoryscope.mode(params[:category_scope].to_i).where(category_id:params[:category_id])
-    #Categoryscope.save()
+
     if scope.save
       flash[:notice] = "Category scope has been assigned."
       ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
@@ -95,19 +195,13 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_values
-    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
-    gon.categoryattributes=@categoryattributes.as_json.to_json
-    @categoryattributesHash=@categoryattributes.as_json.to_json
-
-    gon.categoryattributes=@categoryattributes.to_a.map(&:serializable_hash)
-    @categoryattributesHash=@categoryattributes.to_a.map(&:serializable_hash)
-
-    puts "@categoryattributesHash:\n"
-    @categoryattributesHash.inspect
-
-    @attributeValuesHash={}
-    sqlS="SELECT categoryattributes.id, categoryattributes.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributevalues`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id];
     connection = ActiveRecord::Base.connection
+
+    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+
+    #All the existing values of the attributes of this category
+    @attributeValuesHash={}
+    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attribues.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
     res=connection.execute(sqlS)
 
     res.each do |r|
@@ -117,29 +211,47 @@ class CategoryController < ApplicationController
         @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
       end
     end
+
+    #All the possible values of the attributes of this category (maybe defined in other categories)
+    sql="SELECT attributecats.name, attributevalues.id, attributevalues.value FROM attributevalues INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where attributecats.name in (SELECT attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id where category_id="+params[:category_id]+") and attributevalues.value not in (SELECT attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id]+")"
+    res=connection.execute(sql)
+    puts "res\n"
+    print res.inspect
+    @possibleValuesForEachAttribute={}
+    res.each do |r|
+      if @possibleValuesForEachAttribute.key?(r[0])
+        @possibleValuesForEachAttribute[r[0]].push([r[1],r[2]])
+      else
+        @possibleValuesForEachAttribute[r[0]]=[[r[1],r[2]]]
+      end
+    end
+    puts "@possibleValuesForEachAttribute\n"
+    print @possibleValuesForEachAttribute.inspect
+    puts "\n"
+
   end
 
   def define_attribute_values2
+    connection = ActiveRecord::Base.connection
     @category.id=params[:category_id]
     giveNotice=false
 
     if params[:delete_attribute_value]!=nil
       forSql=""
-      params[:delete_attribute_value].each do |valueid|
-        if valueid!=nil && valueid!=""
+      params[:delete_attribute_value].each do |attrId, valueIDs|
+        valueIDs.each do |valueid|
+          #forSql+=valueid+", "
+          sql="delete from attributes_to_values where value_id="+valueid+" and attribute_id="+attrId
+          connection.execute(sql)
           giveNotice=true
-          forSql+=valueid+", "
+          #Delete from attributevalues if no attribute has this value
+          sql2="DELETE FROM attributevalues WHERE attributevalues.id not in (SELECT attributes_to_values.attributevalue_id FROM attributes_to_values)"
+          connection.execute(sql2)
         end
-      end
-      if forSql!=""
-        sql="delete from attributevalues where id in ("+forSql[0..-3]+");"
-        connection = ActiveRecord::Base.connection
-        connection.execute(sql)
       end
     end
 
     sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"
-    connection = ActiveRecord::Base.connection
     connection.execute(sql)
 
     if params[:allow_user_input]!=nil
@@ -152,26 +264,43 @@ class CategoryController < ApplicationController
       end
       if forSql!=""
         sql="update categoryattributes set allow_user_input=true where id in ("+forSql[0..-3]+");"
-        connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end
     end
 
     if params[:add_attribute_value]!=nil
       forSql=""
-      params[:add_attribute_value].each do |attrid|
-        attrid[1].each do |attrValue|
+      params[:add_attribute_value].each do |attrid, attrValues|
+        attrValues.each do |attrValue|
           if attrValue.length>0
-            forSql+='("'+attrid[0]+'","'+attrValue+'"), '
+            #forSql+='("'+attrValue+'"), '
+            puts "attrValue\n"
+            puts attrValue+"\n"
+            #sql="INSERT INTO attributevalues (value) VALUES ('"+attrValue+"')"
+            res=Attributevalue.find_or_create_by(value: attrValue)
+            #res=connection.execute(sql)
+            AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: res.id)
+            #sql2="INSERT INTO attributes_to_values (attribute_id,value_id) VALUES ("+attrid+","+res.id+")"
+            #res=connection.execute(sql2)
           end
         end
       end
-      if forSql!=""
-        sql="INSERT INTO attributevalues (categoryattribute_id, value) VALUES "
-        sql+=forSql[0..-3]
-        connection = ActiveRecord::Base.connection
-        connection.execute(sql)
-      end 
+      #if forSql!=""
+        #sql="INSERT INTO attributevalues (value) VALUES "
+        #sql+=forSql[0..-3]
+        #connection = ActiveRecord::Base.connection
+        #connection.execute(sql)
+      #end 
+    end
+
+    if params[:val_from_possible]!=nil
+      params[:val_from_possible].each do |attrid, valueIds|
+        valueIds.each do |valueId|
+          if valueId.length>0
+            AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: valueId)
+          end
+        end
+      end
     end
 
     if giveNotice==true
@@ -181,6 +310,7 @@ class CategoryController < ApplicationController
   end
 
   def define_attributes
+    connection = ActiveRecord::Base.connection
     scope=Categoryscope.where(category_id: params[:category_id])
     @categoryScope=2
     unless scope.empty?
@@ -195,15 +325,27 @@ class CategoryController < ApplicationController
       @disableScopeChoice='display:none;'
     end
 
-    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+    #@categoryattributes=Categoryattribute.joins("join attributecats on categoryattributes.attributecat_id=attributecats.id").where(category_id: params[:category_id])
+    sql="SELECT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
+    @categoryattributes=connection.execute(sql)
+    puts "\n@categoryattributes\n"
+    print @categoryattributes.inspect
+    puts "\n"
     @attrscopehash={}
     @categoryattributes.each do |r|
-      @attrscopehash[r.id]={0=>false,1=>false,2=>false}
-      @attrscopehash[r.id][r.mode]=true
+      puts "\nr\n"
+      print r.inspect
+      puts "\n"
+      @attrscopehash[r[0]]={0=>false,1=>false,2=>false}
+      @attrscopehash[r[0]][r[2]]=true
     end
+    puts "\n@attrscopehash\n"
+    print @attrscopehash.inspect
+    puts "\n"
   end
 
   def define_attributes2
+    connection = ActiveRecord::Base.connection
     @category.id=params[:category_id]
     giveNotice=false
     if params[:delete_attribute]!=nil
@@ -216,12 +358,14 @@ class CategoryController < ApplicationController
       end
       if forSql!=""
         sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
-        connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end
+      #Delete attributes that no longer have categories associated to them
+      sqlD="DELETE attributes FROM attributes LEFT JOIN categoryattributes ON attributes.id=categoryattributes.attribute_id WHERE categoryattributes.attribute_id IS NULL"
+      connection.execute(sqlD)
     end
     if params[:attribute]!=nil
-      forSql=""
+      #forSql=""
       numberNews=0
       params[:attribute].each do |type|
         if type!=nil && type!=""
@@ -231,18 +375,30 @@ class CategoryController < ApplicationController
             mode=params[:new_attr_scope][numberNews.to_s]
           end
           giveNotice=true
-          forSql+="( '"+type+"', "+mode+", "+params[:category_id]+", false, false), "
+          #insertAttributeName="INSERT INTO attributecats (name) values ('"+type+"')"
+          #attribute=connection.execute(insertAttributeName)
+          puts "\ntype\n"
+          print type
+          puts "\n"
+          attribute=Attributecat.find_or_create_by(name: type)
+          puts "\nattribute\n"
+          print attribute.inspect
+          puts "\n"
+          Categoryattribute.create(attributecat_id: attribute.id, mode: mode, category_id: params[:category_id], allow_user_input: false, initial: false)
+
+          #sql="INSERT INTO categoryattributes (attributecat_id, mode, category_id, allow_user_input, initial) VALUES ("+attribute.id+","+mode+","+params[:category_id]+", false, false)"
+          #connection.execute(sql)
+          #forSql+="( '"+type+"', "+mode+", "+params[:category_id]+", false, false), "
           numberNews+=1
         end
       end
-      if forSql!=""
-        begin
-          sql="INSERT INTO categoryattributes (name, mode, category_id, allow_user_input, initial) VALUES "
-          sql+=forSql[0..-3]
-          connection = ActiveRecord::Base.connection
-          connection.execute(sql)
-        end
-      end
+      #if forSql!=""
+        #begin
+          #sql="INSERT INTO categoryattributes (name, mode, category_id, allow_user_input, initial) VALUES "
+          #sql+=forSql[0..-3]
+          #connection.execute(sql)
+        #end
+      #end
     end
     #Apply scopes of attributes
     if params[:category]!=nil
@@ -269,7 +425,6 @@ class CategoryController < ApplicationController
         sql="update categoryattributes set mode=CASE "
         sql+=forSql
         sql+="end where id in ("+ids[0..-3]+");"
-        connection = ActiveRecord::Base.connection
         connection.execute(sql)
       end
     end
@@ -376,10 +531,20 @@ class CategoryController < ApplicationController
   end
 
   def delete
+    connection = ActiveRecord::Base.connection
     anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
     Categorystyle.destroy_all(category_id: @category.id)
-    Categorytype.destroy_all(category_id: @category.id)
+    Categoryattribute.destroy_all(category_id: @category.id)
+    #Delete attributes that no longer have categories associated to them
+    sqlD="DELETE attributes FROM attributes LEFT JOIN categoryattributes ON attributes.id=categoryattributes.attribute_id WHERE categoryattributes.attribute_id IS NULL"
+    connection.execute(sqlD)
     @category.destroy #_but_attach_children_to_parent
+    #Delete attribute values that no longer have attributes associated to them
+    sql="DELETE attributevalues FROM attributevalues LEFT JOIN attributes_to_values ON attributevalues.id=attributes_to_values.attributevalue_id WHERE attributes_to_values.attributevalue_id IS NULL"
+    connection.execute(sql)
+    sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+    connection.execute(sql2)
+
     flash[:notice] = "Category has been deleted"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end

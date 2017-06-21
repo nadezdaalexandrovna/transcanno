@@ -144,7 +144,7 @@
 
       console.log("gon.categoryattributes: ");
       console.log(gon.categoryattributes);
-      
+
       var categoryAttributesDiv=document.getElementById('categoryAttributesDiv');
       console.log(categoryAttributesDiv);
       var categoriesAttributesText=categoryAttributesDiv.attributes[2].textContent;
@@ -203,6 +203,7 @@
         $("#show_attribute_values"+previousAttrId).addClass('show_attribute_values');
         $("#one_attribute_div_"+previousAttrId).hide();
         $("#big_new_values_div_"+previousAttrId).hide();
+        $("#big_suggestions_values_div_"+previousAttrId).hide();
         $("#allow_input_div_"+previousAttrId).hide();
       }
       previousAttrId=attributeId;
@@ -210,6 +211,7 @@
       $("#show_attribute_values"+attributeId).addClass('show_attribute_values_active');
       $("#one_attribute_div_"+attributeId).show();
       $("#big_new_values_div_"+attributeId).show();
+      $("#big_suggestions_values_div_"+attributeId).show();
       $("#allow_input_div_"+attributeId).show();
 
       return false;
@@ -217,6 +219,7 @@
 
     var previousSeqAttrId=null;
     var activeValueId=null;
+    var activeValuename=null;
 
     //Show possible values of the chosen attribute in the sequences menu
     function showSeqAttrValues(attributeId){
@@ -236,13 +239,14 @@
 
       $("#possible_consequent_attrs_div").hide();
       activeValueId=null;
+      activeValuename=null;
 
       return false;
     }
 
     //Delete an existing value of the chosen attribute
     function deleteAttributeValue(attributeValueid,attributeId){
-      var html = "<input type='hidden' name='delete_attribute_value[]' value='"+attributeValueid+"'>";
+      var html = "<input type='hidden' name='delete_attribute_value["+attributeId+"][]' value='"+attributeValueid+"'>";
       $('#one_attribute_div_'+attributeId).append(html);
       document.getElementById("delete_attribute_value_"+attributeValueid).disabled=true;
 
@@ -254,6 +258,42 @@
       $('#new_values_div_'+attributeId).append(html);
     }
 
+    //Add a new value for the chosen attribute from the suggested possible values
+    function addFromPossibleValues(attributeId, valueId, valueName){
+      console.log("attributeId: "+attributeId);
+      console.log("valueId: "+valueId);
+      console.log("valueName: "+valueName);
+      var html = "<input type='hidden' name='val_from_possible["+attributeId+"][]' id='val_from_possible_"+attributeId+"_"+valueId+"' value='"+valueId+"'>";
+      $('#hidden').append(html);
+      document.getElementById('button_value_suggestion_'+attributeId+'_'+valueId).disabled=true;
+
+      var newButton=document.createElement("button");
+      newButton.id='button_'+attributeId+'_'+valueId;
+      newButton.type="button";
+      newButton.appendChild(document.createTextNode(valueName));
+      newButton.onclick=function(){
+        deletePossibleFromAttrValue(attributeId,valueId);
+      };
+      $("#from_possible_values_div_"+attributeId).append(newButton);
+    }
+
+    function deletePossibleFromAttrValue(attributeId,valueId){
+
+      //Delete the attribute value from the hidden input field of the form
+      var element=document.getElementById("val_from_possible_"+attributeId+"_"+valueId);
+      
+      if(element!=null){
+        element.parentNode.removeChild(element);
+      }
+
+      //Delete the button
+      var button=document.getElementById("button_"+attributeId+"_"+valueId);
+      
+      if(button!=null){
+        button.parentNode.removeChild(button);
+      }
+      document.getElementById('button_value_suggestion_'+attributeId+'_'+valueId).disabled=false;
+    }
     
     function deleteAttribute(attributeId){
       console.log("in deleteAttribute");
@@ -264,46 +304,79 @@
     }
 
     var previousvalueId=null;
+    var previousValuename=null;
+    var activeAttributeId=null;
+    var previousActiveAttributeId=null;
     //Sequences functions
-    function activateSequence(valueId){
+    function activateSequence(activeAttributeIdFrom,valueId,valueName){
+      activeAttributeId=activeAttributeIdFrom;
       if (previousvalueId!=null){
-        $("#sequences_of_value_"+previousvalueId).hide();
+        $("#sequences_of_value_"+previousActiveAttributeId+"_"+previousvalueId).hide();
+        $("#possible_sequences_of_value_"+previousvalueId).hide();
         $("#title_of_value_"+previousvalueId).hide();
+        $("#title_of_possible_seqs_"+previousvalueId).hide();        
       }
       $("#title_of_value_"+valueId).show();
-      $("#sequences_of_value_"+valueId).show();
+      $("#title_of_possible_seqs_"+valueId).show();
+      $("#sequences_of_value_"+activeAttributeId+"_"+valueId).show();
+      $("#possible_sequences_of_value_"+valueId).show();
       $("#possible_consequent_attrs_div").show();
       activeValueId=valueId;
+      previousActiveAttributeId=activeAttributeIdFrom;
+      activeValuename=valueName;
       previousvalueId=valueId;
-
+      previousValuename=valueName;
       return false;
     }
 
 
-    function addToValueSequences(attributeId){
-      var attributeName=$("#seq_attr_name_button"+attributeId).html();
-      var sequenceButton='<button type="button" id="button_'+activeValueId+'_'+attributeId+'" oncĺick="deleteSequenceFromAttrValue('+activeValueId+','+attributeId+')">'+attributeName+'</button>';
-      console.log("sequenceButton: "+sequenceButton);
+    function addToValueSequences(comsequentAttributeName){
+      console.log("comsequentAttributeName: "+comsequentAttributeName);
+      //var attributeName=$("#seq_attr_name_button"+comsequentAttributeName).html();
+      
+      var sequenceButton=document.createElement('button');
+      sequenceButton.id='button_'+activeValueId+'_'+comsequentAttributeName;
+      sequenceButton.type="button";
+      sequenceButton.appendChild(document.createTextNode(comsequentAttributeName));
+      sequenceButton.onclick=function(){
+        deleteSequenceFromAttrValue(activeAttributeId,activeValueId,comsequentAttributeName, 0);
+      };
+
       //Add the values to a hidden input form field
-      var newInput='<input type="hidden" id="seq_'+activeValueId+'_'+attributeId+'" name="seq['+activeValueId+'][]" value="'+attributeId+'"/>';
+      var newInput='<input type="hidden" id="seq_'+activeAttributeId+'_'+activeValueId+'_'+comsequentAttributeName+'" name="seq['+activeAttributeId+'*#*'+activeValueId+'*#*'+activeValuename+'][]" value="'+comsequentAttributeName+'"/>';
       $("#sequences").append(newInput);
 
-      $("#sequences_of_value_"+activeValueId).append(sequenceButton);
+      $("#sequences_of_value_"+activeAttributeId+'_'+activeValueId).append(sequenceButton);
+      $("#sequences_of_value_"+activeAttributeId+'_'+activeValueId).show();
       return false;
     }
 
+
     //Delete the values from the hidden input form field
-    function deleteSequenceFromAttrValue(activeValueId,attributeId){
+    function deleteSequenceFromAttrValue(activeAttributeId,activeValueId,attributeName, consequentRelationId){
+      console.log(" in deleteSequenceFromAttrValue ");
       console.log("activeValueId: "+activeValueId);
-      //console.log("attributeId: "+attributeId);
-      //var element=document.getElementById("seq_"+activeValueId+"_"+attributeId);
-      //var par=element.parentNode;
-      //par.removeChild(element);
-      //var el=document.getElementById("button_"+activeValueId+"_"+attributeId);
-      //var para=el.parentNode;
-      //para.removeChild(el);
-      //return false;
+      //console.log("attributeId: "+attributeName);
+      var element=document.getElementById("seq_"+activeAttributeId+'_'+activeValueId+"_"+attributeName);
+      //If this consequent attribute has just been added in this same menu, we delete it from the hidden input field of the form
+      if(element!=null){
+        var par=element.parentNode;
+        par.removeChild(element);
+        
+      }else{ //If the consequent attribute is already present in the database, we add it to the hidden field of the form
+        //Add the values to a hidden input form field
+        var newInputDelete='<input type="hidden" id="seqdelete_'+activeAttributeId+'_'+activeValueId+'_'+attributeName+'" name="seqdelete['+activeAttributeId+'*#*'+activeValueId+'*#*'+activeValuename+'][]" value="'+consequentRelationId+'"/>';
+        $("#sequences").append(newInputDelete);
+      }
+
+      var button=document.getElementById("button_"+activeValueId+"_"+attributeName);
+      var para=button.parentNode;
+      para.removeChild(button);
+
+      return false;
     }
+
+
 
     function beforeSubmitSequences(){
      

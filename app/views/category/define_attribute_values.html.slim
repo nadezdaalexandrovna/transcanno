@@ -3,6 +3,7 @@
 
   =form_for(@category, :url => { :action => 'define_attribute_values2' }, :html => { :onsubmit=>'return verifyValueType2()' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    <div id="hidden"></div>
     h5 Define attribute values for the category
       <span id="category_title_for_attributes">#{@category.title}</span>
     h5 Existing attributes
@@ -29,10 +30,20 @@
           </div>
         <div  id="big_new_values_div_#{r.id}" class="big_new_values_div" style="display: none;">
           h5 Add new values for the attribute <span class="attribute_name_span">#{r.name}</span>
+          <div id="from_possible_values_div_#{r.id}" class="from_possible_values_div">
+          </div>
           <div id="new_values_div_#{r.id}">
             <input name="add_attribute_value[#{r.id}][]" class="attribute_value_input_field" type="text">
           </div>
           <button type="button" id="add_field"  onclick="addAttributeValue(#{r.id})">Add another value</button><br><br>
+        </div>
+        <div  id="big_suggestions_values_div_#{r.id}" class="big_new_values_div" style="display: none;">
+          <div id="suggestions_values_div_#{r.id}">
+            -if @possibleValuesForEachAttribute.has_key?("#{r.name}")
+              h5 Suggestions for the values of the attribute <span class="attribute_name_span">#{r.name}</span>:
+              -@possibleValuesForEachAttribute.fetch("#{r.name}").each do |valueArr|
+                <button type="button" onclick="addFromPossibleValues(#{r.id}, #{valueArr[0]},'#{valueArr[1]}')" id="button_value_suggestion_#{r.id}_#{valueArr[0]}">#{valueArr[1]}</button>
+          </div>
         </div>
     </div>   
     

@@ -26,21 +26,32 @@
             -@attributeValuesHash.fetch("#{r.id}").each do |v|
               tr
                 td
-                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r.id}" onclick="activateSequence(#{v.fetch(:valueid)})">#{v.fetch(:value)}</button>
+                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r.id}" onclick="activateSequence(#{r.id},#{v.fetch(:valueid)},'#{v.fetch(:value)}')">#{v.fetch(:value)}</button>
                 td
                   <div id="title_of_value_#{v.fetch(:valueid)}" class="title_of_value" style="display:none;">
                   h5 Consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
                   </div>
-                  <div id="sequences_of_value_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
+                  <div id="sequences_of_value_#{r.id}_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
+                    -if @alreadyRelsHash.has_key?("#{v.fetch(:valueid)}".to_i)
+                      -@alreadyRelsHash.fetch("#{v.fetch(:valueid)}".to_i).each do |consName|
+                        <button type="button" id="button_#{v.fetch(:valueid)}_#{consName[0]}" onclick="deleteSequenceFromAttrValue(#{r.id},#{v.fetch(:valueid)},'#{consName[0]}',#{consName[1]})">#{consName[0]}</button>     
+                  </div>
+                  <div id="title_of_possible_seqs_#{v.fetch(:valueid)}" class="title_of_poss_seq" style="display:none;">
+                  h5 Suggestions for consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
+                  </div>
+                  <div id="possible_sequences_of_value_#{v.fetch(:valueid)}" class="possible_sequences_of_value" style="display:none;">
+                    -if @possibleRelationsHash.has_key?("#{v.fetch(:value)}")
+                      -@possibleRelationsHash.fetch("#{v.fetch(:value)}").each do |consName|
+                        <button type="button" id="button_possible_#{v.fetch(:valueid)}_#{consName}" onclick="addToValueSequences('#{consName}')">#{consName}</button>     
                   </div>
         </div>
     <div id="possible_consequent_attrs_div" class="possible_consequent_attrs_div" style="display:none;">
-      h5 Possible consequent attributes
+      h5 Possible consequent attributes:
       table[ class="already_type" ]
         tr
           -@categoryattributes.each do |ca|
             td
-              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca.id}" onclick="addToValueSequences(#{ca.id})">#{ca.name}</button>
+              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca.id}" onclick="addToValueSequences('#{ca.name}')">#{ca.name}</button>
 
     </div>
     
