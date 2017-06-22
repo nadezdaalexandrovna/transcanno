@@ -18,6 +18,11 @@ class TranscribeController  < ApplicationController
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
+    @use_advanced_mode = cookies[:use_advanced_mode] || 0;
+    puts "\n@use_advanced_mode\n"
+    print @use_advanced_mode
+    puts "\n"
+    #For the simple mode
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL') 
 
     sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
@@ -43,6 +48,59 @@ class TranscribeController  < ApplicationController
       @categoryTypesHash[row[0]][row[1]]['values'].push(row[2])
     end
     @categoryTypesHash=@categoryTypesHash.to_json
+
+
+    #For the advanced mode
+    #First we only select categories, because maybe they don't have attributes
+    @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL') 
+
+    #Then we select categories' attributes
+    sqlAdv="SELECT categoryattributes.category_id,  categoryattributes.id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
+    connection = ActiveRecord::Base.connection
+    categorytypesAdv=connection.execute(sqlAdv)
+
+    @categoryTypesHashAdv=Hash.new()
+    categorytypesAdv.each do |row|
+      if @categoryTypesHashAdv.key?(row[0]) #If this category is already in the hash
+          @categoryTypesHashAdv[row[0]][row[1]]={'allow_user_input'=>row[3],'name'=>row[2],'values'=>{}}
+      else #If this category is not yet in the hash
+        @categoryTypesHashAdv[row[0]]={row[1]=>{'allow_user_input'=>row[3], 'name'=>row[2], 'values'=>{}}}
+      end
+    end
+
+    #Then we select attribute values, because some attributes don't have values and have allow_user_input=true
+    sqlAdvS="SELECT categoryattributes.category_id, categoryattributes.id, attributecats.name, attributevalues.value FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
+    connection = ActiveRecord::Base.connection
+    typesAttributesAdv=connection.execute(sqlAdvS)
+
+    #categorytypes=Categoryattribute.joins(:category).joins('inner join attributevalues on categoryattributes.id=attributevalues.categoryattribute_id').where.not(mode: 1)
+    
+    typesAttributesAdv.each do |row|
+      @categoryTypesHashAdv[row[0]][row[1]]['values'].merge({row[3]=>[]})
+    end
+    
+    puts "\n@categoryTypesHashAdv\n"
+    print @categoryTypesHashAdv.inspect
+    puts "\n"
+
+    #At last, we select consequences: when a certain attribute value is selected, certain other attributes should be given values
+    sqlSeq="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name from attributevalues INNER JOIN valuestoattributesrelations ON attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON attributes_to_values.valuestoattributesrelation_id=valuestoattributesrelations.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where pages.id="+params[:page_id];
+    sequences=connection.execute(sqlSeq)
+
+    sequences.each do |row|
+      if @categoryTypesHashAdv[row[0]][row[1]]['values'].key?(row[2])
+        @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]].push(row[3])
+      else
+        @categoryTypesHashAdv[row[0]][row[1]]['values']={row[2]=>[row[3]]}
+      end
+    end
+
+    puts "\n@categoryTypesHashAdv\n"
+    print @categoryTypesHashAdv.inspect
+    puts "\n"
+
+    @categoryTypesHashAdv=@categoryTypesHashAdv.to_json
+
   end
 
   def guest

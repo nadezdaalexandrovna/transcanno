@@ -1359,7 +1359,7 @@ label[for="207"] span {
 }
 
 
-#verticalMediumClickableSpans {
+#verticalMediumClickableSpans, #verticalMediumClickableSpansAdv {
   //position: fixed;
   position: absolute;
   right: 4vw;
@@ -1369,6 +1369,18 @@ label[for="207"] span {
   background-color: #faf5eb;
   padding: 4px;
   border-radius: 4px;
+}
+
+#use_advanced_mode_div{
+  position: absolute;
+  right: 4vw;
+  top: 205px;
+  z-index: 9999;
+}
+
+#use_advanced_mode_label{
+  margin-right: 4px;
+  font-size: large;
 }
 
 .undo, .delete_tag, .change_tag{

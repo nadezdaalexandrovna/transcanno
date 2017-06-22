@@ -5,6 +5,7 @@
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, :onsubmit=>'return AddMediumValue()' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   <input type="hidden" name="page[source_text]"/>
+  <input type="hidden" name="page[use_advanced_mode]"/>
   =validation_summary @page.errors
   .page-toolbar
     .toolbar
@@ -119,6 +120,10 @@
 <div id="change_selected_div">
 </div>
 
+<div id="use_advanced_mode_div">
+  <label for="use_advanced_mode" id="use_advanced_mode_label">Use advanced mode</label>
+  =check_box_tag 'use_advanced_mode', @use_advanced_mode, (@use_advanced_mode=='1' ? 'checked' : nil)
+</div>
 
 div [ id="verticalMediumClickableSpans" ]
   table
@@ -136,7 +141,21 @@ div [ id="verticalMediumClickableSpans" ]
         td [ class="overMediumButtonTD" ]
           span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
 
-
+div [ id="verticalMediumClickableSpansAdv" ]
+  table
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span title="undo" class="undo">&#8630;</span>
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span  title="delete tag(s) at cursor position" class="delete_tag">&#9932;</span>
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span  title="change tag(s) at cursor position" class="change_tag">&#11156;</span>
+    - @categoriesAdv.each do |c|
+      tr
+        td [ class="overMediumButtonTD" ]
+          span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -149,6 +168,8 @@ h2.legend Page Notes
 
 
 .categoryTypesDiv*{'id'=>'categoryTypesDiv', 'data'=>"#{@categoryTypesHash}"}
+.categoryTypesDivAdv*{'id'=>'categoryTypesDivAdv', 'data'=>"#{@categoryTypesHashAdv}"}
+
 
 -content_for :javascript
   javascript:
@@ -173,7 +194,29 @@ h2.legend Page Notes
     });
 
 
+    function showSimpleOrAdvancedModeCategories(checked){
+      if(checked==1){
+        $('#verticalMediumClickableSpans').hide();
+        $('#verticalMediumClickableSpansAdv').show();
+      }else{
+        $('#verticalMediumClickableSpans').show();
+        $('#verticalMediumClickableSpansAdv').hide();
+      }
+    }
+
+    $('#use_advanced_mode').on('change', function() {
+      console.log('#use_advanced_mode');
+      var checked = this.checked ? 1 : 0 ;
+      $('#use_advanced_mode_').val(checked);
+      Cookies.set('use_advanced_mode', checked, { expires: 365 });
+      document.getElementsByName("page[use_advanced_mode]")[0].value=checked;
+      showSimpleOrAdvancedModeCategories(checked);      
+    });
     
+    //Decide wich categories to show in the menu: for the simple mode or for the advanced mode
+    showSimpleOrAdvancedModeCategories(Cookies.get('use_advanced_mode'));
+
+    //Get the information about categories, their attributes and values for the simple mode
     var categoryTypesDiv=document.getElementById('categoryTypesDiv');
     var categoriesText=categoryTypesDiv.attributes[2].textContent;
     var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
@@ -188,8 +231,15 @@ h2.legend Page Notes
         categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values']]);
       }
     }
-
     console.log(categoriesInfo);
+
+    //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
+    var categoryTypesDivAdv=document.getElementById('categoryTypesDivAdv');
+    var categoriesTextAdv=categoryTypesDivAdv.attributes[2].textContent;
+    var categoryTypesHashAdv=JSON && JSON.parse(categoriesTextAdv) || $.parseJSON(categoriesTextAdv);
+
+    console.log("categoryTypesHashAdv:");
+    console.log(categoryTypesHashAdv);
 
     var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, property, caT, caTT;
 
