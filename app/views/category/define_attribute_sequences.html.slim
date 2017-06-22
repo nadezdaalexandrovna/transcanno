@@ -12,29 +12,29 @@
       tr
         -@categoryattributes.each do |r|
           td
-            <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r.id}" onclick="showSeqAttrValues(#{r.id})">#{r.name}</button>
+            <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r[0]}" onclick="showSeqAttrValues(#{r[0]})">#{r[1]}</button>
 
     -@categoryattributes.each do |r|
-      <div id="set_initial_div_#{r.id}" class="set_initial_div" style="display:none;">
-        h5 Set the attribute <span class="attribute_name_span">#{r.name}</span> as initial
-        =check_box_tag 'initial[]', r.id.to_s, (r.initial ? 'checked' : nil)
+      <div id="set_initial_div_#{r[0]}" class="set_initial_div" style="display:none;">
+        h5 Set the attribute <span class="attribute_name_span">#{r[1]}</span> as initial
+        =check_box_tag 'initial[]', r[0].to_s, (r[3]==1? 'checked' : nil)
       </div>
-      -if @attributeValuesHash.has_key?("#{r.id}")
-        <div id="seq_one_attribute_div_#{r.id}" class="one_attribute_div_seq" style="display:none;">
-          h5 Existing values of the attribute <span class="attribute_name_span">#{r.name}</span>:
+      -if @attributeValuesHash.has_key?("#{r[0]}")
+        <div id="seq_one_attribute_div_#{r[0]}" class="one_attribute_div_seq" style="display:none;">
+          h5 Existing values of the attribute <span class="attribute_name_span">#{r[1]}</span>:
           table [ class="already_value" ]
-            -@attributeValuesHash.fetch("#{r.id}").each do |v|
+            -@attributeValuesHash.fetch("#{r[0]}").each do |v|
               tr
                 td
-                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r.id}" onclick="activateSequence(#{r.id},#{v.fetch(:valueid)},'#{v.fetch(:value)}')">#{v.fetch(:value)}</button>
+                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r[0]}" onclick="activateSequence(#{r[0]},#{v.fetch(:valueid)},'#{v.fetch(:value)}')">#{v.fetch(:value)}</button>
                 td
                   <div id="title_of_value_#{v.fetch(:valueid)}" class="title_of_value" style="display:none;">
                   h5 Consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
                   </div>
-                  <div id="sequences_of_value_#{r.id}_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
+                  <div id="sequences_of_value_#{r[0]}_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
                     -if @alreadyRelsHash.has_key?("#{v.fetch(:valueid)}".to_i)
                       -@alreadyRelsHash.fetch("#{v.fetch(:valueid)}".to_i).each do |consName|
-                        <button type="button" id="button_#{v.fetch(:valueid)}_#{consName[0]}" onclick="deleteSequenceFromAttrValue(#{r.id},#{v.fetch(:valueid)},'#{consName[0]}',#{consName[1]})">#{consName[0]}</button>     
+                        <button type="button" id="button_#{v.fetch(:valueid)}_#{consName[0]}" onclick="deleteSequenceFromAttrValue(#{r[0]},#{v.fetch(:valueid)},'#{consName[0]}',#{consName[1]})">#{consName[0]}</button>     
                   </div>
                   <div id="title_of_possible_seqs_#{v.fetch(:valueid)}" class="title_of_poss_seq" style="display:none;">
                   h5 Suggestions for consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
@@ -51,7 +51,7 @@
         tr
           -@categoryattributes.each do |ca|
             td
-              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca.id}" onclick="addToValueSequences('#{ca.name}')">#{ca.name}</button>
+              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[0]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
 
     </div>
     

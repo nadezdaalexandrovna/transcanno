@@ -1234,7 +1234,7 @@ h2.legend Page Notes
       titlediv.className="popup_title_div";
       div.appendChild(titlediv);
 
-      var attrsHash=categoryTypesHash[catId];
+      var attrsHash=categoryTypesHash[parseInt(catId)];
 
       //Loop through all attributes of the chosen category
       for (attrName in attrs){
@@ -1244,6 +1244,7 @@ h2.legend Page Notes
           label.setAttribute("class","popup_attribute_label");
           label.innerHTML = attrName;
           div.appendChild(label);
+          numberOfChangableAttrs+=1;
 
           //If the user is allowed to type attribute values
           if(attrsHash[attrName]['allow_user_input']==1){
@@ -1254,7 +1255,6 @@ h2.legend Page Notes
             input.name=tagCodeToChange;
             input.className="input_attribute_value_transcribe";
             div.appendChild(input);
-            numberOfChangableAttrs+=1;
           }
 
           //If there are predefined attributes

@@ -19,18 +19,20 @@
       body
         -@categoryattributes.each do |r|
           tr
-            <td>#{r.name}</td>
+            <td>#{r[1]}</td>
             <td>
               <div style="#{@disableScopeChoice}">   
-                = f.radio_button :"#{r.id}", '0', :checked => @attrscopehash[r.id][0]
+                = f.radio_button :"#{r[0]}", '0', :checked => @attrscopehash[r[0]][0]
                 |simple<br>
-                = f.radio_button :"#{r.id}", '1', :checked => @attrscopehash[r.id][1]
+                = f.radio_button :"#{r[0]}", '1', :checked => @attrscopehash[r[0]][1]
                 |advanced<br>
-                = f.radio_button :"#{r.id}", '2', :checked => @attrscopehash[r.id][2]
+                = f.radio_button :"#{r[0]}", '2', :checked => @attrscopehash[r[0]][2]
                 |both
               </div>
             </td>
-            <td><button type="button" class="delete_attribute_button" id="delete_attribute_#{r.id}" onclick="deleteAttribute(#{r.id})">Delete</button></td>
+            <td><button type="button" class="delete_attribute_button" id="delete_attribute_#{r[0]}" onclick="deleteAttribute(#{r[0]})">Delete</button></td>
+    <div id="from_possible_attributes">
+    </div>
     h5 Add new attributes
     <div id="fields">
       <input name="attribute[]" class="attribute_input_field" type="text"><br>
@@ -41,6 +43,12 @@
       </div>
     </div>
     <button type="button" id="add_field"  onclick="addField('#{@disableScopeChoice}')">Add another attribute</button><br><br>
+
+    <div id="possible_attrs">
+      h5 Suggestions for attributes:
+      -@possibleAttrs.each do |pAttr|
+        <button type="button" id="add_possible_attr_#{pAttr[0]}" onclick="addPossibleAttr(#{pAttr[0]},'#{pAttr[1]}')">#{pAttr[1]}</button>
+    </div>
  
     .toolbar
       .toolbar_group.aright =f.button 'Define Attributes'

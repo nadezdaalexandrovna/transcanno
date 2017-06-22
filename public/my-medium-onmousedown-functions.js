@@ -480,7 +480,7 @@ medium.tagSelection3('new_category_id37', [], anchorNode,focusNode,anchorOffset,
 }
 return false;
 });
-$( ".button-adjective_id42" ).mousedown(function() {
+$( ".button-adjective_id48" ).mousedown(function() {
 da = new Date();
 selection = window.getSelection();
 categoryid=$(this).attr("data-categoryid");
@@ -491,20 +491,20 @@ var coords = {x:position.left, y:position.top};
 if(selection.isCollapsed){
 userChosenAttributesAndValues=[];
 var categoryTable=categoriesInfo[categoryid];
-getNextCollapsed('adjective_id42',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
+getNextCollapsed('adjective_id48',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
 }else{
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'adjective_id42', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'adjective_id48', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }
 }else{
 if(selection.isCollapsed){
-collapsedNoAttributesInsertTag('adjective_id42',focusOffset,focusNode);
+collapsedNoAttributesInsertTag('adjective_id48',focusOffset,focusNode);
 }else{
-medium.tagSelection3('adjective_id42', [], anchorNode,focusNode,anchorOffset, focusOffset);
+medium.tagSelection3('adjective_id48', [], anchorNode,focusNode,anchorOffset, focusOffset);
 }
 }
 return false;
 });
-$( ".button-participle_id43" ).mousedown(function() {
+$( ".button-participle_id49" ).mousedown(function() {
 da = new Date();
 selection = window.getSelection();
 categoryid=$(this).attr("data-categoryid");
@@ -515,15 +515,15 @@ var coords = {x:position.left, y:position.top};
 if(selection.isCollapsed){
 userChosenAttributesAndValues=[];
 var categoryTable=categoriesInfo[categoryid];
-getNextCollapsed('participle_id43',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
+getNextCollapsed('participle_id49',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
 }else{
-tagSelectionWithType(categoryid, categoriesInfo, medium, 'participle_id43', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
+tagSelectionWithType(categoryid, categoriesInfo, medium, 'participle_id49', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
 }
 }else{
 if(selection.isCollapsed){
-collapsedNoAttributesInsertTag('participle_id43',focusOffset,focusNode);
+collapsedNoAttributesInsertTag('participle_id49',focusOffset,focusNode);
 }else{
-medium.tagSelection3('participle_id43', [], anchorNode,focusNode,anchorOffset, focusOffset);
+medium.tagSelection3('participle_id49', [], anchorNode,focusNode,anchorOffset, focusOffset);
 }
 }
 return false;

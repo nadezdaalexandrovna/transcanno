@@ -360,8 +360,7 @@
       var element=document.getElementById("seq_"+activeAttributeId+'_'+activeValueId+"_"+attributeName);
       //If this consequent attribute has just been added in this same menu, we delete it from the hidden input field of the form
       if(element!=null){
-        var par=element.parentNode;
-        par.removeChild(element);
+        element.parentNode.removeChild(element);
         
       }else{ //If the consequent attribute is already present in the database, we add it to the hidden field of the form
         //Add the values to a hidden input form field
@@ -376,10 +375,36 @@
       return false;
     }
 
+    function addPossibleAttr(attrId,attrName){
+      //Add a new button that will allow to delete the added attribute
+      var div=document.getElementById("from_possible_attributes");
+      var newButton=document.createElement("button");
+      newButton.id='button_possible_attribute_'+attrId;
+      newButton.type="button";
+      newButton.appendChild(document.createTextNode(attrName));
+      newButton.onclick=function(){
+        deletePossibleAttribute(attrId,attrName);
+      };
+      div.appendChild(newButton);
 
+      var newInput='<input name="attribute[]" class="attribute_input_field" type="hidden" id="new_from_possible_attr_hidden_'+attrId+'" value="'+attrName+'">';
+      $("#hidden").append(newInput);
 
-    function beforeSubmitSequences(){
-     
+      //Desactivate the button
+      $("add_possible_attr_"+attrId).disabled=true;
+    }
+
+    function deletePossibleAttribute(attrId,attrName){
+      //Delete the button allowing to delete the attribute
+      var buttonToDelete=document.getElementById("button_possible_attribute_"+attrId);
+      buttonToDelete.parentNode.removeChild(buttonToDelete);
+
+      //Delete the input
+      var inputToDelete=document.getElementById("new_from_possible_attr_hidden_"+attrId);
+      inputToDelete.parentNode.removeChild(inputToDelete);
+
+      //Reactivate the button
+      $("add_possible_attr_"+attrId).disabled=false;
     }
 
     

@@ -11,38 +11,38 @@
       tr
         -@categoryattributes.each do |r|
           <td>
-            <button type="button" id="show_attribute_values#{r.id}" class="show_attribute_values"  onclick="showAttributeValues(#{r.id})">#{r.name}</button>
+            <button type="button" id="show_attribute_values#{r[0]}" class="show_attribute_values"  onclick="showAttributeValues(#{r[0]})">#{r[1]}</button>
           </td>
     <div id="one_attribute_big_div">
       -@categoryattributes.each do |r|
-        <div  id="allow_input_div_#{r.id}" style="display: none;">
-          h5 Allow user input for the attribute <span class="attribute_name_span">#{r.name}</span>
-          =check_box_tag 'allow_user_input[]', r.id.to_s, (r.allow_user_input ? 'checked' : nil)
+        <div  id="allow_input_div_#{r[0]}" style="display: none;">
+          h5 Allow user input for the attribute <span class="attribute_name_span">#{r[1]}</span>
+          =check_box_tag 'allow_user_input[]', r[0].to_s, (r[2]==1 ? 'checked' : nil)
         </div>
-        -if @attributeValuesHash.has_key?("#{r.id}")
-          <div id="one_attribute_div_#{r.id}" class="one_attribute_div" style="display: none;">
-            h5 Existing values of the attribute <span class="attribute_name_span">#{r.name}</span>:
+        -if @attributeValuesHash.has_key?("#{r[0]}")
+          <div id="one_attribute_div_#{r[0]}" class="one_attribute_div" style="display: none;">
+            h5 Existing values of the attribute <span class="attribute_name_span">#{r[1]}</span>:
             table [ class="already_value" ]
-              -@attributeValuesHash.fetch("#{r.id}").each do |v|
+              -@attributeValuesHash.fetch("#{r[0]}").each do |v|
                 tr
                   <td>#{v.fetch(:value)}</td>
-                  <td><button type="button" class="delete_attributevalue_button" id="delete_attribute_value_#{v.fetch(:valueid)}" value="#{v.fetch(:valueid)}" onclick="deleteAttributeValue(#{v.fetch(:valueid)},#{r.id})">Delete</button></td>
+                  <td><button type="button" class="delete_attributevalue_button" id="delete_attribute_value_#{v.fetch(:valueid)}" value="#{v.fetch(:valueid)}" onclick="deleteAttributeValue(#{v.fetch(:valueid)},#{r[0]})">Delete</button></td>
           </div>
-        <div  id="big_new_values_div_#{r.id}" class="big_new_values_div" style="display: none;">
-          h5 Add new values for the attribute <span class="attribute_name_span">#{r.name}</span>
-          <div id="from_possible_values_div_#{r.id}" class="from_possible_values_div">
+        <div  id="big_new_values_div_#{r[0]}" class="big_new_values_div" style="display: none;">
+          h5 Add new values for the attribute <span class="attribute_name_span">#{r[1]}</span>
+          <div id="from_possible_values_div_#{r[0]}" class="from_possible_values_div">
           </div>
-          <div id="new_values_div_#{r.id}">
-            <input name="add_attribute_value[#{r.id}][]" class="attribute_value_input_field" type="text">
+          <div id="new_values_div_#{r[0]}">
+            <input name="add_attribute_value[#{r[0]}][]" class="attribute_value_input_field" type="text">
           </div>
-          <button type="button" id="add_field"  onclick="addAttributeValue(#{r.id})">Add another value</button><br><br>
+          <button type="button" id="add_field"  onclick="addAttributeValue(#{r[0]})">Add another value</button><br><br>
         </div>
-        <div  id="big_suggestions_values_div_#{r.id}" class="big_new_values_div" style="display: none;">
-          <div id="suggestions_values_div_#{r.id}">
-            -if @possibleValuesForEachAttribute.has_key?("#{r.name}")
-              h5 Suggestions for the values of the attribute <span class="attribute_name_span">#{r.name}</span>:
-              -@possibleValuesForEachAttribute.fetch("#{r.name}").each do |valueArr|
-                <button type="button" onclick="addFromPossibleValues(#{r.id}, #{valueArr[0]},'#{valueArr[1]}')" id="button_value_suggestion_#{r.id}_#{valueArr[0]}">#{valueArr[1]}</button>
+        <div  id="big_suggestions_values_div_#{r[0]}" class="big_new_values_div" style="display: none;">
+          <div id="suggestions_values_div_#{r[0]}">
+            -if @possibleValuesForEachAttribute.has_key?("#{r[1]}")
+              h5 Suggestions for the values of the attribute <span class="attribute_name_span">#{r[1]}</span>:
+              -@possibleValuesForEachAttribute.fetch("#{r[1]}").each do |valueArr|
+                <button type="button" onclick="addFromPossibleValues(#{r[0]}, #{valueArr[0]},'#{valueArr[1]}')" id="button_value_suggestion_#{r[0]}_#{valueArr[0]}">#{valueArr[1]}</button>
           </div>
         </div>
     </div>   

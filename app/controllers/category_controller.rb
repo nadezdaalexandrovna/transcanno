@@ -38,10 +38,19 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_sequences
-    define_attribute_values
+    #define_attribute_values
+    @categoryattributes=[]
+    sqlAt="SELECT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
+    resAt=connection.execute(sqlAt)
+    resAt.each do |r|
+      puts "r\n"
+      print r.inspect
+      puts "\n"
+      @categoryattributes.push([r[0],r[1],r[2],r[3]])
+    end
 
     #Select sequences for the values of each attribute of this category
-    sql="SELECT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.category_id="+params[:category_id]
+    sql="SELECT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
     connection = ActiveRecord::Base.connection
     already_relations=connection.execute(sql)
 
@@ -197,11 +206,21 @@ class CategoryController < ApplicationController
   def define_attribute_values
     connection = ActiveRecord::Base.connection
 
-    @categoryattributes=Categoryattribute.where(category_id: params[:category_id])
+    #@categoryattributes=Categoryattribute.where(category_id: params[:category_id])
 
     #All the existing values of the attributes of this category
+    @categoryattributes=[]
+    sqlAt="SELECT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    resAt=connection.execute(sqlAt)
+    resAt.each do |r|
+      puts "r\n"
+      print r.inspect
+      puts "\n"
+      @categoryattributes.push([r[0],r[1],r[2],r[3]])
+    end
+
     @attributeValuesHash={}
-    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attribues.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
     res=connection.execute(sqlS)
 
     res.each do |r|
@@ -227,6 +246,9 @@ class CategoryController < ApplicationController
     end
     puts "@possibleValuesForEachAttribute\n"
     print @possibleValuesForEachAttribute.inspect
+    puts "\n"
+    puts "@categoryattributes\n"
+    print @categoryattributes.inspect
     puts "\n"
 
   end
@@ -327,20 +349,31 @@ class CategoryController < ApplicationController
 
     #@categoryattributes=Categoryattribute.joins("join attributecats on categoryattributes.attributecat_id=attributecats.id").where(category_id: params[:category_id])
     sql="SELECT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
-    @categoryattributes=connection.execute(sql)
-    puts "\n@categoryattributes\n"
-    print @categoryattributes.inspect
+    catattrs=connection.execute(sql)
+    puts "\n@catattrs\n"
+    print catattrs.inspect
     puts "\n"
+
+    #Select all the attributes defined in this collection
+    sqlA="SELECT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id WHERE collection_id="+params[:collection_id]+" AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
+    @possibleAttrs=connection.execute(sqlA)
+
     @attrscopehash={}
-    @categoryattributes.each do |r|
+    @categoryattributes=[]
+    catattrs.each do |r|
       puts "\nr\n"
       print r.inspect
       puts "\n"
+      @categoryattributes.push([r[0],r[4]])
+
       @attrscopehash[r[0]]={0=>false,1=>false,2=>false}
       @attrscopehash[r[0]][r[2]]=true
     end
     puts "\n@attrscopehash\n"
     print @attrscopehash.inspect
+    puts "\n"
+    puts "\n@categoryattributes\n"
+    print @categoryattributes.inspect
     puts "\n"
   end
 
@@ -361,7 +394,7 @@ class CategoryController < ApplicationController
         connection.execute(sql)
       end
       #Delete attributes that no longer have categories associated to them
-      sqlD="DELETE attributes FROM attributes LEFT JOIN categoryattributes ON attributes.id=categoryattributes.attribute_id WHERE categoryattributes.attribute_id IS NULL"
+      sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
       connection.execute(sqlD)
     end
     if params[:attribute]!=nil
@@ -536,7 +569,7 @@ class CategoryController < ApplicationController
     Categorystyle.destroy_all(category_id: @category.id)
     Categoryattribute.destroy_all(category_id: @category.id)
     #Delete attributes that no longer have categories associated to them
-    sqlD="DELETE attributes FROM attributes LEFT JOIN categoryattributes ON attributes.id=categoryattributes.attribute_id WHERE categoryattributes.attribute_id IS NULL"
+    sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
     connection.execute(sqlD)
     @category.destroy #_but_attach_children_to_parent
     #Delete attribute values that no longer have attributes associated to them
