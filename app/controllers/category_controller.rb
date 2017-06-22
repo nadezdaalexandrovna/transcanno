@@ -38,6 +38,7 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_sequences
+    connection = ActiveRecord::Base.connection
     #define_attribute_values
     @categoryattributes=[]
     sqlAt="SELECT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
@@ -47,6 +48,18 @@ class CategoryController < ApplicationController
       print r.inspect
       puts "\n"
       @categoryattributes.push([r[0],r[1],r[2],r[3]])
+    end
+
+    @attributeValuesHash={}
+    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    res=connection.execute(sqlS)
+
+    res.each do |r|
+      if @attributeValuesHash.key?(r[0].to_s)
+        @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
+      else
+        @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+      end
     end
 
     #Select sequences for the values of each attribute of this category
