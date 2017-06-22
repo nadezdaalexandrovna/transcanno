@@ -4,7 +4,6 @@
   =form_for(@category, :url => { :action => 'define_attributes2' }, :html => { :onsubmit=>"return verifyValueType('#{@category.title}','#{@categoryattributesHash}')" }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     =hidden_field_tag(:category_scope, @categoryScope)
-    .categoryAttributesDiv*{'id'=>'categoryAttributesDiv', 'data'=>"#{@categoryattributesHash}"}
     <div id="hidden">
     </div>
     h5 Define attributes of
@@ -45,7 +44,7 @@
     <button type="button" id="add_field"  onclick="addField('#{@disableScopeChoice}')">Add another attribute</button><br><br>
 
     <div id="possible_attrs">
-      h5 Suggestions for attributes:
+      h5 Suggestions for new attributes:
       -@possibleAttrs.each do |pAttr|
         <button type="button" id="add_possible_attr_#{pAttr[0]}" onclick="addPossibleAttr(#{pAttr[0]},'#{pAttr[1]}')">#{pAttr[1]}</button>
     </div>

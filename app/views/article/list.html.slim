@@ -136,21 +136,7 @@
     }
 
     //Function for the attribute creation menu normalising the attribute name
-    function verifyValueType(categoryTitle,hash){
-      console.log(categoryTitle);
-
-      console.log("hash: ");
-      console.log(hash);
-
-      console.log("gon.categoryattributes: ");
-      console.log(gon.categoryattributes);
-
-      var categoryAttributesDiv=document.getElementById('categoryAttributesDiv');
-      console.log(categoryAttributesDiv);
-      var categoriesAttributesText=categoryAttributesDiv.attributes[2].textContent;
-      console.log(categoriesAttributesText);
-      var categoryAttributesHash=JSON && JSON.parse(categoriesAttributesText) || $.parseJSON(categoriesAttributesText);
-      console.log(categoryAttributesHash);
+    function verifyValueType(categoryTitle){
 
       var val, i;
       var elms=document.getElementsByClassName('attribute_input_field');
