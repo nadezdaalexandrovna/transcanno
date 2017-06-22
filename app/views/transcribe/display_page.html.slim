@@ -405,7 +405,7 @@ h2.legend Page Notes
       var options2;
       var search;
       var regex;
-
+      var arrowPosition=0;
       
       return this.each(function() {
         select = this;
@@ -419,6 +419,22 @@ h2.legend Page Notes
 
         $(textbox).off().on('change keyup', function(e) {
         //$(textbox).bind('change keyup', function(e) {
+
+        if (e.which == 40) {
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=(options.length-1)){
+              arrowPosition+=1;
+            }
+          }
+        }else if(e.which == 38){
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=0){
+              arrowPosition=arrowPosition-1;
+            }
+          }
+        }else{
           options2 = $(select).empty().data('options');
           $(select).attr("size", 0);
           search = $.trim($(this).val());
@@ -470,6 +486,7 @@ h2.legend Page Notes
                 }
               }
             });
+
           }else{ // if search==null || search==""
             $(select).attr("size", length);
             $.each(options2, function(i) {
@@ -481,6 +498,7 @@ h2.legend Page Notes
 
               }
             });
+          }
           }
         });
       });

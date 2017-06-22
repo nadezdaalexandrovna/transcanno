@@ -19,16 +19,13 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL') 
-    puts "\n@categories\n"
-    print @categories.inspect
-    puts "\n"
+
     sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
     categorytypes=connection.execute(sqlS)
 
     @categoryTypesHash=Hash.new()
     categorytypes.each do |row|
-      puts row.inspect
       if @categoryTypesHash.key?(row[0]) #If this category is already in the hash
           @categoryTypesHash[row[0]][row[1]]={'allow_user_input'=>row[2],'values'=>[]}
       else #If this category is not yet in the hash
@@ -45,8 +42,6 @@ class TranscribeController  < ApplicationController
     typesAttributes.each do |row|
       @categoryTypesHash[row[0]][row[1]]['values'].push(row[2])
     end
-
-    puts @categoryTypesHash.inspect
     @categoryTypesHash=@categoryTypesHash.to_json
   end
 
