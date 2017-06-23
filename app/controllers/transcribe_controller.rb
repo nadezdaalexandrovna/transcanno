@@ -69,14 +69,14 @@ class TranscribeController  < ApplicationController
     end
 
     #Then we select attribute values, because some attributes don't have values and have allow_user_input=true
-    sqlAdvS="SELECT categoryattributes.category_id, categoryattributes.id, attributecats.name, attributevalues.value FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
+    sqlAdvS="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value FROM categoryattributes INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
     typesAttributesAdv=connection.execute(sqlAdvS)
 
     #categorytypes=Categoryattribute.joins(:category).joins('inner join attributevalues on categoryattributes.id=attributevalues.categoryattribute_id').where.not(mode: 1)
     
     typesAttributesAdv.each do |row|
-      @categoryTypesHashAdv[row[0]][row[1]]['values'].merge({row[3]=>[]})
+      @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]]=[]
     end
     
     puts "\n@categoryTypesHashAdv\n"
@@ -84,14 +84,14 @@ class TranscribeController  < ApplicationController
     puts "\n"
 
     #At last, we select consequences: when a certain attribute value is selected, certain other attributes should be given values
-    sqlSeq="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name from attributevalues INNER JOIN valuestoattributesrelations ON attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON attributes_to_values.valuestoattributesrelation_id=valuestoattributesrelations.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where pages.id="+params[:page_id];
+    sqlSeq="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, categoryattributesSeq.id from attributevalues INNER JOIN valuestoattributesrelations ON attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributecats ON attributecats.name=valuestoattributesrelations.consequent_attr_name INNER JOIN categoryattributes categoryattributesSeq ON categoryattributesSeq.attributecat_id=attributecats.id INNER JOIN attributes_to_values ON attributes_to_values.valuestoattributesrelation_id=valuestoattributesrelations.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN categories ON categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id INNER JOIN pages ON pages.work_id=works.id WHERE categoryattributesSeq.id  IN (SELECT catattrs2.id FROM categoryattributes catattrs2 WHERE catattrs2.category_id=categoryattributes.category_id) AND pages.id="+params[:page_id];
     sequences=connection.execute(sqlSeq)
 
     sequences.each do |row|
       if @categoryTypesHashAdv[row[0]][row[1]]['values'].key?(row[2])
-        @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]].push(row[3])
+        @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]].push([row[4],row[3]])
       else
-        @categoryTypesHashAdv[row[0]][row[1]]['values']={row[2]=>[row[3]]}
+        @categoryTypesHashAdv[row[0]][row[1]]['values']={row[2]=>[[row[4],row[3]]]}
       end
     end
 
