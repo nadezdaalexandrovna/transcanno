@@ -186,6 +186,7 @@ h2.legend Page Notes
 
 .categoryTypesDiv*{'id'=>'categoryTypesDiv', 'data'=>"#{@categoryTypesHash}"}
 .categoryTypesDivAdv*{'id'=>'categoryTypesDivAdv', 'data'=>"#{@categoryTypesHashAdv}"}
+.initialAttrIds*{'id'=>'initialAttrIds', 'data'=>"#{@initialAttrIds}"}
 
 
 -content_for :javascript
@@ -228,15 +229,22 @@ h2.legend Page Notes
       document.getElementsByName("page[use_advanced_mode]")[0].value=checked;
       showSimpleOrAdvancedModeCategories(checked);      
     });
+
+    function parseJsonData(elementid){
+      var categoryTypesDiv=document.getElementById(elementid);
+      var categoriesText=categoryTypesDiv.attributes[2].textContent;
+      var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
+      return categoryTypesHash;
+    }
     
     //Decide wich categories to show in the menu: for the simple mode or for the advanced mode
     showSimpleOrAdvancedModeCategories(Cookies.get('use_advanced_mode'));
 
     //Get the information about categories, their attributes and values for the simple mode
-    var categoryTypesDiv=document.getElementById('categoryTypesDiv');
-    var categoriesText=categoryTypesDiv.attributes[2].textContent;
-    var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
-
+    //var categoryTypesDiv=document.getElementById('categoryTypesDiv');
+    //var categoriesText=categoryTypesDiv.attributes[2].textContent;
+    //var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
+    var categoryTypesHash=parseJsonData('categoryTypesDiv');
     console.log(categoryTypesHash);
 
     var catID, attr_name;
@@ -250,12 +258,17 @@ h2.legend Page Notes
     console.log(categoriesInfo);
 
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
-    var categoryTypesDivAdv=document.getElementById('categoryTypesDivAdv');
-    var categoriesTextAdv=categoryTypesDivAdv.attributes[2].textContent;
-    var categoryTypesHashAdv=JSON && JSON.parse(categoriesTextAdv) || $.parseJSON(categoriesTextAdv);
-
+    //var categoryTypesDivAdv=document.getElementById('categoryTypesDivAdv');
+    //var categoriesTextAdv=categoryTypesDivAdv.attributes[2].textContent;
+    //var categoryTypesHashAdv=JSON && JSON.parse(categoriesTextAdv) || $.parseJSON(categoriesTextAdv);
+    var categoryTypesHashAdv=parseJsonData('categoryTypesDivAdv');
     console.log("categoryTypesHashAdv:");
     console.log(categoryTypesHashAdv);
+
+    //Get the initial attributes' ids
+    var initialAttrIds=parseJsonData('initialAttrIds');
+    console.log("initialAttrIds:");
+    console.log(initialAttrIds);
 
     var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, property, caT, caTT;
 
@@ -490,7 +503,6 @@ h2.legend Page Notes
         $(select).data('options', options);
 
         $(textbox).off().on('change keyup', function(e) {
-        //$(textbox).bind('change keyup', function(e) {
 
         if (e.which == 40) {
           if(arrowPosition>=0 && arrowPosition<options.length){
@@ -522,7 +534,7 @@ h2.legend Page Notes
                 $(select).attr("size", $(select).attr("size")+1);
                 //If the user presses enter
                 if (e.which == 13) {
-                  if(notCollapsedArgsTable==null){
+                  
                     $("#newDropdownDiv").hide();
                     document.getElementById('select_a_tag').innerHTML = "";
                     userChosenAttributesAndValues.push([attrName,option.value]);
@@ -536,25 +548,7 @@ h2.legend Page Notes
                       addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
 
                     }
-                  }else{
-                    $("#newDropdownDiv").hide();
 
-                    $("#select-type-input").hide();
-                    $("#select-type-input")[0].value="";
-                    $('#chosen-select-type').empty();
-                    document.getElementById('select_a_tag').innerHTML = "";
-
-                    userChosenAttributesAndValues.push([attrName,option.value]);
-
-                    if (num<(categoryTable.length-1)){
-                      getNextCollapsed(varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                    }
-
-                    if (num==(categoryTable.length-1)){
-                      addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-
-                    }
-                  }
                 }
               }
             });
@@ -832,16 +826,166 @@ h2.legend Page Notes
       return { x: xF, y: yF };
     }
 
-    function findUnderBigDivParent(el){
-      if(el.parentNode.id=="bigDiv"){
-        return el;
-      }else{
-        return findUnderBigDivParent(el.parentNode);
-      }
+
+    jQuery.fn.filterByTextAdvancedCollapsed = function(textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, seqAttrId, num,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
+      var arrowPosition=0;
+
+      var categoryTypesHash=categorySeqHash[seqAttrId];
+      console.log("categoryTypesHash");
+      console.log(categoryTypesHash);
+      var attrName=categoryTypesHash['name'];
+      var allow_user_input=categoryTypesHash['allow_user_input'];
+      var attrHash=categoryTypesHash['values'];
+      var categoryTypesTable=Object.keys(attrHash);
+      
+      return this.each(function() {
+        select = this;
+        var length=$(select).attr("size");
+        console.log("length: "+length);
+        options = [];
+        $(select).find('option').each(function() {
+          options.push({value: $(this).val(), text: $(this).text()});
+        });
+        $(select).data('options', options);
+
+        $(textbox).off().on('change keyup', function(e) {
+
+        if (e.which == 40) {
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=(options.length-1)){
+              arrowPosition+=1;
+            }
+          }
+        }else if(e.which == 38){
+          if(arrowPosition>=0 && arrowPosition<options.length){
+            $(textbox).val(options[arrowPosition]['text']);
+            if(arrowPosition!=0){
+              arrowPosition=arrowPosition-1;
+            }
+          }
+        }else{
+          options2 = $(select).empty().data('options');
+          $(select).attr("size", 0);
+          search = $.trim($(this).val());
+          if(search!=null && search!=""){
+            regex = new RegExp("^"+search,"gi");
+
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="" && option.value.match(regex) !== null) {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+                $(select).attr("size", $(select).attr("size")+1);
+                //If the user presses enter
+                if (e.which == 13) {
+                    $("#newDropdownDiv").hide();
+                    document.getElementById('select_a_tag').innerHTML = "";
+                    userChosenAttributesAndValues.push([attrName,option.value]);
+
+                    //If the chosen value has consequent attributes
+                  if(Object.keys(attrHash).length>0){
+                    var seqAttrsTable=attrHash[newType];
+                    var numSeqAttr=0;
+                    var seqAttrId=seqAttrsTable[numSeqAttr][0];
+                    var seqAttrName=seqAttrsTable[numSeqAttr][1];
+                    console.log("seqAttrId: "+seqAttrId);
+                    console.log("seqAttrName: "+seqAttrName);
+                    tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                  }else{
+                            
+                    if (num<(categoryTable.length-1)){
+                      tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                    }
+
+                    if (num==(categoryTable.length-1)){
+                      addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                    }
+                  }
+                }
+              }
+            });
+
+          }else{ // if search==null || search==""
+            $(select).attr("size", length);
+            $.each(options2, function(i) {
+              option = options2[i];
+              if(option.value!="") {
+                $(select).append(
+                  $('<option>').text(option.text).val(option.value)
+                );
+
+              }
+            });
+          }
+          }
+        });
+      });
     }
 
-    function tagSeqsCollapsed(varTag,num, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
-      var categoryTypesHash=categorySeqHash[Object.keys(categorySeqHash)[num]];
+
+      //The user types the value of a category attribute
+    jQuery.fn.userInputAttrValueCollapsedAdvanced = function(textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
+
+      console.log("textbox");
+      console.log(textbox);
+
+        $(textbox).off().on('change keyup', function(e) {
+          //If the user presses enter
+          if (e.which == 13) {
+            
+              $("#newDropdownDiv").hide();
+              $("#select-type-input").show();
+              $("#select-type-input")[0].value="";
+              $("#chosen-select-type").show();
+              $('#chosen-select-type').empty();
+              $('#user-type-input').hide();
+              document.getElementById('select_a_tag').innerHTML = "";
+
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
+              $(textbox).val('');
+              //If the chosen value has consequent attributes
+                    if(Object.keys(attrHash).length>0){
+                      var seqAttrsTable=attrHash[newType];
+                      var numSeqAttr=0;
+                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
+                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
+                      console.log("seqAttrId: "+seqAttrId);
+                      console.log("seqAttrName: "+seqAttrName);
+                      tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                    }else{
+                            
+                      if (num<(categoryTable.length-1)){
+                        tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                      }
+
+                      if (num==(categoryTable.length-1)){
+                        addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                      }
+                    }
+            
+          }
+      });
+      
+    }
+
+    function tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+      console.log("in tagSeqsCollapsed");
+      var seqAttrId=seqAttrsTable[numSeqAttr][0];
+      var categoryTypesHash=categorySeqHash[seqAttrId];
       console.log("categoryTypesHash");
       console.log(categoryTypesHash);
       var attrName=categoryTypesHash['name'];
@@ -855,94 +999,211 @@ h2.legend Page Notes
         alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
       }else{
         //If there are predefined values for this attribute
-      if(categoryTypesTable.length>0){
-        //Create the new dropdown menu for category types
-        newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        if(categoryTypesTable.length>0){
+          //Create the new dropdown menu for category types
+          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
 
-        for(i=0; i< categoryTypesTable.length; i++){
-          //Add an option for the category types dropdown menu
-          addAnOption(newDropdown,categoryTypesTable[i]);
+          for(i=0; i< categoryTypesTable.length; i++){
+            //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
                     
-          if(i==(categoryTypesTable.length-1)){
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton){
+                $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+              }else{
+                $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
+              }
+            
+              $("#newDropdownDiv").show();
+              $('#select-type-input').show();
+              $('#select-type-input').focus();
+              $("#chosen-select-type").show();
+
+              if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+                $('#user-type-input').show();
+                jQuery.fn.userInputAttrValueCollapsedAdvanced ($('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }
+
+              $('#chosen-select-type').filterByTextAdvancedCollapsed($('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                      
+              $("#chosen-select-type").off().change(attrName,function(event3){                        
+                document.getElementById('select_a_tag').innerHTML = "";                      
+                if(event3.target == this){
+                  type=$(this).val();
+                  if(type!=null && type!=''){
+                    newType=type;
+                    type='';
+
+                    userChosenAttributesAndValues.push([attrName,newType]);
+                            
+                    $("#newDropdownDiv").hide();
+                    $('#chosen-select-type').empty();
+
+                  
+                    //If the chosen value has consequent attributes
+                    if(Object.keys(attrHash).length>0){
+                      var seqAttrsTable=attrHash[newType];
+                      var numSeqAttr=0;
+                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
+                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
+                      console.log("seqAttrId: "+seqAttrId);
+                      console.log("seqAttrName: "+seqAttrName);
+                      tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                    }else{
+                            
+                      if (num<(categoryTable.length-1)){
+                        tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                      }
+
+                      if (num==(categoryTable.length-1)){
+                        tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                      }
+                    }         
+                  }
+                }
+                      
+              });
+            }
+          }
+        }else{ //If there are no predefined values for this attribute
+          if(allow_user_input==1){ //If the user can enter a new value for this attribute
+            //Create the new dropdown menu for category types
+            newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
             if(onButton){
               $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
             }else{
               $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
             }
-            
+          
             $("#newDropdownDiv").show();
-            $('#select-type-input').show();
-            $('#select-type-input').focus();
-            $("#chosen-select-type").show();
+            $("#select-type-input").hide();
+            $("#chosen-select-type").hide();          
+            $('#user-type-input').show();
+            $('#user-type-input').focus();
+            jQuery.fn.userInputAttrValueCollapsedAdvanced ($('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+          }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
-            if(allow_user_input==1){ //If the user can enter a new value for this attribute          
-              $('#user-type-input').show();
-              jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,true);
-            }
+            alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
+            return false;
+          
+          }
+        }
 
-            $('#chosen-select-type').filterByTextAdvancedCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+      }
+
+    }
+
+    function tagSeqsCollapsedInitial(varTag,num, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+      var attrId=parseInt(initialAttrIds[num]);
+      console.log("attrId: "+attrId);
+      console.log("categorySeqHash: ");
+      console.log(categorySeqHash);
+      var categoryTypesHash=categorySeqHash[attrId];
+      console.log("categoryTypesHash");
+      console.log(categoryTypesHash);
+      var attrName=categoryTypesHash['name'];
+      var allow_user_input=categoryTypesHash['allow_user_input'];
+      var attrHash=categoryTypesHash['values'];
+      var categoryTypesTable=Object.keys(attrHash);
+      var i;
+
+      console.log("categoryTypesTable");
+      console.log(categoryTypesTable);
+
+      //If an attribute has no predefined values and no user input possibility, give an error message
+      if(categoryTypesTable.length==0 && allow_user_input==0){
+        alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
+      }else{
+        //If there are predefined values for this attribute
+        if(categoryTypesTable.length>0){
+          //Create the new dropdown menu for category types
+          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+
+          for(i=0; i< categoryTypesTable.length; i++){
+            //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton){
+                $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+              }else{
+                $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
+              }
+            
+              $("#newDropdownDiv").show();
+              $('#select-type-input').show();
+              $('#select-type-input').focus();
+              $("#chosen-select-type").show();
+
+              if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+                $('#user-type-input').show();
+                jQuery.fn.userInputAttrValueCollapsedAdvanced ($('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }
+
+              $('#chosen-select-type').filterByTextAdvancedCollapsed($('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       
-            $("#chosen-select-type").off().change(attrName,function(event3){                        
-              document.getElementById('select_a_tag').innerHTML = "";                      
-              if(event3.target == this){
-                type=$(this).val();
-                if(type!=null && type!=''){
-                  newType=type;
-                  type='';
+              $("#chosen-select-type").off().change(attrName,function(event3){                        
+                document.getElementById('select_a_tag').innerHTML = "";                      
+                if(event3.target == this){
+                  type=$(this).val();
+                  if(type!=null && type!=''){
+                    newType=type;
+                    type='';
 
-                  userChosenAttributesAndValues.push([attrName,newType]);
+                    userChosenAttributesAndValues.push([attrName,newType]);
                             
-                  $("#newDropdownDiv").hide();
-                  $('#chosen-select-type').empty();
+                    $("#newDropdownDiv").hide();
+                    $('#chosen-select-type').empty();
 
                   
-                  //If the chosen value has consequent attributes
-                  if(Object.keys(attrHash).length>0){
-                    var seqAttrsTable=attrHash[newType];
-                    var numSeqAttr=0;
-                    var seqAttrId=seqAttrsTable[numSeqAttr][0];
-                    var seqAttrName=seqAttrsTable[numSeqAttr][1];
-                    console.log("seqAttrId: "+seqAttrId);
-                    console.log("seqAttrName: "+seqAttrName);
-                  }else{
+                    //If the chosen value has consequent attributes
+                    if(Object.keys(attrHash).length>0){
+                      var seqAttrsTable=attrHash[newType];
+                      var numSeqAttr=0;
+                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
+                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
+                      console.log("seqAttrId: "+seqAttrId);
+                      console.log("seqAttrName: "+seqAttrName);
+                      tagSeqsCollapsed(varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                    }else{
                             
-                    if (num<(categoryTable.length-1)){
-                      tagSeqsCollapsed(varTag,num+1, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                    }
+                      if (num<(categoryTable.length-1)){
+                        tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                      }
 
-                    if (num==(categoryTable.length-1)){
-                      addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                    }
-                  }         
+                      if (num==(categoryTable.length-1)){
+                        addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                      }
+                    }         
+                  }
                 }
-              }
                       
-            });
+              });
+            }
           }
-        }
-      }else{ //If there are no predefined values for this attribute
-        if(allow_user_input==1){ //If the user can enter a new value for this attribute
-          //Create the new dropdown menu for category types
-          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
-          if(onButton){
-            $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
-          }else{
-            $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
-          }
+        }else{ //If there are no predefined values for this attribute
+          if(allow_user_input==1){ //If the user can enter a new value for this attribute
+            //Create the new dropdown menu for category types
+            newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+            if(onButton){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
+            }
           
-          $("#newDropdownDiv").show();
-          $("#select-type-input").hide();
-          $("#chosen-select-type").hide();          
-          $('#user-type-input').show();
-          $('#user-type-input').focus();
-          jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-        }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
+            $("#newDropdownDiv").show();
+            $("#select-type-input").hide();
+            $("#chosen-select-type").hide();          
+            $('#user-type-input').show();
+            $('#user-type-input').focus();
+            jQuery.fn.userInputAttrValueCollapsedAdvanced ($('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+          }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
-          alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
-          return false;
+            alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
+            return false;
           
+          }
         }
-      }
 
       }
     }
@@ -976,7 +1237,7 @@ h2.legend Page Notes
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,false);
+              jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
             $('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -1023,7 +1284,7 @@ h2.legend Page Notes
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
           $('#user-type-input').focus();
-          jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,false);
+          jQuery.fn.userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
           alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
@@ -1096,12 +1357,11 @@ h2.legend Page Notes
             
           }
       });
-      
-    }
+    };
 
 
     //The user types the value of a category attribute
-    jQuery.fn.userInputAttrValueCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton, isAdvanced) {
+    jQuery.fn.userInputAttrValueCollapsed = function(textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
       var option;
       var select;
       var options;
@@ -1127,11 +1387,7 @@ h2.legend Page Notes
               userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
               if (num<(categoryTable.length-1)){
-                if(isAdvanced){
-                  tagSeqsCollapsed(varTag,num+1, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                }else{
                   getNextCollapsed(varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                }
               }
 
               if (num==(categoryTable.length-1)){
@@ -1190,8 +1446,9 @@ h2.legend Page Notes
                 userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
-                
-                tagSeqsCollapsed(varTag,0, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
+                console.log("initialAttrIds: ");               
+                console.log(initialAttrIds);
+                tagSeqsCollapsedInitial(varTag,0, initialAttrIds[categoryid], categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
               }else{ //If the category doesn't have types
 

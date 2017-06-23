@@ -101,6 +101,18 @@ class TranscribeController  < ApplicationController
 
     @categoryTypesHashAdv=@categoryTypesHashAdv.to_json
 
+    sqlInitial="SELECT categoryattributes.category_id, categoryattributes.id FROM categoryattributes INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id]+" AND categoryattributes.initial=1"
+    initialAttrs=connection.execute(sqlInitial)
+
+    @initialAttrIds={}
+    initialAttrs.each do |iA|
+      if @initialAttrIds.key?(iA[0])
+        @initialAttrIds[iA[0]].push(iA[1])
+      else
+        @initialAttrIds[iA[0]]=[iA[1]]
+      end
+    end
+    @initialAttrIds=@initialAttrIds.to_json
   end
 
   def guest
