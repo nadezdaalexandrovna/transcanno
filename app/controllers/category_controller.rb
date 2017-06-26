@@ -41,14 +41,14 @@ class CategoryController < ApplicationController
     connection = ActiveRecord::Base.connection
     #define_attribute_values
     @categoryattributes=[]
-    sqlAt="SELECT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
+    sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
     resAt=connection.execute(sqlAt)
     resAt.each do |r|
       @categoryattributes.push([r[0],r[1],r[2],r[3]])
     end
 
     @attributeValuesHash={}
-    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
     res=connection.execute(sqlS)
 
     res.each do |r|
@@ -60,7 +60,7 @@ class CategoryController < ApplicationController
     end
 
     #Select sequences for the values of each attribute of this category
-    sql="SELECT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
+    sql="SELECT DISTINCT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
     connection = ActiveRecord::Base.connection
     already_relations=connection.execute(sql)
 
@@ -130,7 +130,13 @@ class CategoryController < ApplicationController
         valueName=arrayIdName[2]
         attrsArray.each do |attr|
           rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr)
-          attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId).update_all(valuestoattributesrelation_id: rel.id)
+          puts "\nrel.id\n"
+          print rel.id
+          puts "\n"
+          #attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId).update_all(valuestoattributesrelation_id: rel.id)
+          #attr_to_value=AttributesToValue.create(categoryattribute_id: activeAttrId, attributevalue_id: valueId,valuestoattributesrelation_id: rel.id)
+          sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
+          connection.execute(sqlCreate)
         end
       end
     end
@@ -143,7 +149,7 @@ class CategoryController < ApplicationController
         activeAttrId=arrayIdName[0]
         valueId=arrayIdName[1]
         valueName=arrayIdName[2]
-        attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId, value_to_attr_relation_id:relsArray).update_all(value_to_attr_relation_id: nil) 
+        attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId, valuestoattributesrelation_id:relsArray).update_all(valuestoattributesrelation_id: nil) 
       end
       sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
       connection.execute(sql2)
@@ -186,14 +192,14 @@ class CategoryController < ApplicationController
 
     #All the existing values of the attributes of this category
     @categoryattributes=[]
-    sqlAt="SELECT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
     resAt=connection.execute(sqlAt)
     resAt.each do |r|
       @categoryattributes.push([r[0],r[1],r[2],r[3]])
     end
 
     @attributeValuesHash={}
-    sqlS="SELECT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+    sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
     res=connection.execute(sqlS)
 
     res.each do |r|
