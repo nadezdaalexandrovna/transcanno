@@ -233,14 +233,14 @@ class CategoryController < ApplicationController
       params[:delete_attribute_value].each do |attrId, valueIDs|
         valueIDs.each do |valueid|
           #forSql+=valueid+", "
-          sql="delete from attributes_to_values where value_id="+valueid+" and attribute_id="+attrId
+          sql="delete from attributes_to_values where attributevalue_id="+valueid+" and categoryattribute_id="+attrId
           connection.execute(sql)
           giveNotice=true
-          #Delete from attributevalues if no attribute has this value
-          sql2="DELETE FROM attributevalues WHERE attributevalues.id not in (SELECT attributes_to_values.attributevalue_id FROM attributes_to_values)"
-          connection.execute(sql2)
         end
       end
+      #Delete from attributevalues if no attribute has this value
+      sql2="DELETE FROM attributevalues WHERE attributevalues.id not in (SELECT attributes_to_values.attributevalue_id FROM attributes_to_values)"
+      connection.execute(sql2)
     end
 
     sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"

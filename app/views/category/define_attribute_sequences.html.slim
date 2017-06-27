@@ -8,12 +8,10 @@
     h5 Define attribute sequences for the category
       <span id="category_title_for_attributes">#{@category.title}</span>
     h5 Existing attributes
-    table[ class="already_type" ]
-      tr
-        -@categoryattributes.each do |r|
-          td
-            <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r[0]}" onclick="showSeqAttrValues(#{r[0]})">#{r[1]}</button>
-
+    <div class="already_type">
+      -@categoryattributes.each do |r|
+        <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r[0]}" onclick="showSeqAttrValues(#{r[0]})">#{r[1]}</button>
+    </div>
     -@categoryattributes.each do |r|
       <div id="set_initial_div_#{r[0]}" class="set_initial_div" style="display:none;">
         h5 Set the attribute <span class="attribute_name_span">#{r[1]}</span> as initial
@@ -47,12 +45,10 @@
         </div>
     <div id="possible_consequent_attrs_div" class="possible_consequent_attrs_div" style="display:none;">
       h5 Possible consequent attributes:
-      table[ class="already_type" ]
-        tr
-          -@categoryattributes.each do |ca|
-            td
-              <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[0]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
-
+      <div class="already_type">
+        -@categoryattributes.each do |ca|
+          <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[0]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
+      </div>
     </div>
     
  

@@ -7,12 +7,10 @@
     h5 Define attribute values for the category
       <span id="category_title_for_attributes">#{@category.title}</span>
     h5 Existing attributes
-    table[ class="already_type" ]
-      tr
-        -@categoryattributes.each do |r|
-          <td>
-            <button type="button" id="show_attribute_values#{r[0]}" class="show_attribute_values"  onclick="showAttributeValues(#{r[0]})">#{r[1]}</button>
-          </td>
+    <div class="already_type">
+      -@categoryattributes.each do |r|
+        <button type="button" id="show_attribute_values#{r[0]}" class="show_attribute_values"  onclick="showAttributeValues(#{r[0]})">#{r[1]}</button>
+    </div>
     <div id="one_attribute_big_div">
       -@categoryattributes.each do |r|
         <div  id="allow_input_div_#{r[0]}" style="display: none;">
@@ -48,5 +46,5 @@
     </div>   
     
     .toolbar
-      .toolbar_group.aright =f.button "Apply all changes to the attribute values of the category \"#{@category.title}\""
+      .toolbar_group.aright =f.button "Apply all changes"
 
