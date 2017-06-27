@@ -983,6 +983,8 @@ h2.legend Page Notes
     }
 
     var seqAttrsPerLevel={};
+    var previousLevel;
+    var numsSeqAttrPerLevel={};
 
     function tagSeqsCollapsed(level,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
       console.log("in tagSeqsCollapsed level: "+level);
@@ -993,22 +995,37 @@ h2.legend Page Notes
       }
       console.log("categorySeqHash");
       console.log(categorySeqHash);
-      console.log("seqAttrsTable");
+      console.log("seqAttrsTable line 997");
       console.log(seqAttrsTable);
+
+      if(numSeqAttr!=-1){
+        //attrId=seqAttrsTable[numSeqAttr][0];
+        numsSeqAttrPerLevel[level]=numSeqAttr;
+        if(!seqAttrsPerLevel.hasOwnProperty(level)){
+          seqAttrsPerLevel[level]=seqAttrsTable;
+        }
+      }
+      
+      var attrId;
+      if (numSeqAttr>-1){
+        attrId=seqAttrsTable[numSeqAttr][0];
+      }
+
+      //When going down
+      if(numSeqAttr==-1){  //(seqAttrsPerLevel.hasOwnProperty(previousLevel) && previousLevel==(level+1) ){
+        //seqAttrsTable=seqAttrsPerLevel[level][1];
+        //numSeqAttr=seqAttrsPerLevel[level][0];
+
+        //We take the registered number and take the following one
+        numSeqAttr=numsSeqAttrPerLevel[level]+1;
+        seqAttrsTable=seqAttrsPerLevel[level];
+        attrId=seqAttrsTable[numSeqAttr][0];
+      }
 
       if(numSeqAttr>=seqAttrsTable.length){
         return;
       }
 
-      var attrId;
-
-      if(!seqAttrsPerLevel.hasOwnProperty(level)){
-        attrId=seqAttrsTable[numSeqAttr][0];
-        seqAttrsPerLevel[level]=seqAttrsTable;
-      }else{
-        seqAttrsTable=seqAttrsPerLevel[level];
-        attrId=seqAttrsTable[numSeqAttr][0];
-      }
       var categoryTypesHa=categorySeqHash[attrId];
       console.log("categoryTypesHa");
       console.log(categoryTypesHa);
@@ -1018,6 +1035,7 @@ h2.legend Page Notes
       console.log("attrHash");
       console.log(attrHash);
       var categoryTypesTable=Object.keys(attrHash);
+      
       console.log("categoryTypesTable");
       console.log(categoryTypesTable);
       var i;
@@ -1084,6 +1102,7 @@ h2.legend Page Notes
                       var seqAttrName=seqAttrsTable[numSeqAttr][1];
                       console.log("seqAttrId: "+seqAttrId);
                       console.log("seqAttrName: "+seqAttrName);
+                      previousLevel=level;
                       tagSeqsCollapsed(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                     }else{
                       console.log("numSeqAttr: "+numSeqAttr);   
@@ -1093,15 +1112,22 @@ h2.legend Page Notes
                       }
 
                       if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+                        //seqAttrsTable=seqAttrsPerLevel[level-1][1];
                         seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                        previousLevel=level;
+                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                         //return false;
                       }else if (numSeqAttr==(seqAttrsTable.length-1)){
+                        if(level==1){
+                          tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                        }
                         //tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                         //tagSeqsCollapsed(level+1,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                         //return false;
+                        //seqAttrsTable=seqAttrsPerLevel[level-1][1];
                         seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                        previousLevel=level;
+                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }
                     }         
                   }
@@ -1162,6 +1188,7 @@ h2.legend Page Notes
 
       console.log("categoryTypesTable");
       console.log(categoryTypesTable);
+     
 
       //If an attribute has no predefined values and no user input possibility, give an error message
       if(categoryTypesTable.length==0 && allow_user_input==0){
@@ -1216,7 +1243,7 @@ h2.legend Page Notes
                       console.log("newType");
                       console.log(newType);
                       seqAttrsTable=attrHash[newType];
-                      console.log("seqAttrsTable");
+                      console.log("seqAttrsTable line 1238");
                       console.log(seqAttrsTable);
                       var numSeqAttr=0;
                       var seqAttrId=seqAttrsTable[numSeqAttr][0];
