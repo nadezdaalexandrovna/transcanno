@@ -827,7 +827,7 @@ h2.legend Page Notes
     }
 
 
-    jQuery.fn.filterByTextAdvancedCollapsed = function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, seqAttrId, num,numSeqAttr,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+    jQuery.fn.filterByTextAdvancedCollapsed = function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, seqAttrId, num,numSeqAttr,seqAttrsTable,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
       var option;
       var select;
       var options;
@@ -945,7 +945,7 @@ h2.legend Page Notes
 
 
       //The user types the value of a category attribute
-    jQuery.fn.userInputAttrValueCollapsedAdvanced = function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
+    jQuery.fn.userInputAttrValueCollapsedAdvanced = function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
       var option;
       var select;
       var options;
@@ -970,35 +970,62 @@ h2.legend Page Notes
 
               userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
               $(textbox).val('');
-              //If the chosen value has consequent attributes
-                    if(attrHash[newType].length>0){
+                if (numSeqAttr<(seqAttrsTable.length-1)){
+                    tagSeqsCollapsed(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                }
 
-                      seqAttrsTable=attrHash[newType];
-                      numSeqAttr=0;
+                if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+                  seqAttrsTable=seqAttrsPerLevel[level-1];
+                  tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                }else if (numSeqAttr==(seqAttrsTable.length-1)){
+                  if(level==1){
+                    tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                }
 
-                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
-                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
+                seqAttrsTable=seqAttrsPerLevel[level-1];
+                tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }
+                    
+            
+          }
+      });
+      
+    }
 
-                      tagSeqsCollapsed(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+    //The user types the value of a category attribute
+    jQuery.fn.userInputAttrValueCollapsedAdvancedInitial = function(level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
+      var option;
+      var select;
+      var options;
+      var options2;
+      var search;
+      var regex;
 
-                    }else{ //If the chosen value doesn't have consequent attributes
- 
-                      if (numSeqAttr<(seqAttrsTable.length-1)){
-                        tagSeqsCollapsed(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                      }
+      console.log("textbox");
+      console.log(textbox);
 
-                      if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
-                        seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                      }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                        if(level==1){
-                          tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                        }
+        $(textbox).off().on('change keyup', function(e) {
+          //If the user presses enter
+          if (e.which == 13) {
+            
+              $("#newDropdownDiv").hide();
+              $("#select-type-input").show();
+              $("#select-type-input")[0].value="";
+              $("#chosen-select-type").show();
+              $('#chosen-select-type').empty();
+              $('#user-type-input').hide();
+              document.getElementById('select_a_tag').innerHTML = "";
 
-                        seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                      }
-                    }
+              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
+              $(textbox).val('');
+              
+              if (num<(initialAttrIds.length-1)){
+                tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }
+
+              if (num==(initialAttrIds.length-1)){
+                addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+              }
             
           }
       });
@@ -1082,10 +1109,10 @@ h2.legend Page Notes
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                jQuery.fn.userInputAttrValueCollapsedAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                jQuery.fn.userInputAttrValueCollapsedAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
-              $('#chosen-select-type').filterByTextAdvancedCollapsed(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,numSeqAttr,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              $('#chosen-select-type').filterByTextAdvancedCollapsed(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,numSeqAttr,seqAttrsTable,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       
               $("#chosen-select-type").off().change(attrName,function(event3){                        
                 document.getElementById('select_a_tag').innerHTML = "";                      
@@ -1152,7 +1179,7 @@ h2.legend Page Notes
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
             $('#user-type-input').focus();
-            jQuery.fn.userInputAttrValueCollapsedAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+            jQuery.fn.userInputAttrValueCollapsedAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
             alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
@@ -1210,10 +1237,10 @@ h2.legend Page Notes
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                //jQuery.fn.userInputAttrValueCollapsedAdvanced (0,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                jQuery.fn.userInputAttrValueCollapsedAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
-              //$('#chosen-select-type').filterByTextAdvancedCollapsed(0,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              $('#chosen-select-type').filterByTextAdvancedCollapsed(0,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,num,initialAttrIds,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       
               $("#chosen-select-type").off().change(attrName,function(event3){                        
                 document.getElementById('select_a_tag').innerHTML = "";                      
@@ -1270,7 +1297,7 @@ h2.legend Page Notes
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
             $('#user-type-input').focus();
-            jQuery.fn.userInputAttrValueCollapsedAdvanced (0,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+            jQuery.fn.userInputAttrValueCollapsedAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
             alert("There is a mistake in the attribute \""+attrName+"\" design: an attribute should either have a list of predefined values or allow user input.");
@@ -1500,7 +1527,7 @@ h2.legend Page Notes
       if(selection.isCollapsed){
         $(".popupBodyAdv").css({'top':nowY,'left':nowX});
         $(".popupBodyAdv").show();
-
+        $(".chosen-adv").show();
         $(".chosen-adv").trigger('chosen:activate');
 
         $(".chosen-adv").chosen().change(function(event){
@@ -1522,7 +1549,15 @@ h2.legend Page Notes
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
                 console.log("initialAttrIds: ");               
                 console.log(initialAttrIds);
-                tagSeqsCollapsedInitial(varTag,0, initialAttrIds[categoryid], categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
+                var thisCategoryInitialAttrIds=[];
+                if(initialAttrIds.hasOwnProperty(categoryid)){
+                  thisCategoryInitialAttrIds=initialAttrIds[categoryid];
+                }else{
+                  thisCategoryInitialAttrIds=[];
+                }
+                console.log("thisCategoryInitialAttrIds: ");               
+                console.log(thisCategoryInitialAttrIds);
+                tagSeqsCollapsedInitial(varTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
               }else{ //If the category doesn't have types
 
@@ -2075,6 +2110,8 @@ h2.legend Page Notes
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
+
+      mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
 
       if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
         mediumValue = "<div id=\"bigDiv\">"+mediumValue+"<\/div>";

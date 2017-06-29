@@ -307,8 +307,8 @@ class CategoryController < ApplicationController
     sql="SELECT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
     catattrs=connection.execute(sql)
 
-    #Select all the attributes defined in this collection
-    sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id WHERE collection_id="+params[:collection_id]+" AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
+    #Select all the attributes defined in this collection in this scope
+    sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+@categoryScope.to_s+",2) AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
     @possibleAttrs=connection.execute(sqlA)
 
     @attrscopehash={}
