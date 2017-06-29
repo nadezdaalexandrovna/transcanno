@@ -425,6 +425,7 @@ h2.legend Page Notes
               regex = new RegExp("^"+search,"gi");
 
               $.each(options2, function(i) {
+                if(options2!=null){
                 option = options2[i];
                 if(option.value!="" && option.value.match(regex) !== null) {
                   $(select).append(
@@ -438,6 +439,8 @@ h2.legend Page Notes
                       document.getElementById('select_a_tag').innerHTML = "";
                       userChosenAttributesAndValues.push([attrName,option.value]);
 
+                      options2=null;
+
                       if (num<(categoryTable.length-1)){
                         getNextSomethingSelected(varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }
@@ -450,6 +453,7 @@ h2.legend Page Notes
                       $("#select-type-input").hide();
                       $("#select-type-input")[0].value="";
                       $('#chosen-select-type').empty();
+                      $('#chosen-select-type')[0].value="";
 
                       document.getElementById('select_a_tag').innerHTML = "";
 
@@ -464,6 +468,7 @@ h2.legend Page Notes
                       }
                     }
                   }
+                }
                 }
               });
             }else{ // if search==null || search==""
@@ -526,6 +531,7 @@ h2.legend Page Notes
             regex = new RegExp("^"+search,"gi");
 
             $.each(options2, function(i) {
+              if(options2!=null){
               option = options2[i];
               if(option.value!="" && option.value.match(regex) !== null) {
                 $(select).append(
@@ -536,9 +542,15 @@ h2.legend Page Notes
                 if (e.which == 13) {
                   
                     $("#newDropdownDiv").hide();
+
+                    $("#select-type-input").hide();
+                    $("#select-type-input")[0].value="";
+                    $('#chosen-select-type').empty();
+                    $('#chosen-select-type')[0].value="";
+
                     document.getElementById('select_a_tag').innerHTML = "";
                     userChosenAttributesAndValues.push([attrName,option.value]);
-
+                    options2=null;
                     if (num<(categoryTable.length-1)){
                       getNextCollapsed(varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                     }
@@ -550,6 +562,7 @@ h2.legend Page Notes
                     }
 
                 }
+              }
               }
             });
 
@@ -593,6 +606,7 @@ h2.legend Page Notes
         tagWithType='';
 
         $('#chosen-select-type').empty();
+        $('#chosen-select-type')[0].value="";
         console.log("medium.value() : "+medium.value());
 
         return false;
@@ -635,6 +649,7 @@ h2.legend Page Notes
             
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
+            $("#select-type-input")[0].value="";
             $('#select-type-input').focus();
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
@@ -656,6 +671,7 @@ h2.legend Page Notes
                             
                   $("#newDropdownDiv").hide();
                   $('#chosen-select-type').empty();
+                  $('#chosen-select-type')[0].value="";
                   document.getElementById('select_a_tag').innerHTML = "";
                             
                   if (num<(categoryTable.length-1)){
@@ -685,6 +701,10 @@ h2.legend Page Notes
           
           $("#newDropdownDiv").show();
           $("#select-type-input").hide();
+          //$("#select-type-input").empty();
+          $("#select-type-input")[0].value="";
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
           $('#user-type-input').focus();
@@ -725,20 +745,17 @@ h2.legend Page Notes
         $('.chosen-select-no-results').chosen_reset(config);
         $('.chosen-adv').chosen_reset(config);
         $(".popupBody").hide();
+        document.getElementById('select_a_tag').innerHTML = "";
 
-        /*
-        $("#newDropdownDiv").hide();
-        $("#select_a_tag").empty();
-        $("#select-type-input").hide();
-        $("#select-type-input")[0].value="";
-        $('#chosen-select-type').empty();
-        */
+        $("#popupBodyAdv").hide();
+        $("#popupBodyAdv2").hide();
 
         $("#newDropdownDiv").hide();
         $("#select-type-input").show();
         $("#select-type-input")[0].value="";
-        $("#chosen-select-type").show();
         $('#chosen-select-type').empty();
+        $('#chosen-select-type')[0].value="";
+        $("#chosen-select-type").show();        
         $('#user-type-input').hide();
 
         $("#deletion_div").hide();
@@ -827,7 +844,7 @@ h2.legend Page Notes
     }
 
 
-    jQuery.fn.filterByTextAdvancedCollapsed = function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, seqAttrId, num,numSeqAttr,seqAttrsTable,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+    jQuery.fn.filterByTextAdvancedCollapsed= function(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName,attrHash, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
       var option;
       var select;
       var options;
@@ -836,13 +853,9 @@ h2.legend Page Notes
       var regex;
       var arrowPosition=0;
 
-      var categoryTypesHash=categorySeqHash[seqAttrId];
-      console.log("categoryTypesHash");
-      console.log(categoryTypesHash);
-      var attrName=categoryTypesHash['name'];
-      var allow_user_input=categoryTypesHash['allow_user_input'];
-      var attrHash=categoryTypesHash['values'];
-      var categoryTypesTable=Object.keys(attrHash);
+      
+      console.log("attrName");
+      console.log(attrName);
 
       console.log("attrHash");
       console.log(attrHash);
@@ -853,6 +866,8 @@ h2.legend Page Notes
         console.log("length: "+length);
         options = [];
         $(select).find('option').each(function() {
+          console.log("line 863");
+          console.log($(this).text());
           options.push({value: $(this).val(), text: $(this).text()});
         });
         $(select).data('options', options);
@@ -881,6 +896,7 @@ h2.legend Page Notes
             regex = new RegExp("^"+search,"gi");
 
             $.each(options2, function(i) {
+              if(options2!=null){
               option = options2[i];
               if(option.value!="" && option.value.match(regex) !== null) {
                 $(select).append(
@@ -889,18 +905,28 @@ h2.legend Page Notes
                 $(select).attr("size", $(select).attr("size")+1);
                 //If the user presses enter
                 if (e.which == 13) {
+                    var newType=option.value;
+                    console.log("newType in filterByTextAdvancedCollapsed: "+newType);
                     $("#newDropdownDiv").hide();
+                    $("#select-type-input").show();
+                    $('#chosen-select-type').empty();
+                    $('#chosen-select-type')[0].value="";
+                    $("#chosen-select-type").show();                    
+                    $('#user-type-input').hide();
+
+                    $("#select-type-input")[0].value="";
+
+                    options2=null;
+
                     document.getElementById('select_a_tag').innerHTML = "";
+                    
                     userChosenAttributesAndValues.push([attrName,option.value]);
 
                     //If the chosen value has consequent attributes
-                    if(attrHash.hasOwnProperty(newType) && attrHash[newType]!=null && attrHash[newType].length>0){
+                    if(attrHash[newType].length>0){
 
                       seqAttrsTable=attrHash[newType];
                       numSeqAttr=0;
-
-                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
-                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
 
                       tagSeqsCollapsed(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
 
@@ -914,15 +940,16 @@ h2.legend Page Notes
                         seqAttrsTable=seqAttrsPerLevel[level-1];
                         tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                        if(level==1){
+                        if(level==1 || level==0){
                           tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                        }else{
+                          seqAttrsTable=seqAttrsPerLevel[level-1];
+                          tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                         }
-
-                        seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }
                     }
                 }
+              }
               }
             });
 
@@ -953,9 +980,6 @@ h2.legend Page Notes
       var search;
       var regex;
 
-      console.log("textbox");
-      console.log(textbox);
-
         $(textbox).off().on('change keyup', function(e) {
           //If the user presses enter
           if (e.which == 13) {
@@ -965,6 +989,7 @@ h2.legend Page Notes
               $("#select-type-input")[0].value="";
               $("#chosen-select-type").show();
               $('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
@@ -978,12 +1003,13 @@ h2.legend Page Notes
                   seqAttrsTable=seqAttrsPerLevel[level-1];
                   tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                 }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                  if(level==1){
+                  if(level==1 || level==0){
                     tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                }
+                }else{
 
-                seqAttrsTable=seqAttrsPerLevel[level-1];
-                tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                  seqAttrsTable=seqAttrsPerLevel[level-1];
+                  tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                }
               }
                     
             
@@ -1001,9 +1027,6 @@ h2.legend Page Notes
       var search;
       var regex;
 
-      console.log("textbox");
-      console.log(textbox);
-
         $(textbox).off().on('change keyup', function(e) {
           //If the user presses enter
           if (e.which == 13) {
@@ -1013,6 +1036,7 @@ h2.legend Page Notes
               $("#select-type-input")[0].value="";
               $("#chosen-select-type").show();
               $('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
@@ -1024,7 +1048,8 @@ h2.legend Page Notes
               }
 
               if (num==(initialAttrIds.length-1)){
-                addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                //addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
             
           }
@@ -1037,7 +1062,7 @@ h2.legend Page Notes
 
     function tagSeqsCollapsed(level,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
 
-      if(level==0){
+      if(level<=0){
         tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         return;
       }
@@ -1047,6 +1072,10 @@ h2.legend Page Notes
         numsSeqAttrPerLevel[level]=numSeqAttr;
         //if(!seqAttrsPerLevel.hasOwnProperty(level)){
           seqAttrsPerLevel[level]=seqAttrsTable;
+          console.log("seqAttrsPerLevel");
+          console.log(seqAttrsPerLevel);
+          console.log("level");
+          console.log(level);
         //}
       }
       
@@ -1104,7 +1133,10 @@ h2.legend Page Notes
             
               $("#newDropdownDiv").show();
               $('#select-type-input').show();
+              $("#select-type-input")[0].value="";
               $('#select-type-input').focus();
+              //$('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $("#chosen-select-type").show();
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
@@ -1112,7 +1144,7 @@ h2.legend Page Notes
                 jQuery.fn.userInputAttrValueCollapsedAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
-              $('#chosen-select-type').filterByTextAdvancedCollapsed(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,numSeqAttr,seqAttrsTable,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              $('#chosen-select-type').filterByTextAdvancedCollapsed(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName,attrHash, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       
               $("#chosen-select-type").off().change(attrName,function(event3){                        
                 document.getElementById('select_a_tag').innerHTML = "";                      
@@ -1126,16 +1158,13 @@ h2.legend Page Notes
                             
                     $("#newDropdownDiv").hide();
                     $('#chosen-select-type').empty();
+                    $('#chosen-select-type')[0].value="";
 
-                  
                     //If the chosen value has consequent attributes
                     if(attrHash[newType].length>0){
 
                       seqAttrsTable=attrHash[newType];
                       numSeqAttr=0;
-
-                      var seqAttrId=seqAttrsTable[numSeqAttr][0];
-                      var seqAttrName=seqAttrsTable[numSeqAttr][1];
 
                       tagSeqsCollapsed(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
 
@@ -1149,12 +1178,12 @@ h2.legend Page Notes
                         seqAttrsTable=seqAttrsPerLevel[level-1];
                         tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                        if(level==1){
+                        if(level==1 || level==0){
                           tagSeqsCollapsedInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                        }else{
+                          seqAttrsTable=seqAttrsPerLevel[level-1];
+                          tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                         }
-
-                        seqAttrsTable=seqAttrsPerLevel[level-1];
-                        tagSeqsCollapsed(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
                       }
                     }         
                   }
@@ -1176,6 +1205,9 @@ h2.legend Page Notes
           
             $("#newDropdownDiv").show();
             $("#select-type-input").hide();
+            $("#select-type-input")[0].value="";
+            $('#chosen-select-type').empty();
+            $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
             $('#user-type-input').focus();
@@ -1232,7 +1264,10 @@ h2.legend Page Notes
             
               $("#newDropdownDiv").show();
               $('#select-type-input').show();
+              $("#select-type-input")[0].value="";
               $('#select-type-input').focus();
+              //$('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $("#chosen-select-type").show();
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
@@ -1240,8 +1275,8 @@ h2.legend Page Notes
                 jQuery.fn.userInputAttrValueCollapsedAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
               }
 
-              $('#chosen-select-type').filterByTextAdvancedCollapsed(0,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, num,num,initialAttrIds,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-                      
+              $('#chosen-select-type').filterByTextAdvancedCollapsed(0,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrId, attrHash,num,num,initialAttrIds,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                     
               $("#chosen-select-type").off().change(attrName,function(event3){                        
                 document.getElementById('select_a_tag').innerHTML = "";                      
                 if(event3.target == this){
@@ -1254,6 +1289,7 @@ h2.legend Page Notes
                             
                     $("#newDropdownDiv").hide();
                     $('#chosen-select-type').empty();
+                    $('#chosen-select-type')[0].value="";
 
                   
                     //If the chosen value has consequent attributes
@@ -1294,6 +1330,9 @@ h2.legend Page Notes
           
             $("#newDropdownDiv").show();
             $("#select-type-input").hide();
+            $("#select-type-input")[0].value="";
+            $('#chosen-select-type').empty();
+            $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
             $('#user-type-input').focus();
@@ -1333,7 +1372,9 @@ h2.legend Page Notes
             
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
+            $("#select-type-input")[0].value="";
             $('#select-type-input').focus();
+            //$('#chosen-select-type').empty();
             $("#chosen-select-type").show();
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
@@ -1355,6 +1396,7 @@ h2.legend Page Notes
                             
                   $("#newDropdownDiv").hide();
                   $('#chosen-select-type').empty();
+                  $('#chosen-select-type')[0].value="";
                             
                   if (num<(categoryTable.length-1)){
                     getNextCollapsed(varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -1382,6 +1424,9 @@ h2.legend Page Notes
           
           $("#newDropdownDiv").show();
           $("#select-type-input").hide();
+          $("#select-type-input")[0].value="";
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
           $('#user-type-input').focus();
@@ -1412,6 +1457,7 @@ h2.legend Page Notes
       tagWithType='';
       $('.chosen-select-no-results').chosen_reset(config);
       $(".popupBody").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
                 
       console.log("medium.value() : "+medium.value());
 
@@ -1441,6 +1487,7 @@ h2.legend Page Notes
               $("#select-type-input")[0].value="";
               $("#chosen-select-type").show();
               $('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
@@ -1482,6 +1529,7 @@ h2.legend Page Notes
               $("#select-type-input")[0].value="";
               $("#chosen-select-type").show();
               $('#chosen-select-type').empty();
+              $('#chosen-select-type')[0].value="";
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
@@ -1527,7 +1575,7 @@ h2.legend Page Notes
       if(selection.isCollapsed){
         $(".popupBodyAdv").css({'top':nowY,'left':nowX});
         $(".popupBodyAdv").show();
-        $(".chosen-adv").show();
+        //$(".chosen-adv").show();
         $(".chosen-adv").trigger('chosen:activate');
 
         $(".chosen-adv").chosen().change(function(event){
@@ -1541,6 +1589,7 @@ h2.legend Page Notes
               $('.chosen-adv').chosen_reset(config);
               $(".popupBodyAdv").hide();
               $(".popupBodyAdv").css({'top':0,'left':0});
+              document.getElementById('select_a_tag').innerHTML = "";
 
               //If the category has types
               if(categoryid in categoryTypesHashAdv){
@@ -1607,6 +1656,7 @@ h2.legend Page Notes
               $('.chosen-select-no-results').chosen_reset(config);
               $(".popupBody").hide();
               $(".popupBody").css({'top':0,'left':0});
+              document.getElementById('select_a_tag').innerHTML = "";
 
               //If the category has types
               if(categoryid in categoriesInfo){
@@ -1645,6 +1695,7 @@ h2.legend Page Notes
               $('.chosen-select-no-results2').chosen_reset(config);
               $(".popupBody2").hide();
               $(".popupBody2").css({'top':0,'left':0});
+              document.getElementById('select_a_tag').innerHTML = "";
 
               //If the category has types
               if(categoryid in categoryTypesHash){
