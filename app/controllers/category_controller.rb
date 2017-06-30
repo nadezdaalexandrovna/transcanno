@@ -448,6 +448,7 @@ class CategoryController < ApplicationController
       title=r[0]
       styleInstructions+="\n.medium-"+title+'_id'+id+"{"+style+"}"
       styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
+=begin
       mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
                                   'da = new Date();'+"\n"+
                                   'selection = window.getSelection();'+"\n"+
@@ -470,6 +471,12 @@ class CategoryController < ApplicationController
                                   'medium.tagSelection3(\''+title+'_id'+id+'\', [], anchorNode,focusNode,anchorOffset, focusOffset);'+"\n"+
                                   '}'+"\n"+
                                   '}'+"\n"+
+                                  'return false;'+"\n"+
+                                  '});'+"\n"
+=end
+      mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
+                                  'var categoryid=$(this).attr("data-categoryid");'+"\n"+
+                                  'buttonFunction(categoryid,\''+title+'_id'+id+'\');'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"
     end
