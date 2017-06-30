@@ -241,9 +241,6 @@ h2.legend Page Notes
     showSimpleOrAdvancedModeCategories(Cookies.get('use_advanced_mode'));
 
     //Get the information about categories, their attributes and values for the simple mode
-    //var categoryTypesDiv=document.getElementById('categoryTypesDiv');
-    //var categoriesText=categoryTypesDiv.attributes[2].textContent;
-    //var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
     var categoryTypesHash=parseJsonData('categoryTypesDiv');
     console.log(categoryTypesHash);
 
@@ -255,22 +252,14 @@ h2.legend Page Notes
         categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values']]);
       }
     }
-    console.log(categoriesInfo);
 
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
-    //var categoryTypesDivAdv=document.getElementById('categoryTypesDivAdv');
-    //var categoriesTextAdv=categoryTypesDivAdv.attributes[2].textContent;
-    //var categoryTypesHashAdv=JSON && JSON.parse(categoriesTextAdv) || $.parseJSON(categoriesTextAdv);
     var categoryTypesHashAdv=parseJsonData('categoryTypesDivAdv');
-    console.log("categoryTypesHashAdv:");
-    console.log(categoryTypesHashAdv);
 
     //Get the initial attributes' ids
     var initialAttrIds=parseJsonData('initialAttrIds');
-    console.log("initialAttrIds:");
-    console.log(initialAttrIds);
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, whereToPut, newDropdown, categoryTypesTable, i, typedata, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, mouseX, mouseY, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, da, position, ch, crds, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, property, caT, caTT;
+    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, newDropdown, categoryTypesTable, i, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, position, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, coords;
 
 
     var l=document.getElementById('page_source_text');
@@ -1585,8 +1574,6 @@ h2.legend Page Notes
       notCollapsedArgsTable=[anchorNode,anchorOffset];
 
       if(categoryid in categoryTypesHash){
-        position = $(this).offset();
-        var coords = {x:position.left, y:position.top};
         if(selection.isCollapsed){
           userChosenAttributesAndValues=[];
           var categoryTable=categoriesInfo[categoryid];
@@ -1657,7 +1644,8 @@ h2.legend Page Notes
 
     function tagInAdvancedMode(){
 
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
       nowX=coords.x;
       nowY=coords.y;
 
@@ -1764,7 +1752,8 @@ h2.legend Page Notes
     //Add tag in simplemode
     function tagInSimpleMode() {
 
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
       nowX=coords.x;
       nowY=coords.y;
 
@@ -1868,7 +1857,8 @@ h2.legend Page Notes
 
     $( ".delete_tag" ).mousedown(function() {
       position = $(this).offset();
-      var coords = {x:position.left, y:position.top};
+      //var coords = {x:position.left, y:position.top};
+      coords = {x:position.left, y:position.top};
       deleteTag(coords,true);
     });
 
@@ -1880,13 +1870,15 @@ h2.legend Page Notes
 
     $( ".change_tag" ).mousedown(function() {
       position = $(this).offset();
-      var coords = {x:position.left, y:position.top};
+      //var coords = {x:position.left, y:position.top};
+      coords = {x:position.left, y:position.top};
       changeTag(coords,true);
     });
 
     //Change a tag
     jQuery('#page_source_text').bind('keydown', 'alt+m', function(e) {
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
       changeTag(coords,false);
     });
 
@@ -2018,7 +2010,8 @@ h2.legend Page Notes
 
       var attrs=getAttributes($("[tagcode="+tagCodeToChange+"]"));
       var tagName=$("[tagcode="+tagCodeToChange+"]").prop("tagName");
-
+      console.log("attrs line 2013");
+      console.log(attrs);
       var catId=tagName.match(/_ID(\d+)$/)[1];
 
       var div = document.getElementById("change_selected_div"),
@@ -2050,10 +2043,29 @@ h2.legend Page Notes
       titlediv.className="popup_title_div";
       div.appendChild(titlediv);
 
-      var attrsHash=categoryTypesHash[parseInt(catId)];
+      //var attrsHash=categoryTypesHash[parseInt(catId)];
+      var attrsHashBefore={};
+      var attrsHash={};
+
+      if(Cookies.get('use_advanced_mode')==1){
+        attrsHashBefore=categoryTypesHashAdv[parseInt(catId)];
+        console.log("attrsHashBefore line 2050");
+        console.log(attrsHashBefore);
+        var key;
+        for(key in attrsHashBefore){
+          console.log("key: "+key);
+          console.log("name: "+attrsHashBefore[key].name);
+          attrsHash[attrsHashBefore[key].name]={'allow_user_input':attrsHashBefore[key].allow_user_input,'values':Object.keys(attrsHashBefore[key].values)};
+        }
+        console.log("attrsHash: ");
+        console.log(attrsHash);
+      }else{
+        attrsHash=categoryTypesHash[parseInt(catId)];
+      }
 
       //Loop through all attributes of the chosen category
       for (attrName in attrs){
+        console.log("attrName: "+attrName);
         if(attrName!='class' && attrName!='tagcode'){
           label = document.createElement('label');
           label.setAttribute("for","value_"+attrName);
@@ -2071,6 +2083,7 @@ h2.legend Page Notes
             input.name=tagCodeToChange;
             input.className="input_attribute_value_transcribe";
             div.appendChild(input);
+            console.log("appended allow_user_input: "+attrName);
           }
 
           //If there are predefined attributes
@@ -2084,9 +2097,12 @@ h2.legend Page Notes
               updateCorrespondingInput(this.id,this.value);
             };
 
+            console.log("appended for dropdown: "+attrName);
+
             for (i=0; i<attrsHash[attrName]['values'].length; i++){
               option = document.createElement("option");
               option.value=attrsHash[attrName]['values'][i];
+              console.log("option.value: "+option.value);
               if(attrsHash[attrName]['values'][i]==attrs[attrName]){
                 option.selected="checked";
               }else{
@@ -2101,6 +2117,8 @@ h2.legend Page Notes
           }
         }
       }
+
+      console.log("numberOfChangableAttrs: "+numberOfChangableAttrs);
 
       if(numberOfChangableAttrs>0){
         button = document.createElement('button');
