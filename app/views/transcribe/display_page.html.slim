@@ -1528,9 +1528,6 @@ h2.legend Page Notes
       var search;
       var regex;
 
-      console.log("textbox");
-      console.log(textbox);
-
         $(textbox).off().on('change keyup', function(e) {
           //If the user presses enter
           if (e.which == 13) {
@@ -1571,8 +1568,8 @@ h2.legend Page Notes
       }
     });
 
-    function buttonFunction(categoryid,categoryTag){
-      var coords = getSelectionCoords();
+    function buttonFunction(categoryid,categoryTag,coords){
+      
       if(Cookies.get('use_advanced_mode')==1){
         console.log("advanced mode");
         tagButtonInAdvancedMode(categoryid,categoryTag,coords);
@@ -1586,7 +1583,7 @@ h2.legend Page Notes
       selection = window.getSelection();
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       notCollapsedArgsTable=[anchorNode,anchorOffset];
-      
+
       if(categoryid in categoryTypesHash){
         position = $(this).offset();
         var coords = {x:position.left, y:position.top};
@@ -1619,16 +1616,13 @@ h2.legend Page Notes
           userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
-          console.log("initialAttrIds: ");               
-          console.log(initialAttrIds);
           var thisCategoryInitialAttrIds=[];
           if(initialAttrIds.hasOwnProperty(categoryid)){
             thisCategoryInitialAttrIds=initialAttrIds[categoryid];
           }else{
             thisCategoryInitialAttrIds=[];
           }
-          console.log("thisCategoryInitialAttrIds: ");               
-          console.log(thisCategoryInitialAttrIds);
+
           tagSeqsInitial(categoryTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,true,false);
                 
         }else{ //If the category doesn't have types
@@ -1643,16 +1637,12 @@ h2.legend Page Notes
           userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
-          console.log("initialAttrIds: ");               
-          console.log(initialAttrIds);
           var thisCategoryInitialAttrIds=[];
           if(initialAttrIds.hasOwnProperty(categoryid)){
             thisCategoryInitialAttrIds=initialAttrIds[categoryid];
           }else{
             thisCategoryInitialAttrIds=[];
           }
-          console.log("thisCategoryInitialAttrIds: ");               
-          console.log(thisCategoryInitialAttrIds);
 
           tagSeqsInitial(categoryTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,true,true);
                   
@@ -1666,7 +1656,6 @@ h2.legend Page Notes
     }
 
     function tagInAdvancedMode(){
-      console.log("in tagInAdvancedMode");
 
       var coords = getSelectionCoords();
       nowX=coords.x;
@@ -1701,16 +1690,13 @@ h2.legend Page Notes
                 userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
-                console.log("initialAttrIds: ");               
-                console.log(initialAttrIds);
                 var thisCategoryInitialAttrIds=[];
                 if(initialAttrIds.hasOwnProperty(categoryid)){
                   thisCategoryInitialAttrIds=initialAttrIds[categoryid];
                 }else{
                   thisCategoryInitialAttrIds=[];
                 }
-                console.log("thisCategoryInitialAttrIds: ");               
-                console.log(thisCategoryInitialAttrIds);
+
                 tagSeqsInitial(varTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false,false);
                 
               }else{ //If the category doesn't have types
@@ -1750,16 +1736,13 @@ h2.legend Page Notes
                 userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
-                console.log("initialAttrIds: ");               
-                console.log(initialAttrIds);
+
                 var thisCategoryInitialAttrIds=[];
                 if(initialAttrIds.hasOwnProperty(categoryid)){
                   thisCategoryInitialAttrIds=initialAttrIds[categoryid];
                 }else{
                   thisCategoryInitialAttrIds=[];
                 }
-                console.log("thisCategoryInitialAttrIds: ");               
-                console.log(thisCategoryInitialAttrIds);
 
                 tagSeqsInitial(varTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false,true);
                   

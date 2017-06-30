@@ -475,8 +475,10 @@ class CategoryController < ApplicationController
                                   '});'+"\n"
 =end
       mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
+                                  'var position = $(this).offset();'+"\n"+
+                                  'var coords = {x:position.left, y:position.top};'+"\n"+
                                   'var categoryid=$(this).attr("data-categoryid");'+"\n"+
-                                  'buttonFunction(categoryid,\''+title+'_id'+id+'\');'+"\n"+
+                                  'buttonFunction(categoryid,\''+title+'_id'+id+'\',coords);'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"
     end
