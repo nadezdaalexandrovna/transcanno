@@ -829,7 +829,11 @@ h2.legend Page Notes
             }
         }
       }
-      return { x: xF, y: yF };
+
+      var pageScrolleFromTop=$(window).scrollTop();
+      var pageScrolleFromLeft=$(window).scrollLeft();
+
+      return { x: xF+pageScrolleFromLeft, y: yF+pageScrolleFromTop };
     }
 
 
@@ -1757,6 +1761,8 @@ h2.legend Page Notes
       nowX=coords.x;
       nowY=coords.y;
 
+      console.log("coords. x: "+coords.x+"  y: "+coords.y);
+
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       notCollapsedArgsTable=[anchorNode,anchorOffset];
       selection = window.getSelection();
@@ -2315,7 +2321,8 @@ h2.legend Page Notes
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
 
-      mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
+      //mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
+      mediumValue = mediumValue.replace(/&nbsp;/g, " "); // &nbsp; is not valid XML
 
       if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
         mediumValue = "<div id=\"bigDiv\">"+mediumValue+"<\/div>";
