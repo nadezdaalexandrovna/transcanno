@@ -635,11 +635,11 @@ Medium.prototype = {
 
 					if(nodeToTag.nextSibling!=null){
 						if(nodeToTag.nextSibling===focusEl){break;}
-						//nodeToTag=nodeToTag.nextSibling;
+						nodeToTag=nodeToTag.nextSibling;
 						//break;
-						if(!(nodeToTag2.nodeType==3 && nodeToTag2.nodeValue=='')){
+						if(!(nodeToTag.nodeType==3 && nodeToTag.nodeValue=='')){
 
-							if(nodeToTag2.tagName!="BR"){
+							if(nodeToTag.tagName!="BR"){
 								break;
 							}
 						}

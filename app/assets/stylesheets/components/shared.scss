@@ -1499,3 +1499,35 @@ label[for="207"] span {
   margin: 4px;
 }
 
+.hide_popup_small{
+  //width: 6px;
+  float: right;
+  //margin-right: 10px;
+  position: absolute;
+  z-index: 999;
+  margin-left: 200px;
+  line-height: 1em;
+  padding: 1px;
+}
+
+.hide_popup_new{
+  //width: 6px;
+  float: right;
+  //margin-right: 10px;
+  position: absolute;
+  z-index: 999;
+  margin-left: 220px;
+  line-height: 1em;
+  padding: 1px;
+}
+
+.hide_popup_button{
+  //width: 6px;
+  //float: right;
+  //margin-right: 10px;
+  //position: absolute;
+  //z-index: 999;
+  //margin-left: 220px;
+  line-height: 1em;
+  padding: 1px;
+}

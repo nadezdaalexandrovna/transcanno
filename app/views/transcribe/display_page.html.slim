@@ -88,6 +88,7 @@
             = @page.source_text
 
 <div class="popupBody">
+<button type="button" class="hide_popup_small" onclick="hidePopupBody();">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
@@ -96,6 +97,7 @@
 </div>
 
 <div class="popupBody2">
+<button type="button" class="hide_popup_small" onclick="hidePopupBody2();">&#9932;</button>
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
@@ -105,6 +107,7 @@
 
 
 <div class="popupBodyAdv">
+<button type="button" class="hide_popup_small" onclick="hidePopupBodyAdv();">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -113,6 +116,7 @@
 </div>
 
 <div class="popupBodyAdv2">
+<button type="button" class="hide_popup_small" onclick="hidePopupBodyAdv2();">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -121,6 +125,7 @@
 </div>
 
 <div id="newDropdownDiv">
+  <button type="button" class="hide_popup_new" onclick="hideNewDropdownDiv();">&#9932;</button>
   <div class="select_a_tag" id="select_a_tag"></div>
   <input id="user-type-input" type="text" placeholder="Type the new value" style="display:none;"></input>
   <input id="select-type-input" type="text" placeholder="Select the category type"></input>
@@ -149,10 +154,10 @@ div [ id="verticalMediumClickableSpans" ]
         <span title="undo" class="undo">&#8630;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="delete tag(s) at cursor position" class="delete_tag">&#9932;</span>
+        <span  title="delete tag(s) at cursor position: Alt+N" class="delete_tag">&#9932;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="change tag(s) at cursor position" class="change_tag">&#11156;</span>
+        <span  title="change tag(s) at cursor position: Alt+M" class="change_tag">&#11156;</span>
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
@@ -165,10 +170,10 @@ div [ id="verticalMediumClickableSpansAdv" ]
         <span title="undo" class="undo">&#8630;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="delete tag(s) at cursor position" class="delete_tag">&#9932;</span>
+        <span  title="delete tag(s) at cursor position: Alt+N" class="delete_tag">&#9932;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="change tag(s) at cursor position" class="change_tag">&#11156;</span>
+        <span  title="change tag(s) at cursor position: Alt+M" class="change_tag">&#11156;</span>
     - @categoriesAdv.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
@@ -210,6 +215,36 @@ h2.legend Page Notes
       });
 
     });
+
+    function hidePopupBody(){
+      $(".popupBody").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-select-no-results').chosen_reset(config);
+      $(".popupBody").css({'top':0,'left':0});
+    }
+
+    function hidePopupBody2(){
+      $(".popupBody2").hide();
+      $('.chosen-select-no-results2').chosen_reset(config);
+      $(".popupBody2").css({'top':0,'left':0});
+      document.getElementById('select_a_tag').innerHTML = "";
+    }
+
+    function hidePopupBodyAdv(){
+      $(".popupBodyAdv").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-adv').chosen_reset(config);
+      $(".popupBodyAdv").css({'top':0,'left':0});
+    }
+
+    function hideNewDropdownDiv(){
+      $("#newDropdownDiv").hide();
+      $('.chosen-select-type').chosen_reset(config);
+      $("#newDropdownDiv").css({'top':0,'left':0});
+      document.getElementById('select_a_tag').innerHTML = "";
+      document.getElementById('user-type-input').value = "";
+      $("#user-type-input").hide();
+    }
 
 
     function showSimpleOrAdvancedModeCategories(checked){
@@ -311,11 +346,14 @@ h2.legend Page Notes
 
       
     var config = {
+      /*
       '.chosen-select-no-results': {width:"95%"},
       '.chosen-select-no-results2': {width:"95%"},
       '.chosen-adv': {width:"95%"},
       '.chosen-adv2': {width:"95%"}
+      */
     }
+    
 
     for (var selector in config) {
       $(selector).chosen(config[selector]);
@@ -728,25 +766,19 @@ h2.legend Page Notes
     }
 
 
-    //Press alt+y to make a dropdown select disappear without selecting anything
+    //Press alt+r to make a dropdown select disappear without selecting anything
     $(document).keydown(function(e){
-      if (e.altKey && e.keyCode == 89) {
+      if (e.altKey && e.keyCode == 82) {
+        /*
         $('.chosen-select-no-results').chosen_reset(config);
         $('.chosen-adv').chosen_reset(config);
         $('.chosen-adv2').chosen_reset(config);
         $(".popupBody").hide();
         document.getElementById('select_a_tag').innerHTML = "";
-
+        
         $(".popupBodyAdv").hide();
         $(".popupBodyAdv2").hide();
-
-        $("#newDropdownDiv").hide();
-        $("#select-type-input").show();
-        $("#select-type-input")[0].value="";
-        $('#chosen-select-type').empty();
-        $('#chosen-select-type')[0].value="";
-        $("#chosen-select-type").show();        
-        $('#user-type-input').hide();
+        */
 
         $("#deletion_div").hide();
         $("#deletion_div").empty();
@@ -754,6 +786,39 @@ h2.legend Page Notes
         $("#change_div").empty();
         $("#change_selected_div").hide();
         $("#change_selected_div").empty();
+
+        /*
+        $("#newDropdownDiv").hide();
+        $("#select-type-input").show();
+        $("#select-type-input")[0].value="";
+        $('#chosen-select-type').empty();
+        $('#chosen-select-type')[0].value="";
+        $("#chosen-select-type").show();        
+        $('#user-type-input').hide();
+        */
+
+        $(".popupBody").hide();
+        document.getElementById('select_a_tag').innerHTML = "";
+        $('.chosen-select-no-results').chosen_reset(config);
+        $(".popupBody").css({'top':0,'left':0});
+    
+        $(".popupBody2").hide();
+        $('.chosen-select-no-results2').chosen_reset(config);
+        $(".popupBody2").css({'top':0,'left':0});
+        document.getElementById('select_a_tag').innerHTML = "";
+
+        $(".popupBodyAdv").hide();
+        document.getElementById('select_a_tag').innerHTML = "";
+        $('.chosen-adv').chosen_reset(config);
+        $(".popupBodyAdv").css({'top':0,'left':0});
+    
+
+        $("#newDropdownDiv").hide();
+        $('.chosen-select-type').chosen_reset(config);
+        $("#newDropdownDiv").css({'top':0,'left':0});
+        document.getElementById('select_a_tag').innerHTML = "";
+        document.getElementById('user-type-input').value = "";
+        $("#user-type-input").hide();
 
         medium.focus();
         medium.focusNadya(focusOffset,focusNode);
@@ -1870,7 +1935,7 @@ h2.legend Page Notes
     });
 
     //Delete a tag
-    jQuery('#page_source_text').bind('keydown', 'alt+d', function(e) {
+    jQuery('#page_source_text').bind('keydown', 'alt+n', function(e) {
       var coords = getSelectionCoords();
       deleteTag(coords,false);
     });
