@@ -237,6 +237,13 @@ h2.legend Page Notes
       $(".popupBodyAdv").css({'top':0,'left':0});
     }
 
+    function hidePopupBodyAdv2(){
+      $(".popupBodyAdv2").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-adv2').chosen_reset(config);
+      $(".popupBodyAdv2").css({'top':0,'left':0});
+    }
+
     function hideNewDropdownDiv(){
       $("#newDropdownDiv").hide();
       $('.chosen-select-type').chosen_reset(config);
@@ -812,6 +819,10 @@ h2.legend Page Notes
         $('.chosen-adv').chosen_reset(config);
         $(".popupBodyAdv").css({'top':0,'left':0});
     
+        $(".popupBodyAdv2").hide();
+        document.getElementById('select_a_tag').innerHTML = "";
+        $('.chosen-adv2').chosen_reset(config);
+        $(".popupBodyAdv2").css({'top':0,'left':0});
 
         $("#newDropdownDiv").hide();
         $('.chosen-select-type').chosen_reset(config);
@@ -1783,7 +1794,8 @@ h2.legend Page Notes
               $tag2='';
               options = $( ".chosen-adv2 option:selected" );
               categoryid=options[0].attributes[1].value;
-              $('.chosen-select-no-results2').chosen_reset(config);
+              //$('.chosen-select-no-results2').chosen_reset(config);
+              $('.chosen-adv2').chosen_reset(config);
               $(".popupBodyAdv2").hide();
               $(".popupBodyAdv2").css({'top':0,'left':0});
               document.getElementById('select_a_tag').innerHTML = "";
@@ -1974,6 +1986,8 @@ h2.legend Page Notes
 
     //Change a tag
     function changeTag(coords,onButton){
+      if ( $("#change_div").css('display') == 'none' ){
+
       var els = findParents();
 
       //If the node has parent nodes (=tags)
@@ -2033,7 +2047,7 @@ h2.legend Page Notes
         
         $("#change_div").show();
       }
-      
+      }
     }
 
     //Get all attributes of a node
@@ -2274,6 +2288,8 @@ h2.legend Page Notes
 
     //Delete a tag
     function deleteTag(coords,onButton){
+      if ( $("#deletion_div").css('display') == 'none' ){
+      
       var els = findParents();
 
       //If the node has parent nodes (=tags)
@@ -2333,7 +2349,7 @@ h2.legend Page Notes
         }
         $("#deletion_div").show();
       }
-      
+      }
     }
 
     // Pass the checkbox name to the function
