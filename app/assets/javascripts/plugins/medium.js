@@ -708,8 +708,11 @@ Medium.prototype = {
 					if(nodeToTag2.previousSibling!=null){
 						nodeToTag2=nodeToTag2.previousSibling;
 
-						if(nodeToTag2.tagName!="BR"){
-							break;
+						if(!(nodeToTag2.nodeType==3 && nodeToTag2.nodeValue=='')){
+
+							if(nodeToTag2.tagName!="BR"){
+								break;
+							}
 						}
 						
 					}else{
