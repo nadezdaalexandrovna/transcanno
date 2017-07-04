@@ -528,12 +528,8 @@ Medium.prototype = {
 	},
 
 	removeTags: function (checkedTagcodes, callback, skipChangeEvent){
-		console.log("in removeTags");
-		console.log(checkedTagcodes);
 		var i;
 		for (i=0; i<checkedTagcodes.length; i++){
-			console.log(i);
-			console.log(checkedTagcodes[i]);
 			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
 		}
 		
@@ -563,7 +559,7 @@ Medium.prototype = {
 			sel = rangy.getSelection();
 			sel.removeAllRanges();
 
-			//medium.makeUndoable();
+			medium.makeUndoable();
 			return this;
 			
 		}else{
@@ -729,7 +725,7 @@ Medium.prototype = {
 				if(nodeToTag2===nodeToTag){
 					sel.removeAllRanges();
 
-					//medium.makeUndoable();
+					medium.makeUndoable();
 					return this;
 				}
 
@@ -742,7 +738,7 @@ Medium.prototype = {
 			}
 			sel.removeAllRanges();
 
-			//medium.makeUndoable();
+			medium.makeUndoable();
 			return this;
 		}
 		
@@ -1278,7 +1274,6 @@ Medium.defaultSettings = {
 	},
 	beforeInsertHtml: function () {
 		//this = Medium.Html
-		console.log("in app/assets/javascripts/plugins/medium.js in beforeInsertHtml");
 	},
 	maxLengthReached: function (element) {
 		//element

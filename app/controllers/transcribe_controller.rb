@@ -19,9 +19,7 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
     @use_advanced_mode = cookies[:use_advanced_mode] || 0;
-    puts "\n@use_advanced_mode\n"
-    print @use_advanced_mode
-    puts "\n"
+
     #For the simple mode
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL') 
 
@@ -78,10 +76,6 @@ class TranscribeController  < ApplicationController
     typesAttributesAdv.each do |row|
       @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]]=[]
     end
-    
-    puts "\n@categoryTypesHashAdv\n"
-    print @categoryTypesHashAdv.inspect
-    puts "\n"
 
     #At last, we select consequences: when a certain attribute value is selected, certain other attributes should be given values
     sqlSeq="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, categoryattributesSeq.id from attributevalues INNER JOIN valuestoattributesrelations ON attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributecats ON attributecats.name=valuestoattributesrelations.consequent_attr_name INNER JOIN categoryattributes categoryattributesSeq ON categoryattributesSeq.attributecat_id=attributecats.id INNER JOIN attributes_to_values ON attributes_to_values.valuestoattributesrelation_id=valuestoattributesrelations.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN categories ON categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id INNER JOIN pages ON pages.work_id=works.id WHERE categoryattributesSeq.id  IN (SELECT catattrs2.id FROM categoryattributes catattrs2 WHERE catattrs2.category_id=categoryattributes.category_id) AND pages.id="+params[:page_id];
@@ -94,10 +88,6 @@ class TranscribeController  < ApplicationController
         @categoryTypesHashAdv[row[0]][row[1]]['values']={row[2]=>[[row[4],row[3]]]}
       end
     end
-
-    puts "\n@categoryTypesHashAdv\n"
-    print @categoryTypesHashAdv.inspect
-    puts "\n"
 
     @categoryTypesHashAdv=@categoryTypesHashAdv.to_json
 

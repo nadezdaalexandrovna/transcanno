@@ -1514,20 +1514,24 @@ label[for="207"] span {
   //width: 6px;
   float: right;
   //margin-right: 10px;
-  position: absolute;
+  //position: absolute;
   z-index: 999;
-  margin-left: 220px;
+  //margin-left: 220px;
   line-height: 1em;
   padding: 1px;
 }
 
 .hide_popup_button{
   //width: 6px;
-  //float: right;
+  float: right;
   //margin-right: 10px;
   //position: absolute;
   //z-index: 999;
   //margin-left: 220px;
   line-height: 1em;
   padding: 1px;
+}
+
+.newdropdowndiv{
+  
 }
