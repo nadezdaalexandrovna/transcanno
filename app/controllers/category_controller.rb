@@ -79,7 +79,7 @@ class CategoryController < ApplicationController
     end
 
     #All the possible consequent attributes of each value, if these attributes can belong to this category
-    sqlS="SELECT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE category_id="+params[:category_id]
+    sqlS="SELECT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE valuestoattributesrelations.collection_id="+params[:collection_id]+" AND categoryattributes.category_id="+params[:category_id]
     possible_relations=connection.execute(sqlS)
 
     #All the possible consequent attributes of each value. Key: attribute_value, value: array of consequent attributes
@@ -98,6 +98,8 @@ class CategoryController < ApplicationController
 
   def define_attribute_sequences2
     giveNotice=false
+
+    category=Category.find(params[:category_id])
 
     #Update the initial column: set and unset initial attributes
     sql="update categoryattributes set initial=false where category_id="+params[:category_id]
@@ -129,12 +131,7 @@ class CategoryController < ApplicationController
         valueId=arrayIdName[1]
         valueName=arrayIdName[2]
         attrsArray.each do |attr|
-          rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr)
-          puts "\nrel.id\n"
-          print rel.id
-          puts "\n"
-          #attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId).update_all(valuestoattributesrelation_id: rel.id)
-          #attr_to_value=AttributesToValue.create(categoryattribute_id: activeAttrId, attributevalue_id: valueId,valuestoattributesrelation_id: rel.id)
+          rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr, collection_id: category.collection_id)
           sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
           connection.execute(sqlCreate)
         end
@@ -219,8 +216,15 @@ class CategoryController < ApplicationController
       end
     end
 
+    scopesForPossibleAttributes=""
+    if @categoryScope==2
+      scopesForPossibleAttributes="0,1,2"
+    else
+      scopesForPossibleAttributes=@categoryScope.to_s+",2"
+    end
+
     #All the possible values of the attributes of this category (maybe defined in other categories of this collection and of this scope)
-    sql="SELECT DISTINCT attributecats.name, attributevalues.id, attributevalues.value FROM attributevalues INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE categories.collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+@categoryScope.to_s+",2) AND attributecats.name in (SELECT attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id where category_id="+params[:category_id]+") and attributevalues.value not in (SELECT attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id]+")"
+    sql="SELECT DISTINCT attributecats.name, attributevalues.id, attributevalues.value FROM attributevalues INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE categories.collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.name in (SELECT attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id where category_id="+params[:category_id]+") and attributevalues.value not in (SELECT attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id]+")"
     res=connection.execute(sql)
     @possibleValuesForEachAttribute={}
     res.each do |r|
@@ -307,6 +311,13 @@ class CategoryController < ApplicationController
       end
     end
 
+    scopesForPossibleAttributes=""
+    if @categoryScope==2
+      scopesForPossibleAttributes="0,1,2"
+    else
+      scopesForPossibleAttributes=@categoryScope.to_s+",2"
+    end
+
     @disableScopeChoice=""
     #If the category scope is restricted, there is no use to choose its attributes' scope: it will be the same
     if @categoryScope==0 || @categoryScope==1
@@ -317,7 +328,7 @@ class CategoryController < ApplicationController
     catattrs=connection.execute(sql)
 
     #Select all the attributes defined in this collection in this scope
-    sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+@categoryScope.to_s+",2) AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
+    sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
     @possibleAttrs=connection.execute(sqlA)
 
     @attrscopehash={}
@@ -457,32 +468,7 @@ class CategoryController < ApplicationController
       title=r[0]
       styleInstructions+="\n.medium-"+title+'_id'+id+"{"+style+"}"
       styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
-=begin
-      mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
-                                  'da = new Date();'+"\n"+
-                                  'selection = window.getSelection();'+"\n"+
-                                  'categoryid=$(this).attr("data-categoryid");'+"\n"+
-                                  '[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();'+"\n"+
-                                  'if(categoryid in categoryTypesHash){'+"\n"+                                  
-                                  'position = $(this).offset();'+"\n"+
-                                  'var coords = {x:position.left, y:position.top};'+"\n"+
-                                  'if(selection.isCollapsed){'+"\n"+
-                                  'userChosenAttributesAndValues=[];'+"\n"+
-                                  'var categoryTable=categoriesInfo[categoryid];'+"\n"+
-                                  'getNextCollapsed(\''+title+'_id'+id+'\',0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);'+"\n"+
-                                  '}else{'+"\n"+
-                                  'tagSelectionWithType(categoryid, categoriesInfo, medium, \''+title+'_id'+id+'\', focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);'+"\n"+
-                                  '}'+"\n"+
-                                  '}else{'+"\n"+
-                                  'if(selection.isCollapsed){'+"\n"+
-                                  'collapsedNoAttributesInsertTag(\''+title+'_id'+id+'\',focusOffset,focusNode);'+"\n"+
-                                  '}else{'+"\n"+
-                                  'medium.tagSelection3(\''+title+'_id'+id+'\', [], anchorNode,focusNode,anchorOffset, focusOffset);'+"\n"+
-                                  '}'+"\n"+
-                                  '}'+"\n"+
-                                  'return false;'+"\n"+
-                                  '});'+"\n"
-=end
+
       mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
                                   'var position = $(this).offset();'+"\n"+
                                   'var coords = {x:position.left, y:position.top};'+"\n"+

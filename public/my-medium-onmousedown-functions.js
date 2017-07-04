@@ -182,4 +182,74 @@ var categoryid=$(this).attr("data-categoryid");
 buttonFunction(categoryid,'noun_id56',coords);
 return false;
 });
+$( ".button-verb_id57" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'verb_id57',coords);
+return false;
+});
+$( ".button-noun_id58" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'noun_id58',coords);
+return false;
+});
+$( ".button-subject_id59" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'subject_id59',coords);
+return false;
+});
+$( ".button-predicate_id60" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'predicate_id60',coords);
+return false;
+});
+$( ".button-adjective_id62" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'adjective_id62',coords);
+return false;
+});
+$( ".button-participle_id61" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'participle_id61',coords);
+return false;
+});
+$( ".button-adverb_id63" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'adverb_id63',coords);
+return false;
+});
+$( ".button-article_id64" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'article_id64',coords);
+return false;
+});
+$( ".button-greeting_id65" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'greeting_id65',coords);
+return false;
+});
+$( ".button-pronoun_id66" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'pronoun_id66',coords);
+return false;
+});
 });
