@@ -107,7 +107,7 @@
 
 
 <div class="popupBodyAdv">
-<button type="button" class="hide_popup_small" onclick="hidePopupBodyAdv();">&#9932;</button>
+<button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv();">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -116,7 +116,7 @@
 </div>
 
 <div class="popupBodyAdv2">
-<button type="button" class="hide_popup_small" onclick="hidePopupBodyAdv2();">&#9932;</button>
+<button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv2();">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -125,7 +125,7 @@
 </div>
 
 <div id="newDropdownDiv">
-  <button type="button" class="hide_popup_new" onclick="hideNewDropdownDiv();">&#9932;</button>
+  <button type="button" class="hide_popup_new" title="Alt+R" onclick="hideNewDropdownDiv();">&#9932;</button>
   <div class="select_a_tag" id="select_a_tag"></div>
   <input id="user-type-input" type="text" placeholder="Type the new value" style="display:none;"></input>
   <input id="select-type-input" type="text" placeholder="Select the category type"></input>
@@ -147,6 +147,13 @@
   =check_box_tag 'use_advanced_mode', @use_advanced_mode, (@use_advanced_mode=='1' ? 'checked' : nil)
 </div>
 
+<div id="changeHotkeysMenu" style="display: none;">
+  <button type="button" class="hide_popup_changekeys" onclick="hideChangeKeysPopup();">&#9932;</button>
+  <div id="changeHotkeysTitle">Change hot keys</div>  
+  <div id="changeHotKeysInternal"></div>
+  <button type="button" onclick="changeHotKeys();">Change hot keys</button>
+</div>
+
 div [ id="verticalMediumClickableSpans" ]
   table
     tr
@@ -154,14 +161,17 @@ div [ id="verticalMediumClickableSpans" ]
         <span title="undo" class="undo">&#8630;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="delete tag(s) at cursor position: Alt+N" class="delete_tag">&#9932;</span>
+        <span  title="delete tag(s) at cursor position: " class="delete_tag">&#9932;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="change tag(s) at cursor position: Alt+M" class="change_tag">&#11156;</span>
+        <span  title="change tag(s) at cursor position: " class="change_tag">&#11156;</span>
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
           span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span title="change hot keys" class="undo" onclick="showChangeHotkeysMenu()">&#9911;</span>
 
 div [ id="verticalMediumClickableSpansAdv" ]
   table
@@ -170,14 +180,17 @@ div [ id="verticalMediumClickableSpansAdv" ]
         <span title="undo" class="undo">&#8630;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="delete tag(s) at cursor position: Alt+N" class="delete_tag">&#9932;</span>
+        <span  title="delete tag(s) at cursor position: " class="delete_tag">&#9932;</span>
     tr
       td [ class="overMediumButtonTD" ]
-        <span  title="change tag(s) at cursor position: Alt+M" class="change_tag">&#11156;</span>
+        <span  title="change tag(s) at cursor position: " class="change_tag">&#11156;</span>
     - @categoriesAdv.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
           span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span title="change hot keys" class="undo" onclick="showChangeHotkeysMenu()">&#9911;</span>
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -302,9 +315,8 @@ h2.legend Page Notes
 
     var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, newDropdown, categoryTypesTable, i, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, position, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, coords;
 
-
+    //Parse the transcription text to transform it into XML
     var l=document.getElementById('page_source_text');
-
     var xml=l.textContent;
     //xml = xml.replace(/<br><\/br>/g, '<br>'); // Esli dobavliaiu eto, to oshibka parsinga
     xml = "<div id=\"bigDiv\">"+xml+"</div>";
@@ -344,8 +356,7 @@ h2.legend Page Notes
     $("#newDropdownDiv").hide();
     $("#deletion_div").hide();
     $("#change_div").hide();
-    $("#change_selected_div").hide();
-    
+    $("#change_selected_div").hide();    
 
       
     var config = {
@@ -357,6 +368,194 @@ h2.legend Page Notes
       */
     }
     
+    //var hotkeysHash={'insert_tag':'alt+c', 'get_out_of_tag':'alt+x','modify_tag':'alt+m','delete_tag':'alt+n','hide_popup':'alt+r'};
+    //If the user has defined his own hot keys, we take their values from the localstorage object
+    var hotkeysHash={};
+    hotkeysHash['insert_tag'] = localStorage['insert_tag'] || 'Alt+C';
+    hotkeysHash['get_out_of_tag'] = localStorage['get_out_of_tag'] || 'Alt+X';
+    hotkeysHash['modify_tag'] = localStorage['modify_tag'] || 'Alt+M';
+    hotkeysHash['delete_tag'] = localStorage['delete_tag'] || 'Alt+N';
+    hotkeysHash['hide_popup'] = localStorage['hide_popup'] || 'Alt+R';
+
+
+    //Update hot keys indicated in buttons titles
+    function updateHotkeysInButtonTitles(){
+      document.getElementsByClassName('change_tag')[0].title+=localStorage['modify_tag'] || 'Alt+M';
+      document.getElementsByClassName('change_tag')[1].title+=localStorage['modify_tag'] || 'Alt+M';
+      document.getElementsByClassName('delete_tag')[0].title+=localStorage['delete_tag'] || 'Alt+N';
+      document.getElementsByClassName('delete_tag')[1].title+=localStorage['delete_tag'] || 'Alt+N';
+      document.getElementsByClassName('hide_popup_new')[0].title+=localStorage['hide_popup'] || 'Alt+R';
+      document.getElementsByClassName('hide_popup_small')[0].title+=localStorage['hide_popup'] || 'Alt+R';
+      document.getElementsByClassName('hide_popup_small')[1].title+=localStorage['hide_popup'] || 'Alt+R';
+      document.getElementsByClassName('hide_popup_small')[2].title+=localStorage['hide_popup'] || 'Alt+R';
+      document.getElementsByClassName('hide_popup_small')[3].title+=localStorage['hide_popup'] || 'Alt+R';
+    }
+
+    updateHotkeysInButtonTitles();
+
+    //When the user pushes the button with a key on it, this function fires and shows a popup menu that lets him change hot keys
+    function showChangeHotkeysMenu(){
+
+      var listOfHelpKeys=['','Alt','Ctrl','Shift','Insert','PGUP','PGDN','FN','Tab'];
+
+      var changeHotKeysInternal=document.getElementById("changeHotKeysInternal");
+
+      jQuery.each(hotkeysHash, function (name, value) {
+        var keyPlusKey=value.split('+');
+        
+        var firstKey=keyPlusKey[0];
+        var middleKey='';
+        if(keyPlusKey.length==3){
+          middleKey=keyPlusKey[1];
+        }
+
+        var lastKey=keyPlusKey[keyPlusKey.length-1];
+
+        var select = document.createElement("select");
+        select.id = name;
+        select.name=name;
+        select.className="hotkeyDropdownMenu";
+
+        var select2 = document.createElement("select");
+        select2.id = name+'2';
+        select2.name=name+'2';
+        select2.className="hotkeyDropdownMenu";
+
+        var h,
+            option,
+            option2;
+
+        for(h=0; h<listOfHelpKeys.length; h++){          
+
+          option = document.createElement("option");
+          option.value=listOfHelpKeys[h];
+          
+          if(listOfHelpKeys[h]==firstKey){
+            option.selected="checked";
+          }else{
+            option.selected="";
+          }
+
+          option.innerHTML= listOfHelpKeys[h];
+          select.appendChild(option);
+
+          option2 = document.createElement("option");
+          option2.value=listOfHelpKeys[h];
+          
+          if(listOfHelpKeys[h]==middleKey){
+            option2.selected="checked";
+          }else{
+            option2.selected="";
+          }        
+          option2.innerHTML= listOfHelpKeys[h];
+          select2.appendChild(option2);
+        }
+
+        if(middleKey==''){
+          select2.selectedIndex = -1;
+        }        
+
+        $('#changeHotKeysInternal').append('<label class="hotkey_label">' + name.replace(/_/g, ' ') + ':</label>');
+        $('#changeHotKeysInternal').append(select);
+        $('#changeHotKeysInternal').append(select2);
+        $('#changeHotKeysInternal').append('<input type="text" id="input_'+name+'" class="hotkeyDropdownMenu" maxlength="1" value="'+lastKey+'"></input><br/>');
+        
+      });
+
+      $("#changeHotkeysMenu").show();
+    }
+
+    //Hides the change hot keys pop up menu
+    function hideChangeKeysPopup(){
+      $("#changeHotKeysInternal").empty();
+      $("#changeHotkeysMenu").hide();
+    }
+
+    //Applies the changes for hot keys made by the user
+    function changeHotKeys(){
+      if (typeof(Storage) !== "undefined") {
+        // Code for localStorage
+        var firstKey,
+            middleKey,
+            lastKey,
+            newvalue,
+            keyPlusKey,
+            name,
+            i,
+            select1,
+            valselect1=null,
+            select2,
+            valselect2=null,
+            keys = Object.keys(hotkeysHash),
+            len = keys.length;
+
+
+        for(i=0; i<len; i++) {
+          name=keys[i];
+          console.log("name: "+name);
+          console.log("i: "+i);
+          keyPlusKey=hotkeysHash[name].split('+');
+        
+          firstKey=keyPlusKey[0];
+          middleKey='';
+          if(keyPlusKey.length==3){
+            middleKey=keyPlusKey[1];
+          }
+
+          select1 = document.getElementById(name);
+          if(select1.selectedIndex==-1){
+            valselect1='';
+          }else{
+            valselect1 = select1.options[select1.selectedIndex].value || '';
+          }
+
+          select2=document.getElementById(name+'2');
+          if(select2.selectedIndex==-1){
+            valselect2='';
+          }else{
+            valselect2 = select2.options[select2.selectedIndex].value || '';
+          }
+
+          if(valselect1!=null){
+            firstKey=valselect1;
+          }
+          if(valselect2!=null){
+            middleKey=valselect2;
+          }
+          if(document.getElementById('input_'+name).value!=null){
+            lastKey=document.getElementById('input_'+name).value;
+          }
+          
+          if(middleKey!=''){
+            newValue=firstKey+'+'+middleKey+'+'+lastKey;
+          }else{
+            newValue=firstKey+'+'+lastKey;
+          }
+
+          //If the values of all the 3 fields corresponding to new hot keys are empty, we give an error message 
+          if(newValue=='+'){
+            alert("The \""+name.replace(/_/g, ' ')+"\" hot key is empty. Please, choose a value.");
+            break;
+          }else{
+            localStorage.setItem(name,newValue);
+            hotkeysHash[name]=newValue;
+          }
+
+          if(i==(len-1)){
+            //Hide the popup menu
+            hideChangeKeysPopup();
+            alert("The hot keys have been changed. Please, reload the page in your browser.");
+            updateHotkeysInButtonTitles();
+          }
+        }
+
+      } else {
+        // Sorry! No Web Storage support..
+        alert("Sorry, hot keys can't be changed. Your browser doesn't support HTML Storage.");
+        //Hide the popup menu
+        hideChangeKeysPopup();
+      }
+    }
 
     for (var selector in config) {
       $(selector).chosen(config[selector]);
@@ -374,8 +573,9 @@ h2.legend Page Notes
       $(this).chosen(n)
     }
 
+
     //Go out of the current tag
-    jQuery('#page_source_text').bind('keydown', 'alt+x', function(e) {
+    jQuery('#page_source_text').bind('keydown', hotkeysHash['get_out_of_tag'], function(e) {
       returnOffsetvalues=medium.returnOffset();
       offset=returnOffsetvalues[0];
       focusEl=returnOffsetvalues[1];
@@ -765,8 +965,9 @@ h2.legend Page Notes
 
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    $(document).keydown(function(e){
-      if (e.altKey && e.keyCode == 82) {
+    jQuery('#page_source_text').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    //$(document).keydown(function(e){
+      //if (e.altKey && e.keyCode == 82) {
         /*
         $('.chosen-select-no-results').chosen_reset(config);
         $('.chosen-adv').chosen_reset(config);
@@ -825,7 +1026,7 @@ h2.legend Page Notes
         medium.focus();
         medium.focusNadya(focusOffset,focusNode);
         
-      }
+      //}
     });
 
     function getSelectionCoords(win) {
@@ -1595,7 +1796,7 @@ h2.legend Page Notes
 
 
     //Add tag
-    jQuery('#page_source_text').bind('keydown', 'alt+c', function(e) {
+    jQuery('#page_source_text').bind('keydown', hotkeysHash['insert_tag'], function(e) {
       if(Cookies.get('use_advanced_mode')==1){
         tagInAdvancedMode();
       }else{
@@ -1907,8 +2108,9 @@ h2.legend Page Notes
       deleteTag(coords,true);
     });
 
+
     //Delete a tag
-    jQuery('#page_source_text').bind('keydown', 'alt+n', function(e) {
+    jQuery('#page_source_text').bind('keydown', hotkeysHash['delete_tag'], function(e) {
       var coords = getSelectionCoords();
       deleteTag(coords,false);
     });
@@ -1920,9 +2122,9 @@ h2.legend Page Notes
       changeTag(coords,true);
     });
 
+
     //Change a tag
-    jQuery('#page_source_text').bind('keydown', 'alt+m', function(e) {
-      //var coords = getSelectionCoords();
+    jQuery('#page_source_text').bind('keydown', hotkeysHash['modify_tag'], function(e) {
       coords = getSelectionCoords();
       changeTag(coords,false);
     });
@@ -1964,6 +2166,7 @@ h2.legend Page Notes
           hideDivButton=document.createElement('button');
 
           hideDivButton.className="hide_popup_button";
+          hideDivButton.title=localStorage['hide_popup'] || 'Alt+R';
           hideDivButton.appendChild(document.createTextNode("\u26cc"));
           hideDivButton.onclick=function(){
             hideChangePopup(); 
@@ -2071,6 +2274,7 @@ h2.legend Page Notes
 
 
       hideDivButton.className="hide_popup_button";
+      hideDivButton.title=localStorage['hide_popup'] || 'Alt+R';
       hideDivButton.appendChild(document.createTextNode("\u26cc"));
       hideDivButton.onclick=function(){
         hideChangeAttributesPopup(); 
@@ -2252,6 +2456,7 @@ h2.legend Page Notes
           hideDivButton=document.createElement('button');
 
           hideDivButton.className="hide_popup_button";
+          hideDivButton.title=localStorage['hide_popup'] || 'Alt+R';
           hideDivButton.appendChild(document.createTextNode("\u26cc"));
           hideDivButton.onclick=function(){
             hideDeletionPopup(); 

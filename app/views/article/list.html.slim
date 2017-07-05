@@ -95,7 +95,6 @@
 
     //Functions for the attributes menu
     function addField(style) {
-      console.log("style: "+style+"\n");
       
       numberOfAddedAttributes+=1;
       var html = "<input name='attribute[]' class='attribute_input_field' type='text'><br>";
@@ -243,9 +242,6 @@
 
     //Add a new value for the chosen attribute from the suggested possible values
     function addFromPossibleValues(attributeId, valueId, valueName){
-      console.log("attributeId: "+attributeId);
-      console.log("valueId: "+valueId);
-      console.log("valueName: "+valueName);
       var html = "<input type='hidden' name='val_from_possible["+attributeId+"][]' id='val_from_possible_"+attributeId+"_"+valueId+"' value='"+valueId+"'>";
       $('#hidden').append(html);
       document.getElementById('button_value_suggestion_'+attributeId+'_'+valueId).disabled=true;
@@ -279,7 +275,6 @@
     }
     
     function deleteAttribute(attributeId){
-      console.log("in deleteAttribute");
       var html = "<input type='hidden' name='delete_attribute[]' value='"+attributeId+"'>";
       $('#hidden').append(html);
       document.getElementById("delete_attribute_"+attributeId).disabled=true;
@@ -314,8 +309,6 @@
 
 
     function addToValueSequences(comsequentAttributeName){
-      console.log("comsequentAttributeName: "+comsequentAttributeName);
-      //var attributeName=$("#seq_attr_name_button"+comsequentAttributeName).html();
       
       var sequenceButton=document.createElement('button');
       sequenceButton.id='button_'+activeValueId+'_'+comsequentAttributeName;
@@ -337,9 +330,6 @@
 
     //Delete the values from the hidden input form field
     function deleteSequenceFromAttrValue(activeAttributeId,activeValueId,attributeName, consequentRelationId){
-      console.log(" in deleteSequenceFromAttrValue ");
-      console.log("activeValueId: "+activeValueId);
-      //console.log("attributeId: "+attributeName);
       var element=document.getElementById("seq_"+activeAttributeId+'_'+activeValueId+"_"+attributeName);
       //If this consequent attribute has just been added in this same menu, we delete it from the hidden input field of the form
       if(element!=null){

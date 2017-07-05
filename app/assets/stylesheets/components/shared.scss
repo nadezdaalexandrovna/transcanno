@@ -1521,7 +1521,7 @@ label[for="207"] span {
   padding: 1px;
 }
 
-.hide_popup_button{
+.hide_popup_button, .hide_popup_changekeys{
   //width: 6px;
   float: right;
   //margin-right: 10px;
@@ -1534,4 +1534,37 @@ label[for="207"] span {
 
 .newdropdowndiv{
   
+}
+
+#changeHotkeysMenu{
+  position: absolute;
+  right: 4vw;
+  top: 330px;
+  max-width: 20vw;
+  z-index: 9999;
+  background-color: #faf5eb;
+  padding: 4px;
+  border-radius: 4px;
+
+  //box-shadow: 5px 5px 5px #888888;
+
+  -webkit-box-shadow: 0 0 5px 2px #888888;
+    -moz-box-shadow: 0 0 5px 2px #888888;
+    box-shadow: 0 0 5px 2px #888888;
+}
+
+.hotkeyDropdownMenu{
+  width: 2vw;
+  max-width: 2vw;
+}
+
+.hotkey_label{
+  width: 7vw;
+  padding: 4px;
+  margin-bottom: 7px;
+  text-align: right;
+}
+
+#changeHotkeysTitle{
+  font-weight: bold;
 }
