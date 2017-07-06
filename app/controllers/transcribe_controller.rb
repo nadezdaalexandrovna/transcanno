@@ -36,7 +36,7 @@ class TranscribeController  < ApplicationController
       end
     end
 
-    sqlS="SELECT categoryattributes.category_id, attributecats.name, attributevalues.value FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
+    sqlS="SELECT DISTINCT categoryattributes.category_id, attributecats.name, attributevalues.value FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
     typesAttributes=connection.execute(sqlS)
 

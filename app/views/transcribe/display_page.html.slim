@@ -307,6 +307,9 @@ h2.legend Page Notes
       }
     }
 
+    console.log("categoriesInfo");
+    console.log(categoriesInfo);
+
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
     var categoryTypesHashAdv=parseJsonData('categoryTypesDivAdv');
 
@@ -360,12 +363,26 @@ h2.legend Page Notes
 
       
     var config = {
-      /*
-      '.chosen-select-no-results': {width:"95%"},
-      '.chosen-select-no-results2': {width:"95%"},
-      '.chosen-adv': {width:"95%"},
-      '.chosen-adv2': {width:"95%"}
-      */
+      '.chosen-select-no-results': {width:"100%"},
+      '.chosen-select-no-results2': {width:"100%"},
+      '.chosen-adv': {width:"100%"},
+      '.chosen-adv2': {width:"100%"}
+    }
+
+    for (var selector in config) {
+      $(selector).chosen(config[selector]);
+    }
+    
+
+    $(".chosen-select-no-results").chosen();
+    $(".chosen-select-no-results2").chosen();
+    $(".chosen-adv").chosen();
+    $(".chosen-adv2").chosen();
+      
+    jQuery.fn.chosen_reset = function(n){
+      $(this).chosen('destroy');
+      $(this).prop('selectedIndex', 0);
+      $(this).chosen(n)
     }
     
     //var hotkeysHash={'insert_tag':'alt+c', 'get_out_of_tag':'alt+x','modify_tag':'alt+m','delete_tag':'alt+n','hide_popup':'alt+r'};
@@ -555,22 +572,6 @@ h2.legend Page Notes
         //Hide the popup menu
         hideChangeKeysPopup();
       }
-    }
-
-    for (var selector in config) {
-      $(selector).chosen(config[selector]);
-    }
-    
-
-    $(".chosen-select-no-results").chosen();
-    $(".chosen-select-no-results2").chosen();
-    $(".chosen-adv").chosen();
-    $(".chosen-adv2").chosen();
-      
-    jQuery.fn.chosen_reset = function(n){
-      $(this).chosen('destroy');
-      $(this).prop('selectedIndex', 0);
-      $(this).chosen(n)
     }
 
 
@@ -964,69 +965,103 @@ h2.legend Page Notes
     }
 
 
+    function hidePopups(){
+      $("#deletion_div").hide();
+      $("#deletion_div").empty();
+      $("#change_div").hide();
+      $("#change_div").empty();
+      $("#change_selected_div").hide();
+      $("#change_selected_div").empty();
+
+      $(".popupBody").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-select-no-results').chosen_reset(config);
+      $(".popupBody").css({'top':0,'left':0});
+    
+      $(".popupBody2").hide();
+      $('.chosen-select-no-results2').chosen_reset(config);
+      $(".popupBody2").css({'top':0,'left':0});
+      document.getElementById('select_a_tag').innerHTML = "";
+
+      $(".popupBodyAdv").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-adv').chosen_reset(config);
+      $(".popupBodyAdv").css({'top':0,'left':0});
+    
+      $(".popupBodyAdv2").hide();
+      document.getElementById('select_a_tag').innerHTML = "";
+      $('.chosen-adv2').chosen_reset(config);
+      $(".popupBodyAdv2").css({'top':0,'left':0});
+
+      $("#newDropdownDiv").hide();
+      $('.chosen-select-type').chosen_reset(config);
+      $("#newDropdownDiv").css({'top':0,'left':0});
+      document.getElementById('select_a_tag').innerHTML = "";
+      document.getElementById('user-type-input').value = "";
+      $("#user-type-input").hide();
+
+      hideChangeKeysPopup();
+
+      hideDeletionPopup();
+      hideChangePopup();
+
+      medium.focus();
+      medium.focusNadya(focusOffset,focusNode);
+    }
+
     //Press alt+r to make a dropdown select disappear without selecting anything
     jQuery('#page_source_text').bind('keydown', hotkeysHash['hide_popup'], function(e) {
-    //$(document).keydown(function(e){
-      //if (e.altKey && e.keyCode == 82) {
-        /*
-        $('.chosen-select-no-results').chosen_reset(config);
-        $('.chosen-adv').chosen_reset(config);
-        $('.chosen-adv2').chosen_reset(config);
-        $(".popupBody").hide();
-        document.getElementById('select_a_tag').innerHTML = "";
-        
-        $(".popupBodyAdv").hide();
-        $(".popupBodyAdv2").hide();
-        */
+      hidePopups();
+    });
 
-        $("#deletion_div").hide();
-        $("#deletion_div").empty();
-        $("#change_div").hide();
-        $("#change_div").empty();
-        $("#change_selected_div").hide();
-        $("#change_selected_div").empty();
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.popupBody').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
 
-        /*
-        $("#newDropdownDiv").hide();
-        $("#select-type-input").show();
-        $("#select-type-input")[0].value="";
-        $('#chosen-select-type').empty();
-        $('#chosen-select-type')[0].value="";
-        $("#chosen-select-type").show();        
-        $('#user-type-input').hide();
-        */
-
-        $(".popupBody").hide();
-        document.getElementById('select_a_tag').innerHTML = "";
-        $('.chosen-select-no-results').chosen_reset(config);
-        $(".popupBody").css({'top':0,'left':0});
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.popupBody2').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
     
-        $(".popupBody2").hide();
-        $('.chosen-select-no-results2').chosen_reset(config);
-        $(".popupBody2").css({'top':0,'left':0});
-        document.getElementById('select_a_tag').innerHTML = "";
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.popupBodyAdv').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
 
-        $(".popupBodyAdv").hide();
-        document.getElementById('select_a_tag').innerHTML = "";
-        $('.chosen-adv').chosen_reset(config);
-        $(".popupBodyAdv").css({'top':0,'left':0});
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.popupBodyAdv2').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#newDropdownDiv').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#deletion_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#change_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#change_selected_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
     
-        $(".popupBodyAdv2").hide();
-        document.getElementById('select_a_tag').innerHTML = "";
-        $('.chosen-adv2').chosen_reset(config);
-        $(".popupBodyAdv2").css({'top':0,'left':0});
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#changeHotkeysMenu').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
 
-        $("#newDropdownDiv").hide();
-        $('.chosen-select-type').chosen_reset(config);
-        $("#newDropdownDiv").css({'top':0,'left':0});
-        document.getElementById('select_a_tag').innerHTML = "";
-        document.getElementById('user-type-input').value = "";
-        $("#user-type-input").hide();
-
-        medium.focus();
-        medium.focusNadya(focusOffset,focusNode);
-        
-      //}
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#select-type-input').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
     });
 
     function getSelectionCoords(win) {
@@ -1902,8 +1937,9 @@ h2.legend Page Notes
       if(selection.isCollapsed){
         $(".popupBodyAdv").css({'top':nowY,'left':nowX});
         $(".popupBodyAdv").show();
-        //$(".chosen-adv").show();
         $(".chosen-adv").trigger('chosen:activate');
+        //$(".chosen-adv").show();
+        
 
         $(".chosen-adv").chosen().change(function(event){
           if(event.target == this){
@@ -2114,6 +2150,7 @@ h2.legend Page Notes
       var coords = getSelectionCoords();
       deleteTag(coords,false);
     });
+
 
     $( ".change_tag" ).mousedown(function() {
       position = $(this).offset();
