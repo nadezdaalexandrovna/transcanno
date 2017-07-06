@@ -38,60 +38,64 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_sequences
-    connection = ActiveRecord::Base.connection
-    #define_attribute_values
-    @categoryattributes=[]
-    sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
-    resAt=connection.execute(sqlAt)
-    resAt.each do |r|
-      @categoryattributes.push([r[0],r[1],r[2],r[3]])
-    end
-
-    @attributeValuesHash={}
-    sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
-    res=connection.execute(sqlS)
-
-    res.each do |r|
-      if @attributeValuesHash.key?(r[0].to_s)
-        @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
-      else
-        @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty? && params[:collection_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      #define_attribute_values
+      @categoryattributes=[]
+      sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where categoryattributes.mode!=0 and `categoryattributes`.`category_id`="+params[:category_id]
+      resAt=connection.execute(sqlAt)
+      resAt.each do |r|
+        @categoryattributes.push([r[0],r[1],r[2],r[3]])
       end
-    end
 
-    #Select sequences for the values of each attribute of this category
-    sql="SELECT DISTINCT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
-    connection = ActiveRecord::Base.connection
-    already_relations=connection.execute(sql)
+      @attributeValuesHash={}
+      sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+      res=connection.execute(sqlS)
 
-    excludeFromPossibleRelationsIds={}
-
-    #Relations defined for each attribute value of each attribute of this category
-    @alreadyRelsHash={}
-    already_relations.each do |already_rel|
-      if @alreadyRelsHash.key?(already_rel[0])
-        @alreadyRelsHash[already_rel[0]].push([already_rel[2],already_rel[3]])
-        excludeFromPossibleRelationsIds[already_rel[3]]=0
-      else
-        @alreadyRelsHash[already_rel[0]]=[[already_rel[2],already_rel[3]]]
-        excludeFromPossibleRelationsIds[already_rel[3]]=0
-      end
-    end
-
-    #All the possible consequent attributes of each value, if these attributes can belong to this category
-    sqlS="SELECT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE valuestoattributesrelations.collection_id="+params[:collection_id]+" AND categoryattributes.category_id="+params[:category_id]
-    possible_relations=connection.execute(sqlS)
-
-    #All the possible consequent attributes of each value. Key: attribute_value, value: array of consequent attributes
-    @possibleRelationsHash={} 
-    possible_relations.each do |pr|
-      unless excludeFromPossibleRelationsIds.key?(pr[0])
-        if @possibleRelationsHash.key?(pr[1])
-          @possibleRelationsHash[pr[1]].push(pr[2])
+      res.each do |r|
+        if @attributeValuesHash.key?(r[0].to_s)
+          @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
         else
-          @possibleRelationsHash[pr[1]]=[pr[2]]
+          @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
         end
       end
+
+      #Select sequences for the values of each attribute of this category
+      sql="SELECT DISTINCT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
+      connection = ActiveRecord::Base.connection
+      already_relations=connection.execute(sql)
+
+      excludeFromPossibleRelationsIds={}
+
+      #Relations defined for each attribute value of each attribute of this category
+      @alreadyRelsHash={}
+      already_relations.each do |already_rel|
+        if @alreadyRelsHash.key?(already_rel[0])
+          @alreadyRelsHash[already_rel[0]].push([already_rel[2],already_rel[3]])
+          excludeFromPossibleRelationsIds[already_rel[3]]=0
+        else
+          @alreadyRelsHash[already_rel[0]]=[[already_rel[2],already_rel[3]]]
+          excludeFromPossibleRelationsIds[already_rel[3]]=0
+        end
+      end
+
+      #All the possible consequent attributes of each value, if these attributes can belong to this category
+      sqlS="SELECT DISTINCT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE valuestoattributesrelations.collection_id="+params[:collection_id]+" AND categoryattributes.category_id="+params[:category_id]
+      possible_relations=connection.execute(sqlS)
+
+      #All the possible consequent attributes of each value. Key: attribute_value, value: array of consequent attributes
+      @possibleRelationsHash={} 
+      possible_relations.each do |pr|
+        unless excludeFromPossibleRelationsIds.key?(pr[0])
+          if @possibleRelationsHash.key?(pr[1])
+            @possibleRelationsHash[pr[1]].push(pr[2])
+          else
+            @possibleRelationsHash[pr[1]]=[pr[2]]
+          end
+        end
+      end
+
     end
 
   end
@@ -324,7 +328,7 @@ class CategoryController < ApplicationController
       @disableScopeChoice='display:none;'
     end
 
-    sql="SELECT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
+    sql="SELECT DISTINCT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
     catattrs=connection.execute(sql)
 
     #Select all the attributes defined in this collection in this scope

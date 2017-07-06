@@ -231,58 +231,58 @@ h2.legend Page Notes
 
     function hidePopupBody(){
       $(".popupBody").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-select-no-results').chosen_reset(config);
-      $(".popupBody").css({'top':0,'left':0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      $(".chosen-select-no-results").chosen_reset(config);
+      $(".popupBody").css({"top":0,"left":0});
     }
 
     function hidePopupBody2(){
       $(".popupBody2").hide();
-      $('.chosen-select-no-results2').chosen_reset(config);
-      $(".popupBody2").css({'top':0,'left':0});
-      document.getElementById('select_a_tag').innerHTML = "";
+      $(".chosen-select-no-results2").chosen_reset(config);
+      $(".popupBody2").css({"top":0,"left":0});
+      document.getElementById("select_a_tag").innerHTML = "";
     }
 
     function hidePopupBodyAdv(){
       $(".popupBodyAdv").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-adv').chosen_reset(config);
-      $(".popupBodyAdv").css({'top':0,'left':0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      $(".chosen-adv").chosen_reset(config);
+      $(".popupBodyAdv").css({"top":0,"left":0});
     }
 
     function hidePopupBodyAdv2(){
       $(".popupBodyAdv2").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-adv2').chosen_reset(config);
-      $(".popupBodyAdv2").css({'top':0,'left':0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      $(".chosen-adv2").chosen_reset(config);
+      $(".popupBodyAdv2").css({"top":0,"left":0});
     }
 
     function hideNewDropdownDiv(){
       $("#newDropdownDiv").hide();
-      $('.chosen-select-type').chosen_reset(config);
-      $("#newDropdownDiv").css({'top':0,'left':0});
-      document.getElementById('select_a_tag').innerHTML = "";
-      document.getElementById('user-type-input').value = "";
+      $(".chosen-select-type").chosen_reset(config);
+      $("#newDropdownDiv").css({"top":0,"left":0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      document.getElementById("user-type-input").value = "";
       $("#user-type-input").hide();
     }
 
 
     function showSimpleOrAdvancedModeCategories(checked){
       if(checked==1){
-        $('#verticalMediumClickableSpans').hide();
-        $('#verticalMediumClickableSpansAdv').show();
+        $("#verticalMediumClickableSpans").hide();
+        $("#verticalMediumClickableSpansAdv").show();
       }else{
-        $('#verticalMediumClickableSpans').show();
-        $('#verticalMediumClickableSpansAdv').hide();
+        $("#verticalMediumClickableSpans").show();
+        $("#verticalMediumClickableSpansAdv").hide();
       }
     }
 
-    $('#use_advanced_mode').on('change', function() {
+    $("#use_advanced_mode").on('change', function() {
       var checked = this.checked ? 1 : 0 ;
-      $('#use_advanced_mode_').val(checked);
-      Cookies.set('use_advanced_mode', checked, { expires: 365 });
+      $("#use_advanced_mode_").val(checked);
+      Cookies.set("use_advanced_mode", checked, { expires: 365 });
       document.getElementsByName("page[use_advanced_mode]")[0].value=checked;
-      showSimpleOrAdvancedModeCategories(checked);      
+      showSimpleOrAdvancedModeCategories(checked);    
     });
 
     function parseJsonData(elementid){
@@ -293,13 +293,15 @@ h2.legend Page Notes
     }
     
     //Decide wich categories to show in the menu: for the simple mode or for the advanced mode
-    showSimpleOrAdvancedModeCategories(Cookies.get('use_advanced_mode'));
+    showSimpleOrAdvancedModeCategories(Cookies.get("use_advanced_mode"));
 
     //Get the information about categories, their attributes and values for the simple mode
-    var categoryTypesHash=parseJsonData('categoryTypesDiv');
+    var categoryTypesHash=parseJsonData("categoryTypesDiv");
 
-    var catID, attr_name;
-    var categoriesInfo={};
+    var catID,
+        attr_name,
+        categoriesInfo={};
+
     for (catID in categoryTypesHash){
       categoriesInfo[catID]=[];
       for (attr_name in categoryTypesHash[catID]){
@@ -307,23 +309,54 @@ h2.legend Page Notes
       }
     }
 
-    console.log("categoriesInfo");
-    console.log(categoriesInfo);
-
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
-    var categoryTypesHashAdv=parseJsonData('categoryTypesDivAdv');
+    var categoryTypesHashAdv=parseJsonData("categoryTypesDivAdv");
 
     //Get the initial attributes' ids
-    var initialAttrIds=parseJsonData('initialAttrIds');
+    var initialAttrIds=parseJsonData("initialAttrIds");
 
-    var offset,focusEl,anchorNode,beginningOfSelection, selection, enableChosen, options, categoryid, newDropdown, categoryTypesTable, i, optionType, tagWithType, type, varTag, newType, notCollapsedArgsTable, nowX, nowY, docF, selF, rangeF, rectF, xF, yF, spanF, spanParentF, rangeChildNodes, rangeLength, position, returnOffsetvalues, userChosenAttributesAndValues, attrName, catHashLength, coords;
+    var offset,
+        focusEl,
+        anchorNode,
+        beginningOfSelection,
+        selection,
+        enableChosen,
+        options,
+        categoryid,
+        newDropdown,
+        categoryTypesTable,
+        i,
+        optionType,
+        tagWithType,
+        type,
+        varTag,
+        newType,
+        notCollapsedArgsTable,
+        nowX,
+        nowY,
+        docF,
+        selF,
+        rangeF,
+        rectF,
+        xF,
+        yF,
+        spanF,
+        spanParentF,
+        rangeChildNodes,
+        rangeLength,
+        position,
+        returnOffsetvalues,
+        userChosenAttributesAndValues,
+        attrName,
+        catHashLength,
+        coords;
 
     //Parse the transcription text to transform it into XML
-    var l=document.getElementById('page_source_text');
+    var l=document.getElementById("page_source_text");
     var xml=l.textContent;
     //xml = xml.replace(/<br><\/br>/g, '<br>'); // Esli dobavliaiu eto, to oshibka parsinga
     xml = "<div id=\"bigDiv\">"+xml+"</div>";
-    xml = xml.replace(/<\/br>/g, '');  // Esli dobavliaiu eto, to oshibka parsinga i voobshe nichego ne pokazyvaet v Transcribe
+    xml = xml.replace(/<\/br>/g, "");
     //xml = xml.replace(/&nbsp\;/g, '');
 
     var parser = new DOMParser();
@@ -337,7 +370,7 @@ h2.legend Page Notes
     var firstChild=article.firstChild;
     firstChild.parentNode.replaceChild(allDocContent,firstChild);
 
-    var closingElement=article.getElementsByTagName('closing')[0];
+    var closingElement=article.getElementsByTagName("closing")[0];
 
     var container = article.parentNode;
 
@@ -363,13 +396,14 @@ h2.legend Page Notes
 
       
     var config = {
-      '.chosen-select-no-results': {width:"100%"},
-      '.chosen-select-no-results2': {width:"100%"},
-      '.chosen-adv': {width:"100%"},
-      '.chosen-adv2': {width:"100%"}
+      ".chosen-select-no-results": {width:"100%"},
+      ".chosen-select-no-results2": {width:"100%"},
+      ".chosen-adv": {width:"100%"},
+      ".chosen-adv2": {width:"100%"}
     }
 
-    for (var selector in config) {
+    var selector;
+    for (selector in config) {
       $(selector).chosen(config[selector]);
     }
     
@@ -388,24 +422,24 @@ h2.legend Page Notes
     //var hotkeysHash={'insert_tag':'alt+c', 'get_out_of_tag':'alt+x','modify_tag':'alt+m','delete_tag':'alt+n','hide_popup':'alt+r'};
     //If the user has defined his own hot keys, we take their values from the localstorage object
     var hotkeysHash={};
-    hotkeysHash['insert_tag'] = localStorage['insert_tag'] || 'Alt+C';
-    hotkeysHash['get_out_of_tag'] = localStorage['get_out_of_tag'] || 'Alt+X';
-    hotkeysHash['modify_tag'] = localStorage['modify_tag'] || 'Alt+M';
-    hotkeysHash['delete_tag'] = localStorage['delete_tag'] || 'Alt+N';
-    hotkeysHash['hide_popup'] = localStorage['hide_popup'] || 'Alt+R';
+    hotkeysHash["insert_tag"] = localStorage["insert_tag"] || "Alt+C";
+    hotkeysHash["get_out_of_tag"] = localStorage["get_out_of_tag"] || "Alt+X";
+    hotkeysHash["modify_tag"] = localStorage["modify_tag"] || "Alt+M";
+    hotkeysHash["delete_tag"] = localStorage["delete_tag"] || "Alt+N";
+    hotkeysHash["hide_popup"] = localStorage["hide_popup"] || "Alt+R";
 
 
     //Update hot keys indicated in buttons titles
     function updateHotkeysInButtonTitles(){
-      document.getElementsByClassName('change_tag')[0].title+=localStorage['modify_tag'] || 'Alt+M';
-      document.getElementsByClassName('change_tag')[1].title+=localStorage['modify_tag'] || 'Alt+M';
-      document.getElementsByClassName('delete_tag')[0].title+=localStorage['delete_tag'] || 'Alt+N';
-      document.getElementsByClassName('delete_tag')[1].title+=localStorage['delete_tag'] || 'Alt+N';
-      document.getElementsByClassName('hide_popup_new')[0].title+=localStorage['hide_popup'] || 'Alt+R';
-      document.getElementsByClassName('hide_popup_small')[0].title+=localStorage['hide_popup'] || 'Alt+R';
-      document.getElementsByClassName('hide_popup_small')[1].title+=localStorage['hide_popup'] || 'Alt+R';
-      document.getElementsByClassName('hide_popup_small')[2].title+=localStorage['hide_popup'] || 'Alt+R';
-      document.getElementsByClassName('hide_popup_small')[3].title+=localStorage['hide_popup'] || 'Alt+R';
+      document.getElementsByClassName("change_tag")[0].title+=localStorage["modify_tag"] || "Alt+M";
+      document.getElementsByClassName("change_tag")[1].title+=localStorage["modify_tag"] || "Alt+M";
+      document.getElementsByClassName("delete_tag")[0].title+=localStorage["delete_tag"] || "Alt+N";
+      document.getElementsByClassName("delete_tag")[1].title+=localStorage["delete_tag"] || "Alt+N";
+      document.getElementsByClassName("hide_popup_new")[0].title+=localStorage["hide_popup"] || "Alt+R";
+      document.getElementsByClassName("hide_popup_small")[0].title+=localStorage["hide_popup"] || "Alt+R";
+      document.getElementsByClassName("hide_popup_small")[1].title+=localStorage["hide_popup"] || "Alt+R";
+      document.getElementsByClassName("hide_popup_small")[2].title+=localStorage["hide_popup"] || "Alt+R";
+      document.getElementsByClassName("hide_popup_small")[3].title+=localStorage["hide_popup"] || "Alt+R";
     }
 
     updateHotkeysInButtonTitles();
@@ -413,7 +447,7 @@ h2.legend Page Notes
     //When the user pushes the button with a key on it, this function fires and shows a popup menu that lets him change hot keys
     function showChangeHotkeysMenu(){
 
-      var listOfHelpKeys=['','Alt','Ctrl','Shift','Insert','PGUP','PGDN','FN','Tab'];
+      var listOfHelpKeys=["","Alt","Ctrl","Shift","Insert","PGUP","PGDN","FN","Tab"];
 
       var changeHotKeysInternal=document.getElementById("changeHotKeysInternal");
 
@@ -421,7 +455,7 @@ h2.legend Page Notes
         var keyPlusKey=value.split('+');
         
         var firstKey=keyPlusKey[0];
-        var middleKey='';
+        var middleKey="";
         if(keyPlusKey.length==3){
           middleKey=keyPlusKey[1];
         }
@@ -664,7 +698,7 @@ h2.legend Page Notes
                   if (e.which == 13) {
                     if(notCollapsedArgsTable==null){
                       $("#newDropdownDiv").hide();
-                      document.getElementById('select_a_tag').innerHTML = "";
+                      document.getElementById("select_a_tag").innerHTML = "";
                       userChosenAttributesAndValues.push([attrName,option.value]);
 
                       options2=null;
@@ -975,29 +1009,29 @@ h2.legend Page Notes
 
       $(".popupBody").hide();
       document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-select-no-results').chosen_reset(config);
-      $(".popupBody").css({'top':0,'left':0});
+      $(".chosen-select-no-results").chosen_reset(config);
+      $(".popupBody").css({"top":0,"left":0});
     
       $(".popupBody2").hide();
-      $('.chosen-select-no-results2').chosen_reset(config);
-      $(".popupBody2").css({'top':0,'left':0});
-      document.getElementById('select_a_tag').innerHTML = "";
+      $(".chosen-select-no-results2").chosen_reset(config);
+      $(".popupBody2").css({"top":0,"left":0});
+      document.getElementById("select_a_tag").innerHTML = "";
 
       $(".popupBodyAdv").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-adv').chosen_reset(config);
-      $(".popupBodyAdv").css({'top':0,'left':0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      $(".chosen-adv").chosen_reset(config);
+      $(".popupBodyAdv").css({"top":0,"left":0});
     
       $(".popupBodyAdv2").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $('.chosen-adv2').chosen_reset(config);
-      $(".popupBodyAdv2").css({'top':0,'left':0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      $(".chosen-adv2").chosen_reset(config);
+      $(".popupBodyAdv2").css({"top":0,"left":0});
 
       $("#newDropdownDiv").hide();
-      $('.chosen-select-type').chosen_reset(config);
-      $("#newDropdownDiv").css({'top':0,'left':0});
-      document.getElementById('select_a_tag').innerHTML = "";
-      document.getElementById('user-type-input').value = "";
+      $(".chosen-select-type").chosen_reset(config);
+      $("#newDropdownDiv").css({"top":0,"left":0});
+      document.getElementById("select_a_tag").innerHTML = "";
+      document.getElementById("user-type-input").value = "";
       $("#user-type-input").hide();
 
       hideChangeKeysPopup();

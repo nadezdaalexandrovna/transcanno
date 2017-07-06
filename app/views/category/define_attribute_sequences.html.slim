@@ -1,7 +1,7 @@
 .litebox-embed(style="width:450px;")
   h1 Define Attributes Sequences
 
-  =form_for(@category, :url => { :action => 'define_attribute_sequences2' }, :html => { :onsubmit=>'return beforeSubmitSequences()' }) do |f|
+  =form_for(@category, :url => { :action => 'define_attribute_sequences2' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
     <div id="sequences" style="display:none;">
     </div>
