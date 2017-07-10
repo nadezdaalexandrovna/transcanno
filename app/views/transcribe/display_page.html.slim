@@ -312,6 +312,8 @@ h2.legend Page Notes
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
     var categoryTypesHashAdv=parseJsonData("categoryTypesDivAdv");
 
+    console.log("categoryTypesHashAdv: "+categoryTypesHashAdv);
+
     //Get the initial attributes' ids
     var initialAttrIds=parseJsonData("initialAttrIds");
 
@@ -1800,6 +1802,10 @@ h2.legend Page Notes
 
     //Remove forbidden characters from an attribute's value
     function cleanAttrValue(val){
+      val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
+      if(val==null || val==''){
+        alert("The attribute's value is empty.");
+      }
       return val.replace(/[<&"'>]+/g, "_");
     }
 

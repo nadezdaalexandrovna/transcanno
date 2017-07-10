@@ -252,4 +252,11 @@ var categoryid=$(this).attr("data-categoryid");
 buttonFunction(categoryid,'pronoun_id66',coords);
 return false;
 });
+$( ".button-error_id67" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+buttonFunction(categoryid,'error_id67',coords);
+return false;
+});
 });
