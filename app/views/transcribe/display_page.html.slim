@@ -524,7 +524,7 @@ h2.legend Page Notes
       $("#changeHotkeysMenu").hide();
     }
 
-    //Applies the changes for hot keys made by the user
+    //Applies the changes to hot keys made by the user
     function changeHotKeys(){
       if (typeof(Storage) !== "undefined") {
         // Code for localStorage
@@ -610,7 +610,7 @@ h2.legend Page Notes
 
 
     //Go out of the current tag
-    jQuery('#page_source_text').bind('keydown', hotkeysHash['get_out_of_tag'], function(e) {
+    jQuery('#page_source_text').bind('keypress', hotkeysHash['get_out_of_tag'], function(e) {
       returnOffsetvalues=medium.returnOffset();
       offset=returnOffsetvalues[0];
       focusEl=returnOffsetvalues[1];
@@ -626,9 +626,7 @@ h2.legend Page Notes
 
     });
 
-    
-    jQuery('#page_source_text').bind('keydown', 'alt+h', function(e) {
-
+    jQuery('#page_source_text').bind('keypress', 'alt+h', function(e) {
       var m = medium.value();
       console.log(m);
 
@@ -1027,92 +1025,92 @@ h2.legend Page Notes
 
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery(document).bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery(document).bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#page_source_text').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#page_source_text').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.popupBody').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.popupBody').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.popupBody2').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.popupBody2').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
     
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.popupBodyAdv').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.popupBodyAdv').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.popupBodyAdv2').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.popupBodyAdv2').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#newDropdownDiv').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#newDropdownDiv').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#deletion_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#deletion_div').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#change_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#change_div').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#change_selected_div').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#change_selected_div').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
     
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#changeHotkeysMenu').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#changeHotkeysMenu').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#changeHotKeysInternal').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#changeHotKeysInternal').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#changeHotKeysInternal').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#changeHotKeysInternal').children().bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.hotkeyDropdownMenu').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.hotkeyDropdownMenu').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.hotkeyDropdownMenu').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.hotkeyDropdownMenu').children().bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#select-type-input').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#select-type-input').bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('#select-type-input').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('#select-type-input').children().bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
-    jQuery('.chosen-search').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+    jQuery('.chosen-search').children().bind('keypress', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
@@ -1887,7 +1885,7 @@ h2.legend Page Notes
 
 
     //Add tag
-    jQuery('#page_source_text').bind('keydown', hotkeysHash['insert_tag'], function(e) {
+    jQuery('#page_source_text').bind('keypress', hotkeysHash['insert_tag'], function(e) {
       if(Cookies.get('use_advanced_mode')==1){
         tagInAdvancedMode();
       }else{
@@ -2207,7 +2205,7 @@ h2.legend Page Notes
 
 
     //Delete a tag
-    jQuery('#page_source_text').bind('keydown', hotkeysHash['delete_tag'], function(e) {
+    jQuery('#page_source_text').bind('keypress', hotkeysHash['delete_tag'], function(e) {
       var coords = getSelectionCoords();
       deleteTag(coords,false);
     });
@@ -2222,7 +2220,7 @@ h2.legend Page Notes
 
 
     //Change a tag
-    jQuery('#page_source_text').bind('keydown', hotkeysHash['modify_tag'], function(e) {
+    jQuery('#page_source_text').bind('keypress', hotkeysHash['modify_tag'], function(e) {
       coords = getSelectionCoords();
       changeTag(coords,false);
     });
