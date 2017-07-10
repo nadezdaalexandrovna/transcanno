@@ -118,6 +118,7 @@
     //Function for the category creation menu normalising the category name
     function verifyValue(){
       var value=document.getElementById('category_title').value;
+      value=$( $.parseHTML(value) ).text(); //Against malicious user input (a script in an input field)
       value=value.replace(/[ ]+/g, "_");
       value=value.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
 
@@ -142,6 +143,7 @@
 
       for (i = 0; i < elms.length; i++) {
         val=elms[i].value;
+        val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
         val=val.replace(/[ ]+/g, "_");
         val=val.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
 
@@ -168,6 +170,7 @@
 
       for (i = 0; i < elms.length; i++) {
         val=elms[i].value;
+        val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
         elms[i].value = val.replace(/[<&"'>]+/g, "_");
       }
 

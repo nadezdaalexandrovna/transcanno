@@ -103,57 +103,62 @@ class CategoryController < ApplicationController
   def define_attribute_sequences2
     giveNotice=false
 
-    category=Category.find(params[:category_id])
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
 
-    #Update the initial column: set and unset initial attributes
-    sql="update categoryattributes set initial=false where category_id="+params[:category_id]
-    connection = ActiveRecord::Base.connection
-    connection.execute(sql)
+      category=Category.find(params[:category_id])
 
-    if params[:initial]!=nil
-      giveNotice=true
-      forSql=""
-      params[:initial].each do |attrid|
-        if attrid!=nil && attrid!=""
-          giveNotice=true
-          forSql+=attrid+", "
+      #Update the initial column: set and unset initial attributes
+      sql="update categoryattributes set initial=false where category_id="+params[:category_id]
+      connection = ActiveRecord::Base.connection
+      connection.execute(sql)
+
+      if params[:initial]!=nil
+        giveNotice=true
+        forSql=""
+        params[:initial].each do |attrid|
+          if attrid!=nil && attrid!="" && attrid.scan(/\D/).empty?
+            giveNotice=true
+            forSql+=attrid+", "
+          end
+        end
+        if forSql!=""
+          sql="update categoryattributes set initial=true where id in ("+forSql[0..-3]+");"
+          connection.execute(sql)
         end
       end
-      if forSql!=""
-        sql="update categoryattributes set initial=true where id in ("+forSql[0..-3]+");"
-        connection.execute(sql)
-      end
-    end
 
-    #Update the sequences
-    if params[:seq]!=nil
-      giveNotice=true
-      forSql=""
-      params[:seq].each do |valueIdandName, attrsArray|
-        arrayIdName=valueIdandName.split("*#*")
-        activeAttrId=arrayIdName[0]
-        valueId=arrayIdName[1]
-        valueName=arrayIdName[2]
-        attrsArray.each do |attr|
-          rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr, collection_id: category.collection_id)
-          sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
-          connection.execute(sqlCreate)
+      #Update the sequences
+      if params[:seq]!=nil
+        giveNotice=true
+        forSql=""
+        params[:seq].each do |valueIdandName, attrsArray|
+          arrayIdName=valueIdandName.split("*#*")
+          activeAttrId=arrayIdName[0]
+          valueId=arrayIdName[1]
+          valueName=arrayIdName[2]
+          attrsArray.each do |attr|
+            rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr, collection_id: category.collection_id)
+            sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
+            connection.execute(sqlCreate)
+          end
         end
       end
-    end
 
-    #Delete already existing sequences
-    if params[:seqdelete]!=nil
-      giveNotice=true
-      params[:seqdelete].each do |valueIdandName, relsArray|
-        arrayIdName=valueIdandName.split("*#*")
-        activeAttrId=arrayIdName[0]
-        valueId=arrayIdName[1]
-        valueName=arrayIdName[2]
-        attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId, valuestoattributesrelation_id:relsArray).update_all(valuestoattributesrelation_id: nil) 
+      #Delete already existing sequences
+      if params[:seqdelete]!=nil
+        giveNotice=true
+        params[:seqdelete].each do |valueIdandName, relsArray|
+          arrayIdName=valueIdandName.split("*#*")
+          activeAttrId=arrayIdName[0]
+          valueId=arrayIdName[1]
+          valueName=arrayIdName[2]
+          attr_to_value=AttributesToValue.where(categoryattribute_id: activeAttrId, attributevalue_id: valueId, valuestoattributesrelation_id:relsArray).update_all(valuestoattributesrelation_id: nil) 
+        end
+        sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+        connection.execute(sql2)
       end
-      sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
-      connection.execute(sql2)
+
     end
 
     if giveNotice==true
@@ -163,25 +168,31 @@ class CategoryController < ApplicationController
   end
 
   def assign_category_scope
-    scope=Categoryscope.where(category_id: params[:category_id])
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      scope=Categoryscope.where(category_id: params[:category_id])
     
-    @scopehash={0=>false,1=>false,2=>false}
-    unless scope.empty?
-      scope.each do |s|
-        @scopehash[s.mode]=true
+      @scopehash={0=>false,1=>false,2=>false}
+      unless scope.empty?
+        scope.each do |s|
+          @scopehash[s.mode]=true
+        end
       end
     end
   end
 
   def assign_category_scope2
-    scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
-    scope.mode=params[:category][:category_scope].to_i
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
+      scope.mode=params[:category][:category_scope].to_i
 
-    if scope.save
-      flash[:notice] = "Category scope has been assigned."
-      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
-    else
-      render :action => 'assign_category_scope'
+      if scope.save
+        flash[:notice] = "Category scope has been assigned."
+        ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+      else
+        render :action => 'assign_category_scope'
+      end
     end
   end
 
@@ -189,254 +200,282 @@ class CategoryController < ApplicationController
   end
 
   def define_attribute_values
-    connection = ActiveRecord::Base.connection
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
 
-    #All the existing values of the attributes of this category
-    @categoryattributes=[]
-    sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
-    resAt=connection.execute(sqlAt)
-    resAt.each do |r|
-      @categoryattributes.push([r[0],r[1],r[2],r[3]])
-    end
-
-    @attributeValuesHash={}
-    sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
-    res=connection.execute(sqlS)
-
-    res.each do |r|
-      if @attributeValuesHash.key?(r[0].to_s)
-        @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
-      else
-        @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+      #All the existing values of the attributes of this category
+      @categoryattributes=[]
+      sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+      resAt=connection.execute(sqlAt)
+      resAt.each do |r|
+        @categoryattributes.push([r[0],r[1],r[2],r[3]])
       end
-    end
 
+      @attributeValuesHash={}
+      sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+      res=connection.execute(sqlS)
 
-    scope=Categoryscope.where(category_id: params[:category_id])
-    @categoryScope=2
-    unless scope.empty?
-      scope.each do |s|
-        @categoryScope=s.mode
+      res.each do |r|
+        if @attributeValuesHash.key?(r[0].to_s)
+          @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
+        else
+          @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+        end
       end
-    end
 
-    scopesForPossibleAttributes=""
-    if @categoryScope==2
-      scopesForPossibleAttributes="0,1,2"
-    else
-      scopesForPossibleAttributes=@categoryScope.to_s+",2"
-    end
 
-    #All the possible values of the attributes of this category (maybe defined in other categories of this collection and of this scope)
-    sql="SELECT DISTINCT attributecats.name, attributevalues.id, attributevalues.value FROM attributevalues INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE categories.collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.name in (SELECT attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id where category_id="+params[:category_id]+") and attributevalues.value not in (SELECT attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id]+")"
-    res=connection.execute(sql)
-    @possibleValuesForEachAttribute={}
-    res.each do |r|
-      if @possibleValuesForEachAttribute.key?(r[0])
-        @possibleValuesForEachAttribute[r[0]].push([r[1],r[2]])
+      scope=Categoryscope.where(category_id: params[:category_id])
+      @categoryScope=2
+      unless scope.empty?
+        scope.each do |s|
+          @categoryScope=s.mode
+        end
+      end
+
+      scopesForPossibleAttributes=""
+      if @categoryScope==2
+        scopesForPossibleAttributes="0,1,2"
       else
-        @possibleValuesForEachAttribute[r[0]]=[[r[1],r[2]]]
+        scopesForPossibleAttributes=@categoryScope.to_s+",2"
+      end
+
+      #All the possible values of the attributes of this category (maybe defined in other categories of this collection and of this scope)
+      sql="SELECT DISTINCT attributecats.name, attributevalues.id, attributevalues.value FROM attributevalues INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE categories.collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.name in (SELECT attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id where category_id="+params[:category_id]+") and attributevalues.value not in (SELECT attributevalues.value FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` where `categoryattributes`.`category_id`="+params[:category_id]+")"
+      res=connection.execute(sql)
+      @possibleValuesForEachAttribute={}
+      res.each do |r|
+        if @possibleValuesForEachAttribute.key?(r[0])
+          @possibleValuesForEachAttribute[r[0]].push([r[1],r[2]])
+        else
+          @possibleValuesForEachAttribute[r[0]]=[[r[1],r[2]]]
+        end
       end
     end
   end
 
   def define_attribute_values2
-    connection = ActiveRecord::Base.connection
-    @category.id=params[:category_id]
-    giveNotice=false
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      @category.id=params[:category_id]
+      giveNotice=false
 
-    if params[:delete_attribute_value]!=nil
-      forSql=""
-      params[:delete_attribute_value].each do |attrId, valueIDs|
-        valueIDs.each do |valueid|
-          #forSql+=valueid+", "
-          sql="delete from attributes_to_values where attributevalue_id="+valueid+" and categoryattribute_id="+attrId
+      if params[:delete_attribute_value]!=nil
+        forSql=""
+        params[:delete_attribute_value].each do |attrId, valueIDs|
+          if attrId.scan(/\D/).empty?
+            valueIDs.each do |valueid|
+              if valueid.scan(/\D/).empty?
+                sql="delete from attributes_to_values where attributevalue_id="+valueid+" and categoryattribute_id="+attrId
+                connection.execute(sql)
+                giveNotice=true
+              end
+            end
+          end
+        end
+        #Delete from attributevalues if no attribute has this value
+        sql2="DELETE FROM attributevalues WHERE attributevalues.id not in (SELECT attributes_to_values.attributevalue_id FROM attributes_to_values)"
+        connection.execute(sql2)
+      end
+
+      sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"
+      connection.execute(sql)
+
+      if params[:allow_user_input]!=nil
+        forSql=""
+        params[:allow_user_input].each do |attrid|
+          if attrid!=nil && attrid!="" && attrid.scan(/\D/).empty?
+            giveNotice=true
+            forSql+=attrid+", "
+          end
+        end
+        if forSql!=""
+          sql="update categoryattributes set allow_user_input=true where id in ("+forSql[0..-3]+");"
           connection.execute(sql)
-          giveNotice=true
         end
       end
-      #Delete from attributevalues if no attribute has this value
-      sql2="DELETE FROM attributevalues WHERE attributevalues.id not in (SELECT attributes_to_values.attributevalue_id FROM attributes_to_values)"
-      connection.execute(sql2)
-    end
 
-    sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"
-    connection.execute(sql)
+      if params[:add_attribute_value]!=nil
+        forSql=""
+        params[:add_attribute_value].each do |attrid, attrValues|
+          if attrid.scan(/\D/).empty?
+            attrValues.each do |attrValue|
+              if attrValue.length>0
+                #If the attribute value contains SQL meta-characters, we put underscores around them in order to prevent sql injection
+                attrValue.gsub!(/(\%27)|(\')|(\%3[bB])|(\;)|(\%2[aA])|\*|(\-\-)|(\%23)|(#)|(\%3C)|(\<)|(\%3D)|(\=)|(\%3E)|(\>)|(\%28)|(\()|(\%29)|(\))/i) { |m| '_'+m+'_' }
 
-    if params[:allow_user_input]!=nil
-      forSql=""
-      params[:allow_user_input].each do |attrid|
-        if attrid!=nil && attrid!=""
-          giveNotice=true
-          forSql+=attrid+", "
-        end
-      end
-      if forSql!=""
-        sql="update categoryattributes set allow_user_input=true where id in ("+forSql[0..-3]+");"
-        connection.execute(sql)
-      end
-    end
-
-    if params[:add_attribute_value]!=nil
-      forSql=""
-      params[:add_attribute_value].each do |attrid, attrValues|
-        attrValues.each do |attrValue|
-          if attrValue.length>0
-            res=Attributevalue.find_or_create_by(value: attrValue)
-            AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: res.id)
+                res=Attributevalue.find_or_create_by(value: attrValue)
+                AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: res.id)
+              end
+            end
           end
         end
       end
-    end
 
-    if params[:val_from_possible]!=nil
-      params[:val_from_possible].each do |attrid, valueIds|
-        valueIds.each do |valueId|
-          if valueId.length>0
-            AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: valueId)
+      if params[:val_from_possible]!=nil
+        params[:val_from_possible].each do |attrid, valueIds|
+          if attrid.scan(/\D/).empty?
+            valueIds.each do |valueId|
+              if valueId.length>0 && valueId.scan(/\D/).empty?
+                AttributesToValue.create(categoryattribute_id: attrid, attributevalue_id: valueId)
+              end
+            end
           end
         end
       end
-    end
 
-    if giveNotice==true
-      flash[:notice] = "Category attributes have been defined."
+      if giveNotice==true
+        flash[:notice] = "Category attributes have been defined."
+      end
+      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     end
-    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
 
   def define_attributes
-    connection = ActiveRecord::Base.connection
-    scope=Categoryscope.where(category_id: params[:category_id])
-    @categoryScope=2
-    unless scope.empty?
-      scope.each do |s|
-        @categoryScope=s.mode
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      scope=Categoryscope.where(category_id: params[:category_id])
+      @categoryScope=2
+      unless scope.empty?
+        scope.each do |s|
+          @categoryScope=s.mode
+        end
       end
-    end
 
-    scopesForPossibleAttributes=""
-    if @categoryScope==2
-      scopesForPossibleAttributes="0,1,2"
-    else
-      scopesForPossibleAttributes=@categoryScope.to_s+",2"
-    end
+      scopesForPossibleAttributes=""
+      if @categoryScope==2
+        scopesForPossibleAttributes="0,1,2"
+      else
+        scopesForPossibleAttributes=@categoryScope.to_s+",2"
+      end
 
-    @disableScopeChoice=""
-    #If the category scope is restricted, there is no use to choose its attributes' scope: it will be the same
-    if @categoryScope==0 || @categoryScope==1
-      @disableScopeChoice='display:none;'
-    end
+      @disableScopeChoice=""
+      #If the category scope is restricted, there is no use to choose its attributes' scope: it will be the same
+      if @categoryScope==0 || @categoryScope==1
+        @disableScopeChoice='display:none;'
+      end
 
-    sql="SELECT DISTINCT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
-    catattrs=connection.execute(sql)
+      sql="SELECT DISTINCT categoryattributes.id, categoryattributes.allow_user_input, categoryattributes.mode, categoryattributes.initial, attributecats.name FROM categoryattributes INNER JOIN attributecats ON categoryattributes.attributecat_id=attributecats.id WHERE category_id="+params[:category_id]
+      catattrs=connection.execute(sql)
 
-    #Select all the attributes defined in this collection in this scope
-    sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
-    @possibleAttrs=connection.execute(sqlA)
+      #Select all the attributes defined in this collection in this scope
+      sqlA="SELECT DISTINCT attributecats.id, attributecats.name FROM attributecats INNER JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories ON categoryattributes.category_id=categories.id INNER JOIN categoryscopes ON categoryscopes.category_id=categoryattributes.category_id WHERE collection_id="+params[:collection_id]+" AND categoryscopes.mode IN ("+scopesForPossibleAttributes+") AND attributecats.id NOT IN (SELECT categoryattributes.attributecat_id from categoryattributes WHERE category_id="+params[:category_id]+")"
+      @possibleAttrs=connection.execute(sqlA)
 
-    @attrscopehash={}
-    @categoryattributes=[]
-    catattrs.each do |r|
-      @categoryattributes.push([r[0],r[4]])
+      @attrscopehash={}
+      @categoryattributes=[]
+      catattrs.each do |r|
+        @categoryattributes.push([r[0],r[4]])
 
-      @attrscopehash[r[0]]={0=>false,1=>false,2=>false}
-      @attrscopehash[r[0]][r[2]]=true
+        @attrscopehash[r[0]]={0=>false,1=>false,2=>false}
+        @attrscopehash[r[0]][r[2]]=true
+      end
     end
   end
 
   def define_attributes2
-    connection = ActiveRecord::Base.connection
-    @category.id=params[:category_id]
-    giveNotice=false
-    if params[:delete_attribute]!=nil
-      forSql=""
-      params[:delete_attribute].each do |type|
-        if type!=nil && type!=""
-          giveNotice=true
-          forSql+=type+", "
-        end
-      end
-      if forSql!=""
-        sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
-        connection.execute(sql)
-      end
-      #Delete attributes that no longer have categories associated to them
-      sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
-      connection.execute(sqlD)
-    end
-    if params[:attribute]!=nil
-      #forSql=""
-      numberNews=0
-      params[:attribute].each do |type|
-        if type!=nil && type!=""
-          if params[:category_scope]!=2
-            mode=params[:category_scope]
-          else
-            mode=params[:new_attr_scope][numberNews.to_s]
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      @category.id=params[:category_id]
+      giveNotice=false
+      if params[:delete_attribute]!=nil
+        forSql=""
+        params[:delete_attribute].each do |type|
+          if type!=nil && type!="" && type.scan(/\D/).empty?
+            giveNotice=true
+            forSql+=type+", "
           end
-          giveNotice=true
-          attribute=Attributecat.find_or_create_by(name: type)
-          Categoryattribute.create(attributecat_id: attribute.id, mode: mode, category_id: params[:category_id], allow_user_input: false, initial: false)
+        end
+        if forSql!=""
+          sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
+          connection.execute(sql)
+        end
+        #Delete attributes that no longer have categories associated to them
+        sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
+        connection.execute(sqlD)
+      end
+      if params[:attribute]!=nil
+        numberNews=0
+        params[:attribute].each do |type|
+          if type!=nil && type!=""
+            if params[:category_scope]!=2
+              mode=params[:category_scope]
+            else
+              mode=params[:new_attr_scope][numberNews.to_s]
+            end
+            giveNotice=true
 
-          numberNews+=1
-        end
-      end
-    end
-    #Apply scopes of attributes
-    if params[:category]!=nil
-      forSql=""
-      ids=""
-      if params[:category_scope]=="2"
-        params[:category].each do |scope|
-          if scope!=nil && scope!=""
-            giveNotice=true
-            forSql+="WHEN id="+scope[0]+" THEN "+scope[1]+" "
-            ids+=scope[0]+", "
-          end
-        end
-      else
-        params[:category].each do |scope|
-          if scope!=nil && scope!=""
-            giveNotice=true
-            forSql+="WHEN id="+scope[0]+" THEN "+params[:category_scope]+" "
-            ids+=scope[0]+", "
+            #If the attribute name contains SQL meta-characters, we put underscores around them in order to prevent sql injection
+            type.gsub!(/(\%27)|(\')|(\%3[bB])|(\;)|(\%2[aA])|\*|(\-\-)|(\%23)|(#)|(\%3C)|(\<)|(\%3D)|(\=)|(\%3E)|(\>)|(\%28)|(\()|(\%29)|(\))/i) { |m| '_'+m+'_' }
+
+            attribute=Attributecat.find_or_create_by(name: type)
+            Categoryattribute.create(attributecat_id: attribute.id, mode: mode, category_id: params[:category_id], allow_user_input: false, initial: false)
+
+            numberNews+=1
           end
         end
       end
-      if forSql!=""
-        sql="update categoryattributes set mode=CASE "
-        sql+=forSql
-        sql+="end where id in ("+ids[0..-3]+");"
-        connection.execute(sql)
+      #Apply scopes of attributes
+      if params[:category]!=nil
+        forSql=""
+        ids=""
+        if params[:category_scope]=="2"
+          params[:category].each do |scope|
+            if scope!=nil && scope!=""
+              giveNotice=true
+              forSql+="WHEN id="+scope[0]+" THEN "+scope[1]+" "
+              ids+=scope[0]+", "
+            end
+          end
+        else
+          params[:category].each do |scope|
+            if scope!=nil && scope!=""
+              giveNotice=true
+              forSql+="WHEN id="+scope[0]+" THEN "+params[:category_scope]+" "
+              ids+=scope[0]+", "
+            end
+          end
+        end
+        if forSql!=""
+          sql="update categoryattributes set mode=CASE "
+          sql+=forSql
+          sql+="end where id in ("+ids[0..-3]+");"
+          connection.execute(sql)
+        end
       end
+      if giveNotice==true
+        flash[:notice] = "Category attributes have been defined."
+      end
+      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     end
-    if giveNotice==true
-      flash[:notice] = "Category attributes have been defined."
-    end
-    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
 
   def define_style2
-    style=Categorystyle.find_or_create_by(category_id: params[:category_id])
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      style=Categorystyle.find_or_create_by(category_id: params[:category_id])
 
-    if params[:tag_color]!=nil
-      style.colour=params[:tag_color]
-    end
+      if params[:tag_color]!=nil
+        style.colour=params[:tag_color]
+      end
 
-    if params[:tag_decoration]!=nil
-      style.textdecoration=params[:tag_decoration]
-    end
+      if params[:tag_decoration]!=nil
+        style.textdecoration=params[:tag_decoration]
+      end
 
-    if params[:tag_font_style]!=nil
-      style.fontstyle=params[:tag_font_style]
-    end
+      if params[:tag_font_style]!=nil
+        style.fontstyle=params[:tag_font_style]
+      end
     
-    if style.save
-      flash[:notice] = "Category style is ready to be applied."
-      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
-    else
-      render :action => 'define_style'
+      if style.save
+        flash[:notice] = "Category style is ready to be applied."
+        ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+      else
+        render :action => 'define_style'
+      end
     end
   end
 
