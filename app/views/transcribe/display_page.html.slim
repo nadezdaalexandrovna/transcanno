@@ -543,8 +543,6 @@ h2.legend Page Notes
 
         for(i=0; i<len; i++) {
           name=keys[i];
-          console.log("name: "+name);
-          console.log("i: "+i);
           keyPlusKey=hotkeysHash[name].split('+');
         
           firstKey=keyPlusKey[0];
@@ -875,8 +873,6 @@ h2.legend Page Notes
 
     function tagSelectionWithType (categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords,onButton){
 
-      userChosenAttributesAndValues=[];
-
       var categoryTable=categoriesInfo[categoryid];
                 
       getNextSomethingSelected(varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -1007,32 +1003,16 @@ h2.legend Page Notes
       $("#change_selected_div").hide();
       $("#change_selected_div").empty();
 
-      $(".popupBody").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-      $(".chosen-select-no-results").chosen_reset(config);
-      $(".popupBody").css({"top":0,"left":0});
-    
-      $(".popupBody2").hide();
-      $(".chosen-select-no-results2").chosen_reset(config);
-      $(".popupBody2").css({"top":0,"left":0});
-      document.getElementById("select_a_tag").innerHTML = "";
 
-      $(".popupBodyAdv").hide();
-      document.getElementById("select_a_tag").innerHTML = "";
-      $(".chosen-adv").chosen_reset(config);
-      $(".popupBodyAdv").css({"top":0,"left":0});
-    
-      $(".popupBodyAdv2").hide();
-      document.getElementById("select_a_tag").innerHTML = "";
-      $(".chosen-adv2").chosen_reset(config);
-      $(".popupBodyAdv2").css({"top":0,"left":0});
+      hidePopupBody();
 
-      $("#newDropdownDiv").hide();
-      $(".chosen-select-type").chosen_reset(config);
-      $("#newDropdownDiv").css({"top":0,"left":0});
-      document.getElementById("select_a_tag").innerHTML = "";
-      document.getElementById("user-type-input").value = "";
-      $("#user-type-input").hide();
+      hidePopupBody2();
+
+      hidePopupBodyAdv();
+
+      hidePopupBodyAdv2();
+
+      hideNewDropdownDiv();
 
       hideChangeKeysPopup();
 
@@ -1042,6 +1022,12 @@ h2.legend Page Notes
       medium.focus();
       medium.focusNadya(focusOffset,focusNode);
     }
+
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery(document).bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
     jQuery('#page_source_text').bind('keydown', hotkeysHash['hide_popup'], function(e) {
@@ -1094,7 +1080,37 @@ h2.legend Page Notes
     });
 
     //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#changeHotKeysInternal').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#changeHotKeysInternal').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.hotkeyDropdownMenu').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.hotkeyDropdownMenu').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
     jQuery('#select-type-input').bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('#select-type-input').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
+      hidePopups();
+    });
+
+    //Press alt+r to make a dropdown select disappear without selecting anything
+    jQuery('.chosen-search').children().bind('keydown', hotkeysHash['hide_popup'], function(e) {
       hidePopups();
     });
 
@@ -1769,7 +1785,7 @@ h2.legend Page Notes
       tagCode=milliseconds.toString();
 
 
-      tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'">\u200B</'+varTag+'>';
+      tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" mode="'+userChosenAttributesAndValues[0][1]+'">\u200B</'+varTag+'>';
 
       medium.focusNadya(focusOffset,focusNode);
       medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
@@ -1883,13 +1899,14 @@ h2.legend Page Notes
     }
 
     function tagButtonInSimpleMode(categoryid,categoryTag,coords){
+      userChosenAttributesAndValues=[['mode',0]];
       selection = window.getSelection();
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       notCollapsedArgsTable=[anchorNode,anchorOffset];
 
       if(categoryid in categoryTypesHash){
         if(selection.isCollapsed){
-          userChosenAttributesAndValues=[];
+          //userChosenAttributesAndValues=[];
           var categoryTable=categoriesInfo[categoryid];
           getNextCollapsed(categoryTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
         }else{
@@ -1899,13 +1916,14 @@ h2.legend Page Notes
         if(selection.isCollapsed){
           collapsedNoAttributesInsertTag(categoryTag,focusOffset,focusNode);
         }else{
-          medium.tagSelection3(categoryTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
+          medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
         }
       }
       return false;
     }
 
     function tagButtonInAdvancedMode(categoryid,categoryTag,coords){
+      userChosenAttributesAndValues=[['mode',1]];
       selection = window.getSelection();
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 
@@ -1914,7 +1932,8 @@ h2.legend Page Notes
       if(selection.isCollapsed){
         //If the category has types
         if(categoryid in categoryTypesHashAdv){
-          userChosenAttributesAndValues=[];
+          
+          //userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
           var thisCategoryInitialAttrIds=[];
@@ -1935,7 +1954,7 @@ h2.legend Page Notes
         //If the category has types
         if(categoryid in categoryTypesHashAdv){
 
-          userChosenAttributesAndValues=[];
+          //userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
           var thisCategoryInitialAttrIds=[];
@@ -1948,8 +1967,8 @@ h2.legend Page Notes
           tagSeqsInitial(categoryTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,true,true);
                   
         }else{ //If the category doesn't have types
-
-          medium.tagSelection3(categoryTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
+          medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
+          //medium.tagSelection3(categoryTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
 
           return false;
         }
@@ -1957,7 +1976,7 @@ h2.legend Page Notes
     }
 
     function tagInAdvancedMode(){
-
+      userChosenAttributesAndValues=[['mode',1]];
       //var coords = getSelectionCoords();
       coords = getSelectionCoords();
       nowX=coords.x;
@@ -1990,7 +2009,8 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHashAdv){
-                userChosenAttributesAndValues=[];
+                
+                //userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
                 var thisCategoryInitialAttrIds=[];
@@ -2036,8 +2056,8 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoryTypesHashAdv){
-
-                userChosenAttributesAndValues=[];
+                userChosenAttributesAndValues=[['mode',1]];
+                //userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
 
@@ -2067,7 +2087,7 @@ h2.legend Page Notes
     
     //Add tag in simplemode
     function tagInSimpleMode() {
-
+      userChosenAttributesAndValues=[['mode',0]];
       //var coords = getSelectionCoords();
       coords = getSelectionCoords();
       nowX=coords.x;
@@ -2100,7 +2120,8 @@ h2.legend Page Notes
 
               //If the category has types
               if(categoryid in categoriesInfo){
-                userChosenAttributesAndValues=[];
+                
+                //userChosenAttributesAndValues=[];
 
                 var categoryTable=categoriesInfo[categoryid];
                 
@@ -2142,9 +2163,9 @@ h2.legend Page Notes
                 tagSelectionWithType(categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords, false);
                   
               }else{ //If the category doesn't have types
-
-                medium.tagSelection3(varTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
-
+                
+                //medium.tagSelection3(varTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
+                medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
                 return false;
               }
             }
@@ -2248,6 +2269,7 @@ h2.legend Page Notes
           titlediv.appendChild(document.createTextNode("Choose the tag to modify:"));
           titlediv.className="popup_title_div";
           menuDiv.appendChild(titlediv);
+
 
         //Create a menu
         for(i=0; i<els.length; i++){
@@ -2367,7 +2389,7 @@ h2.legend Page Notes
       var attrsHashBefore={};
       var attrsHash={};
 
-      if(Cookies.get('use_advanced_mode')==1){
+      if(attrs["mode"]=="1"){
         attrsHashBefore=categoryTypesHashAdv[parseInt(catId)];
         var key;
         for(key in attrsHashBefore){
@@ -2379,7 +2401,7 @@ h2.legend Page Notes
 
       //Loop through all attributes of the chosen category
       for (attrName in attrs){
-        if(attrName!='class' && attrName!='tagcode'){
+        if(attrName!='class' && attrName!='tagcode' && attrName!='mode'){
           label = document.createElement('label');
           label.setAttribute("for","value_"+attrName);
           label.setAttribute("class","popup_attribute_label");
