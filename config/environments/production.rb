@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  Rails.application.routes.default_url_options[:host] = 'fromthepage.com'
+  Rails.application.routes.default_url_options[:host] = '10.8.83.147'
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -11,6 +11,7 @@ Rails.application.configure do
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
+  #config.enable_dependency_loading = true # Nadya added from https://github.com/drapergem/draper/issues/773, but didn't fix NameError (uninitialized constant DocumentUpload::RAKE):  app/models/document_upload.rb:21:in `submit_process'  app/helpers/add_work_helper.rb:39:in `new_upload'
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
@@ -23,28 +24,29 @@ Rails.application.configure do
 
   # action mailer config -- required for password resets and the bulk uploader
     config.action_mailer.smtp_settings = {
-    :address   => "smtp.yourdomain.com",
+    :address   => "outlook.office365.com",
     :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
     :enable_starttls_auto => true, # detects and uses STARTTLS
-    :user_name => "XXXXX",
-    :password  => "XXXXX",
+    :user_name => "nokinina@eurac.edu",
+    :password  => "etoianadiushka",
     :authentication => 'login',
-    :domain => 'yourdomain.com', # your domain to identify your server when connecting
+    :domain => 'office365.com', # your domain to identify your server when connecting
   }
-  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_url_options =  { host: '10.8.83.147:3000' } #change this to match your server URL, i.e. www.fromthepage.com
   config.action_mailer.default_options
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
   
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  config.serve_static_assets = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
+  config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -60,7 +62,7 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -97,5 +99,8 @@ Rails.application.configure do
     # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
+  #config.enable_dependency_loading = true; I found it on a forum, but it didn't help.
+
+  RAKE = '/usr/bin/env rake'
 
 end

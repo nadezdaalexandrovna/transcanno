@@ -87,7 +87,7 @@
           .card*{'id'=>'page_source_text', 'contenteditable'=>'true'}
             = @page.source_text
 
-<div class="popupBody">
+<div class="popupBody" style="display:none;">
 <button type="button" class="hide_popup_small" onclick="hidePopupBody();">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -96,7 +96,7 @@
 </select>
 </div>
 
-<div class="popupBody2">
+<div class="popupBody2" style="display:none;">
 <button type="button" class="hide_popup_small" onclick="hidePopupBody2();">&#9932;</button>
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -106,7 +106,7 @@
 </div>
 
 
-<div class="popupBodyAdv">
+<div class="popupBodyAdv" style="display:none;">
 <button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv();">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -115,7 +115,7 @@
 </select>
 </div>
 
-<div class="popupBodyAdv2">
+<div class="popupBodyAdv2" style="display:none;">
 <button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv2();">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -124,7 +124,7 @@
 </select>
 </div>
 
-<div id="newDropdownDiv">
+<div id="newDropdownDiv" style="display:none;">
   <button type="button" class="hide_popup_new" title="Alt+R" onclick="hideNewDropdownDiv();">&#9932;</button>
   <div class="select_a_tag" id="select_a_tag"></div>
   <input id="user-type-input" type="text" placeholder="Type the new value" style="display:none;"></input>
@@ -133,13 +133,13 @@
   </select>
 </div>
 
-<div id="deletion_div">
+<div id="deletion_div" style="display:none;">
 </div>
 
-<div id="change_div">
+<div id="change_div" style="display:none;">
 </div>
 
-<div id="change_selected_div">
+<div id="change_selected_div" style="display:none;">
 </div>
 
 <div id="use_advanced_mode_div">
@@ -147,7 +147,7 @@
   =check_box_tag 'use_advanced_mode', @use_advanced_mode, (@use_advanced_mode=='1' ? 'checked' : nil)
 </div>
 
-<div id="changeHotkeysMenu" style="display: none;">
+<div id="changeHotkeysMenu" style="display:none;">
   <button type="button" class="hide_popup_changekeys" onclick="hideChangeKeysPopup();">&#9932;</button>
   <div id="changeHotkeysTitle">Change hot keys</div>  
   <div id="changeHotKeysInternal"></div>
@@ -351,7 +351,9 @@ h2.legend Page Notes
         userChosenAttributesAndValues,
         attrName,
         catHashLength,
-        coords;
+        coords,
+        seqAttrsTable,
+        attrHash;
 
     //Parse the transcription text to transform it into XML
     var l=document.getElementById("page_source_text");
@@ -367,10 +369,17 @@ h2.legend Page Notes
 
     //var allDocContent=doc.childNodes[0];
     var allDocContent=doc.childNodes[0].childNodes[1].childNodes[0];
+    console.log("allDocContent: "+allDocContent);
 
     var article=l;
+    console.log("article: "+article);
     var firstChild=article.firstChild;
-    firstChild.parentNode.replaceChild(allDocContent,firstChild);
+    console.log("firstChild: "+firstChild);
+    if(firstChild==null){
+      article.nodeValue=allDocContent;
+    }else{
+      firstChild.parentNode.replaceChild(allDocContent,firstChild);
+    }
 
     var closingElement=article.getElementsByTagName("closing")[0];
 
@@ -1432,7 +1441,10 @@ h2.legend Page Notes
         
       }
 
+      console.log("attrId: "+attrId);
       var categoryTypesHa=categorySeqHash[attrId];
+      console.log("categoryTypesHa: ");
+      console.log(categoryTypesHa);
       var attrName=categoryTypesHa['name'];
       var allow_user_input=categoryTypesHa['allow_user_input'];
       attrHash=categoryTypesHa['values'];
@@ -1552,7 +1564,6 @@ h2.legend Page Notes
 
     }
 
-    var seqAttrsTable,attrHash;
 
     function tagSeqsInitial(varTag,num, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected){
 
@@ -1923,7 +1934,7 @@ h2.legend Page Notes
           medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
         }
       }
-      return false;
+      //return false;
     }
 
     function tagButtonInAdvancedMode(categoryid,categoryTag,coords){
@@ -2180,7 +2191,7 @@ h2.legend Page Notes
 
       } // End if selection.isCollapsed
 
-      return false;
+      //return false;
     };
 
 
