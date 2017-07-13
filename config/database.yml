@@ -50,6 +50,6 @@ development:
 #
 production:
   <<: *default
-  database: transanno_production
-  username: transanno_production
+  database: newtest_prod
+  username: newtest_prod
   password: 33_Korovy
