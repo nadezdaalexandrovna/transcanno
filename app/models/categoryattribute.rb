@@ -1,5 +1,4 @@
 class Categoryattribute < ActiveRecord::Base
-
   belongs_to :category
   has_many :attributevalues, :through => :attributes_to_values
   has_many :attributes_to_values, :dependent => :delete_all

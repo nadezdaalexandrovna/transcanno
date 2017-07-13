@@ -52,6 +52,7 @@
                       =link_to 'Apply All Categories Changes', { :controller => 'category', :action => 'apply_all_styles', :collection_id => @collection.id, :category_id => category.id }
                       hr
                       =link_to 'Discard All Styles', { :controller => 'category', :action => 'discard_all_styles', :collection_id => @collection.id, :category_id => category.id }
+                      =link_to 'Delete All Categories', { :controller => 'category', :action => 'delete_all_categories', :collection_id => @collection.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete all the categories? After deleting you won\'t be able to recover them!' }
           dd
             -if category.articles.empty?
               p.acenter.fglight There are no subjects for the category selected

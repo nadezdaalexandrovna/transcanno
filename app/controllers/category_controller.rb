@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories]
 
   def edit
   end
@@ -390,12 +390,18 @@ class CategoryController < ApplicationController
           end
         end
         if forSql!=""
+          #Delete attributes that no longer have categories associated to them
+          sqlDa="DELETE attributes_to_values FROM attributes_to_values WHERE attributes_to_values.categoryattribute_id IN ("+forSql[0..-3]+");"
+          connection.execute(sqlDa)          
+
           sql="delete from categoryattributes where id in ("+forSql[0..-3]+");"
           connection.execute(sql)
-        end
-        #Delete attributes that no longer have categories associated to them
-        sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
-        connection.execute(sqlD)
+
+          #Delete attributes that no longer have categories associated to them
+          sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.id IN ("+forSql[0..-3]+");"
+          connection.execute(sqlD)
+        end        
+        
       end
       if params[:attribute]!=nil
         numberNews=0
@@ -523,7 +529,6 @@ class CategoryController < ApplicationController
     mediumOnmouseoverFunctions+="});"
     File.write('public/medium-tag-styles.css', styleInstructions)
     File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    File.write('app/assets/javascripts/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
     flash[:notice] = "Category changes have been applied."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
@@ -552,7 +557,51 @@ class CategoryController < ApplicationController
     sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
     connection.execute(sql2)
 
+    File.truncate('public/medium-tag-styles.css', 0)
+
     flash[:notice] = "Category has been deleted"
+    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+  end
+
+  def delete_all_categories
+    connection = ActiveRecord::Base.connection
+    #Category.destroy_all(collection_id: @collection.id)    
+
+    #Delete all the styles of this collection
+    sqlDs="DELETE categorystyles FROM categorystyles LEFT JOIN categories ON categories.id=categorystyles.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDs)
+
+    #Delete attributes_to_values of this collection
+    sqlDa="DELETE attributes_to_values FROM attributes_to_values INNER JOIN categoryattributes on attributes_to_values.categoryattribute_id=categoryattributes.id LEFT JOIN categories ON categories.id=categoryattributes.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)     
+
+    #Delete all the attributes of this collection
+    sqlDa="DELETE categoryattributes FROM categoryattributes LEFT JOIN categories ON categories.id=categoryattributes.category_id WHERE categories.id IS NULL OR categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)
+
+    #Delete all the scopes of this collection
+    sqlDa="DELETE categoryscopes FROM categoryscopes LEFT JOIN categories ON categories.id=categoryscopes.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)
+
+    sqlDs="DELETE categories FROM categories WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDs)
+
+    #Delete attributecats that no longer have categories associated to them
+    sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
+    connection.execute(sqlD)
+    
+    #Delete attribute values that no longer have attributes associated to them
+    sql="DELETE attributevalues FROM attributevalues LEFT JOIN attributes_to_values ON attributevalues.id=attributes_to_values.attributevalue_id WHERE attributes_to_values.attributevalue_id IS NULL"
+    connection.execute(sql)
+
+    sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+    connection.execute(sql2)
+
+    File.truncate('public/medium-tag-styles.css', 0)
+    File.truncate('public/my-medium-onmousedown-functions.js', 0)
+
+    anchor=nil
+    flash[:notice] = "All categories of this collection have been deleted."
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
 
