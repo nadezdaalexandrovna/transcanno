@@ -557,8 +557,6 @@ class CategoryController < ApplicationController
     sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
     connection.execute(sql2)
 
-    File.truncate('public/medium-tag-styles.css', 0)
-
     flash[:notice] = "Category has been deleted"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
@@ -596,9 +594,6 @@ class CategoryController < ApplicationController
 
     sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
     connection.execute(sql2)
-
-    File.truncate('public/medium-tag-styles.css', 0)
-    File.truncate('public/my-medium-onmousedown-functions.js', 0)
 
     anchor=nil
     flash[:notice] = "All categories of this collection have been deleted."
