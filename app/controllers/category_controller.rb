@@ -521,7 +521,7 @@ class CategoryController < ApplicationController
                                   '});'+"\n"
     end
     mediumOnmouseoverFunctions+="});"
-    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', styleInstructions)
+    File.write('public/medium-tag-styles.css', styleInstructions)
     File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
     File.write('app/assets/javascripts/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
     flash[:notice] = "Category changes have been applied."
