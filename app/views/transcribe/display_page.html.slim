@@ -312,8 +312,6 @@ h2.legend Page Notes
     //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
     var categoryTypesHashAdv=parseJsonData("categoryTypesDivAdv");
 
-    console.log("categoryTypesHashAdv: "+categoryTypesHashAdv);
-
     //Get the initial attributes' ids
     var initialAttrIds=parseJsonData("initialAttrIds");
 
@@ -369,12 +367,9 @@ h2.legend Page Notes
 
     //var allDocContent=doc.childNodes[0];
     var allDocContent=doc.childNodes[0].childNodes[1].childNodes[0];
-    console.log("allDocContent: "+allDocContent);
 
     var article=l;
-    console.log("article: "+article);
     var firstChild=article.firstChild;
-    console.log("firstChild: "+firstChild);
     if(firstChild==null){
       article.nodeValue=allDocContent;
     }else{
@@ -1273,22 +1268,24 @@ h2.legend Page Notes
                       numSeqAttr=0;
 
                       tagSeqs(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-
+                      return;
                     }else{ //If the chosen value doesn't have consequent attributes
  
                       if (numSeqAttr<(seqAttrsTable.length-1)){
                         tagSeqs(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                      }
-
-                      if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+                        return;
+                      }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
                         seqAttrsTable=seqAttrsPerLevel[level-1];
                         tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                      }else if (numSeqAttr==(seqAttrsTable.length-1)){
+                        return;
+                      }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr!=0){
                         if(level==1 || level==0){
                           tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                          return;
                         }else{
                           seqAttrsTable=seqAttrsPerLevel[level-1];
                           tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                          return;
                         }
                       }
                     }
@@ -1324,42 +1321,40 @@ h2.legend Page Notes
       var search;
       var regex;
 
-        $(textbox).off().on('change keyup', function(e) {
-          //If the user presses enter
-          if (e.which == 13) {
+      $(textbox).off().on('change keyup', function(e) {
+        //If the user presses enter
+        if (e.which == 13) {
             
-              $("#newDropdownDiv").hide();
-              $("#select-type-input").show();
-              $("#select-type-input")[0].value="";
-              $("#chosen-select-type").show();
-              $('#chosen-select-type').empty();
-              $('#chosen-select-type')[0].value="";
-              $('#user-type-input').hide();
-              document.getElementById('select_a_tag').innerHTML = "";
+          $("#newDropdownDiv").hide();
+          $("#select-type-input").show();
+          $("#select-type-input")[0].value="";
+          $("#chosen-select-type").show();
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
+          $('#user-type-input').hide();
+          document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
-              $(textbox).val('');
-                if (numSeqAttr<(seqAttrsTable.length-1)){
-                    tagSeqs(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                }
-
-                if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
-                  seqAttrsTable=seqAttrsPerLevel[level-1];
-                  tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                  if(level==1 || level==0){
-                    tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                }else{
-
-                  seqAttrsTable=seqAttrsPerLevel[level-1];
-                  tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                }
-              }
-                    
-            
+          userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
+          $(textbox).val('');
+          if (numSeqAttr<(seqAttrsTable.length-1)){
+            tagSeqs(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+            return;
+          }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+            seqAttrsTable=seqAttrsPerLevel[level-1];
+            tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+            return;
+          }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr!=0){
+            if(level==1 || level==0){
+              tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              return;
+            }else{
+              seqAttrsTable=seqAttrsPerLevel[level-1];
+              tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              return;
+            }
           }
+        }
       });
-      
     }
 
     //The user types the value of a category attribute
@@ -1389,11 +1384,11 @@ h2.legend Page Notes
               
               if (num<(initialAttrIds.length-1)){
                 tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-              }
-
-              if (num==(initialAttrIds.length-1)){
+                return;
+              }else if (num==(initialAttrIds.length-1)){
                 //addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
                 tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                return;
               }
             
           }
@@ -1411,125 +1406,122 @@ h2.legend Page Notes
         return;
       }else{
 
-        //We register the information for this level. This information will be used when going down
-        if(numSeqAttr!=-1){
-          numsSeqAttrPerLevel[level]=numSeqAttr;
-          seqAttrsPerLevel[level]=seqAttrsTable;
-        }
+      //When going up we register the information for this level. This information will be used when going down
+      if(numSeqAttr!=-1){
+        numsSeqAttrPerLevel[level]=numSeqAttr;
+        seqAttrsPerLevel[level]=seqAttrsTable;
+      }
       
-        var attrId;
-        if (numSeqAttr>-1){ //When going up
-          attrId=seqAttrsTable[numSeqAttr][0];
-        }else if(numSeqAttr==-1){ //When going down
-          //We take the registered number and take the following one
-          numSeqAttr=numsSeqAttrPerLevel[level]+1;
-          //And we register the number of the attribute we are going to use. It will be the last attribute used on this level
-          numsSeqAttrPerLevel[level]=numSeqAttr;
+      var attrId;
+      if (numSeqAttr>-1){ //When going up
+        attrId=seqAttrsTable[numSeqAttr][0];
+      }else if(numSeqAttr==-1){ //When going down
+        //We take the registered number and take the following one
+        numSeqAttr=numsSeqAttrPerLevel[level]+1;
+        //And we register the number of the attribute we are going to use. It will be the last attribute used on this level
+        numsSeqAttrPerLevel[level]=numSeqAttr;
 
-          seqAttrsTable=seqAttrsPerLevel[level];
+        seqAttrsTable=seqAttrsPerLevel[level];
 
-          //If the last attribute of this level was defined, we go down
-          if(numSeqAttr>=seqAttrsTable.length){
-            seqAttrsTable=seqAttrsPerLevel[level-1];
-            tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-            return;
-          }else{
-            attrId=seqAttrsTable[numSeqAttr][0];
-          }        
-        }
-
-        console.log("attrId: "+attrId);
-        var categoryTypesHa=categorySeqHash[attrId];
-        console.log("categoryTypesHa: ");
-        console.log(categoryTypesHa);
-        var attrName=categoryTypesHa['name'];
-        var allow_user_input=categoryTypesHa['allow_user_input'];
-        attrHash=categoryTypesHa['values'];
-        var categoryTypesTable=Object.keys(attrHash);
-      
-        var i;
-
-        //If an attribute has no predefined values and no user input possibility, give an error message
-        if(categoryTypesTable.length==0 && allow_user_input==0){
-          alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
+        //If the last attribute of this level was defined, we go down
+        if(numSeqAttr>=seqAttrsTable.length){
+          seqAttrsTable=seqAttrsPerLevel[level-1];
+          tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          return;
         }else{
-          //If there are predefined values for this attribute
-          if(categoryTypesTable.length>0){
-            //Create the new dropdown menu for category types
-            newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+          attrId=seqAttrsTable[numSeqAttr][0];
+        }        
+      }
 
-            for(i=0; i< categoryTypesTable.length; i++){
-              //Add an option for the category types dropdown menu
-              addAnOption(newDropdown,categoryTypesTable[i]);
+      var categoryTypesHa=categorySeqHash[attrId];
+      var attrName=categoryTypesHa['name'];
+      var allow_user_input=categoryTypesHa['allow_user_input'];
+      attrHash=categoryTypesHa['values'];
+      var categoryTypesTable=Object.keys(attrHash);
+      
+      var i;
+
+      //If an attribute has no predefined values and no user input possibility, give an error message
+      if(categoryTypesTable.length==0 && allow_user_input==0){
+        alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
+      }else{
+        //If there are predefined values for this attribute
+        if(categoryTypesTable.length>0){
+          //Create the new dropdown menu for category types
+          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+
+          for(i=0; i< categoryTypesTable.length; i++){
+            //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
                     
-              if(i==(categoryTypesTable.length-1)){
-                if(onButton){
-                  $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
-                }else{
-                  $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
-                }
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton){
+                $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+              }else{
+                $("#newDropdownDiv").css({'top':coords.y,'left':coords.x,'right':'', 'position':'absolute'});
+              }
             
-                $("#newDropdownDiv").show();
-                $('#select-type-input').show();
-                $("#select-type-input")[0].value="";
-                $('#select-type-input').focus();
-                $('#chosen-select-type')[0].value="";
-                $("#chosen-select-type").show();
+              $("#newDropdownDiv").show();
+              $('#select-type-input').show();
+              $("#select-type-input")[0].value="";
+              $('#select-type-input').focus();
+              $('#chosen-select-type')[0].value="";
+              $("#chosen-select-type").show();
 
-                if(allow_user_input==1){ //If the user can enter a new value for this attribute          
-                  $('#user-type-input').show();
-                  jQuery.fn.userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                }
+              if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+                $('#user-type-input').show();
+                jQuery.fn.userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                return;
+              }
 
-                $('#chosen-select-type').filterByTextAdvanced(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName,attrHash, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              $('#chosen-select-type').filterByTextAdvanced(level,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName,attrHash, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                       
-                $("#chosen-select-type").off().change(attrName,function(event3){                        
-                  document.getElementById('select_a_tag').innerHTML = "";                      
-                  if(event3.target == this){
-                    type=$(this).val();
-                    if(type!=null && type!=''){
-                      newType=type;
-                      type='';
+              $("#chosen-select-type").off().change(attrName,function(event3){                       
+                document.getElementById('select_a_tag').innerHTML = "";                      
+                if(event3.target == this){
+                  type=$(this).val();
+                  if(type!=null && type!=''){
+                    newType=type;
+                    type='';
 
-                      userChosenAttributesAndValues.push([attrName,newType]);
+                    userChosenAttributesAndValues.push([attrName,newType]);
                             
-                      $("#newDropdownDiv").hide();
-                      $('#chosen-select-type').empty();
-                      $('#chosen-select-type')[0].value="";
+                    $("#newDropdownDiv").hide();
+                    $('#chosen-select-type').empty();
+                    $('#chosen-select-type')[0].value="";
 
-                      //If the chosen value has consequent attributes
-                      if(attrHash[newType].length>0){
+                    //If the chosen value has consequent attributes
+                    if(attrHash[newType].length>0){
+                      seqAttrsTable=attrHash[newType];
+                      numSeqAttr=0;
 
-                        seqAttrsTable=attrHash[newType];
-                        numSeqAttr=0;
+                      tagSeqs(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                      return;
 
-                        tagSeqs(level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                        return;
-
-                      }else{ //If the chosen value doesn't have consequent attributes
+                    }else{ //If the chosen value doesn't have consequent attributes
  
-                        if (numSeqAttr<(seqAttrsTable.length-1)){
-                          tagSeqs(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                      if (numSeqAttr<(seqAttrsTable.length-1)){
+                        tagSeqs(level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                        return;
+                      }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+                        seqAttrsTable=seqAttrsPerLevel[level-1];
+                        tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                        return;
+                      }else if (numSeqAttr==(seqAttrsTable.length-1)){
+                        if(level==1 || level==0){
+                          tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                           return;
-                        }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+                        }else{
                           seqAttrsTable=seqAttrsPerLevel[level-1];
                           tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                           return;
-                        }else if (numSeqAttr==(seqAttrsTable.length-1)){
-                          if(level==1 || level==0){
-                            tagSeqsInitial(varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                            return;
-                          }else{
-                            seqAttrsTable=seqAttrsPerLevel[level-1];
-                            tagSeqs(level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                            return;
-                          }
                         }
-                      }         
-                    }
-                  }     
-                });
-              }
+                      }
+                    }         
+                  }
+                }     
+              });
+            }
           }
         }else{ //If there are no predefined values for this attribute
           if(allow_user_input==1){ //If the user can enter a new value for this attribute
