@@ -78,6 +78,39 @@ class CollectionController < ApplicationController
   end
 
   def delete
+    connection = ActiveRecord::Base.connection
+    #Category.destroy_all(collection_id: @collection.id)    
+
+    #Delete all the styles of this collection
+    sqlDs="DELETE categorystyles FROM categorystyles LEFT JOIN categories ON categories.id=categorystyles.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDs)
+
+    #Delete attributes_to_values of this collection
+    sqlDa="DELETE attributes_to_values FROM attributes_to_values INNER JOIN categoryattributes on attributes_to_values.categoryattribute_id=categoryattributes.id LEFT JOIN categories ON categories.id=categoryattributes.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)     
+
+    #Delete all the attributes of this collection
+    sqlDa="DELETE categoryattributes FROM categoryattributes LEFT JOIN categories ON categories.id=categoryattributes.category_id WHERE categories.id IS NULL OR categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)
+
+    #Delete all the scopes of this collection
+    sqlDa="DELETE categoryscopes FROM categoryscopes LEFT JOIN categories ON categories.id=categoryscopes.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDa)
+
+    sqlDs="DELETE categories FROM categories WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDs)
+
+    #Delete attributecats that no longer have categories associated to them
+    sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
+    connection.execute(sqlD)
+    
+    #Delete attribute values that no longer have attributes associated to them
+    sql="DELETE attributevalues FROM attributevalues LEFT JOIN attributes_to_values ON attributevalues.id=attributes_to_values.attributevalue_id WHERE attributes_to_values.attributevalue_id IS NULL"
+    connection.execute(sql)
+
+    sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+    connection.execute(sql2)
+    
     @collection.destroy
     redirect_to dashboard_owner_path
   end

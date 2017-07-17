@@ -25,11 +25,11 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   create_table "article_versions", force: true do |t|
     t.string   "title"
-    t.text     "source_text", limit: 16777215
-    t.text     "xml_text",    limit: 16777215
+    t.text     "source_text"
+    t.text     "xml_text"
     t.integer  "user_id"
     t.integer  "article_id"
-    t.integer  "version",                      default: 0
+    t.integer  "version",     default: 0
     t.datetime "created_on"
   end
 
@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
-    t.text     "source_text",   limit: 16777215
+    t.text     "source_text"
     t.datetime "created_on"
-    t.integer  "lock_version",                   default: 0
-    t.text     "xml_text",      limit: 16777215
+    t.integer  "lock_version",  default: 0
+    t.text     "xml_text"
     t.string   "graph_image"
     t.integer  "collection_id"
   end
@@ -53,6 +53,28 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.integer "category_id"
   end
 
+  create_table "attributecats", force: true do |t|
+    t.string "name", null: false
+  end
+
+  add_index "attributecats", ["name"], name: "name", unique: true, using: :btree
+
+  create_table "attributes_to_values", force: true do |t|
+    t.integer "categoryattribute_id",          null: false
+    t.integer "attributevalue_id",             null: false
+    t.integer "valuestoattributesrelation_id"
+  end
+
+  add_index "attributes_to_values", ["attributevalue_id"], name: "attributevalue_id", using: :btree
+  add_index "attributes_to_values", ["categoryattribute_id"], name: "categoryattribute_id", using: :btree
+  add_index "attributes_to_values", ["valuestoattributesrelation_id"], name: "valuestoattributesrelation_id", using: :btree
+
+  create_table "attributevalues", force: true do |t|
+    t.string "value", null: false
+  end
+
+  add_index "attributevalues", ["value"], name: "value", unique: true, using: :btree
+
   create_table "categories", force: true do |t|
     t.string   "title"
     t.integer  "parent_id"
@@ -62,6 +84,33 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   add_index "categories", ["collection_id"], name: "index_categories_on_collection_id", using: :btree
   add_index "categories", ["parent_id"], name: "index_categories_on_parent_id", using: :btree
+
+  create_table "categoryattributes", force: true do |t|
+    t.integer "category_id",                                null: false
+    t.integer "attributecat_id",                            null: false
+    t.boolean "allow_user_input"
+    t.integer "mode",             limit: 1,                 null: false
+    t.boolean "initial",                    default: false, null: false
+  end
+
+  add_index "categoryattributes", ["attributecat_id"], name: "attributecat_id", using: :btree
+  add_index "categoryattributes", ["category_id", "attributecat_id"], name: "UniqueAttrPercategory", unique: true, using: :btree
+
+  create_table "categoryscopes", force: true do |t|
+    t.integer "category_id",                       null: false
+    t.integer "mode",        limit: 1, default: 2, null: false
+  end
+
+  add_index "categoryscopes", ["category_id"], name: "category_id", unique: true, using: :btree
+
+  create_table "categorystyles", force: true do |t|
+    t.string  "colour"
+    t.string  "textdecoration"
+    t.string  "fontstyle"
+    t.integer "category_id",    null: false
+  end
+
+  add_index "categorystyles", ["category_id"], name: "category_id", using: :btree
 
   create_table "clientperf_results", force: true do |t|
     t.integer  "clientperf_uri_id"
@@ -91,12 +140,12 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",               limit: 16777215
+    t.text     "intro_block"
     t.string   "footer_block",              limit: 2000
-    t.boolean  "restricted",                                 default: false
+    t.boolean  "restricted",                             default: false
     t.string   "picture"
-    t.boolean  "supports_document_sets",                     default: false
-    t.boolean  "subjects_disabled",                          default: false
+    t.boolean  "supports_document_sets",                 default: false
+    t.boolean  "subjects_disabled",                      default: false
     t.text     "transcription_conventions"
   end
 
@@ -235,7 +284,7 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   create_table "notes", force: true do |t|
     t.string   "title"
-    t.text     "body",          limit: 16777215
+    t.text     "body"
     t.integer  "user_id"
     t.integer  "collection_id"
     t.integer  "work_id"
@@ -328,7 +377,7 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.string   "view"
     t.string   "tag"
     t.string   "description"
-    t.text     "html",        limit: 16777215
+    t.text     "html"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -337,12 +386,12 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   create_table "page_versions", force: true do |t|
     t.string   "title"
-    t.text     "transcription",      limit: 16777215
-    t.text     "xml_transcription",  limit: 16777215
+    t.text     "transcription"
+    t.text     "xml_transcription"
     t.integer  "user_id"
     t.integer  "page_id"
-    t.integer  "work_version",                        default: 0
-    t.integer  "page_version",                        default: 0
+    t.integer  "work_version",       default: 0
+    t.integer  "page_version",       default: 0
     t.datetime "created_on"
     t.text     "source_translation"
     t.text     "xml_translation"
@@ -353,7 +402,7 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   create_table "pages", force: true do |t|
     t.string   "title"
-    t.text     "source_text",        limit: 16777215
+    t.text     "source_text"
     t.string   "base_image"
     t.integer  "base_width"
     t.integer  "base_height"
@@ -361,8 +410,8 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",                        default: 0
-    t.text     "xml_text",           limit: 16777215
+    t.integer  "lock_version",       default: 0
+    t.text     "xml_text"
     t.integer  "page_version_id"
     t.string   "status"
     t.text     "source_translation"
@@ -440,8 +489,8 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "session_id",                  null: false
-    t.text     "data",       limit: 16777215
+    t.string   "session_id", null: false
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -527,6 +576,14 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   add_index "users", ["login"], name: "index_users_on_login", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "valuestoattributesrelations", force: true do |t|
+    t.integer "attributevalue_id",    null: false
+    t.string  "consequent_attr_name", null: false
+    t.integer "collection_id",        null: false
+  end
+
+  add_index "valuestoattributesrelations", ["collection_id"], name: "collection_id", using: :btree
+
   create_table "work_statistics", force: true do |t|
     t.integer  "work_id"
     t.integer  "transcribed_pages"
@@ -549,19 +606,19 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.string   "description",               limit: 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                           default: false
-    t.integer  "transcription_version",                      default: 0
-    t.text     "physical_description",      limit: 16777215
-    t.text     "document_history",          limit: 16777215
-    t.text     "permission_description",    limit: 16777215
+    t.boolean  "restrict_scribes",                       default: false
+    t.integer  "transcription_version",                  default: 0
+    t.text     "physical_description"
+    t.text     "document_history"
+    t.text     "permission_description"
     t.string   "location_of_composition"
     t.string   "author"
-    t.text     "transcription_conventions", limit: 16777215
+    t.text     "transcription_conventions"
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                    default: false
-    t.boolean  "supports_translation",                       default: false
+    t.boolean  "scribes_can_edit_titles",                default: false
+    t.boolean  "supports_translation",                   default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                       default: true
+    t.boolean  "pages_are_meaningful",                   default: true
     t.boolean  "ocr_correction"
   end
 

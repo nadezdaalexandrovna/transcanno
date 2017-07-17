@@ -1,0 +1,786 @@
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+** Invoke fromthepage:process_document_upload (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute fromthepage:process_document_upload
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+....."update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+.F..F.F.F..........F"update_statistic start"
+"update_statistic finish"
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+...........F..[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute fromthepage:process_tex_figures
+FFFFFFF"update_statistic start"
+"update_statistic finish"
+/usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+"update_statistic start"
+"update_statistic finish"
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+F."update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+.** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute fromthepage:process_tex_figures
+"update_statistic start"
+"update_statistic finish"
+.[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+F** Execute fromthepage:process_tex_figures
+"update_statistic start"
+"update_statistic finish"
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+F..F"update_statistic start"
+"update_statistic finish"
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+"update_statistic start"
+"update_statistic finish"
+.[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+.** Execute fromthepage:process_tex_figures
+."update_statistic start"
+"update_statistic finish"
+.F[DEPRECATION] requiring "RMagick" is deprecated. Use "rmagick" instead
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+.** Execute fromthepage:process_tex_figures
+..........F...F....."update_statistic start"
+"update_statistic finish"
+.."update_statistic start"
+"update_statistic finish"
+....
+
+Failures:
+
+  1) IA import actions tests ocr correction
+     Failure/Error: page.fill_in 'page_source_text', with: "Test OCR Correction"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/archive_import_spec.rb:70:in `block (2 levels) in <top (required)>'
+
+  2) disable subject linking checks collection level subject items
+     Failure/Error: user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
+
+     ActiveRecord::StatementInvalid:
+       Mysql2::Error: Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT: SELECT DISTINCT `deeds`.`user_id` FROM `deeds`  WHERE `deeds`.`collection_id` = 1 AND (created_at >= '2017-07-10 00:00:00' AND created_at <= '2017-07-17 23:59:59')  ORDER BY created_at DESC
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `block in execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:373:in `block in log'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:367:in `log'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:228:in `execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:232:in `exec_query'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:240:in `select'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:68:in `block in select_all'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:83:in `cache_sql'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:68:in `select_all'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/calculations.rb:172:in `pluck'
+     # ./app/helpers/contributor_helper.rb:37:in `new_contributors'
+     # ./app/controllers/collection_controller.rb:156:in `contributors'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:189:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rendering.rb:10:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:113:in `call'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:229:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:86:in `run_callbacks'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:19:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rescue.rb:29:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `block in instrument'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `instrument'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/params_wrapper.rb:250:in `process_action'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:136:in `process'
+     # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/rendering.rb:30:in `process'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:196:in `dispatch'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:232:in `block in action'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:82:in `dispatch'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:50:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:71:in `block in call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `each'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:678:in `call'
+     # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+     # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+     # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:35:in `block in call'
+     # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `catch'
+     # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/etag.rb:23:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/conditionalget.rb:25:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/head.rb:11:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/flash.rb:254:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:225:in `context'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:220:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/cookies.rb:560:in `call'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/query_cache.rb:36:in `call'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:621:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:82:in `run_callbacks'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-contrib-1.4.0/lib/rack/contrib/response_headers.rb:17:in `call'
+     # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/headers.rb:16:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+     # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:38:in `call_app'
+     # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `block in call'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `block in tagged'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:26:in `tagged'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `tagged'
+     # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/request_id.rb:21:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/methodoverride.rb:21:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/runtime.rb:17:in `call'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+     # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/static.rb:64:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/sendfile.rb:112:in `call'
+     # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/engine.rb:514:in `call'
+     # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/application.rb:144:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/builder.rb:138:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:65:in `block in call'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `each'
+     # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `call'
+     # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/mock_session.rb:30:in `request'
+     # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:244:in `process_request'
+     # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:58:in `get'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:61:in `process'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:36:in `process_and_follow_redirects'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:32:in `follow'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/node.rb:58:in `click'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `block in click'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `click'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:40:in `click_link'
+     # ./spec/features/disable_subjects_spec.rb:50:in `block (2 levels) in <top (required)>'
+     # ------------------
+     # --- Caused by: ---
+     # Mysql2::Error:
+     #   Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT
+     #   /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+
+  3) disable subject linking checks page level subject items
+     Failure/Error: page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/disable_subjects_spec.rb:77:in `block (2 levels) in <top (required)>'
+
+  4) disable subject linking checks links work when enabled
+     Failure/Error: expect(page).to have_selector('a', text: 'Texas')
+       expected to find css "a" with text "Texas" but there were no matches. Also found "", "Dashboard", "Collections", "FAQ", "Owner Dashboard", "Collaborator Dashboard", "Your Profile", "Sign Out", "CS Pierce", "MS_844", "", "", "Overview", "Transcribe", "Translate", "Versions", "Settings", "Show Translation", "help transcribe", "mark the page blank", "FromThePage", "About", "Terms & Conditions", "Privacy Policy", "Contact Us", which matched the selector but not all filters.
+     # ./spec/features/disable_subjects_spec.rb:104:in `block (2 levels) in <top (required)>'
+
+  5) editor actions transcribes a page
+     Failure/Error: page.fill_in 'page_source_text', with: "Test Preview"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/editor_actions_spec.rb:92:in `block (2 levels) in <top (required)>'
+
+  6) guest user actions tests guest account transcription
+     Failure/Error: page.fill_in 'page_source_text', with: "Guest Transcription 1"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/guest_spec.rb:37:in `block (2 levels) in <top (required)>'
+
+  7) subject linking deletes a subject
+     Failure/Error: page.fill_in 'page_source_text', with: ""
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/linking_spec.rb:61:in `block (2 levels) in <top (required)>'
+
+  8) subject linking links a categorized subject
+     Failure/Error: page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/linking_spec.rb:78:in `block (2 levels) in <top (required)>'
+
+  9) subject linking enters a bad link - no closing braces
+     Failure/Error: page.fill_in 'page_source_text', with: "[[Places|Texas"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/linking_spec.rb:104:in `block (2 levels) in <top (required)>'
+
+  10) subject linking enters a bad link - no text
+      Failure/Error: page.fill_in 'page_source_text', with: "[[ ]]"
+
+      Capybara::ElementNotFound:
+        Unable to find field "page_source_text"
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # ./spec/features/linking_spec.rb:119:in `block (2 levels) in <top (required)>'
+
+  11) subject linking enters a bad link - single starting bracket
+      Failure/Error: page.fill_in 'page_source_text', with: "[[Texas[?]]"
+
+      Capybara::ElementNotFound:
+        Unable to find field "page_source_text"
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # ./spec/features/linking_spec.rb:140:in `block (2 levels) in <top (required)>'
+
+  12) subject linking enters a bad link - triple brackets
+      Failure/Error: page.fill_in 'page_source_text', with: "[[[Texas]]]"
+
+      Capybara::ElementNotFound:
+        Unable to find field "page_source_text"
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # ./spec/features/linking_spec.rb:154:in `block (2 levels) in <top (required)>'
+
+  13) subject linking creates a link that includes quotes
+      Failure/Error: page.fill_in 'page_source_text', with: "[[Places|\"Houston\"]]"
+
+      Capybara::ElementNotFound:
+        Unable to find field "page_source_text"
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # ./spec/features/linking_spec.rb:168:in `block (2 levels) in <top (required)>'
+
+  14) subject linking tests autolinking in transcription
+      Failure/Error: - @categories.each do |c|
+
+      ActionView::Template::Error:
+        undefined method `each' for nil:NilClass
+      # ./app/views/transcribe/display_page.html.slim:94:in `_app_views_transcribe_display_page_html_slim__4491576880789620341_41111520'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/template.rb:145:in `block in render'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:161:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/template.rb:339:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/template.rb:143:in `render'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/template_renderer.rb:55:in `block (2 levels) in render_template'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/abstract_renderer.rb:38:in `block in instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `block in instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/abstract_renderer.rb:38:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/template_renderer.rb:54:in `block in render_template'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/template_renderer.rb:62:in `render_with_layout'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/template_renderer.rb:53:in `render_template'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/template_renderer.rb:17:in `render'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/renderer.rb:42:in `render_template'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/renderer/renderer.rb:23:in `render'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/rendering.rb:99:in `_render_template'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/streaming.rb:217:in `_render_template'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/rendering.rb:82:in `render_to_body'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rendering.rb:32:in `render_to_body'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/renderers.rb:32:in `render_to_body'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/rendering.rb:25:in `render'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rendering.rb:16:in `render'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:41:in `block (2 levels) in render'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/core_ext/benchmark.rb:12:in `block in ms'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/core_ext/benchmark.rb:12:in `ms'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:41:in `block in render'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:84:in `cleanup_view_runtime'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/railties/controller_runtime.rb:25:in `cleanup_view_runtime'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:40:in `render'
+      # ./app/controllers/transcribe_controller.rb:233:in `save_transcription'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:189:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rendering.rb:10:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:113:in `call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:229:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:86:in `run_callbacks'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:19:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rescue.rb:29:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `block in instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/params_wrapper.rb:250:in `process_action'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:136:in `process'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/rendering.rb:30:in `process'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:196:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:232:in `block in action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:82:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:50:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:71:in `block in call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `each'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:678:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:35:in `block in call'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `catch'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/etag.rb:23:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/conditionalget.rb:35:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/head.rb:11:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/flash.rb:254:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:225:in `context'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:220:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/cookies.rb:560:in `call'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/query_cache.rb:36:in `call'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:621:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:82:in `run_callbacks'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-contrib-1.4.0/lib/rack/contrib/response_headers.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/headers.rb:16:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:38:in `call_app'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `block in call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `block in tagged'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:26:in `tagged'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `tagged'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/request_id.rb:21:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/methodoverride.rb:21:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/runtime.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/static.rb:64:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/sendfile.rb:112:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/engine.rb:514:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/application.rb:144:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/builder.rb:138:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:65:in `block in call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `each'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/mock_session.rb:30:in `request'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:244:in `process_request'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:67:in `post'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:61:in `process'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:36:in `process_and_follow_redirects'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:27:in `submit'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/form.rb:79:in `submit'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/node.rb:62:in `click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `block in click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:57:in `click_button'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/dsl.rb:52:in `block (2 levels) in <module:DSL>'
+      # ./spec/features/linking_spec.rb:200:in `block (2 levels) in <top (required)>'
+      # ------------------
+      # --- Caused by: ---
+      # NoMethodError:
+      #   undefined method `each' for nil:NilClass
+      #   ./app/views/transcribe/display_page.html.slim:94:in `_app_views_transcribe_display_page_html_slim__4491576880789620341_41111520'
+
+  15) needs review marks pages as needing review
+      Failure/Error: page.fill_in 'page_source_text', with: "Review Text"
+
+      Capybara::ElementNotFound:
+        Unable to find field "page_source_text"
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+      # ./spec/features/needs_review_spec.rb:75:in `block (2 levels) in <top (required)>'
+
+  16) needs review filters list of review pages
+      Failure/Error: expect(page.find('.maincol')).to have_selector('a', text: @page4.title)
+        expected to find css "a" with text "4" but there were no matches
+      # ./spec/features/needs_review_spec.rb:113:in `block (2 levels) in <top (required)>'
+
+  17) needs review marks pages as no longer needing review
+      Failure/Error: expect(@page4.status).to eq ('review')
+
+        expected: "review"
+             got: nil
+
+        (compared using ==)
+      # ./spec/features/needs_review_spec.rb:200:in `block (2 levels) in <top (required)>'
+
+  18) owner actions checks for subject in a new collection
+      Failure/Error: expect(page).to have_content("Places")
+        expected to find text "Places" in "DashboardCollectionsFAQSigned In AsMargaretOwner DashboardCollaborator DashboardYour ProfileSign OutNew Test CollectionOverviewStatisticsSubjectsSettingsExportCollaboratorsAdd WorkNo CategoriesThere are no subject categories in the collection.Create the first category you'll use to group subjects.© 2017 FromThePage. All rights reserved.AboutTerms & ConditionsPrivacy PolicyContact Us"
+      # ./spec/features/owner_actions_spec.rb:59:in `block (2 levels) in <top (required)>'
+
+  19) owner views looks at collaborators tab
+      Failure/Error: user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
+
+      ActiveRecord::StatementInvalid:
+        Mysql2::Error: Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT: SELECT DISTINCT `deeds`.`user_id` FROM `deeds`  WHERE `deeds`.`collection_id` = 1 AND (created_at >= '2017-07-10 00:00:00' AND created_at <= '2017-07-17 23:59:59')  ORDER BY created_at DESC
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `block in execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:373:in `block in log'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:367:in `log'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:228:in `execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:232:in `exec_query'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:240:in `select'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:68:in `block in select_all'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:83:in `cache_sql'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:68:in `select_all'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/calculations.rb:172:in `pluck'
+      # ./app/helpers/contributor_helper.rb:37:in `new_contributors'
+      # ./app/controllers/collection_controller.rb:156:in `contributors'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:189:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rendering.rb:10:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:20:in `block in process_action'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:113:in `call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:229:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:166:in `block in halting'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:149:in `block in halting_and_conditional'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:86:in `run_callbacks'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/callbacks.rb:19:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rescue.rb:29:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `block in instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications.rb:159:in `instrument'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/params_wrapper.rb:250:in `process_action'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/abstract_controller/base.rb:136:in `process'
+      # /var/lib/gems/2.3.0/gems/actionview-4.1.2/lib/action_view/rendering.rb:30:in `process'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:196:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_controller/metal.rb:232:in `block in action'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:82:in `dispatch'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:50:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:71:in `block in call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `each'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/journey/router.rb:59:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/routing/route_set.rb:678:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:35:in `block in call'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `catch'
+      # /var/lib/gems/2.3.0/gems/warden-1.2.6/lib/warden/manager.rb:34:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/etag.rb:23:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/conditionalget.rb:25:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/head.rb:11:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/flash.rb:254:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:225:in `context'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/session/abstract/id.rb:220:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/cookies.rb:560:in `call'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/query_cache.rb:36:in `call'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:621:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/callbacks.rb:82:in `run_callbacks'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-contrib-1.4.0/lib/rack/contrib/response_headers.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/meta_request-0.4.0/lib/meta_request/middlewares/headers.rb:16:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:38:in `call_app'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `block in call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `block in tagged'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:26:in `tagged'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/tagged_logging.rb:68:in `tagged'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/rack/logger.rb:20:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/request_id.rb:21:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/methodoverride.rb:21:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/runtime.rb:17:in `call'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/cache/strategy/local_cache_middleware.rb:26:in `call'
+      # /var/lib/gems/2.3.0/gems/actionpack-4.1.2/lib/action_dispatch/middleware/static.rb:64:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/sendfile.rb:112:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/engine.rb:514:in `call'
+      # /var/lib/gems/2.3.0/gems/railties-4.1.2/lib/rails/application.rb:144:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/builder.rb:138:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:65:in `block in call'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `each'
+      # /var/lib/gems/2.3.0/gems/rack-1.5.5/lib/rack/urlmap.rb:50:in `call'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/mock_session.rb:30:in `request'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:244:in `process_request'
+      # /var/lib/gems/2.3.0/gems/rack-test-0.6.3/lib/rack/test.rb:58:in `get'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:61:in `process'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:36:in `process_and_follow_redirects'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/browser.rb:32:in `follow'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/rack_test/node.rb:58:in `click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `block in click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:135:in `click'
+      # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:40:in `click_link'
+      # ./spec/features/owner_view_spec.rb:69:in `block (2 levels) in <top (required)>'
+      # ------------------
+      # --- Caused by: ---
+      # Mysql2::Error:
+      #   Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT
+      #   /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+
+  20) different user role logins signs in an editor with activity
+      Failure/Error: expect(page).to have_content(collections.first.title)
+
+      ActiveRecord::StatementInvalid:
+        Mysql2::Error: Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT: SELECT  DISTINCT `collections`.`id` FROM `collections` LEFT OUTER JOIN `deeds` ON `deeds`.`collection_id` = `collections`.`id` WHERE `collections`.`id` IN (3, 1, 2)  ORDER BY deeds.created_at DESC LIMIT 1
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `block in execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:373:in `block in log'
+      # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:367:in `log'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:228:in `execute'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:232:in `exec_query'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:240:in `select'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:382:in `limited_ids_for'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:369:in `apply_join_dependency'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:330:in `find_with_associations'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:604:in `exec_queries'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:486:in `load'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:231:in `to_a'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:467:in `find_nth_with_limit'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:459:in `find_nth'
+      # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:132:in `first'
+      # ./spec/features/role_view_spec.rb:76:in `block (2 levels) in <top (required)>'
+      # ------------------
+      # --- Caused by: ---
+      # Mysql2::Error:
+      #   Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT
+      #   /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+
+Finished in 2 minutes 29 seconds (files took 2.16 seconds to load)
+96 examples, 20 failures
+
+Failed examples:
+
+rspec ./spec/features/archive_import_spec.rb:62 # IA import actions tests ocr correction
+rspec ./spec/features/disable_subjects_spec.rb:28 # disable subject linking checks collection level subject items
+rspec ./spec/features/disable_subjects_spec.rb:70 # disable subject linking checks page level subject items
+rspec ./spec/features/disable_subjects_spec.rb:98 # disable subject linking checks links work when enabled
+rspec ./spec/features/editor_actions_spec.rb:88 # editor actions transcribes a page
+rspec ./spec/features/guest_spec.rb:29 # guest user actions tests guest account transcription
+rspec ./spec/features/linking_spec.rb:48 # subject linking deletes a subject
+rspec ./spec/features/linking_spec.rb:74 # subject linking links a categorized subject
+rspec ./spec/features/linking_spec.rb:100 # subject linking enters a bad link - no closing braces
+rspec ./spec/features/linking_spec.rb:114 # subject linking enters a bad link - no text
+rspec ./spec/features/linking_spec.rb:136 # subject linking enters a bad link - single starting bracket
+rspec ./spec/features/linking_spec.rb:150 # subject linking enters a bad link - triple brackets
+rspec ./spec/features/linking_spec.rb:164 # subject linking creates a link that includes quotes
+rspec ./spec/features/linking_spec.rb:192 # subject linking tests autolinking in transcription
+rspec ./spec/features/needs_review_spec.rb:67 # needs review marks pages as needing review
+rspec ./spec/features/needs_review_spec.rb:104 # needs review filters list of review pages
+rspec ./spec/features/needs_review_spec.rb:197 # needs review marks pages as no longer needing review
+rspec ./spec/features/owner_actions_spec.rb:54 # owner actions checks for subject in a new collection
+rspec ./spec/features/owner_view_spec.rb:67 # owner views looks at collaborators tab
+rspec ./spec/features/role_view_spec.rb:63 # different user role logins signs in an editor with activity
+
