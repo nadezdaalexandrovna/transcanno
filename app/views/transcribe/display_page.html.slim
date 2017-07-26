@@ -2,7 +2,7 @@
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
-=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class, :onsubmit=>'return AddMediumValue()' }) do |f|
+=form_for(@page, :remote=> true, :url => { :action => 'save_transcription'}, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   <input type="hidden" name="page[source_text]"/>
   <input type="hidden" name="page[use_advanced_mode]"/>
@@ -87,8 +87,9 @@
           .card*{'id'=>'page_source_text', 'contenteditable'=>'true'}
             = @page.source_text
 
-<div class="popupBody" style="display:none;">
-<button type="button" class="hide_popup_small" onclick="hidePopupBody();">&#9932;</button>
+<div class="popupBody" id="popupBody" style="display:none;">
+<!--<button type="button" class="hide_popup_small" id="hidePopupBody" onclick="hidePopupBody();">&#9932;</button>-->
+<button type="button" class="hide_popup_small" id="hidePopupBody">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
@@ -96,8 +97,9 @@
 </select>
 </div>
 
-<div class="popupBody2" style="display:none;">
-<button type="button" class="hide_popup_small" onclick="hidePopupBody2();">&#9932;</button>
+<div class="popupBody2" id="popupBody2" style="display:none;">
+<!--<button type="button" class="hide_popup_small" id="hidePopupBody2" onclick="hidePopupBody2();">&#9932;</button>-->
+<button type="button" class="hide_popup_small" id="hidePopupBody2">&#9932;</button>
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categories.each do |c|
@@ -106,8 +108,9 @@
 </div>
 
 
-<div class="popupBodyAdv" style="display:none;">
-<button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv();">&#9932;</button>
+<div class="popupBodyAdv" id="popupBodyAdv" style="display:none;">
+<!--<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv" onclick="hidePopupBodyAdv();">&#9932;</button>-->
+<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -115,8 +118,9 @@
 </select>
 </div>
 
-<div class="popupBodyAdv2" style="display:none;">
-<button type="button" class="hide_popup_small" title="Alt+R" onclick="hidePopupBodyAdv2();">&#9932;</button>
+<div class="popupBodyAdv2" id="popupBodyAdv2" style="display:none;">
+<!--<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv2" onclick="hidePopupBodyAdv2();">&#9932;</button>-->
+<button type="button" class="hide_popup_small" title="" id="hidePopupBodyAdv2">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
   - @categoriesAdv.each do |c|
@@ -125,7 +129,8 @@
 </div>
 
 <div id="newDropdownDiv" style="display:none;">
-  <button type="button" class="hide_popup_new" title="Alt+R" onclick="hideNewDropdownDiv();">&#9932;</button>
+  <!--<button type="button" class="hide_popup_new" title="Alt+R" id="hideNewDropdownDiv" onclick="hideNewDropdownDiv();">&#9932;</button>-->
+  <button type="button" class="hide_popup_new" title="" id="hideNewDropdownDiv">&#9932;</button>
   <div class="select_a_tag" id="select_a_tag"></div>
   <input id="user-type-input" type="text" placeholder="Type the new value" style="display:none;"></input>
   <input id="select-type-input" type="text" placeholder="Select the category type"></input>
@@ -148,10 +153,10 @@
 </div>
 
 <div id="changeHotkeysMenu" style="display:none;">
-  <button type="button" class="hide_popup_changekeys" onclick="hideChangeKeysPopup();">&#9932;</button>
+  <button type="button" class="hide_popup_changekeys">&#9932;</button>
   <div id="changeHotkeysTitle">Change hot keys</div>  
   <div id="changeHotKeysInternal"></div>
-  <button type="button" onclick="changeHotKeys();">Change hot keys</button>
+  <button type="button" id="changeHotKeys">Change hot keys</button>
 </div>
 
 div [ id="verticalMediumClickableSpans" ]
@@ -171,7 +176,7 @@ div [ id="verticalMediumClickableSpans" ]
           span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
-        <span title="change hot keys" class="undo" onclick="showChangeHotkeysMenu()">&#9911;</span>
+        <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
 
 div [ id="verticalMediumClickableSpansAdv" ]
   table
@@ -190,7 +195,7 @@ div [ id="verticalMediumClickableSpansAdv" ]
           span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
-        <span title="change hot keys" class="undo" onclick="showChangeHotkeysMenu()">&#9911;</span>
+        <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -209,6 +214,8 @@ h2.legend Page Notes
 .categoryTypesDivAdv*{'id'=>'categoryTypesDivAdv', 'data'=>"#{@categoryTypesHashAdv}"}
 .initialAttrIds*{'id'=>'initialAttrIds', 'data'=>"#{@initialAttrIds}"}
 
+script type="text/javascript" src="/my-medium-onmousedown-functions.js"
+script type="text/javascript" src="/transcription_module.js"
 
 -content_for :javascript
   javascript:
@@ -232,6 +239,7 @@ h2.legend Page Notes
 
     });
 
+    /*
     function hidePopupBody(){
       $(".popupBody").hide();
       document.getElementById("select_a_tag").innerHTML = "";
@@ -2678,6 +2686,6 @@ h2.legend Page Notes
 
       
     }
-   
+   */
 javascript:  mixpanel.track("Transcribe Page");
 

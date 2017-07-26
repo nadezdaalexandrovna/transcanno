@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "subject linking" do
+#describe "subject linking" do
+xdescribe "subject linking" do
 
   before :all do
     @owner = User.find_by(login: OWNER)

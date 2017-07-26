@@ -49,6 +49,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'jasmine'
+  gem 'jasmine-jquery-rails'
+  gem 'jasmine-sinon-rails'
+  gem 'requirejs-rails'
 
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel

@@ -7,7 +7,7 @@
  * Github:  http://github.com/jakiestfu/Medium.js/
  * Version: master
  */
-
+/*
  function getCaretCharacterOffsetWithin(element) {
     var caretOffset = 0;
     if (typeof window.getSelection != "undefined") {
@@ -25,7 +25,7 @@
     }
     return caretOffset;
 }
-
+*/
 
 function createElementForTagSelection3(tag, tagCode, attrValuesTable){
 	var el=document.createElement(tag);
@@ -559,7 +559,7 @@ Medium.prototype = {
 			sel = rangy.getSelection();
 			sel.removeAllRanges();
 
-			medium.makeUndoable();
+			//medium.makeUndoable();
 			return this;
 			
 		}else{
@@ -725,7 +725,7 @@ Medium.prototype = {
 				if(nodeToTag2===nodeToTag){
 					sel.removeAllRanges();
 
-					medium.makeUndoable();
+					//medium.makeUndoable();
 					return this;
 				}
 
@@ -738,7 +738,7 @@ Medium.prototype = {
 			}
 			sel.removeAllRanges();
 
-			medium.makeUndoable();
+			//medium.makeUndoable();
 			return this;
 		}
 		

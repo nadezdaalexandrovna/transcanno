@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "owner views" do
+#describe "owner views" do
+xdescribe "owner views" do
 
   before :all do
 

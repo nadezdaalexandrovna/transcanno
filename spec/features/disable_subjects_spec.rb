@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "disable subject linking", :order => :defined do
+#describe "disable subject linking", :order => :defined do
+xdescribe "disable subject linking", :order => :defined do
 
   before :all do
     @owner = User.find_by(login: OWNER)

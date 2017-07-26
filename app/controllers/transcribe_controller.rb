@@ -47,7 +47,6 @@ class TranscribeController  < ApplicationController
     end
     @categoryTypesHash=@categoryTypesHash.to_json
 
-
     #For the advanced mode
     #First we only select categories, because maybe they don't have attributes
     @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL') 

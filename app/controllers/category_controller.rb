@@ -491,7 +491,13 @@ class CategoryController < ApplicationController
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
     styleInstructions=""
-    mediumOnmouseoverFunctions="$(document).ready(function($) {\nvar da;\n"
+    mediumOnmouseoverFunctions="$(document).ready(function($) {\n"+
+                                "var da;\n"+
+                                "var transcriptionModule = Object.create(TranscriptionModule);\n"+
+                                "transcriptionModule.init();\n"+
+                                "setInterval(function () {\n"+
+                                "transcriptionModule.repeatingFunction();\n"+
+                                "}, 180000);\n"
     res.each do |r|
       if r[1]!=nil
         color = 'color:'+r[1]+';'
@@ -522,7 +528,7 @@ class CategoryController < ApplicationController
                                   'var position = $(this).offset();'+"\n"+
                                   'var coords = {x:position.left, y:position.top};'+"\n"+
                                   'var categoryid=$(this).attr("data-categoryid");'+"\n"+
-                                  'buttonFunction(categoryid,\''+title+'_id'+id+'\',coords);'+"\n"+
+                                  'transcriptionModule.buttonFunction(categoryid,\''+title+'_id'+id+'\',coords);'+"\n"+
                                   'return false;'+"\n"+
                                   '});'+"\n"
     end

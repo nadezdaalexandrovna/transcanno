@@ -528,12 +528,8 @@ Medium.prototype = {
 	},
 
 	removeTags: function (checkedTagcodes, callback, skipChangeEvent){
-		console.log("in removeTags");
-		console.log(checkedTagcodes);
 		var i;
 		for (i=0; i<checkedTagcodes.length; i++){
-			console.log(i);
-			console.log(checkedTagcodes[i]);
 			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
 		}
 		
@@ -636,7 +632,13 @@ Medium.prototype = {
 					if(nodeToTag.nextSibling!=null){
 						if(nodeToTag.nextSibling===focusEl){break;}
 						nodeToTag=nodeToTag.nextSibling;
-						break;
+						//break;
+						if(!(nodeToTag.nodeType==3 && nodeToTag.nodeValue=='')){
+
+							if(nodeToTag.tagName!="BR"){
+								break;
+							}
+						}
 					}else{
 						nodeToTag=nodeToTag.parentNode;
 					}
@@ -708,8 +710,11 @@ Medium.prototype = {
 					if(nodeToTag2.previousSibling!=null){
 						nodeToTag2=nodeToTag2.previousSibling;
 
-						if(nodeToTag2.tagName!="BR"){
-							break;
+						if(!(nodeToTag2.nodeType==3 && nodeToTag2.nodeValue=='')){
+
+							if(nodeToTag2.tagName!="BR"){
+								break;
+							}
 						}
 						
 					}else{
@@ -1269,7 +1274,6 @@ Medium.defaultSettings = {
 	},
 	beforeInsertHtml: function () {
 		//this = Medium.Html
-		console.log("in app/assets/javascripts/plugins/medium.js in beforeInsertHtml");
 	},
 	maxLengthReached: function (element) {
 		//element

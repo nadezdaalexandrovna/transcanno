@@ -1342,7 +1342,7 @@ label[for="207"] span {
   right: 4vw;
   top: 330px;
   max-width: 20vw;
-  z-index: 9998;
+  z-index: 9997;
   background-color: #faf5eb;
   padding: 4px;
   border-radius: 4px;
@@ -1352,7 +1352,7 @@ label[for="207"] span {
   position: absolute;
   right: 4vw;
   top: 205px;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 #use_advanced_mode_label{
@@ -1360,7 +1360,7 @@ label[for="207"] span {
   font-size: large;
 }
 
-.undo, .delete_tag, .change_tag{
+.undo, .delete_tag, .change_tag, .show_change_hotkeys{
   font-size: xx-large;
 }
 
@@ -1474,7 +1474,7 @@ label[for="207"] span {
 .hide_popup_small{
   float: right;
   position: absolute;
-  z-index: 999;
+  z-index: 9999;
   margin-left: 200px;
   line-height: 1em;
   padding: 1px;

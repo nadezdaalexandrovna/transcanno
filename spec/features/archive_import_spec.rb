@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "IA import actions", :order => :defined do
+#describe "IA import actions", :order => :defined do
+xdescribe "IA import actions", :order => :defined do
 
   before :all do
 
