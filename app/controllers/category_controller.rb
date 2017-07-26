@@ -228,6 +228,56 @@ class CategoryController < ApplicationController
   end
 
   def define_style
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:collection_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      sql="SELECT DISTINCT categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle from categorystyles INNER JOIN categories on categorystyles.category_id=categories.id WHERE categories.collection_id="+params[:collection_id]
+      res=connection.execute(sql)
+      @colours_of_this_collection=Set.new
+      @decorations_of_this_collection=Set.new
+      @font_styles_of_this_collection=Set.new
+      res.each do |r|
+        unless r[0].nil?
+          @colours_of_this_collection.add?(r[0])
+        end
+        unless r[1].nil?
+          @decorations_of_this_collection.add?(r[1])
+        end
+        unless r[2].nil?
+          @font_styles_of_this_collection.add?(r[2])
+        end
+      end
+
+      @arrayOfColours=[["#c0392b",'absent_style'],["#8e00ad",'absent_style'],["#6a6266",'absent_style'],["#0098db",'absent_style'],["#008449",'absent_style'], ["auto",'absent_style'],["#e4cc0d",'absent_style'],["#f39200",'absent_style'],["#FF0000",'absent_style'],["#ff66ff",'absent_style'],["#0901F3",'absent_style'],["#24D201",'absent_style']]
+      number=1
+      @arrayOfColours.each do |ac|
+        if @colours_of_this_collection.include?(ac[0])
+          ac[1]='present_style'
+        end
+        ac.push(number)
+        number+=1
+      end
+
+      @arrayOfDecorations=[["text-decoration: line-through;",'absent_style'],["text-decoration: underline;",'absent_style'],["text-decoration: overline;",'absent_style'],["text-decoration: none;",'absent_style'],["text-decoration: underline; text-decoration-style: wavy;",'absent_style'],["text-decoration: underline; text-decoration-style: double;",'absent_style'], ["text-decoration: underline; text-decoration-style: dotted;",'absent_style'],["text-decoration: underline; text-decoration-style: dashed;",'absent_style'],["text-decoration: overline; text-decoration-style: wavy;",'absent_style'],["text-decoration: overline; text-decoration-style: double;",'absent_style'],["text-decoration: overline; text-decoration-style: dotted;",'absent_style'],["text-decoration: overline; text-decoration-style: dashed;",'absent_style']]
+      number=1
+      @arrayOfDecorations.each do |ad|
+        if @decorations_of_this_collection.include?(ad[0])
+          ad[1]='present_style'
+        end
+        ad.push(number)
+        number+=1
+      end
+
+      @arrayOfFontStyles=[["font-weight: bold;",'absent_style'],["font-style: italic;",'absent_style'],["font-weight: bold; font-style: italic;",'absent_style'],["",'absent_style'],["vertical-align: super; position: relative;",'absent_style'],["vertical-align: sub; position: relative;",'absent_style'], ["vertical-align: super; position: relative; font-style: italic;",'absent_style'],["vertical-align: sub; position: relative; font-style: italic;",'absent_style']]
+      number=0
+      @arrayOfFontStyles.each do |af|
+        if @font_styles_of_this_collection.include?(af[0])
+          af[1]='present_style'
+        end
+        af.push(number)
+        number+=1
+      end
+    end
   end
 
   def define_attribute_values

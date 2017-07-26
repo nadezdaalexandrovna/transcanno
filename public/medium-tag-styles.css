@@ -5,9 +5,9 @@
 .button-verb_id2{color:#0901F3;}
 .medium-predicate_id3{text-decoration: underline; text-decoration-style: double;}
 .button-predicate_id3{text-decoration: underline; text-decoration-style: double;}
-.medium-noun_id4{color:#f39200;}
-.button-noun_id4{color:#f39200;}
+.medium-noun_id4{color:#f39200;font-weight: bold; font-style: italic;}
+.button-noun_id4{color:#f39200;font-weight: bold; font-style: italic;}
 .medium-error_id5{color:auto;text-decoration: line-through;}
 .button-error_id5{color:auto;text-decoration: line-through;}
-.medium-test_free_input_id6{text-decoration: underline; text-decoration-style: wavy;}
-.button-test_free_input_id6{text-decoration: underline; text-decoration-style: wavy;}
+.medium-test_free_input_id6{color:#6a6266;text-decoration: underline; text-decoration-style: wavy;vertical-align: super; position: relative; font-style: italic;}
+.button-test_free_input_id6{color:#6a6266;text-decoration: underline; text-decoration-style: wavy;vertical-align: super; position: relative; font-style: italic;}
