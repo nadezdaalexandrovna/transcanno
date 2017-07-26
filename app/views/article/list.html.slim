@@ -43,6 +43,8 @@
                       hr
                       =link_to 'Define Category Style', { :controller => 'category', :action => 'define_style', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
+                      =link_to 'Define Category Description', { :controller => 'category', :action => 'define_description', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      hr
                       =link_to 'Define Category Attributes', { :controller => 'category', :action => 'define_attributes', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
                       =link_to 'Define Category Attribute Values', { :controller => 'category', :action => 'define_attribute_values', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
@@ -54,11 +56,17 @@
                       =link_to 'Discard All Styles', { :controller => 'category', :action => 'discard_all_styles', :collection_id => @collection.id, :category_id => category.id }
                       =link_to 'Delete All Categories', { :controller => 'category', :action => 'delete_all_categories', :collection_id => @collection.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete all the categories? After deleting you won\'t be able to recover them!' }
           dd
-            -if category.articles.empty?
-              p.acenter.fglight There are no subjects for the category selected
+            -if category.categoryattributes.empty?
+              p There are no attributes for the category selected.
             -else
-              -category.articles.each do |article|
-                =link_to article.title, { :action => 'show', :article_id => article.id }
+              p <b>Attributes</b>:
+              -category.categoryattributes.each do |attribute|
+                p #{attribute.attributecat.name}
+          dd
+            -if category.categorydescription.nil?
+              p.acenter.fglight This category has no description.
+            -else
+              p.acenter.fglight #{category.categorydescription.description}
       -if @uncategorized_articles.present?
         dl.category-article#category-none
           dt: h3 Uncategorized subjects

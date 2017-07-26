@@ -9,6 +9,14 @@ class CreateCategorystyles < ActiveRecord::Migration
     		primary key (id),
     		foreign key (category_id) references categories (id)
 		);"
+
+	execute "create table categorydescriptions(
+			id int not null AUTO_INCREMENT,
+			category_id int not null,
+    		description text,
+    		primary key (id),
+    		foreign key (category_id) references categories (id)
+		);"
 	execute "create table attributecats(
 			id int not null AUTO_INCREMENT,
 			name varchar(255) unique not null,

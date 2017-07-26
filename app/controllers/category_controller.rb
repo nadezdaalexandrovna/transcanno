@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories]
 
   def edit
   end
@@ -192,6 +192,37 @@ class CategoryController < ApplicationController
         ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
       else
         render :action => 'assign_category_scope'
+      end
+    end
+  end
+
+  def define_description
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      categorydescription=Categorydescription.where(category_id: params[:category_id])
+
+      for x in categorydescription
+        @description=x.description
+      end
+      print "@description"
+      puts @description
+      if @description.nil?
+        @description=""
+      end
+    end
+  end
+
+  def define_description2
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      description=Categorydescription.find_or_create_by(category_id: params[:category_id])
+      description.description=params[:description]
+
+      if description.save
+        flash[:notice] = "Category description has been defined."
+        ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+      else
+        render :action => 'define_category_description'
       end
     end
   end
@@ -553,6 +584,7 @@ class CategoryController < ApplicationController
     anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
     Categorystyle.destroy_all(category_id: @category.id)
     Categoryattribute.destroy_all(category_id: @category.id)
+    Categorydescription.destroy_all(category_id: @category.id)
     #Delete attributes that no longer have categories associated to them
     sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
     connection.execute(sqlD)
@@ -573,6 +605,10 @@ class CategoryController < ApplicationController
 
     #Delete all the styles of this collection
     sqlDs="DELETE categorystyles FROM categorystyles LEFT JOIN categories ON categories.id=categorystyles.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlDs)
+
+    #Delete all the category descriptions of this collection
+    sqlDs="DELETE categorydescriptions FROM categorydescriptions LEFT JOIN categories ON categories.id=categorydescriptions.category_id WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDs)
 
     #Delete attributes_to_values of this collection

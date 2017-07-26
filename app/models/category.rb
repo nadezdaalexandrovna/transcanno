@@ -3,6 +3,7 @@ class Category < ActiveRecord::Base
   has_many :categoryattributes , :dependent => :delete_all
   has_one :categorystyle, :dependent => :delete
   has_one :categoryscope, :dependent => :delete
+  has_one :categorydescription, :dependent => :delete
   acts_as_tree :order => 'title'
   belongs_to :collection
   has_and_belongs_to_many :articles, -> { order('title').uniq }

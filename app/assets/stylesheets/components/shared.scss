@@ -1418,8 +1418,13 @@ label[for="207"] span {
   max-width: 13vw;
 }
 
-.attribute_input_field{
+.attribute_input_field, .description_input_field{
   margin-top: 7px;
+}
+
+.description_input_field{
+  margin-bottom: 7px;
+  overflow-y: scroll;
 }
 
 .sequences_of_value{
