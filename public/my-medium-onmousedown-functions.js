@@ -40,4 +40,11 @@ var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'test_free_input_id6',coords);
 return false;
 });
+$( ".button-Duck_id7" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'Duck_id7',coords);
+return false;
+});
 });

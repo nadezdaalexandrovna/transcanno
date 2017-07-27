@@ -97,9 +97,11 @@ class CollectionController < ApplicationController
   def show
     #Check if this user has already visited this collection. If he has not, we add the colelction id to the cookies and rewrite the tag styles file and the tag buttons file
     cookiesCollectionId=cookies[:collection_id]
-    print "\ncookiesCollectionId: "+cookiesCollectionId+"\n\n"
     collectionCookiesIdentifier="#"+@collection.id.to_s+"#"
-    if cookiesCollectionId.scan(collectionCookiesIdentifier).empty?
+    if cookiesCollectionId.nil?
+      cookies[:collection_id]=collectionCookiesIdentifier
+      apply_all_styles
+    elsif cookiesCollectionId.scan(collectionCookiesIdentifier).empty?
       cookies[:collection_id]+=collectionCookiesIdentifier
       apply_all_styles
     end

@@ -349,14 +349,26 @@ var TranscriptionModule = (function() {
     var offset,focusEl;
     [offset,focusEl]=medium.returnOffset();
 
-    if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv" && focusEl.id!="page_source_text" && focusEl.id!="bigDiv"){
+    if(focusEl.textContent.length==1){
+      if(focusEl.getAttribute("mode")!=null){
+        var content = document.createTextNode("|");
+        focusEl.appendChild(content);
+        content = document.createTextNode("|");
+        focusEl.insertBefore(content, focusEl.firstChild);
+        medium.focus();
+        medium.focusNadya(0,focusEl.lastChild);
+        medium.cursorAfterTag(focusEl.lastChild);
+      }
+    }else if(focusEl.parentNode.id!="page_source_text" && focusEl.parentNode.id!="bigDiv" && focusEl.id!="page_source_text" && focusEl.id!="bigDiv"){
+    //if(focusEl.id!="page_source_text" && focusEl.id!="bigDiv"){
       medium.focus();
       medium.focusNadya(offset,focusEl);
       medium.cursorAfterTag(focusEl);
-
     }
-      return false;
+    
+    return false;
   }
+  
 
   //Update hot keys indicated in buttons titles
   function updateHotkeysInButtonTitles(){
