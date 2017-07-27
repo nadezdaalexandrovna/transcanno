@@ -40,7 +40,69 @@ class CollectionController < ApplicationController
     @works_not_in_collection = current_user.owner_works - @collection.works
   end
 
+  def apply_all_styles
+    sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
+    connection = ActiveRecord::Base.connection
+    res=connection.execute(sqlS)
+    styleInstructions=""
+    mediumOnmouseoverFunctions="$(document).ready(function($) {\n"+
+                                "var da;\n"+
+                                "var transcriptionModule = Object.create(TranscriptionModule);\n"+
+                                "transcriptionModule.init();\n"+
+                                "setInterval(function () {\n"+
+                                "transcriptionModule.repeatingFunction();\n"+
+                                "}, 180000);\n"
+    res.each do |r|
+      if r[1]!=nil
+        color = 'color:'+r[1]+';'
+      else
+        color = ''
+      end
+
+      if r[2]!=nil
+        textdecoration = r[2]
+      else
+        textdecoration =''
+      end
+
+      if r[3]!=nil
+        fontstyle = r[3]
+      else
+        fontstyle = ''
+      end
+
+      id=r[4].to_s
+
+      style = color+textdecoration+fontstyle
+      title=r[0]
+      styleInstructions+="\n.medium-"+title+'_id'+id+"{"+style+"}"
+      styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
+
+      mediumOnmouseoverFunctions+='$( ".button-'+title+'_id'+id+'" ).mousedown(function() {'+"\n"+
+                                  'var position = $(this).offset();'+"\n"+
+                                  'var coords = {x:position.left, y:position.top};'+"\n"+
+                                  'var categoryid=$(this).attr("data-categoryid");'+"\n"+
+                                  'transcriptionModule.buttonFunction(categoryid,\''+title+'_id'+id+'\',coords);'+"\n"+
+                                  'return false;'+"\n"+
+                                  '});'+"\n"
+    end
+    mediumOnmouseoverFunctions+="});"
+    print "\nstyleInstructions:\n"
+    print styleInstructions
+    print "\n"
+    File.write('public/medium-tag-styles.css', styleInstructions)
+    File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
+  end
+
   def show
+    #Check if this user has already visited this collection. If he has not, we add the colelction id to the cookies and rewrite the tag styles file and the tag buttons file
+    cookiesCollectionId=cookies[:collection_id]
+    print "\ncookiesCollectionId: "+cookiesCollectionId+"\n\n"
+    collectionCookiesIdentifier="#"+@collection.id.to_s+"#"
+    if cookiesCollectionId.scan(collectionCookiesIdentifier).empty?
+      cookies[:collection_id]+=collectionCookiesIdentifier
+      apply_all_styles
+    end
     @users = User.all
     @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
     @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
