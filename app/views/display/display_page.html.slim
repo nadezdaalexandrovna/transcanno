@@ -40,7 +40,7 @@
         -text_type = 'corrected'
 
       -else
-        -text = xml_to_html(@page.xml_text)
+        -text = @page.source_text
         -action = 'display_page'
         -help_word = 'help transcribe'
         -text_type = 'transcribed'
