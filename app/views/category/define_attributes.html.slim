@@ -15,6 +15,7 @@
           th name
           th mode
           th delete
+          th rename
       body
         -@categoryattributes.each do |r|
           tr
@@ -30,6 +31,12 @@
               </div>
             </td>
             <td><button type="button" class="delete_attribute_button" id="delete_attribute_#{r[0]}" onclick="deleteAttribute(#{r[0]})">Delete</button></td>
+            <td><button type="button" class="rename_attribute_button" id="rename_attribute_#{r[0]}" onclick="renameAttribute(#{r[0]})">Rename</button></td>
+          tr
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="rename_attribute_input#{r[0]}" name="new_attr_name[#{r[0]}]" style="display: none;"></input></td>
     <div id="from_possible_attributes">
     </div>
     h5 Add new attributes

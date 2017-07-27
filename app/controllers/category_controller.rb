@@ -505,6 +505,22 @@ class CategoryController < ApplicationController
           end
         end
       end
+
+      #Change attribute names
+      if params[:new_attr_name]!=nil
+        params[:new_attr_name].each do |attrId, newName|
+          if newName!='' && newName.scan(/^[ ]+$/).empty?
+            attributecat=Attributecat.find_or_create_by(name: newName)
+            categoryattribute=Categoryattribute.find_by_id(attrId)
+            categoryattribute.attributecat_id=attributecat.id
+            categoryattribute.save
+          end
+        end
+        #Delete attributecats that no longer have attributes associated to them
+        sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
+        connection.execute(sqlD)
+      end
+
       #Apply scopes of attributes
       if params[:category]!=nil
         forSql=""
