@@ -28,6 +28,7 @@
 
 
 function createElementForTagSelection3(tag, tagCode, attrValuesTable){
+	var i;
 	var el=document.createElement(tag);
 	el.setAttribute("tagCode",tagCode);
 	el.setAttribute("class","medium-"+tag);

@@ -29,8 +29,10 @@ var numberOfAddedAttributes=0;
       value=value.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
 
       if(value.match(/^[^a-zA-Z_]+(.+)$/)!=null){
-          value=value.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
-        }
+        value=value.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
+      }else if(value.match(/^[^a-zA-Z_]+$/)!=null){
+        value="category_"+value;
+      }
 
       value=value.replace(/[^a-zA-Z0-9_]+/g, "");
       //The values can't be longer than 255
@@ -55,7 +57,10 @@ var numberOfAddedAttributes=0;
 
         if(val.match(/^[^a-zA-Z_]+(.+)$/)!=null){
           val=val.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
+        }else if(val.match(/^[^a-zA-Z_]+$/)!=null){
+          val="attribute_"+val;
         }
+
         val=val.replace(/[^a-zA-Z0-9_\.]+/g, "");
 
         //The values can't be longer than 255

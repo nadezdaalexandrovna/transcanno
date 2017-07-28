@@ -47,4 +47,11 @@ var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'Duck_id7',coords);
 return false;
 });
+$( ".button-free_input_cars_id8" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'free_input_cars_id8',coords);
+return false;
+});
 });
