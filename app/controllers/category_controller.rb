@@ -1,7 +1,7 @@
 class CategoryController < ApplicationController
   public :render_to_string
   protect_from_forgery
-
+  
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories]
 
@@ -582,8 +582,15 @@ class CategoryController < ApplicationController
     end
   end
 
-
   def apply_all_styles
+    self.apply_all_styles_h
+    flash[:notice] = "Category changes have been applied."
+    anchor = "#category-#{@category.id}"
+    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+  end
+
+  def self.apply_all_styles_h
+    print "\nin apply_all_styles_h\n"
     sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
@@ -632,14 +639,12 @@ class CategoryController < ApplicationController
     mediumOnmouseoverFunctions+="});"
     File.write('public/medium-tag-styles.css', styleInstructions)
     File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    flash[:notice] = "Category changes have been applied."
-    anchor = "#category-#{@category.id}"
-    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+    
   end
 
   def discard_all_styles
     Categorystyle.delete_all()
-    File.write('app/assets/stylesheets/sections/_medium-tag-styles.scss', '')
+    File.write('public/medium-tag-styles.css', '')
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"

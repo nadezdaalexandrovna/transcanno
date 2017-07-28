@@ -15,6 +15,8 @@ class TranscribeController  < ApplicationController
   end
 
   def display_page
+    CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
+
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 

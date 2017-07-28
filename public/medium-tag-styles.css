@@ -1,31 +1,13 @@
 
-.medium-greeting_id2{color:#008449;}
-.button-greeting_id2{color:#008449;}
-.medium-hey_id3{color:#0098db;text-decoration: underline;}
-.button-hey_id3{color:#0098db;text-decoration: underline;}
-.medium-new_coll_first_subject_id4{color:#008449;}
-.button-new_coll_first_subject_id4{color:#008449;}
-.medium-second_new_coll__id5{color:#0901F3;}
-.button-second_new_coll__id5{color:#0901F3;}
-.medium-third_new_coll_id6{text-decoration: underline; text-decoration-style: double;}
-.button-third_new_coll_id6{text-decoration: underline; text-decoration-style: double;}
-.medium-second_coll_first_id7{color:#ff66ff;}
-.button-second_coll_first_id7{color:#ff66ff;}
-.medium-second_coll_second_id8{color:#8e00ad;}
-.button-second_coll_second_id8{color:#8e00ad;}
-.medium-preposition_id9{color:#FF0000;}
-.button-preposition_id9{color:#FF0000;}
-.medium-bolt_id13{font-weight: bold;}
-.button-bolt_id13{font-weight: bold;}
-.medium-bullet_id11{text-decoration: underline;}
-.button-bullet_id11{text-decoration: underline;}
-.medium-link_id12{color:#0901F3;}
-.button-link_id12{color:#0901F3;}
-.medium-verb_id15{color:#8e00ad;}
-.button-verb_id15{color:#8e00ad;}
-.medium-paragraph_id16{text-decoration: underline;}
-.button-paragraph_id16{text-decoration: underline;}
-.medium-greeting_id18{color:#008449;}
-.button-greeting_id18{color:#008449;}
-.medium-error_id21{color:#ff66ff;}
-.button-error_id21{color:#ff66ff;}
+.medium-greeting_id1{color:#008449;text-decoration: underline;}
+.button-greeting_id1{color:#008449;text-decoration: underline;}
+.medium-verb_id2{color:#0901F3;}
+.button-verb_id2{color:#0901F3;}
+.medium-predicate_id3{text-decoration: underline; text-decoration-style: double;}
+.button-predicate_id3{text-decoration: underline; text-decoration-style: double;}
+.medium-error_id5{color:auto;text-decoration: line-through;}
+.button-error_id5{color:auto;text-decoration: line-through;}
+.medium-test_free_input_id6{color:#6a6266;text-decoration: underline; text-decoration-style: wavy;vertical-align: super; position: relative; font-style: italic;}
+.button-test_free_input_id6{color:#6a6266;text-decoration: underline; text-decoration-style: wavy;vertical-align: super; position: relative; font-style: italic;}
+.medium-Duck_id7{color:#6a6266;font-weight: bold;}
+.button-Duck_id7{color:#6a6266;font-weight: bold;}
