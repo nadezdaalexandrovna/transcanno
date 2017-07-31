@@ -96,6 +96,13 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   add_index "categoryattributes", ["attributecat_id"], name: "attributecat_id", using: :btree
   add_index "categoryattributes", ["category_id", "attributecat_id"], name: "UniqueAttrPercategory", unique: true, using: :btree
 
+  create_table "categorydescriptions", force: true do |t|
+    t.integer "category_id", null: false
+    t.text    "description"
+  end
+
+  add_index "categorydescriptions", ["category_id"], name: "category_id", using: :btree
+
   create_table "categoryscopes", force: true do |t|
     t.integer "category_id",                       null: false
     t.integer "mode",        limit: 1, default: 2, null: false
