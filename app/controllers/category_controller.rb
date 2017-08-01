@@ -188,6 +188,7 @@ class CategoryController < ApplicationController
       newScope=params[:category][:category_scope].to_i
       scope.mode=newScope
 
+      #Change scopes of the category's attributes if the new category scope is not "both"
       if newScope!=2
         categoryAttributes=Categoryattribute.where(category_id: params[:category_id])
         categoryAttributes.each do |cA|
