@@ -10,7 +10,7 @@
     h5 Existing attributes
     <div class="already_type">
       -@categoryattributes.each do |r|
-        <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{r[0]}" onclick="showSeqAttrValues(#{r[0]})">#{r[1]}</button>
+        <button type="button" class="attr_name_button" id="attr_name_button#{r[0]}" onclick="showSeqAttrValues(#{r[0]})">#{r[1]}</button>
     </div>
     -@categoryattributes.each do |r|
       <div id="set_initial_div_#{r[0]}" class="set_initial_div" style="display:none;">
@@ -24,7 +24,7 @@
             -@attributeValuesHash.fetch("#{r[0]}").each do |v|
               tr
                 td
-                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r[0]}" onclick="activateSequence(#{r[0]},#{v.fetch(:valueid)},'#{v.fetch(:value)}')">#{v.fetch(:value)}</button>
+                  <button type="button" class="seq_attr_value_button" id="seq_attr_value_button#{r[0]}" onclick="activateSequence(#{r[0]},#{v.fetch(:valueid)},'#{v.fetch(:value)}','#{r[1]}')">#{v.fetch(:value)}</button>
                 td
                   <div id="title_of_value_#{v.fetch(:valueid)}" class="title_of_value" style="display:none;">
                   h5 Consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
@@ -40,14 +40,14 @@
                   <div id="possible_sequences_of_value_#{v.fetch(:valueid)}" class="possible_sequences_of_value" style="display:none;">
                     -if @possibleRelationsHash.has_key?("#{v.fetch(:value)}")
                       -@possibleRelationsHash.fetch("#{v.fetch(:value)}").each do |consName|
-                        <button type="button" id="button_possible_#{v.fetch(:valueid)}_#{consName}" onclick="addToValueSequences('#{consName}')">#{consName}</button>     
+                        <button type="button" class="button_possible" id="button_possible_#{consName}" onclick="addToValueSequences('#{consName}')">#{consName}</button>     
                   </div>
         </div>
     <div id="possible_consequent_attrs_div" class="possible_consequent_attrs_div" style="display:none;">
       h5 Possible consequent attributes:
       <div class="already_type">
         -@categoryattributes.each do |ca|
-          <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[0]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
+          <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[1]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
       </div>
     </div>
     

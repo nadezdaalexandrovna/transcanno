@@ -1,4 +1,12 @@
-var numberOfAddedAttributes=0;
+  var numberOfAddedAttributes=0;
+  var previousAttrId=null;
+  var previousSeqAttrId=null;
+  var activeValueId=null;
+  var activeValuename=null;
+  var previousvalueId=null;
+  var previousValuename=null;
+  var activeAttributeId=null;
+  var previousActiveAttributeId=null;
 
     //Functions for the attributes menu
     function addField(style) {
@@ -43,11 +51,8 @@ var numberOfAddedAttributes=0;
       return value;
     }
 
-    //Function for the attribute creation menu normalising the attribute name
-    function verifyValueType(categoryTitle){
-
+    function correctValue(elms){
       var val, i;
-      var elms=document.getElementsByClassName('attribute_input_field');
 
       for (i = 0; i < elms.length; i++) {
         val=elms[i].value;
@@ -55,10 +60,8 @@ var numberOfAddedAttributes=0;
         val=val.replace(/[ ]+/g, "_");
         val=val.replace(/[\-]+/g, "_"); //Hyphen is allowed but not accepted by all the parsers
 
-        if(val.match(/^[^a-zA-Z_]+(.+)$/)!=null){
-          val=val.match(/^[^a-zA-Z_]+(.+)$/)[1]; //An attribute name can only begin with a letter or an underscore
-        }else if(val.match(/^[^a-zA-Z_]+$/)!=null){
-          val="attribute_"+val;
+        if(val.match(/^[^a-zA-Z_]/)!=null){
+          val="_"+val; //An attribute name can only begin with a letter or an underscore
         }
 
         val=val.replace(/[^a-zA-Z0-9_\.]+/g, "");
@@ -70,8 +73,17 @@ var numberOfAddedAttributes=0;
 
         elms[i].value = val; 
       }
+    }
 
-      return;
+    //Function for the attribute creation menu normalising the attribute name
+    function verifyValueType(categoryTitle){
+      
+      var elms=document.getElementsByClassName('attribute_input_field');
+      correctValue(elms);
+
+      var elms2=document.getElementsByClassName('attribute_rename_field');
+      correctValue(elms2);
+
     }
 
     //Function for the attribute values creation menu normalising the values names
@@ -90,7 +102,7 @@ var numberOfAddedAttributes=0;
 
 
     //Functions for the attribute values menu
-    var previousAttrId=null;
+
 
     //Show the menu for the chosen attribute in the attributes values popup
     function showAttributeValues(attributeId){
@@ -113,25 +125,30 @@ var numberOfAddedAttributes=0;
       return false;
     }
 
-    var previousSeqAttrId=null;
-    var activeValueId=null;
-    var activeValuename=null;
+
 
     //Show possible values of the chosen attribute in the sequences menu
     function showSeqAttrValues(attributeId){
       if(previousSeqAttrId!=null){
         $("#set_initial_div_"+previousSeqAttrId).hide();
-        $("#seq_attr_name_button"+previousSeqAttrId).removeClass('seq_attr_name_button_active');
-        $("#seq_attr_name_button"+previousSeqAttrId).addClass('seq_attr_name_button');
+        $("#attr_name_button"+previousSeqAttrId).removeClass('seq_attr_name_button_active');
+        $("#attr_name_button"+previousSeqAttrId).addClass('seq_attr_name_button');
         $("#seq_one_attribute_div_"+previousSeqAttrId).hide();
         $(".possible_sequences_of_value").hide();
+        $("#sequences_of_value_"+previousActiveAttributeId+"_"+previousvalueId).hide();
+        $("#title_of_value_"+previousvalueId).hide();
+        $("#title_of_possible_seqs_"+previousvalueId).hide();                
       }
       previousSeqAttrId=attributeId;
 
+      //Activate consequence buttons
+      $(".button_possible").removeAttr('disabled');
+      $(".seq_attr_name_button").removeAttr('disabled');
+
       $("#set_initial_div_"+attributeId).show();
 
-      $("#seq_attr_name_button"+attributeId).removeClass('seq_attr_name_button');
-      $("#seq_attr_name_button"+attributeId).addClass('seq_attr_name_button_active');
+      $("#attr_name_button"+previousSeqAttrId).removeClass('seq_attr_name_button');
+      $("#attr_name_button"+previousSeqAttrId).addClass('seq_attr_name_button_active');
       $("#seq_one_attribute_div_"+attributeId).show();
 
       $("#possible_consequent_attrs_div").hide();
@@ -196,12 +213,10 @@ var numberOfAddedAttributes=0;
 
     }
 
-    var previousvalueId=null;
-    var previousValuename=null;
-    var activeAttributeId=null;
-    var previousActiveAttributeId=null;
+    
     //Sequences functions
-    function activateSequence(activeAttributeIdFrom,valueId,valueName){
+    function activateSequence(activeAttributeIdFrom,valueId,valueName,activeAttributeName){
+
       activeAttributeId=activeAttributeIdFrom;
       if (previousvalueId!=null){
         $("#sequences_of_value_"+previousActiveAttributeId+"_"+previousvalueId).hide();
@@ -219,11 +234,49 @@ var numberOfAddedAttributes=0;
       activeValuename=valueName;
       previousvalueId=valueId;
       previousValuename=valueName;
+
+
+      //Activate consequence buttons
+      $(".button_possible").removeAttr('disabled');
+      $(".seq_attr_name_button").removeAttr('disabled');
+
+      //Disable the button corresponding to the current attribute
+      if(document.getElementById("seq_attr_name_button"+activeAttributeName)!=null){
+        document.getElementById("seq_attr_name_button"+activeAttributeName).disabled = 'true';
+      }
+
+      //Already selected consequent attributes for this value => we have to disable the corresponding buttons
+      var alreadySelectedConsequences=$("#sequences_of_value_"+activeAttributeId+"_"+valueId).children();
+      var i,
+          consEl,
+          consElId,
+          res;
+      for (i=0; i<alreadySelectedConsequences.length; i++){
+        consEl=alreadySelectedConsequences[i];
+        consElId=consEl.id;
+        res = consElId.match(/^button_\d_(.+)$/)[1];
+        if(document.getElementById("button_possible_"+res)!=null){
+          document.getElementById("button_possible_"+res).disabled = 'true';
+        }
+        if(document.getElementById("seq_attr_name_button"+res)!=null){
+          document.getElementById("seq_attr_name_button"+res).disabled = 'true';
+        }
+      }
+
       return false;
     }
 
 
     function addToValueSequences(comsequentAttributeName){
+
+      //Disable the button that has just been pushed
+      if(document.getElementById("button_possible_"+comsequentAttributeName)!=null){
+        document.getElementById("button_possible_"+comsequentAttributeName).disabled = 'true';
+      }
+      //Disable the button of the posible consequent attributes at the bottom of the window
+      if(document.getElementById("seq_attr_name_button"+comsequentAttributeName)!=null){
+        document.getElementById("seq_attr_name_button"+comsequentAttributeName).disabled = 'true';
+      }
       
       var sequenceButton=document.createElement('button');
       sequenceButton.id='button_'+activeValueId+'_'+comsequentAttributeName;
@@ -245,6 +298,14 @@ var numberOfAddedAttributes=0;
 
     //Delete the values from the hidden input form field
     function deleteSequenceFromAttrValue(activeAttributeId,activeValueId,attributeName, consequentRelationId){
+      //Enable consequent attributes buttons
+      if(document.getElementById("button_possible_"+attributeName)!=null){
+        $("#button_possible_"+attributeName).removeAttr('disabled');
+      }
+      if(document.getElementById("seq_attr_name_button"+attributeName)!=null){
+        $("#seq_attr_name_button"+attributeName).removeAttr('disabled');
+      }
+
       var element=document.getElementById("seq_"+activeAttributeId+'_'+activeValueId+"_"+attributeName);
       //If this consequent attribute has just been added in this same menu, we delete it from the hidden input field of the form
       if(element!=null){

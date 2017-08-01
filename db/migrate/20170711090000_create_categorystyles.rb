@@ -30,7 +30,7 @@ class CreateCategorystyles < ActiveRecord::Migration
 			attributecat_id int not null,
 			foreign key(attributecat_id) references attributecats(id),
 			allow_user_input boolean,
-			mode tinyint not null,
+			mode tinyint not null default 2,
 			initial BOOLEAN NOT NULL default false
 		);"
 	execute "ALTER TABLE categoryattributes ADD CONSTRAINT UniqueAttrPercategory UNIQUE (category_id,attributecat_id);"
