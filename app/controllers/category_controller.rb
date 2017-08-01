@@ -185,7 +185,16 @@ class CategoryController < ApplicationController
     #Checking for sql injection: the category_id and the collection_id should only contain numbers
     if params[:category_id].scan(/\D/).empty?
       scope=Categoryscope.find_or_create_by(category_id: params[:category_id])
-      scope.mode=params[:category][:category_scope].to_i
+      newScope=params[:category][:category_scope].to_i
+      scope.mode=newScope
+
+      if newScope!=2
+        categoryAttributes=Categoryattribute.where(category_id: params[:category_id])
+        categoryAttributes.each do |cA|
+          cA.mode=newScope
+          cA.save
+        end
+      end
 
       if scope.save
         flash[:notice] = "Category scope has been assigned."
