@@ -14,7 +14,7 @@
     </div>
     -@categoryattributes.each do |r|
       <div id="set_initial_div_#{r[0]}" class="set_initial_div" style="display:none;">
-        h5 Set the attribute <span class="attribute_name_span">#{r[1]}</span> as initial
+        h5 Set the attribute <span class="attribute_name_span">#{r[1]}</span> as compulsory
         =check_box_tag 'initial[]', r[0].to_s, (r[3]==1? 'checked' : nil)
       </div>
       -if @attributeValuesHash.has_key?("#{r[0]}")
