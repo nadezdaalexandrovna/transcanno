@@ -127,10 +127,10 @@ var TranscriptionModule = (function() {
       $("#use_advanced_mode").on('change', this.changeModeHandler);
 
       this.goOutOfTheCurrentTagHandler=goOutOfTheCurrentTag.bind(this);
-      jQuery('#page_source_text').bind('keypress', hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
 
       this.addTagHandler=addTag.bind(this);
-      jQuery('#page_source_text').bind('keypress', hotkeysHash['insert_tag'], this.addTagHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['insert_tag'], this.addTagHandler);
 
       this.undoHandler=undo.bind(this);
       $( ".undo" ).mousedown(this.undoHandler);
@@ -145,14 +145,13 @@ var TranscriptionModule = (function() {
       $( ".show_change_hotkeys" ).mousedown(this.showChangeHotkeysHandler);
 
       this.changeHotKeysHandler=changeHotKeys.bind(this);
-      $( "#changeHotKeys" ).mousedown(this.changeHotKeysHandler);
-      
+      $( "#changeHotKeys" ).mousedown(this.changeHotKeysHandler); 
 
       this.fireModifyTagHandler=fireModifyTag.bind(this);
-      jQuery('#page_source_text').bind('keypress', hotkeysHash['modify_tag'], this.fireModifyTagHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['modify_tag'], this.fireModifyTagHandler);
 
       this.fireDeleteFromHotkeyTagHandler=fireDeleteFromHotkeyTag.bind(this);
-      jQuery('#page_source_text').bind('keypress', hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
 
       //Problem here, doesn't work
       this.hidePopUpHandler1=hidePopUp.bind.apply(hidePopUp,[this].concat("#popupBody", "select_a_tag", ".chosen-select-no-results"));
@@ -174,36 +173,36 @@ var TranscriptionModule = (function() {
       $( ".hide_popup_changekeys" ).mousedown(this.hideChangeKeysHandler);
 
       this.hidePopupsHandler=hidePopups.bind(this);
-      jQuery(document).bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#page_source_text').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody2').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody2').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv2').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv2').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#newDropdownDiv').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#newDropdownDiv').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#deletion_div').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_div').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_div').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_selected_div').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_selected_div').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotkeysMenu').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotkeysMenu').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotKeysInternal').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotKeysInternal').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#select-type-input').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#select-type-input').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.chosen-search').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.chosen-search').children().bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').bind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery(document).bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody2').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody2').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv2').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv2').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#newDropdownDiv').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#newDropdownDiv').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#deletion_div').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_div').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_div').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_selected_div').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_selected_div').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotkeysMenu').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotkeysMenu').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotKeysInternal').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotKeysInternal').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#select-type-input').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#select-type-input').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.chosen-search').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.chosen-search').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       
       this.printMediumValueHandler=printMediumValue.bind(this);
-      jQuery('#page_source_text').bind('keypress', 'alt+h', this.printMediumValueHandler);
+      jQuery('#page_source_text').bind('keydown', 'alt+h', this.printMediumValueHandler);
       
     },
 
@@ -211,38 +210,38 @@ var TranscriptionModule = (function() {
       // detach event handlers so that subsequent test runs do not interfere
       // with each other.
       $("#use_advanced_mode").off('change', this.changeModeHandler);
-      jQuery('#page_source_text').unbind('keypress', this.hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
-      jQuery('#page_source_text').unbind('keypress', this.hotkeysHash['insert_tag'], this.addTagHandler);
-      jQuery('#page_source_text').unbind('keypress', this.hotkeysHash['modify_tag'], this.fireModifyTagHandler);
-      jQuery('#page_source_text').unbind('keypress', this.hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['insert_tag'], this.addTagHandler);
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['modify_tag'], this.fireModifyTagHandler);
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
 
-      jQuery(document).unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#page_source_text').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody2').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBody2').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv2').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.popupBodyAdv2').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#newDropdownDiv').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#newDropdownDiv').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#deletion_div').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_div').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_div').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_selected_div').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#change_selected_div').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotkeysMenu').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotkeysMenu').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotKeysInternal').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#changeHotKeysInternal').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#select-type-input').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('#select-type-input').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.chosen-search').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.chosen-search').children().unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
-      jQuery('.hotkeyDropdownMenu').unbind('keypress', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery(document).unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#page_source_text').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody2').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBody2').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv2').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.popupBodyAdv2').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#newDropdownDiv').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#newDropdownDiv').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#deletion_div').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_div').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_div').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_selected_div').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#change_selected_div').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotkeysMenu').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotkeysMenu').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotKeysInternal').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#changeHotKeysInternal').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#select-type-input').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#select-type-input').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.chosen-search').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.chosen-search').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('.hotkeyDropdownMenu').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
     },
 
     buttonFunction: function(categoryid,categoryTag,coords){      

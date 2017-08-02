@@ -594,14 +594,13 @@ class CategoryController < ApplicationController
   end
 
   def apply_all_styles
-    self.apply_all_styles_h
+    CategoryController.apply_all_styles_h
     flash[:notice] = "Category changes have been applied."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
 
   def self.apply_all_styles_h
-    print "\nin apply_all_styles_h\n"
     sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)

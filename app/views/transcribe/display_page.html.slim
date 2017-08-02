@@ -206,9 +206,6 @@ h2.legend Page Notes
 .page-notes
   =render :partial => "notes/notes"
 
-<% content_for :css do %>
- require '_medium-tag-styles.scss'
-<% end %>
 
 .categoryTypesDiv*{'id'=>'categoryTypesDiv', 'data'=>"#{@categoryTypesHash}"}
 .categoryTypesDivAdv*{'id'=>'categoryTypesDivAdv', 'data'=>"#{@categoryTypesHashAdv}"}

@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.integer "category_id",                                null: false
     t.integer "attributecat_id",                            null: false
     t.boolean "allow_user_input"
-    t.integer "mode",             limit: 1,                 null: false
+    t.integer "mode",             limit: 1, default: 2,     null: false
     t.boolean "initial",                    default: false, null: false
   end
 
