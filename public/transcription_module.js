@@ -270,8 +270,10 @@ var TranscriptionModule = (function() {
   return Module;
 
   function submitTranscription(){
-    AddMediumValue();
-    document.getElementsByName("save")[0].click();
+    AddMediumValue(function(){
+      document.getElementsByName("save")[0].click();
+    });
+    
   }
 
   function undo(){
@@ -2457,7 +2459,7 @@ var TranscriptionModule = (function() {
    
     
     //Add the transcription text to the form before sending it to the server
-    function AddMediumValue() {
+    function AddMediumValue(callback) {
       var mediumValue = medium.value();
       
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
@@ -2472,13 +2474,19 @@ var TranscriptionModule = (function() {
       }
 
       if(isXML(mediumValue)){
-        mediumValue = mediumValue.replace(/<div id=\"bigDiv\">/, '');
-        mediumValue = mediumValue.replace(/<\/div>/, '');
+        console.log(mediumValue);
+        mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
+        mediumValue = mediumValue.replace(/<\/div>$/, '');
+        console.log(mediumValue);
         document.getElementsByName("page[source_text]")[0].value=mediumValue;
-        return true;   // Returns Value
+        //return true;   // Returns Value
       }else{
         alert("The transcription contains tagging errors. Please, verify the work you've done during the last 3 minutes:\n"+mediumValue);
-        return false;
+        //return false;
+      }
+
+      if(callback){
+        callback();
       }
     }
     

@@ -7,7 +7,7 @@
  * Github:  http://github.com/jakiestfu/Medium.js/
  * Version: master
  */
-
+/*
  function getCaretCharacterOffsetWithin(element) {
     var caretOffset = 0;
     if (typeof window.getSelection != "undefined") {
@@ -25,7 +25,7 @@
     }
     return caretOffset;
 }
-
+*/
 
 function createElementForTagSelection3(tag, tagCode, attrValuesTable){
 	var i;
@@ -1070,11 +1070,20 @@ Medium.prototype = {
 			focusOffset=range.endOffset,
 			anchorOffset = range.startOffset;
 
-			if(anchorNode.id=="page_source_text"){
+			if(anchorNode.id=="page_source_text" || anchorNode.id=="bigDiv"){
+				anchorNode=focusNode;
+				anchorOffset=0;
+			}
+
+			if(focusNode.id=="page_source_text" || focusNode.id=="bigDiv"){
+				focusNode=anchorNode;
+			}
+
+			if(anchorNode.childNodes.length==0 && anchorNode.textContent==""){
 				anchorNode=focusNode;
 			}
 
-			if(focusNode.id=="page_source_text"){
+			if(focusNode.childNodes.length==0 && focusNode.textContent==""){
 				focusNode=anchorNode;
 			}
 
