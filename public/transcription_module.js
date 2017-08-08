@@ -2474,10 +2474,8 @@ var TranscriptionModule = (function() {
       }
 
       if(isXML(mediumValue)){
-        console.log(mediumValue);
         mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
         mediumValue = mediumValue.replace(/<\/div>$/, '');
-        console.log(mediumValue);
         document.getElementsByName("page[source_text]")[0].value=mediumValue;
         //return true;   // Returns Value
       }else{
