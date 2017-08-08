@@ -2134,6 +2134,7 @@ var TranscriptionModule = (function() {
           changeSelectedTag(coords,onButton);
         };
 
+        button.id="change_tag_confirm_button";
         button.appendChild(document.createTextNode("Change the chosen tag"));
         menuDiv.appendChild(button);
         if(onButton==true){
@@ -2285,6 +2286,7 @@ var TranscriptionModule = (function() {
           saveChangesInAttributeValues(tagCodeToChange);
         };
 
+        button.id="change_tag_confirm_button";
         button.appendChild(document.createTextNode("Save changes"));
         div.appendChild(button);
         
@@ -2407,6 +2409,7 @@ var TranscriptionModule = (function() {
           removeTag();
         };
 
+        button.id="delete_tag_confirm_button";
         button.appendChild(document.createTextNode("Delete the chosen tag(s)"));
         menuDiv.appendChild(button);
 

@@ -1280,6 +1280,11 @@ label[for="207"] span {
   width:15vw;
 }
 
+#change_tag_confirm_button, #delete_tag_confirm_button{
+  width: 14.8vw;
+  overflow: hidden;
+}
+
 .select_a_tag{
   border-radius: 4px;
   color: gray;
