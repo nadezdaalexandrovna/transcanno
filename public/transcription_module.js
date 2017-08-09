@@ -22,6 +22,7 @@ var TranscriptionModule = (function() {
       initialAttrIds,
       medium,
       config,
+      coords,
       hotkeysHash={};
 
   var Module = {
@@ -285,7 +286,8 @@ var TranscriptionModule = (function() {
       //var position = $(this).offset();
       var position = $(".delete_tag").offset();      
       //var coords = {x:position.left, y:position.top};
-      var coords = {x:position.left, y:390};
+      //var coords = {x:position.left, y:390};
+      coords = {x:position.left, y:390};
       deleteTag(coords,true);
     }
     
@@ -302,7 +304,8 @@ var TranscriptionModule = (function() {
     function fireChangeTag(){
       var position = $(".change_tag").offset();
       //var coords = {x:position.left, y:position.top};
-      var coords = {x:position.left, y:430};
+      //var coords = {x:position.left, y:430};
+      coords = {x:position.left, y:430};
       changeTag(coords,true);
     }
     
@@ -316,12 +319,14 @@ var TranscriptionModule = (function() {
     });
   */
     function fireModifyTag(){
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
       changeTag(coords,false);
     }
 
     function fireDeleteFromHotkeyTag(){
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
       deleteTag(coords,false);
     }
 
@@ -1840,7 +1845,8 @@ var TranscriptionModule = (function() {
     function tagInAdvancedMode(){
       var userChosenAttributesAndValues=[['mode',1]];
       //var coords = getSelectionCoords();
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
 
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
@@ -1956,7 +1962,8 @@ var TranscriptionModule = (function() {
 
       var userChosenAttributesAndValues=[['mode',0]];
       //var coords = getSelectionCoords();
-      var coords = getSelectionCoords();
+      //var coords = getSelectionCoords();
+      coords = getSelectionCoords();
 
       [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
