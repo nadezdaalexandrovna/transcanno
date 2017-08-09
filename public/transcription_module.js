@@ -710,7 +710,7 @@ var TranscriptionModule = (function() {
                       }
 
                       if (num==(categoryTable.length-1)){
-                        medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                        medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
                       }
                     }else{
                       $("#newDropdownDiv").hide();
@@ -728,7 +728,7 @@ var TranscriptionModule = (function() {
                       }
 
                       if (num==(categoryTable.length-1)){
-                        medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                        medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
                       }
                     }
                   }
@@ -940,7 +940,7 @@ var TranscriptionModule = (function() {
                   }
 
                   if (num==(categoryTable.length-1)){
-                    medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                    medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
                   }
                             
                 }
@@ -1345,7 +1345,7 @@ var TranscriptionModule = (function() {
 
       if(num>=initialAttrIds.length){
         if(selected==true){
-          medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+          medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
         }else{
           addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
         }
@@ -1426,7 +1426,7 @@ var TranscriptionModule = (function() {
                         tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                       }else if (num==(initialAttrIds.length-1)){
                         if(selected==true){
-                          medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                          medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
                         }else{
                           addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
                         }
@@ -1624,7 +1624,7 @@ var TranscriptionModule = (function() {
               }
 
               if (num==(categoryTable.length-1)){
-                medium.tagSelection3(varTag, userChosenAttributesAndValues, notCollapsedArgsTable[0], focusNode, notCollapsedArgsTable[1], focusOffset);
+                medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
 
               }
             
