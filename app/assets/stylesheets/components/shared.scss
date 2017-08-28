@@ -1368,7 +1368,7 @@ label[for="207"] span {
   font-size: large;
 }
 
-.undo, .delete_tag, .change_tag, .show_change_hotkeys{
+.undo, .delete_tag, .change_tag, .show_change_hotkeys, .show_saving_time{
   font-size: xx-large;
 }
 
@@ -1500,7 +1500,7 @@ label[for="207"] span {
   padding: 1px;
 }
 
-.hide_popup_button, .hide_popup_changekeys{
+.hide_popup_button, .hide_popup_changekeys, .hide_popup_changetime{
   float: right;
   line-height: 1em;
   padding: 1px;
@@ -1510,7 +1510,7 @@ label[for="207"] span {
   
 }
 
-#changeHotkeysMenu{
+#changeHotkeysMenu, #changeSavingTimeMenu{
   position: absolute;
   right: 4vw;
   top: 330px;
@@ -1530,6 +1530,12 @@ label[for="207"] span {
   max-width: 2vw;
 }
 
+.savingTimeInput{
+  width: 2vw;
+  max-width: 2vw;
+  margin: 10px;
+}
+
 .hotkey_label{
   width: 7vw;
   padding: 4px;
@@ -1537,6 +1543,6 @@ label[for="207"] span {
   text-align: right;
 }
 
-#changeHotkeysTitle{
+#changeHotkeysTitle, #changeTimeTitle{
   font-weight: bold;
 }

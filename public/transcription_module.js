@@ -145,6 +145,15 @@ var TranscriptionModule = (function() {
       this.showChangeHotkeysHandler=showChangeHotkeysMenu.bind(this);
       $( ".show_change_hotkeys" ).mousedown(this.showChangeHotkeysHandler);
 
+      this.showSavingTimeHandler=showSavingTimeMenu.bind(this);
+      $( ".show_saving_time" ).mousedown(this.showSavingTimeHandler);
+
+      this.hideSavingTimeHandler=hideSavingTimeMenu.bind(this);
+      $("#hide_popup_changetime").mousedown(this.hideSavingTimeHandler);
+
+      this.changeSavingTimeTimeHandler=changeSavingTime.bind(this);
+      $("#changeSavingTimeButton").mousedown(this.changeSavingTimeTimeHandler);
+
       this.changeHotKeysHandler=changeHotKeys.bind(this);
       $( "#changeHotKeys" ).mousedown(this.changeHotKeysHandler); 
 
@@ -260,6 +269,12 @@ var TranscriptionModule = (function() {
       //Automatically submits the form (= saves the transcription to the database) every 3 minutes
       //setTimeout(submitTranscription(), 180000);
       submitTranscription();
+    },
+
+    getTranscriptionSavingInterval:function(){
+      //Set the time interval for transcription saving
+      var transcriptionSavingInterval=Cookies.get("transcription_saving_interval")||180000;
+      return transcriptionSavingInterval;
     }
 
     // BEGIN TESTING API
@@ -400,7 +415,7 @@ var TranscriptionModule = (function() {
   function parseJsonData(elementid){
       var categoryTypesDiv=document.getElementById(elementid);
       if(categoryTypesDiv!=null){
-        var categoriesText=categoryTypesDiv.attributes[2].textContent;
+        var categoriesText=categoryTypesDiv.attributes[2].value;
         var categoryTypesHash=JSON && JSON.parse(categoriesText) || $.parseJSON(categoriesText);
         return categoryTypesHash;
       }else{
@@ -486,6 +501,30 @@ var TranscriptionModule = (function() {
       Cookies.set("use_advanced_mode", checked, { expires: 365 });
       document.getElementsByName("page[use_advanced_mode]")[0].value=checked;
       showSimpleOrAdvancedModeCategories(checked);
+    }
+
+    //Shows the menu that lets the user change the transcription saving frequency
+    function showSavingTimeMenu(){
+      var inputValue=(Cookies.get("transcription_saving_interval")/60000)||3;
+      $("#input_time").val(inputValue);
+      $("#changeSavingTimeMenu").show();
+    }
+
+    //Hides the menu that lets the user change the transcription saving frequency
+    function hideSavingTimeMenu(){
+      $("#changeSavingTimeMenu").hide();
+    }
+
+    //Change the transcription saving frequency
+    function changeSavingTime(){
+      var newInterval=$("#input_time").val();
+      if(newInterval==null || newInterval==""){
+        newInterval=180000;
+      }else{
+        newInterval=newInterval*60000;
+      }
+      Cookies.set("transcription_saving_interval", newInterval, { expires: 365 });
+      hideSavingTimeMenu();
     }
 
     //When the user pushes the button with a key on it, this function fires and shows a popup menu that lets him change hot keys

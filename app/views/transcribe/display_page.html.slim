@@ -159,6 +159,15 @@
   <button type="button" id="changeHotKeys">Change hot keys</button>
 </div>
 
+<div id="changeSavingTimeMenu" style="display:none;">
+  <button type="button" id="hide_popup_changetime">&#9932;</button>
+  <div id="changeTimeTitle">Change transcription saving frequency</div>  
+  <div id="changeSavingTimeInternal">
+    <input type="text" id="input_time" class="savingTimeInput" maxlength="2"></input>minutes
+  </div>
+  <button type="button" id="changeSavingTimeButton">Change</button>
+</div>
+
 div [ id="verticalMediumClickableSpans" ]
   table
     tr
@@ -196,6 +205,9 @@ div [ id="verticalMediumClickableSpansAdv" ]
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
+    tr
+      td [ class="overMediumButtonTD" ]
+        <span title="change transcription saving frequency" class="show_saving_time">&#8987;</span>
 
 .fgfaded ==@work.set_transcription_conventions
 

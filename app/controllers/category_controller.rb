@@ -611,7 +611,7 @@ class CategoryController < ApplicationController
                                 "transcriptionModule.init();\n"+
                                 "setInterval(function () {\n"+
                                 "transcriptionModule.repeatingFunction();\n"+
-                                "}, 180000);\n"
+                                "}, transcriptionModule.getTranscriptionSavingInterval());\n"
     res.each do |r|
       if r[1]!=nil
         color = 'color:'+r[1]+';'

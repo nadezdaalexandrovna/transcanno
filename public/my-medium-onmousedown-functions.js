@@ -4,7 +4,7 @@ var transcriptionModule = Object.create(TranscriptionModule);
 transcriptionModule.init();
 setInterval(function () {
 transcriptionModule.repeatingFunction();
-}, 180000);
+}, transcriptionModule.getTranscriptionSavingInterval());
 $( ".button-adjective_id1" ).mousedown(function() {
 var position = $(this).offset();
 var coords = {x:position.left, y:position.top};
