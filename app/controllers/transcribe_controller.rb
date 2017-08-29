@@ -145,7 +145,12 @@ class TranscribeController  < ApplicationController
     end
   end
 
+
   def save_transcription
+    #If the transcriber pushed the button "Transcription finished", all the previous version of the page are deleted from the database
+    if params[:page][:finished]=="1"
+      @page.page_versions.destroy_all()
+    end
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 

@@ -130,7 +130,8 @@ var TranscriptionModule = (function() {
       this.formSubmitHandler=AddMediumValue.bind(this);
       $(".page-editor").on('submit', this.formSubmitHandler);
       
-
+      this.transcriptionFinishedHandler=transcriptionFinishedFunction.bind(this);
+      $("#transcription_finished").mousedown(this.transcriptionFinishedHandler);
       // If unit tests are run multiple times, it is important to be able to
       // detach events so that one test run does not interfere with another.
       this.changeModeHandler=switchBetweenSimpleAndAdvancedMode.bind(this);
@@ -2514,6 +2515,10 @@ var TranscriptionModule = (function() {
       }
     }
    
+   function transcriptionFinishedFunction(){
+    document.getElementsByName("page[finished]")[0].value=1;
+    submitTranscription();
+   }
     
     //Add the transcription text to the form before sending it to the server
     function AddMediumValue(callback) {

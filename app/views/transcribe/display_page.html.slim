@@ -6,6 +6,7 @@
   =hidden_field_tag(:page_id, @page.id)
   <input type="hidden" name="page[source_text]"/>
   <input type="hidden" name="page[use_advanced_mode]"/>
+  <input type="hidden" name="page[finished]"/>
   =validation_summary @page.errors
   .page-toolbar
     .toolbar
@@ -145,6 +146,10 @@
 </div>
 
 <div id="change_selected_div" style="display:none;">
+</div>
+
+<div id="final_button_div">
+  <button type="button" id="transcription_finished">Transcription finished</button>
 </div>
 
 <div id="use_advanced_mode_div">

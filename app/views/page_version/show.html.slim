@@ -23,6 +23,10 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
               =version.created_on.strftime("%b %d, %Y")
             small =version.user.display_name
 
+    =form_for(@selected_version, :remote=> true, :url => { :action => 'register_version_in_pages'}) do |f|
+      =hidden_field_tag(:version_id, @selected_version.id)
+      =button_tag 'Work on this version', :name => 'save', :id=> 'version_choice_button'
+
     td.diff-version
       h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
       div(data-diff-transcription="changed" data-empty="No transcription provided")
@@ -42,6 +46,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         h4 Translation
         div(data-diff-translation="original" data-empty="No translation provided")
           ==xml_to_html((@previous_version.xml_translation rescue ""))
+
 
 -content_for :javascript
   =javascript_include_tag 'textdiff'

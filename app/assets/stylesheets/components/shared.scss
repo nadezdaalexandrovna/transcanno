@@ -1363,6 +1363,18 @@ label[for="207"] span {
   z-index: 9998;
 }
 
+#final_button_div{
+  position: absolute;
+  right: 4vw;
+  top: 105px;
+  z-index: 9998;
+
+  button{
+    color: red;
+  }
+  
+}
+
 #use_advanced_mode_label{
   margin-right: 4px;
   font-size: large;
@@ -1545,4 +1557,8 @@ label[for="207"] span {
 
 #changeHotkeysTitle, #changeTimeTitle{
   font-weight: bold;
+}
+
+#version_choice_button{
+  margin-bottom: 20px;
 }
