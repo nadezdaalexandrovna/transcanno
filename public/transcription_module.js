@@ -70,7 +70,7 @@ var TranscriptionModule = (function() {
 
       var container = article.parentNode;
 
-    
+      /*
       medium = new Medium({
         element: article,
         mode: Medium.richMode,
@@ -79,7 +79,16 @@ var TranscriptionModule = (function() {
         tags:null,
         pasteAsText: false
       });
-        
+      */
+      
+      medium = new ExtendedMedium({
+        element: article,
+        mode: ExtendedMedium.richMode,
+        attributes: null,
+        placeholder:"",
+        tags:null,
+        pasteAsText: false
+      });
 
       $(".popupBody").hide();
       $(".popupBody2").hide();
@@ -266,8 +275,7 @@ var TranscriptionModule = (function() {
       return AddMediumValue();
     },
     repeatingFunction:function(){
-      //Automatically submits the form (= saves the transcription to the database) every 3 minutes
-      //setTimeout(submitTranscription(), 180000);
+      //Automatically submits the form (= saves the transcription to the database). The default automatic transcription saving interval is 3 minutes, but it can be modified by the user
       submitTranscription();
     },
 
@@ -519,7 +527,7 @@ var TranscriptionModule = (function() {
     function changeSavingTime(){
       var newInterval=$("#input_time").val();
       if(newInterval==null || newInterval==""){
-        newInterval=180000;
+        newInterval=180000; //The default automatic transcription saving interval is 3 minutes
       }else{
         newInterval=newInterval*60000;
       }

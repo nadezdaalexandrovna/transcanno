@@ -26,7 +26,7 @@
     return caretOffset;
 }
 */
-
+/*
 function createElementForTagSelection3(tag, tagCode, attrValuesTable){
 	var i;
 	var el=document.createElement(tag);
@@ -39,7 +39,7 @@ function createElementForTagSelection3(tag, tagCode, attrValuesTable){
 	}
 	return el;
 }
-
+*/
 (function (w, d) {
 	'use strict';
 
@@ -488,17 +488,9 @@ Medium.prototype = {
 
 		return this;
 	},
-
+	/*
 	insertHtmlNadya: function (html,pos, focusEl, callback, skipChangeEvent) {
-		var el = this.element;
-		var sel = rangy.getSelection();
-		//el.focus();
-		//this.cursor.moveCursorToPosition(el.firstChild,pos);
-		/*
-		var result = (new Medium.Html(this, html))
-			.insert(this.settings.beforeInsertHtml),
-			lastElement = result[result.length - 1];
-		*/
+		
 			var node = d.createTextNode(html);
 			var range, outerhtml;
 
@@ -519,7 +511,7 @@ Medium.prototype = {
 
 		return this;
 	},
-
+	*/
 	changeSelectedTag: function (tagCode, newAttrsValuesTable, callback, skipChangeEvent){
 		var attr;
 		for (attr in newAttrsValuesTable){
@@ -536,7 +528,7 @@ Medium.prototype = {
 		
 		return this;
 	},
-
+	/*
 	tagSelection3: function (tag, attrValuesTable, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
 		var range,
 			el3,
@@ -744,7 +736,7 @@ Medium.prototype = {
 		}
 		
 	},
-
+	*/
 
 	tagNodesBetween: function(anchorNode,focusNode,tag){
 		var nodeToTag=anchorNode;
@@ -776,7 +768,7 @@ Medium.prototype = {
 		}
 		
 	},
-
+	/*
 	cursorAfterTag: function (focusEl, callback, skipChangeEvent) {
 		//var el = this.element;
 		var sel = rangy.getSelection();
@@ -797,6 +789,7 @@ Medium.prototype = {
 
 		return this;
 	},
+	*/
 	/*
 	cursorAfterTagBefore: function (focusEl, callback, skipChangeEvent) {
 		//var el = this.element;
@@ -924,18 +917,10 @@ Medium.prototype = {
 	/**
 	 * I added this
 	 */
+	 /*
 	focusNadya: function (pos,focusEl) {
 		//var thisThis=this;
 		//var el = this.element;
-
-		/*
-		var hisChild=el.getElementsByTagName('closing')[0];
-
-		var range = rangy.createRange();
-		range.selectNodeContents(hisChild);
-		var sel = rangy.getSelection();
-		sel.setSingleRange(range);
-		*/
 
 		var range = rangy.createRange();
 		range.selectNodeContents(focusEl);
@@ -949,6 +934,7 @@ Medium.prototype = {
 
 		return this;
 	},
+	*/
 	/**
 	 * Select all text
 	 * @returns {Medium}
@@ -1059,6 +1045,7 @@ Medium.prototype = {
 	/*
 	*I added this
 	*/
+	/*
 	returnOffset: function() {
 		//if (!this.isActive()) return null;
 
@@ -1094,7 +1081,7 @@ Medium.prototype = {
 		}
 		
 	},
-
+	*/
 	/**
 	 * Deletes selection
 	 */
@@ -2185,7 +2172,7 @@ Medium.defaultSettings = {
 				return null;
 			}
 		},
-
+		/*
 		insertNadya: function (fn, selectInserted) {
 			
 				if (fn) {
@@ -2206,11 +2193,7 @@ Medium.defaultSettings = {
 
 				var el=inserted[0];
 				var range = rangy.createRange();
-				//range.setStart(el.childNodes[0], 0); // If the element contains text
-				/*
-				range.setStart(el, 0); // If the element doesn't contain text
-				range.collapse(true);
-				*/
+				
 				var sel = rangy.getSelection();
 				
 				range.selectNodeContents(el);
@@ -2222,7 +2205,7 @@ Medium.defaultSettings = {
 				return inserted;
 			
 		},
-
+		*/
 		/**
 		 * @methodOf Medium.Html
 		 * @param clean
