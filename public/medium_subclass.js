@@ -30,6 +30,23 @@ ExtendedMedium.prototype.focusNadya= function (pos,focusEl) {
 		return this;
 	};
 
+ExtendedMedium.prototype.removeTags= function (checkedTagcodes, callback, skipChangeEvent){
+		var i;
+		for (i=0; i<checkedTagcodes.length; i++){
+			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
+		}
+		
+		return this;
+	};
+
+ExtendedMedium.prototype.changeSelectedTag= function (tagCode, newAttrsValuesTable, callback, skipChangeEvent){
+		var attr;
+		for (attr in newAttrsValuesTable){
+			$("[tagcode="+tagCode+"]").attr(attr,newAttrsValuesTable[attr]);
+		}
+		return this;
+	};
+
 ExtendedMedium.prototype.cursorAfterTag= function (focusEl, callback, skipChangeEvent) {
 		//var el = this.element;
 		var sel = rangy.getSelection();

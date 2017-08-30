@@ -1,0 +1,514 @@
+.color, .decoration, .font_style {
+  list-style-type:none;
+  margin:15px 0 25px 0;
+  padding:0;
+}
+
+.color li, .decoration li, .font_style li {
+    float:left;
+    margin:0 5px 0 0;
+    width:100px;
+    height:40px;
+    position:relative;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+
+.color label, .color input, .decoration label, .decoration input, .font_style label, .font_style input {
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.color input[type="radio"], .decoration input[type="radio"], .font_style input[type="radio"] {
+  opacity:0.011;
+  z-index:100;
+}
+
+.color input[type="radio"]:checked + label, .decoration input[type="radio"]:checked + label, .font_style input[type="radio"]:checked + label {
+  border: 3px solid black;
+}
+
+.color label, .decoration label, .font_style label {
+  padding:5px;
+  border:1px solid #CCC; 
+  cursor:pointer;
+  z-index:90;
+}
+
+.color label:hover, .decoration label:hover, .font_style label:hover {
+  border: 3px solid gray;
+}
+
+
+label[for="1"]{
+      color:  #a93226 ;
+    }
+label[for="2"]{
+      color: #8e00ad;
+    }
+label[for="3"]{
+      color: #6a6266; //#1a5276;
+    }
+label[for="4"]{
+      color: #0098db; //#3498db;
+    }
+label[for="5"]{
+      color: #008449;
+    }
+label[for="6"]{
+      color: auto;
+    }
+label[for="7"]{
+      color: #e4cc0d; //#d4ac0d;
+    }
+label[for="8"]{
+      color: #f39200;
+    }
+label[for="9"]{
+      color:  #FF0000;
+    }
+label[for="10"]{
+      color:  #ff66ff; //#779e50;
+    }
+label[for="11"]{
+      color:  #0901F3;
+    }
+label[for="12"]{
+      color:  #24D201;
+    }
+
+.present_style{
+  background-color: #DDDDDD;
+}
+
+
+label[for="111"]{
+      text-decoration: line-through;
+    }
+label[for="112"]{
+      text-decoration: underline;
+    }
+label[for="113"]{
+      text-decoration: overline;
+    }
+label[for="114"]{
+      text-decoration: none;
+    }
+label[for="115"]{
+      text-decoration: underline;
+      text-decoration-style: wavy;
+    }
+label[for="116"]{
+      text-decoration: underline;
+      text-decoration-style: double;
+    }
+label[for="117"]{
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+label[for="118"]{
+      text-decoration: underline;
+      text-decoration-style: dashed;
+    }
+
+
+label[for="119"]{
+      text-decoration: overline;
+      text-decoration-style: wavy;
+    }
+label[for="120"]{
+      text-decoration: overline;
+      text-decoration-style: double;
+    }
+label[for="121"]{
+      text-decoration: overline;
+      text-decoration-style: dotted;
+    }
+
+label[for="122"]{
+      text-decoration: overline;
+      text-decoration-style: dashed;
+    }
+
+
+label[for="200"]{
+      font-weight: bold;
+    }
+label[for="201"]{
+      font-style: italic;
+    }
+label[for="202"]{
+      font-weight: bold;
+      font-style: italic;
+    }
+label[for="204"] span {
+      position: relative;
+      vertical-align: super;
+    }
+label[for="205"] span {
+      position: relative;
+      vertical-align: sub;
+    }
+label[for="206"] span {
+      position: relative;
+      vertical-align: super;
+      font-style: italic;
+    }
+label[for="207"] span {
+      position: relative;
+      vertical-align: sub;
+      font-style: italic;
+    }
+  
+
+#decoration_title{
+  margin-top: 1vh;
+}
+
+.overMediumButtonTD{
+  span{
+    cursor: pointer;
+    }
+}
+
+#mediumClickableSpans span{
+    cursor: pointer;
+    }
+
+.already_attribute td, .already_attribute th{
+    width: 100px;
+    padding: 4px;
+}
+
+.delete_attribute_button{
+  margin-left: 5px;
+}
+
+#category_title_for_attributes{
+  font-weight: bold;
+}
+
+#bigDiv{
+  align: left;
+  text-align: left;
+  background-color: white;
+  padding: 10px;
+  width: 95%;
+  margin-left: 1%;
+}
+
+#page_source_text{
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.popupBody, .popupBody2, .popupBodyAdv, .popupBodyAdv2, #newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
+  position: absolute;
+  margin-top:20px;
+  background-color: #faf5eb;
+  box-shadow: 0 1px 0 #fff inset;
+
+}
+
+#newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: 0 1px 0 #fff inset;
+  padding: 4px;
+  margin-top:20px;
+  z-index: 9999;
+  width:15vw;
+}
+
+#change_tag_confirm_button, #delete_tag_confirm_button{
+  width: 14.8vw;
+  overflow: hidden;
+}
+
+.select_a_tag{
+  border-radius: 4px;
+  color: gray;
+}
+
+
+#chosen-select-type {
+  border: 1px solid #111;
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border: 1px solid #5897fb;
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
+
+  color: #444;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 4px 4px 0;
+  padding: 4px;
+  max-height: 240px;
+}
+
+#chosen-select-type::-ms-expand { 
+    display: none; /* remove default arrow in IE 10 and 11 */
+}
+
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+    #chosen-select-type {
+        background:none\9;
+        padding: 5px\9;
+    }
+}
+
+#select-type-input{
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: 0 0 0 8px;
+  height: 25px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background: linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%);
+  background-clip: padding-box;
+  box-shadow: 0 0 3px #fff inset,0 1px 1px rgba(0,0,0,.1);
+  color: #444;
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+
+#mediumClickableSpans {
+  display: none;
+}
+
+
+#verticalMediumClickableSpans, #verticalMediumClickableSpansAdv {
+  position: absolute;
+  right: 4vw;
+  top: 330px;
+  max-width: 20vw;
+  z-index: 9997;
+  background-color: #faf5eb;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+#use_advanced_mode_div{
+  position: absolute;
+  right: 4vw;
+  top: 205px;
+  z-index: 9998;
+}
+
+#final_button_div{
+  position: absolute;
+  right: 4vw;
+  top: 105px;
+  z-index: 9998;
+
+  button{
+    color: red;
+  }
+  
+}
+
+#use_advanced_mode_label{
+  margin-right: 4px;
+  font-size: large;
+}
+
+.undo, .delete_tag, .change_tag, .show_change_hotkeys, .show_saving_time{
+  font-size: xx-large;
+}
+
+.delete_tag{
+  color: red;
+}
+
+.page-column_actions{
+  display: none;
+}
+
+.show_attribute_values{
+  margin: 4px;
+}
+
+.seq_attr_name_button{
+  margin: 4px;
+}
+
+.show_attribute_values_active, .seq_attr_name_button_active{
+  border-color: black !important;
+}
+
+.show_attribute_values:active, .seq_attr_name_button:active{
+  border-color: black !important;
+}
+
+.attribute_name_span{
+  font-weight: bold;
+}
+
+.category_mode_name{
+  font-weight: bold;
+}
+
+#one_attribute_big_div{
+  margin-top: 40px;
+}
+
+.one_attribute_div, one_attribute_div_seq, .big_new_values_div, .set_initial_div{
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.one_attribute_div_seq{
+  margin-bottom: 20px;
+}
+
+.already_value td{
+  padding: 4px;
+}
+
+.already_attribute td{
+  padding: 4px;
+  max-width: 13vw;
+}
+
+.attribute_input_field, .description_input_field{
+  margin-top: 7px;
+}
+
+.description_input_field{
+  margin-bottom: 7px;
+  overflow-y: scroll;
+}
+
+.sequences_of_value{
+  background-color: white;
+  min-height: 7vh;
+  width: 15vw;
+  border-radius: 0.25em;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+}
+
+.title_of_poss_seq{
+  margin-top: 7px;
+}
+
+#add_field{
+  margin-top: 20px;
+}
+
+.hide_popup_button, #hide_popup_changetime{
+  float: right;
+}
+
+.popup_title_div{
+  margin-bottom: 7px;
+}
+
+.input_attribute_value_transcribe{
+  margin-bottom: 7px;
+}
+
+.popup_attribute_label{
+  margin-top: 7px;
+  padding: 2px;
+}
+
+.from_possible_values_div{
+  margin-bottom: 15px;
+}
+
+.already_type{
+  margin-bottom: 15px;
+}
+
+#possible_attrs{
+  margin-bottom: 15px;
+}
+
+.possible_attribute_button{
+  margin: 4px;
+}
+
+.hide_popup_small{
+  float: right;
+  position: absolute;
+  z-index: 9999;
+  margin-left: 200px;
+  line-height: 1em;
+  padding: 1px;
+}
+
+.hide_popup_new{
+  float: right;
+  z-index: 999;
+  line-height: 1em;
+  padding: 1px;
+}
+
+.hide_popup_button, .hide_popup_changekeys, .hide_popup_changetime{
+  float: right;
+  line-height: 1em;
+  padding: 1px;
+}
+
+.newdropdowndiv{
+  
+}
+
+#changeHotkeysMenu, #changeSavingTimeMenu{
+  position: absolute;
+  right: 4vw;
+  top: 330px;
+  max-width: 20vw;
+  z-index: 9999;
+  background-color: #faf5eb;
+  padding: 4px;
+  border-radius: 4px;
+
+  -webkit-box-shadow: 0 0 5px 2px #888888;
+    -moz-box-shadow: 0 0 5px 2px #888888;
+    box-shadow: 0 0 5px 2px #888888;
+}
+
+.hotkeyDropdownMenu{
+  width: 2vw;
+  max-width: 2vw;
+}
+
+.savingTimeInput{
+  width: 2vw;
+  max-width: 2vw;
+  margin: 10px;
+}
+
+.hotkey_label{
+  width: 7vw;
+  padding: 4px;
+  margin-bottom: 7px;
+  text-align: right;
+}
+
+#changeHotkeysTitle, #changeTimeTitle{
+  font-weight: bold;
+}
+
+#version_choice_button{
+  margin-bottom: 20px;
+}
