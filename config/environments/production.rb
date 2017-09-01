@@ -28,7 +28,7 @@ Rails.application.configure do
     :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
     :enable_starttls_auto => true, # detects and uses STARTTLS
     :user_name => "nokinina@eurac.edu",
-    :password  => "privet_medved",
+    :password  => "",
     :authentication => 'login',
     :domain => 'office365.com', # your domain to identify your server when connecting
   }
