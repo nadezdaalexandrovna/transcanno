@@ -350,9 +350,9 @@ ExtendedMedium.prototype.returnOffset=function() {
 			focusOffset=range.endOffset,
 			anchorOffset = range.startOffset;
 
-			if(range.commonAncestorContainer==range.startContainer){
+			if(range.commonAncestorContainer==range.startContainer && anchorOffset==0){
 				anchorNode=range.endContainer;
-			}else if(range.commonAncestorContainer==range.endContainer){
+			}else if(range.commonAncestorContainer==range.endContainer && focusOffset==0){
 				focusNode=range.startContainer;
 			}
 
