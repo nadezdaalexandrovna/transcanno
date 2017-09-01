@@ -1,3 +1,6 @@
+/**
+Extension of the Medium.js library: a few new functions 
+*/
 function ExtendedMedium(settings) {
   Medium.call(this, settings);
 };
@@ -340,11 +343,18 @@ ExtendedMedium.prototype.returnOffset=function() {
         	sel = win.getSelection();
     	}
 
+
 		var range = sel.getRangeAt(0),
 			focusNode=range.endContainer,
 			anchorNode = range.startContainer,
 			focusOffset=range.endOffset,
 			anchorOffset = range.startOffset;
+
+			if(range.commonAncestorContainer==range.startContainer){
+				anchorNode=range.endContainer;
+			}else if(range.commonAncestorContainer==range.endContainer){
+				focusNode=range.startContainer;
+			}
 
 			if(anchorNode.id=="page_source_text" || anchorNode.id=="bigDiv"){
 				anchorNode=focusNode;

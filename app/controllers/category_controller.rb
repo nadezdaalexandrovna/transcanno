@@ -496,7 +496,7 @@ class CategoryController < ApplicationController
       end
       if params[:attribute]!=nil
         numberNews=0
-        mode=""
+        mode=2
         params[:attribute].each do |type|
           if type!=nil && type!=""
             if params[:category_scope]!="2"
