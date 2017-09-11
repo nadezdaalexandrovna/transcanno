@@ -214,7 +214,7 @@ label[for="207"] span {
   margin-top:20px;
   background-color: #faf5eb;
   box-shadow: 0 1px 0 #fff inset;
-
+  z-index: 9999;
 }
 
 #newDropdownDiv, #deletion_div, #change_div, #change_selected_div {
