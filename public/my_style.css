@@ -511,3 +511,7 @@ label[for="207"] span {
 #version_choice_button{
   margin-bottom: 20px;
 }
+
+.category_button, .change_tag, .delete_tag, .show_change_hotkeys, .show_saving_time, .undo {
+  cursor:pointer;
+}

@@ -5,18 +5,25 @@ transcriptionModule.init();
 setInterval(function () {
 transcriptionModule.repeatingFunction();
 }, transcriptionModule.getTranscriptionSavingInterval());
-$( ".button-adjective_id1" ).mousedown(function() {
-var position = $(this).offset();
-var coords = {x:position.left, y:position.top};
-var categoryid=$(this).attr("data-categoryid");
-transcriptionModule.buttonFunction(categoryid,'adjective_id1',coords);
-return false;
-});
 $( ".button-participle_id2" ).mousedown(function() {
 var position = $(this).offset();
 var coords = {x:position.left, y:position.top};
 var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'participle_id2',coords);
+return false;
+});
+$( ".button-adjective_id3" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'adjective_id3',coords);
+return false;
+});
+$( ".button-aa_id4" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'aa_id4',coords);
 return false;
 });
 });

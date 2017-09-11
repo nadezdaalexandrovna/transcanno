@@ -510,7 +510,7 @@ class CategoryController < ApplicationController
             if mode.nil?
               mode=2
             end
-            
+
             #If the attribute name contains SQL meta-characters, we put underscores around them in order to prevent sql injection
             type.gsub!(/(\%27)|(\')|(\%3[bB])|(\;)|(\%2[aA])|\*|(\-\-)|(\%23)|(#)|(\%3C)|(\<)|(\%3D)|(\=)|(\%3E)|(\>)|(\%28)|(\()|(\%29)|(\))/i) { |m| '_'+m+'_' }
 

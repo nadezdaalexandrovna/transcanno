@@ -187,7 +187,7 @@ div [ id="verticalMediumClickableSpans" ]
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
@@ -206,7 +206,7 @@ div [ id="verticalMediumClickableSpansAdv" ]
     - @categoriesAdv.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}_id#{c.id}" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
