@@ -78,3 +78,5 @@ gem 'newrelic_rpm'
 gem 'devise_masquerade'
 
 gem 'chosen-rails'
+
+gem 'selenium-webdriver'

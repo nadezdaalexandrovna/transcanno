@@ -230,10 +230,10 @@ var TranscriptionModule = (function() {
       // detach event handlers so that subsequent test runs do not interfere
       // with each other.
       $("#use_advanced_mode").off('change', this.changeModeHandler);
-      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
-      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['insert_tag'], this.addTagHandler);
-      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['modify_tag'], this.fireModifyTagHandler);
-      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
+      jQuery('#page_source_text').unbind('keydown', hotkeysHash['get_out_of_tag'], this.goOutOfTheCurrentTagHandler);
+      jQuery('#page_source_text').unbind('keydown', hotkeysHash['insert_tag'], this.addTagHandler);
+      jQuery('#page_source_text').unbind('keydown', hotkeysHash['modify_tag'], this.fireModifyTagHandler);
+      jQuery('#page_source_text').unbind('keydown', hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
 
       jQuery(document).unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('#page_source_text').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
@@ -262,6 +262,10 @@ var TranscriptionModule = (function() {
       jQuery('.chosen-search').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('.chosen-search').children().unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('.hotkeyDropdownMenu').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+
+      //Reset the transcription saving interval to the default value
+      $('#input_time').val(3);
+      this.changeSavingTimeTimeHandler();
     },
 
     buttonFunction: function(categoryid,categoryTag,coords){      
@@ -506,9 +510,7 @@ var TranscriptionModule = (function() {
 
     function switchBetweenSimpleAndAdvancedMode(){
       var checked = $("#use_advanced_mode").is(':checked') ? 1 : 0 ;
-      $("#use_advanced_mode_").val(checked);
       Cookies.set("use_advanced_mode", checked, { expires: 365 });
-      document.getElementsByName("page[use_advanced_mode]")[0].value=checked;
       showSimpleOrAdvancedModeCategories(checked);
     }
 

@@ -4,8 +4,8 @@ function setUpHTMLFixture() {
 		'<button type="button" class="hide_popup_small" id="hidePopupBody">&#9932;</button>'+
 		'<select class="chosen-select-no-results" data-placeholder="Choose a category">'+
   		'<option value=""></option>'+
-  	 		'<option value="greeting_id1" data-categoryid="1">greeting</option>'+
-  	 		'<option value="closing_id2" data-categoryid="1">closing</option>'+
+  	 		'<option value="phrasal_verb_id5" data-categoryid="5">phrasal_verb</option>'+
+  			'<option value="infinitive_id6" data-categoryid="6">infinitive</option>'+
 		'</select>'+
 		'</div>'+
 
@@ -13,8 +13,8 @@ function setUpHTMLFixture() {
 '<button type="button" class="hide_popup_small" id="hidePopupBody2">&#9932;</button>'+
 '<select class="chosen-select-no-results2" data-placeholder="Choose a category">'+
   '<option value=""></option>'+
-  '<option value="greeting_id1" data-categoryid="1">greeting</option>'+
-  '<option value="closing_id2" data-categoryid="1">closing</option>'+
+  '<option value="phrasal_verb_id5" data-categoryid="5">phrasal_verb</option>'+
+  '<option value="infinitive_id6" data-categoryid="6">infinitive</option>'+
 '</select>'+
 '</div>'+
 
@@ -23,8 +23,8 @@ function setUpHTMLFixture() {
 '<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv">&#9932;</button>'+
 '<select class="chosen-adv" data-placeholder="Choose a category">'+
   '<option value=""></option>'+
-  '<option value="greeting_id1" data-categoryid="1">greeting</option>'+
-  '<option value="closing_id2" data-categoryid="1">closing</option>'+
+  '<option value="phrasal_verb_id5" data-categoryid="5">phrasal_verb</option>'+
+  '<option value="infinitive_id6" data-categoryid="6">infinitive</option>'+
 '</select>'+
 '</div>'+
 
@@ -32,8 +32,8 @@ function setUpHTMLFixture() {
 '<button type="button" class="hide_popup_small" title="" id="hidePopupBodyAdv2">&#9932;</button>'+
 '<select class="chosen-adv2" data-placeholder="Choose a category">'+
   '<option value=""></option>'+
-  '<option value="greeting_id1" data-categoryid="1">greeting</option>'+
-  '<option value="closing_id2" data-categoryid="1">closing</option>'+
+  '<option value="phrasal_verb_id5" data-categoryid="5">phrasal_verb</option>'+
+  '<option value="infinitive_id6" data-categoryid="6">infinitive</option>'+
 '</select>'+
 '</div>'+
 
@@ -99,12 +99,12 @@ function setUpHTMLFixture() {
     '</tr>'+
     '<tr>'+
       '<td class="overMediumButtonTD">'+
-        '<span class="button-greeting_id1 category_button" data-categoryid="1">greeting</span>'+
+        '<span class="button-phrasal_verb_id5 category_button" data-categoryid="5">phrasal_verb</span>'+
       '</td>'+
     '</tr>'+
     '<tr>'+
       '<td class="overMediumButtonTD">'+
-        '<span class="button-cloosing_id2 category_button" data-categoryid="2">closing</span>'+
+        '<span class="button-infinitive_id6 category_button" data-categoryid="6">infinitive</span>'+
       '</td>'+
     '</tr>'+
     '<tr>'+
@@ -133,12 +133,12 @@ function setUpHTMLFixture() {
     '</tr>'+
     '<tr>'+
       '<td class="overMediumButtonTD">'+
-        '<span class="button-greeting_id1 category_button" data-categoryid="1">greeting</span>'+
+        '<span class="button-phrasal_verb_id5 category_button" data-categoryid="5">phrasal_verb</span>'+
       '</td>'+
     '</tr>'+
     '<tr>'+
       '<td class="overMediumButtonTD">'+
-        '<span class="button-closing_id2 category_button" data-categoryid="2">closing</span>'+
+        '<span class="button-infinitive_id6 category_button" data-categoryid="6">infinitive</span>'+
       '</td>'+
     '</tr>'+
     '<tr>'+
@@ -170,10 +170,53 @@ describe("TranscriptionModule", function() {
 		transcriptionModule.init();
     });
 
-    it("getTranscriptionSavingInterval should return 180000", function() {
-    	var coords = {x:300, y:400};
-   		var categoryid=2;
 
-        expect( transcriptionModule.getTranscriptionSavingInterval() ).toEqual(180000);
-    }); 
+    //This will be called after running each spec
+    afterEach(function() {
+		transcriptionModule.teardown();
+    });
+
+    //The default transcription saving interval is set to 3 minutes: 180000 milliseconds
+    it("getTranscriptionSavingInterval should return 180000", function() {
+        expect( transcriptionModule.getTranscriptionSavingInterval() ).toEqual('180000');
+    });
+
+    //The transcription saving interval dialog box should show 3 as a default value of the transcription saving interval
+    it("showSavingTimeHandler should show the pop up dialog box", function() {
+    	//Open the dialog box
+    	transcriptionModule.showSavingTimeHandler();
+    	//The dialog box should show 
+        expect( $("#changeSavingTimeMenu")).toBeVisible();
+    });
+    
+    //The transcription saving interval dialog box should show 3 as a default value of the transcription saving interval
+    it("showSavingTimeHandler should show 3 as a transcription saving frequenc value", function() {
+    	//Open the dialog box
+    	transcriptionModule.showSavingTimeHandler();
+    	//The dialog box should show 3 as a default value of the transcription saving interval
+        expect( $("#input_time").val()).toEqual('3');
+    });
+
+    
+
+    //Test the transcription saving interval changing functionality
+    it("getTranscriptionSavingInterval should return 120000 after change", function() {
+    	//Change the transcription saving interval
+    	$('#input_time').val(2);
+    	//Apply changes
+    	transcriptionModule.changeSavingTimeTimeHandler();
+    	//Verify the result
+        expect( transcriptionModule.getTranscriptionSavingInterval()).toEqual('120000');
+    });   
+
+
+    it("test addTagHandler", function() {
+    	//Open the dialog box
+    	transcriptionModule.addTagHandler();
+    	$('#select-id').val("phrasal_verb_id5").trigger('chosen:updated');
+    	//Verify the result
+        expect( $("#page_source_text")).toHaveText('<phrasal_verb_id5 mode="0"');
+    });
+
+
 });
