@@ -26,4 +26,18 @@ var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'aa_id4',coords);
 return false;
 });
+$( ".button-phrasal_verb_id5" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'phrasal_verb_id5',coords);
+return false;
+});
+$( ".button-infinitive_id6" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'infinitive_id6',coords);
+return false;
+});
 });
