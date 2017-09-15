@@ -17,33 +17,71 @@ class LoginClass < Test::Unit::TestCase
     @driver.quit
   end
  
- 
-  def test_login
+ def test_login
     @driver.find_element(:link_text, "Sign In").click
-    sleep 0.3
+    sleep 1
     @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
     @driver.find_element(:id, "user_password").send_keys "coll_coll"
     @driver.find_element(:name, "button").click
 
-    sleep 0.3
-    #assert(@driver.find_element(:class, "headline_title").text.include?("Owner Dashboard"),"Assertion Failed")
+    sleep 1
 
-    #assert(@driver.find_element(:xpath, "//div[@class='toolbar_group']/dl/dt[@class='header_link header_user']/span/big").text.include?("Signed In As"),"Assertion Failed")
+	assert(@driver.find_element(:tag_name,'body').text.include?("Signed In As"),"Assertion Failed")
 
-    assert(@driver.find_element(:xpath, "//small").text.include?("collection_owner"),"Assertion Failed")
+	#Problem working with frames
+	#@driver.find_element(:link_text, "Subjects").click
+	#sleep 1
+    #@driver.find_element(:xpath, "//*[text()='Actions']").click
+    #sleep 1
+    #@driver.find_element(:link_text, "Add Root Category").click
+    #sleep 1
 
-    #@driver.find_element(:id, "logout").click
+    #Problem working with frames
+    #@driver.find_element(:xpath, "//*[text()='Actions']").click
+    #sleep 1
+    #@driver.find_element(:link_text, "Create a Collection").click
+    #sleep 1
+
+    #@driver.switch_to.frame @driver.find_element(:class,'litebox')
+    
+    #@driver.find_element(:class,'litebox')
+    #@driver.find_element(:id, "collection_title")
+
+    #@driver.find_element(:id, "collection_title").click
+    #@driver.find_element(:id, "collection_title").clear
+    #@driver.find_element(:id, "collection_title").send_keys "Selenium_collection"
+    #@driver.find_element(:id, "collection_intro_block").send_keys "A collection for Selenium tests."
+    #@driver.find_element(:xpath, "//*[text()='Create Collection'").click
+
+  end
+ 
+  def test_tag_text_with_button
+    @driver.find_element(:link_text, "Sign In").click
+    sleep 1
+    @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
+    @driver.find_element(:id, "user_password").send_keys "coll_coll"
+    @driver.find_element(:name, "button").click
+
+    sleep 1
+
+	@driver.find_element(:link_text, "Student essays").click
+	sleep 1
+
+	@driver.find_element(:link_text, "20170911132713504").click
+	sleep 1
+	@driver.find_element(:link_text, "1").click
+	sleep 1
+	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
+	sleep 1
+	@driver.find_element(:xpath, "//span[text()='infinitive']").click
+	sleep 1
+	@driver.find_element(:tag_name, "infinitive_id6").send_keys "inside the infinitive tag"
+	sleep 1
+
+	assert(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("inside the infinitive tag"),"Assertion Failed")
+
   end
 end
 
-
-#driver = Selenium::WebDriver.for :firefox
-
-#driver.navigate.to "http://google.com"
-#element = driver.find_element(:name, 'q')
-#element.send_keys "TestProject.io"
-#element.submit
- 
-#puts driver.title
- 
-#driver.quit
