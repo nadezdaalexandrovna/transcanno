@@ -87,7 +87,7 @@ class LoginClass < Test::Unit::TestCase
 	assert(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("inside the infinitive tag"),"Assertion Failed")
 
   end
-=end
+
 def test_get_out_of_tag_hotkeys
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -125,6 +125,57 @@ def test_get_out_of_tag_hotkeys
 	sleep 1
 	#Verify that the text I've just typed is outside the inserted tag
 	assert_false(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("text out of tag"),"Assertion Failed")
+
+  end
+=end
+
+  def test_change_hotkeys
+    @driver.find_element(:link_text, "Sign In").click
+    sleep 1
+    @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
+    @driver.find_element(:id, "user_password").send_keys "coll_coll"
+    @driver.find_element(:name, "button").click
+
+    sleep 1
+
+	@driver.find_element(:link_text, "Student essays").click
+	sleep 1
+
+	@driver.find_element(:link_text, "20170911132713504").click
+	sleep 1
+	@driver.find_element(:link_text, "1").click
+	sleep 1
+	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	#Type some text
+	
+	@driver.find_element(:class, "show_change_hotkeys").click
+	sleep 1
+
+	@driver.find_element(:id, "input_insert_tag").clear
+	sleep 1
+	
+	@driver.find_element(:id, "input_insert_tag").send_keys 'z'
+	sleep 1
+
+	@driver.find_element(:id, "changeHotKeys").click
+	sleep 1
+	@driver.navigate.refresh
+	sleep 1
+	#Get out of the tag
+	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'z']
+	sleep 1
+
+	#Type "inf" in the input field and click "enter" in order to choose the "infinitive" category
+	@driver.find_element(:class, "chosen-search").send_keys 'inf'
+	sleep 1
+	@driver.find_element(:class, "chosen-search").send_keys :enter
+	sleep 1
+	#Type inside the tag
+	@driver.find_element(:tag_name, "infinitive_id6").send_keys "inside the infinitive tag"
+	sleep 1
+	#Verify that the text I've just typed is inside the inserted tag
+	assert(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("inside the infinitive tag"),"Assertion Failed")
 
   end
 
