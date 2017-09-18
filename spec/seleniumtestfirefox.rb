@@ -88,8 +88,48 @@ class LoginClass < Test::Unit::TestCase
 
   end
 =end
+def test_get_out_of_tag_hotkeys
+    @driver.find_element(:link_text, "Sign In").click
+    sleep 1
+    @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
+    @driver.find_element(:id, "user_password").send_keys "coll_coll"
+    @driver.find_element(:name, "button").click
+
+    sleep 1
+
+	@driver.find_element(:link_text, "Student essays").click
+	sleep 1
+
+	@driver.find_element(:link_text, "20170911132713504").click
+	sleep 1
+	@driver.find_element(:link_text, "1").click
+	sleep 1
+	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	#Type some text
+	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
+	sleep 1
+	#Insert a tag with a button
+	@driver.find_element(:xpath, "//span[text()='infinitive']").click
+	sleep 1
+	#Type inside the tag
+	@driver.find_element(:tag_name, "infinitive_id6").send_keys "inside the infinitive tag"
+	sleep 1
+
+	#Get out of the tag
+	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'x']
+	sleep 1
+
+	#Type some text
+	@driver.find_element(:id, "page_source_text").send_keys "text out of tag"
+	sleep 1
+	#Verify that the text I've just typed is outside the inserted tag
+	assert_false(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("text out of tag"),"Assertion Failed")
+
+  end
+
 =begin	
-  def test_tag_with_hotkeys_type_inside
+  def test_tag_no_attributes_with_hotkeys_type_inside
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
     @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
@@ -125,7 +165,61 @@ class LoginClass < Test::Unit::TestCase
 
   end
 =end
-  def test_try_to_modify_tag_with_hotkeys
+=begin
+  def test_tag_in_advanced_mode_with_button_type_inside
+    @driver.find_element(:link_text, "Sign In").click
+    sleep 1
+    @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
+    @driver.find_element(:id, "user_password").send_keys "coll_coll"
+    @driver.find_element(:name, "button").click
+
+    sleep 1
+
+	@driver.find_element(:link_text, "Student essays").click
+	sleep 1
+
+	@driver.find_element(:link_text, "20170911132713504").click
+	sleep 1
+	@driver.find_element(:link_text, "1").click
+	sleep 1
+	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+
+	#Switch to the advanced mode
+	@driver.find_element(:id, "use_advanced_mode").click
+	sleep 1
+
+	#puts Selenium::WebDriver::Keys::KEYS
+	#Open the dropdown menu via hot keys
+	@driver.find_element(:id, "page_source_text").send_keys ''
+	@driver.find_element(:class, "button-adv2_id8").click
+	sleep 1
+
+	@driver.find_element(:id, "select-type-input").send_keys 'v1'
+	sleep 1
+	@driver.find_element(:id, "select-type-input").send_keys :enter
+	sleep 1
+
+	@driver.find_element(:id, "user-type-input").send_keys 'typed value of a2'
+	sleep 1
+	@driver.find_element(:id, "user-type-input").send_keys :enter
+	sleep 1
+
+	#Type inside the tag
+	@driver.find_element(:tag_name, "adv2_id8").send_keys "inside the adv2 tag"
+	sleep 1
+	#Verify that the text I've just typed is inside the inserted tag
+	assert(@driver.find_element(:xpath,"//*[@class='medium-adv2_id8']").text.include?("inside the adv2 tag"),"Assertion Failed")
+	#Verify that there is one tag with the value of attribute 'a1' being 'v1'
+	assert_equal(@driver.find_elements(:xpath,"//*[@a1='v1']").size, 1)
+	#Verify that there is one tag with the value of attribute 'a2' being 'typed value of a2'
+	assert_equal(@driver.find_elements(:xpath,"//*[@a2='typed value of a2']").size, 1)
+
+  end
+=end
+
+=begin
+  def test_try_to_modify_tag_without_attributes_with_hotkeys
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
     @driver.find_element(:id, "user_login_id").send_keys "collection_owner"
@@ -172,7 +266,7 @@ class LoginClass < Test::Unit::TestCase
 	
   end
 
-=begin
+
   def test_delete_tag_with_hotkeys
     @driver.find_element(:link_text, "Sign In").click
     sleep 1

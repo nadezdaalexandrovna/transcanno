@@ -40,4 +40,18 @@ var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'infinitive_id6',coords);
 return false;
 });
+$( ".button-advanced_id7" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'advanced_id7',coords);
+return false;
+});
+$( ".button-adv2_id8" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'adv2_id8',coords);
+return false;
+});
 });
