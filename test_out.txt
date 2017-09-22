@@ -5257,115 +5257,9 @@ _gaq.push(["_trackPageLoadTime"]);
   ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
 })();</script></body></html>
-."update_statistic start"
-"update_statistic finish"
-page in tag: <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>2 (CS Pierce, MS_641-642) | FromThePage</title><meta name="viewport" content="width=device-width"><meta name="description" content="2 (CS Pierce, MS_641-642) - page overview."><meta name="author" content="FromThePage.com"><meta name="copyright" content="(c) 2017 FromThePage.com"><meta name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=">
-<link href="http://localhost:3000/assets/favicon-3b65dba823d9f31072094535df6dfcbbe99cf14a55aedfaf619a09fed2ebb640.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
-<link href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round" media="screen" rel="stylesheet" />
-<link href="http://localhost:3000/assets/application-e52f91bec5d45d23cab22abc353ccdab7de3c416266d83129f23cb78eb3155c5.css" media="screen" rel="stylesheet" /><script src="/jquery-2.1.4.min.js"></script><link rel="stylesheet" href="/medium.css"><link rel="stylesheet" href="/chosen.min.css"><link rel="stylesheet" href="/medium-tag-styles.css"><link rel="stylesheet" href="/my_style.css"><script type="text/javascript" src="/chosen.jquery.min.js"></script><script type="text/javascript" src="/rangy-core.js"></script><script type="text/javascript" src="/rangy-classapplier.js"></script><script type="text/javascript" src="/undo.js"></script><script type="text/javascript" src="/medium.js"></script><script type="text/javascript" src="/medium_subclass.js"></script><script>(function(e,b){if(!b.__SV){var a,f,i,g;
-window.mixpanel=b;
-b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");
-2==a.length&&(b=b[a[0]],h=a[1]);
-b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";
-c.people=c.people||[];c.toString=function(b){var a="mixpanel";
-"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};
-c.people.toString=function(){return c.toString(1)+".people (stub)"};
-i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};
-b.__SV=1.2;a=e.createElement("script");
-a.type="text/javascript";
-a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
-f=e.getElementsByTagName("script")[0];
-f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);mixpanel.init("d5e53d2387f7184a07bf99f207df9603");</script></head><body><header class="header"><div class="toolbar"><div class="toolbar_group"><a class="logo" href="/"><svg><use xlink:href="http://localhost:3000/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#logo"></use></svg></a></div><div class="toolbar_group"><a class="header_link" href="/dashboard_role">Dashboard</a><a class="header_link" href="/dashboard">Collections</a><a class="header_link" href="/static/faq">FAQ</a><dl class="dropdown right"><dt class="header_link header_user"><span><big>Signed In As</big><small>Eleanor</small></span><svg class="icon"><use xlink:href="http://localhost:3000/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#header-user"></use></svg></dt><dd><a href="/dashboard/watchlist">Collaborator Dashboard</a><hr><a href="/user/profile?user_id=2">Your Profile</a><hr><a data-method="delete" href="/users/sign_out" rel="nofollow">Sign Out</a></dd></dl></div></div></header><main class="wrapper"><ul class="breadcrumbs"><li><a href="/collection/show?collection_id=1">CS Pierce</a></li><li><a href="/display/read_work?work_id=9">MS_641-642</a></li></ul><div class="headline"><h1 class="headline_title">2</h1><div class="headline_aside"><nav class="page-nav"><a class="page-nav_prev" href="/display/display_page?page_id=24"><svg class="icon"><use xlink:href="http://localhost:3000/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#icon-arrow-left"></use></svg></a><span class="page-nav_info">Page 2 of 21</span><a class="page-nav_next" href="/display/display_page?page_id=26"><svg class="icon"><use xlink:href="http://localhost:3000/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#icon-arrow-right"></use></svg></a></nav></div></div><div class="tabs"><a class="active">Overview</a><a href="/transcribe/display_page?page_id=25">Transcribe</a><a href="/page_version/list?page_id=25">Versions</a></div><div class="page-headlines"><div class="headline"><h3 class="headline_title">Facsimile</h3></div><div class="headline"><h3 class="headline_title">Transcription</h3></div></div><div class="page-columns" data-fullheight="{ &quot;bottom&quot;: 30, &quot;cssrule&quot;: &quot;height&quot; }"><div class="page-column"><div class="page-imagescan"><div class="zoomer-container"><img alt="1725" src="http://localhost:3000/images/uploaded/9/1725.jpg" /></div></div></div><div class="page-column"><div class="page-preview"><div class="centered"><div class="centered_content"><h5 class="nodata_title">This page is not transcribed</h5><p class="nodata_text">Please <a href="/transcribe/display_page?page_id=25">help transcribe</a> this page<br>or <a href="/transcribe/mark_page_blank?mark_blank=yes&amp;page_id=25&amp;source_text=blank">mark the page blank</a></p></div></div></div></div></div><h2 class="legend" id="notes">Page Notes</h2><div class="page-notes"><p class="acenter fglight" data-note-empty>Nobody has written a note for this page yet</p><div class="user-bubble"><div class="userpic"><img alt="Eleanor" height="80" src="http://gravatar.com/avatar/ddd977d037e1a6946357c962e37f193e?default=blank&secure=false&size=80" width="80" /></div><form accept-charset="UTF-8" action="/notes" class="user-bubble_form" data-remote="true" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="page_id" name="page_id" type="hidden" value="25" /><div class="user-bubble_form_editor"><textarea id="note_body" name="note[body]" placeholder="Write a new note..." rows="4">
-</textarea></div><div class="user-bubble_form_footer"><span class="user-bubble_form_error"></span><button name="button" type="submit">Submit</button></div></form></div></div><script>mixpanel.track("Display Page");  </script></main><footer class="footer"><div class="footer_copyright">&copy; 2017 <a href="/">FromThePage</a>. All rights reserved.</div><div class="footer_nav"><a href="/static/about">About</a><a href="http://fromthepage.wpengine.com/terms-of-service/">Terms &amp; Conditions</a><a href="/static/privacy">Privacy Policy</a><a href="mailto:benwbrum@gmail.com">Contact Us</a></div></footer><div class="page-busy-overlay"></div><script src="http://localhost:3000/assets/application-41aece84efa6627667473eda880dceae50103b7d6ab70fb6c889d7ac8fd6a933.js"></script><script>$(function() {
-  // Zoomer initialization
-  var zoomer = $('.zoomer-container').zoomer();
-
-  // Check localStorage support
-  if(typeof Storage !== void(0)) {
-    var data = zoomer.data('zoomer');
-    var datakey = data.images[0];
-    var storage = localStorage['zoomer:' + datakey];
-    var properties = ['targetImageWidth','targetImageHeight','targetPositionerTop','targetPositionerLeft'];
-
-    if(storage) {
-      try {
-        storage = JSON.parse(storage);
-      } catch (err) {
-        storage = null;
-        console.log('JSON parse error: ' + err.message);
-      }
-
-      // Restore zoom level and pan position if exists
-      if(storage) {
-        data.$image.one("load.zoomer", function(){
-          for(var i = 0, l = properties.length; i < l; i++) {
-            var property = properties[i];
-            data[property] = parseInt(storage[property], 10) || 0;
-          }
-          console.log('Zoomer state restored');
-        });
-      }
-    }
-
-    // Store zoom level and pan position
-    $(window).on('beforeunload', function() {
-      storage = {};
-      for(var i = 0, l = properties.length; i < l; i++) {
-        var property = properties[i];
-        storage[property] = data[property];
-      }
-      localStorage['zoomer:' + datakey] = JSON.stringify(storage);
-    });
-  }
-});</script><script>$(function() {
-  // Toggle note edit
-  $(document).on('click', '[data-note-edit]', function() {
-    var $container = $(this).closest('.user-bubble').toggleClass('edit');
-    if($container.hasClass('edit')) {
-      $('form', $container)[0].reset();
-      $('.user-bubble_form_error', $container).empty();
-    }
-  });
-
-  // Create and update note
-  $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
-    var $container = $(this).parent();
-    var $error = $('.user-bubble_form_error', $container).empty();
-    if(xhr.status === 201) {
-      // Note created
-      var content = xhr.responseJSON.html;
-      $(content).hide().insertBefore($container).fadeIn();
-      $('[data-note-empty]').hide();
-      this.reset();
-    } else if(xhr.status === 204) {
-      // Note updated
-      var content = $('textarea', this).val();
-      $container.removeClass('edit');
-      $('.user-bubble_content > p', $container).text(content);
-    } else {
-      // Error occurred
-      var message = xhr.responseJSON.join('. ');
-      $error.text('Error: ' + message);
-    }
-  });
-
-  // Delete note
-  $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
-    if(xhr.status === 200 || xhr.status === 204) {
-      var $container = $(this).closest('.user-bubble');
-      $container.fadeOut(function() { $(this).remove(); });
-    }
-  });
-});</script><script>var _gaq = _gaq || [];
-_gaq.push(["_setAccount", "UA-1505790-5"]);
-_gaq.push(["_trackPageview"]);
-_gaq.push(["_trackPageLoadTime"]);
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
-})();</script></body></html>
+.page in tag clicked second
+page in tag: 
+test_page.source_text in tag: Significs and Logic
 F********
 
 Pending: (Failures listed here are expected and do not affect your suite's status)
@@ -5617,7 +5511,6 @@ Pending: (Failures listed here are expected and do not affect your suite's statu
   62) testing deletions deletes a collection
      # Temporarily skipped with xdescribe
      # ./spec/features/zz_deletion_spec.rb:54
-/usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
 
 Failures:
 
@@ -5664,14 +5557,11 @@ Failures:
      #   /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
 
   4) category attributes tag with a button
-     Failure/Error: expect(page).to have_content(@category.title+'_id'+@category.id)
+     Failure/Error: expect(test_page.source_text).to have_content(@category.title+'_id'+@category.id.to_s)
+       expected to find text "People_id1" in "Significs and Logic"
+     # ./spec/features/transcribe_annotate_spec.rb:83:in `block (2 levels) in <top (required)>'
 
-     TypeError:
-       no implicit conversion of Fixnum into String
-     # ./spec/features/transcribe_annotate_spec.rb:70:in `+'
-     # ./spec/features/transcribe_annotate_spec.rb:70:in `block (2 levels) in <top (required)>'
-
-Finished in 1 minute 35.98 seconds (files took 2.39 seconds to load)
+Finished in 1 minute 37.92 seconds (files took 2.43 seconds to load)
 106 examples, 4 failures, 62 pending
 
 Failed examples:
@@ -5679,9 +5569,5 @@ Failed examples:
 rspec ./spec/features/category_attributes_spec.rb:41 # category attributes creates a new attribute value
 rspec ./spec/features/owner_actions_spec.rb:54 # owner actions checks for subject in a new collection
 rspec ./spec/features/role_view_spec.rb:63 # different user role logins signs in an editor with activity
-rspec ./spec/features/transcribe_annotate_spec.rb:52 # category attributes tag with a button
+rspec ./spec/features/transcribe_annotate_spec.rb:50 # category attributes tag with a button
 
-** Invoke fromthepage:process_tex_figures (first_time)
-** Invoke environment (first_time)
-** Execute environment
-** Execute fromthepage:process_tex_figures

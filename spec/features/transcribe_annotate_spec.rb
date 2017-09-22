@@ -47,7 +47,7 @@ describe "category attributes", :order => :defined do
     
   end
 
-  it "tag with a button" do
+  it "tag with a button", :js=>true do
     test_page = @work.pages.second
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -59,15 +59,30 @@ describe "category attributes", :order => :defined do
 
     #expect(page).to have_content(@category.title)
 
-    page.find(:xpath,"//span[text()='People']", match: :first).click
+    #page.find(:xpath,"//span[text()='People']", match: :first).click
+
+    if Capybara.javascript_driver == :selenium
+      page.find(:xpath,"//div[@id='verticalMediumClickableSpansAdv']//span[text()='People']").click
+      puts "page in tag clicked first"
+    else
+      page.find(:xpath,"//div[@id='verticalMediumClickableSpansAdv']//span[text()='People']").trigger("click")
+      puts "page in tag clicked second"
+    end
     
     #page.fill_in 'page_source_text', with: "hello bright sun"
-    click_button('Save Changes')
+    #click_button('Save Changes')
+    click_button('Transcription finished')
     #expect(page).to have_content("Transcription")
 
     puts "page in tag: "+page.body
 
-    expect(page).to have_content(@category.title+'_id'+@category.id.to_s)
+    test_page = @work.pages.second
+
+    puts "test_page.source_text in tag: "+test_page.source_text
+
+    expect(test_page.source_text).to have_content(@category.title+'_id'+@category.id.to_s)
+    
+    #expect(page).to have_content(@category.title+'_id'+@category.id.to_s)
     #page.find(:xpath,"//"+@category.title+'_id'+@category.id, match: :first)
     
   end

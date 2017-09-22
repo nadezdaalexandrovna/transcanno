@@ -55,7 +55,7 @@ describe "category attributes", :order => :defined do
     #page.should have_selector?("#allow_user_input_")
     #expect(page).to have_xpath("//input[@class='attribute_value_input_field']", :count => 1)
 	#expect(page).to have_selector(:css, '.attribute_value_input_field', :count => 1)
-	expect(page).to have_css('#allow_user_input_', :count => 1)
+	 expect(page).to have_css('#allow_user_input_', :count => 1)
     #page.all(:xpath, '//input[@class="attribute_value_input_field"]')
     #page.assert_selector(:xpath, '//input[@class="attribute_value_input_field"]', :count => 1)
     #expect(page).to have_selector(".attribute_value_input_field")

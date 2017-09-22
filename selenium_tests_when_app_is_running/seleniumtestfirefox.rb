@@ -17,7 +17,7 @@ class LoginClass < Test::Unit::TestCase
     @driver.quit
   end
 
-=begin
+
  def test_login
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -127,7 +127,7 @@ def test_get_out_of_tag_hotkeys
 	assert_false(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("text out of tag"),"Assertion Failed")
 
   end
-=end
+
 
   def test_change_hotkeys
     @driver.find_element(:link_text, "Sign In").click
@@ -179,7 +179,7 @@ def test_get_out_of_tag_hotkeys
 
   end
 
-=begin	
+	
   def test_tag_no_attributes_with_hotkeys_type_inside
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -215,8 +215,7 @@ def test_get_out_of_tag_hotkeys
 	assert(@driver.find_element(:xpath,"//*[@class='medium-infinitive_id6']").text.include?("inside the infinitive tag"),"Assertion Failed")
 
   end
-=end
-=begin
+
   def test_tag_in_advanced_mode_with_button_type_inside
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -267,9 +266,9 @@ def test_get_out_of_tag_hotkeys
 	assert_equal(@driver.find_elements(:xpath,"//*[@a2='typed value of a2']").size, 1)
 
   end
-=end
 
-=begin
+
+
   def test_try_to_modify_tag_without_attributes_with_hotkeys
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -405,7 +404,7 @@ def test_delete_tag_with_button
 	assert_equal(@driver.find_elements(:xpath,"//*[@class='medium-infinitive_id6']").size, 0)
 	
   end
-=end
+
 
 end
 
