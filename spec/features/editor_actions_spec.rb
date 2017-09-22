@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "editor actions" do
+xdescribe "editor actions" do
 
   before :all do
     @user = User.find_by(login: USER)

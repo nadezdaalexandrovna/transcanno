@@ -1,0 +1,565 @@
+F"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+."update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+"update_statistic start"
+"update_statistic finish"
+.F...****@name: #category-1
+@count: 0
+@collection.title: CS Pierce
+@category.title: People
+.F...******..........F"update_statistic start"
+"update_statistic finish"
+./usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+...........F***********************..** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+"update_statistic start"
+"update_statistic finish"
+.** Execute fromthepage:process_tex_figures
+F......******...F...FFF
+An error occurred in an `after(:context)` hook.
+Failure/Error: @driver.quit
+
+NoMethodError:
+  undefined method `quit' for :webkit:Symbol
+  Did you mean?  quietly
+# ./spec/features/selenium_firefox_spec.rb:44:in `block (2 levels) in <top (required)>'
+"update_statistic start"
+"update_statistic finish"
+F/usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+"update_statistic start"
+"update_statistic finish"
+page in tag: <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>2 (CS Pierce, MS_641-642) | FromThePage</title><meta name="viewport" content="width=device-width"><meta name="description" content="2 (CS Pierce, MS_641-642) - page overview."><meta name="author" content="FromThePage.com"><meta name="copyright" content="(c) 2017 FromThePage.com"><meta name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=">
+<link href="/assets/favicon-3b65dba823d9f31072094535df6dfcbbe99cf14a55aedfaf619a09fed2ebb640.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+<link href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round" media="screen" rel="stylesheet" />
+<link href="/assets/application-e52f91bec5d45d23cab22abc353ccdab7de3c416266d83129f23cb78eb3155c5.css" media="screen" rel="stylesheet" /><script src="/jquery-2.1.4.min.js"></script><link rel="stylesheet" href="/medium.css"><link rel="stylesheet" href="/chosen.min.css"><link rel="stylesheet" href="/medium-tag-styles.css"><link rel="stylesheet" href="/my_style.css"><script type="text/javascript" src="/chosen.jquery.min.js"></script><script type="text/javascript" src="/rangy-core.js"></script><script type="text/javascript" src="/rangy-classapplier.js"></script><script type="text/javascript" src="/undo.js"></script><script type="text/javascript" src="/medium.js"></script><script type="text/javascript" src="/medium_subclass.js"></script><script>(function(e,b){if(!b.__SV){var a,f,i,g;
+window.mixpanel=b;
+b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");
+2==a.length&&(b=b[a[0]],h=a[1]);
+b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";
+c.people=c.people||[];c.toString=function(b){var a="mixpanel";
+"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};
+c.people.toString=function(){return c.toString(1)+".people (stub)"};
+i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};
+b.__SV=1.2;a=e.createElement("script");
+a.type="text/javascript";
+a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+f=e.getElementsByTagName("script")[0];
+f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);mixpanel.init("d5e53d2387f7184a07bf99f207df9603");</script></head><body><header class="header"><div class="toolbar"><div class="toolbar_group"><a class="logo" href="/"><svg><use xlink:href="/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#logo"></use></svg></a></div><div class="toolbar_group"><a class="header_link" href="/dashboard_role">Dashboard</a><a class="header_link" href="/dashboard">Collections</a><a class="header_link" href="/static/faq">FAQ</a><dl class="dropdown right"><dt class="header_link header_user"><span><big>Signed In As</big><small>Eleanor</small></span><svg class="icon"><use xlink:href="/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#header-user"></use></svg></dt><dd><a href="/dashboard/watchlist">Collaborator Dashboard</a><hr><a href="/user/profile?user_id=2">Your Profile</a><hr><a data-method="delete" href="/users/sign_out" rel="nofollow">Sign Out</a></dd></dl></div></div></header><main class="wrapper"><ul class="breadcrumbs"><li><a href="/collection/show?collection_id=1">CS Pierce</a></li><li><a href="/display/read_work?work_id=9">MS_641-642</a></li></ul><div class="headline"><h1 class="headline_title">2</h1><div class="headline_aside"><nav class="page-nav"><a class="page-nav_prev" href="/display/display_page?page_id=24"><svg class="icon"><use xlink:href="/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#icon-arrow-left"></use></svg></a><span class="page-nav_info">Page 2 of 21</span><a class="page-nav_next" href="/display/display_page?page_id=26"><svg class="icon"><use xlink:href="/assets/symbols-d18264bf297658ba4ff70c873f69c8cbe9604eca470c051aa5f6449b942414d8.svg#icon-arrow-right"></use></svg></a></nav></div></div><div class="tabs"><a class="active">Overview</a><a href="/transcribe/display_page?page_id=25">Transcribe</a><a href="/page_version/list?page_id=25">Versions</a></div><div class="page-headlines"><div class="headline"><h3 class="headline_title">Facsimile</h3></div><div class="headline"><h3 class="headline_title">Transcription</h3></div></div><div class="page-columns" data-fullheight="{ &quot;bottom&quot;: 30, &quot;cssrule&quot;: &quot;height&quot; }"><div class="page-column"><div class="page-imagescan"><div class="zoomer-container"><img alt="1725" src="/images/uploaded/9/1725.jpg" /></div></div></div><div class="page-column"><div class="page-preview"><div class="centered"><div class="centered_content"><h5 class="nodata_title">This page is not transcribed</h5><p class="nodata_text">Please <a href="/transcribe/display_page?page_id=25">help transcribe</a> this page<br>or <a href="/transcribe/mark_page_blank?mark_blank=yes&amp;page_id=25&amp;source_text=blank">mark the page blank</a></p></div></div></div></div></div><h2 class="legend" id="notes">Page Notes</h2><div class="page-notes"><p class="acenter fglight" data-note-empty>Nobody has written a note for this page yet</p><div class="user-bubble"><div class="userpic"><img alt="Eleanor" height="80" src="http://gravatar.com/avatar/ddd977d037e1a6946357c962e37f193e?default=blank&secure=false&size=80" width="80" /></div><form accept-charset="UTF-8" action="/notes" class="user-bubble_form" data-remote="true" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="page_id" name="page_id" type="hidden" value="25" /><div class="user-bubble_form_editor"><textarea id="note_body" name="note[body]" placeholder="Write a new note..." rows="4">
+</textarea></div><div class="user-bubble_form_footer"><span class="user-bubble_form_error"></span><button name="button" type="submit">Submit</button></div></form></div></div><script>mixpanel.track("Display Page");  </script></main><footer class="footer"><div class="footer_copyright">&copy; 2017 <a href="/">FromThePage</a>. All rights reserved.</div><div class="footer_nav"><a href="/static/about">About</a><a href="http://fromthepage.wpengine.com/terms-of-service/">Terms &amp; Conditions</a><a href="/static/privacy">Privacy Policy</a><a href="mailto:benwbrum@gmail.com">Contact Us</a></div></footer><div class="page-busy-overlay"></div><script src="/assets/application-41aece84efa6627667473eda880dceae50103b7d6ab70fb6c889d7ac8fd6a933.js"></script><script>$(function() {
+  // Zoomer initialization
+  var zoomer = $('.zoomer-container').zoomer();
+
+  // Check localStorage support
+  if(typeof Storage !== void(0)) {
+    var data = zoomer.data('zoomer');
+    var datakey = data.images[0];
+    var storage = localStorage['zoomer:' + datakey];
+    var properties = ['targetImageWidth','targetImageHeight','targetPositionerTop','targetPositionerLeft'];
+
+    if(storage) {
+      try {
+        storage = JSON.parse(storage);
+      } catch (err) {
+        storage = null;
+        console.log('JSON parse error: ' + err.message);
+      }
+
+      // Restore zoom level and pan position if exists
+      if(storage) {
+        data.$image.one("load.zoomer", function(){
+          for(var i = 0, l = properties.length; i < l; i++) {
+            var property = properties[i];
+            data[property] = parseInt(storage[property], 10) || 0;
+          }
+          console.log('Zoomer state restored');
+        });
+      }
+    }
+
+    // Store zoom level and pan position
+    $(window).on('beforeunload', function() {
+      storage = {};
+      for(var i = 0, l = properties.length; i < l; i++) {
+        var property = properties[i];
+        storage[property] = data[property];
+      }
+      localStorage['zoomer:' + datakey] = JSON.stringify(storage);
+    });
+  }
+});</script><script>$(function() {
+  // Toggle note edit
+  $(document).on('click', '[data-note-edit]', function() {
+    var $container = $(this).closest('.user-bubble').toggleClass('edit');
+    if($container.hasClass('edit')) {
+      $('form', $container)[0].reset();
+      $('.user-bubble_form_error', $container).empty();
+    }
+  });
+
+  // Create and update note
+  $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
+    var $container = $(this).parent();
+    var $error = $('.user-bubble_form_error', $container).empty();
+    if(xhr.status === 201) {
+      // Note created
+      var content = xhr.responseJSON.html;
+      $(content).hide().insertBefore($container).fadeIn();
+      $('[data-note-empty]').hide();
+      this.reset();
+    } else if(xhr.status === 204) {
+      // Note updated
+      var content = $('textarea', this).val();
+      $container.removeClass('edit');
+      $('.user-bubble_content > p', $container).text(content);
+    } else {
+      // Error occurred
+      var message = xhr.responseJSON.join('. ');
+      $error.text('Error: ' + message);
+    }
+  });
+
+  // Delete note
+  $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
+    if(xhr.status === 200 || xhr.status === 204) {
+      var $container = $(this).closest('.user-bubble');
+      $container.fadeOut(function() { $(this).remove(); });
+    }
+  });
+});</script><script>var _gaq = _gaq || [];
+_gaq.push(["_setAccount", "UA-1505790-5"]);
+_gaq.push(["_trackPageview"]);
+_gaq.push(["_trackPageLoadTime"]);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
+})();</script></body></html>
+F********
+
+Pending: (Failures listed here are expected and do not affect your suite's status)
+
+  1) IA import actions imports a work from IA
+     # Temporarily skipped with xdescribe
+     # ./spec/features/archive_import_spec.rb:19
+
+  2) IA import actions uses OCR when importing a work from IA
+     # Temporarily skipped with xdescribe
+     # ./spec/features/archive_import_spec.rb:39
+
+  3) IA import actions tests ocr correction
+     # Temporarily skipped with xdescribe
+     # ./spec/features/archive_import_spec.rb:63
+
+  4) IA import actions checks ocr/transcribe statistics
+     # Temporarily skipped with xdescribe
+     # ./spec/features/archive_import_spec.rb:80
+
+  5) disable subject linking disables subject indexing in a collection
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:18
+
+  6) disable subject linking checks collection level subject items
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:29
+
+  7) disable subject linking checks work level subject items
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:56
+
+  8) disable subject linking checks page level subject items
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:71
+
+  9) disable subject linking enables subject indexing
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:88
+
+  10) disable subject linking checks links work when enabled
+     # Temporarily skipped with xdescribe
+     # ./spec/features/disable_subjects_spec.rb:99
+
+  11) subject linking looks at subjects in a collection
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:20
+
+  12) subject linking edits a subject's description
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:35
+
+  13) subject linking deletes a subject
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:49
+
+  14) subject linking links a categorized subject
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:75
+
+  15) subject linking enters a bad link - no closing braces
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:101
+
+  16) subject linking enters a bad link - no text
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:115
+
+  17) subject linking enters a bad link - single starting bracket
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:137
+
+  18) subject linking enters a bad link - triple brackets
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:151
+
+  19) subject linking creates a link that includes quotes
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:165
+
+  20) subject linking links subjects on a translation
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:174
+
+  21) subject linking tests autolinking in transcription
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:193
+
+  22) subject linking tests autolinking in translation
+     # Temporarily skipped with xdescribe
+     # ./spec/features/linking_spec.rb:215
+
+  23) needs review sets the work to translation
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:22
+
+  24) needs review marks pages blank
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:34
+
+  25) needs review marks translated pages as blank
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:56
+
+  26) needs review marks pages as needing review
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:68
+
+  27) needs review marks translated pages as needing review
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:93
+
+  28) needs review filters list of review pages
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:105
+
+  29) needs review checks collection overview stats
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:137
+
+  30) needs review checks collection statistics
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:167
+
+  31) needs review marks pages as no longer needing review
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:198
+
+  32) needs review marks translated pages as no longer needing review
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:215
+
+  33) needs review marks pages not blank
+     # Temporarily skipped with xdescribe
+     # ./spec/features/needs_review_spec.rb:228
+
+  34) owner views looks at owner tabs
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:18
+
+  35) owner views looks at subjects tab
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:27
+
+  36) owner views looks at statistics tab
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:35
+
+  37) owner views looks at settings tab
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:47
+
+  38) owner views looks at export tab
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:57
+
+  39) owner views looks at collaborators tab
+     # Temporarily skipped with xdescribe
+     # ./spec/features/owner_view_spec.rb:68
+
+  40) collection related tasks exports a collection
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_convention_spec.rb:26
+
+  41) collection related tasks checks for collection level transcription conventions
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_convention_spec.rb:36
+
+  42) collection related tasks changes work level transcription conventions
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_convention_spec.rb:43
+
+  43) collection related tasks changes conventions at collection level but not work level
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_convention_spec.rb:59
+
+  44) collection related tasks reverts to collection level transcription conventions
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_convention_spec.rb:80
+
+  45) testing deletions deletes a page
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_deletion_spec.rb:13
+
+  46) testing deletions deletes a work
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_deletion_spec.rb:34
+
+  47) testing deletions deletes a collection
+     # Temporarily skipped with xdescribe
+     # ./spec/features/zz_deletion_spec.rb:54
+/usr/lib/ruby/vendor_ruby/bundler.rb:289: warning: Insecure world writable dir /var/lib/gems/2.3.0/bin in PATH, mode 040757
+
+Failures:
+
+  1) uploads data for collections starts a new project from tab
+     Failure/Error: attach_file('document_upload_file', './test_data/uploads/test.pdf')
+
+     Capybara::Webkit::ClickFailed:
+       Failed to click element /html/body/main/div[3]/article/form[1]/table/tbody/tr[2]/td/div/input[@id='document_upload_file'] because of overlapping element /html/body/main/div[3]/article/form[1]/table/tbody/tr[2]/td/div/input[2] at position 636, 565; 
+       A screenshot of the page at the time of the failure has been written to /tmp/click_failed_n20133.png
+     # /var/lib/gems/2.3.0/gems/capybara-webkit-1.12.0/lib/capybara/webkit/browser.rb:305:in `check'
+     # /var/lib/gems/2.3.0/gems/capybara-webkit-1.12.0/lib/capybara/webkit/browser.rb:211:in `command'
+     # /var/lib/gems/2.3.0/gems/capybara-webkit-1.12.0/lib/capybara/webkit/node.rb:153:in `invoke'
+     # /var/lib/gems/2.3.0/gems/capybara-webkit-1.12.0/lib/capybara/webkit/node.rb:47:in `set'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:108:in `block in set'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/element.rb:104:in `set'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:271:in `attach_file'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/dsl.rb:52:in `block (2 levels) in <module:DSL>'
+     # ./spec/features/add_data_spec.rb:22:in `block (2 levels) in <top (required)>'
+
+  2) uploads data for collections checks that the file has been uploaded
+     Failure/Error: visit "/display/read_work?work_id=#{@work.id}"
+
+     NoMethodError:
+       undefined method `id' for nil:NilClass
+     # ./spec/features/add_data_spec.rb:90:in `block (2 levels) in <top (required)>'
+
+  3) category attributes creates a new attribute value
+     Failure/Error: expect(page).to have_css('#allow_user_input_', :count => 1)
+       expected to find css "#allow_user_input_" 1 time but there were no matches. Also found "", which matched the selector but not all filters.
+     # ./spec/features/category_attributes_spec.rb:58:in `block (2 levels) in <top (required)>'
+
+  4) editor actions transcribes a page
+     Failure/Error: page.fill_in 'page_source_text', with: "Test Preview"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/editor_actions_spec.rb:92:in `block (2 levels) in <top (required)>'
+
+  5) guest user actions tests guest account transcription
+     Failure/Error: page.fill_in 'page_source_text', with: "Guest Transcription 1"
+
+     Capybara::ElementNotFound:
+       Unable to find field "page_source_text"
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:44:in `block in find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/base.rb:85:in `synchronize'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/finders.rb:33:in `find'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/node/actions.rb:85:in `fill_in'
+     # /var/lib/gems/2.3.0/gems/capybara-2.9.1/lib/capybara/session.rb:735:in `block (2 levels) in <class:Session>'
+     # ./spec/features/guest_spec.rb:37:in `block (2 levels) in <top (required)>'
+
+  6) owner actions checks for subject in a new collection
+     Failure/Error: expect(page).to have_content("Places")
+       expected to find text "Places" in "DashboardCollectionsFAQSigned In AsMargaretOwner DashboardCollaborator DashboardYour ProfileSign OutNew Test CollectionOverviewStatisticsSubjectsSettingsExportCollaboratorsAdd WorkNo CategoriesThere are no subject categories in the collection.Create the first category you'll use to group subjects.© 2017 FromThePage. All rights reserved.AboutTerms & ConditionsPrivacy PolicyContact Us"
+     # ./spec/features/owner_actions_spec.rb:59:in `block (2 levels) in <top (required)>'
+
+  7) different user role logins signs in an editor with activity
+     Failure/Error: expect(page).to have_content(collections.first.title)
+
+     ActiveRecord::StatementInvalid:
+       Mysql2::Error: Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT: SELECT  DISTINCT `collections`.`id` FROM `collections` LEFT OUTER JOIN `deeds` ON `deeds`.`collection_id` = `collections`.`id` WHERE `collections`.`id` IN (3, 1)  ORDER BY deeds.created_at DESC LIMIT 1
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `block in execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:373:in `block in log'
+     # /var/lib/gems/2.3.0/gems/activesupport-4.1.2/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_adapter.rb:367:in `log'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:228:in `execute'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:232:in `exec_query'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/mysql2_adapter.rb:240:in `select'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract/query_cache.rb:70:in `select_all'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:382:in `limited_ids_for'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:369:in `apply_join_dependency'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:330:in `find_with_associations'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:604:in `exec_queries'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:486:in `load'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation.rb:231:in `to_a'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:467:in `find_nth_with_limit'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:459:in `find_nth'
+     # /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/relation/finder_methods.rb:132:in `first'
+     # ./spec/features/role_view_spec.rb:76:in `block (2 levels) in <top (required)>'
+     # ------------------
+     # --- Caused by: ---
+     # Mysql2::Error:
+     #   Expression #1 of ORDER BY clause is not in SELECT list, references column 'testing.deeds.created_at' which is not in SELECT list; this is incompatible with DISTINCT
+     #   /var/lib/gems/2.3.0/gems/activerecord-4.1.2/lib/active_record/connection_adapters/abstract_mysql_adapter.rb:303:in `query'
+
+  8) Selenium Recipes - Start different browsers Invalid Login
+     Failure/Error: @driver.find_element(:link_text, "Sign In").click
+
+     NoMethodError:
+       undefined method `find_element' for :webkit:Symbol
+     # ./spec/features/selenium_firefox_spec.rb:51:in `block (2 levels) in <top (required)>'
+
+  9) Selenium Recipes - Start different browsers Login successfully
+     Failure/Error: @driver.find_element(:link_text, "Sign In").click
+
+     NoMethodError:
+       undefined method `find_element' for :webkit:Symbol
+     # ./spec/features/selenium_firefox_spec.rb:71:in `block (2 levels) in <top (required)>'
+
+  10) Selenium Recipes - Start different browsers go to Transcribe page, type a text and tag one word with a button successfully
+      Failure/Error: @driver.find_element(:link_text, "Sign In").click
+
+      NoMethodError:
+        undefined method `find_element' for :webkit:Symbol
+      # ./spec/features/selenium_firefox_spec.rb:81:in `block (2 levels) in <top (required)>'
+
+  11) category attributes type some text
+      Failure/Error: expect(page).to have_content("hello bright sun")
+        expected to find text "hello bright sun" in "DashboardCollectionsFAQSigned In AsEleanorCollaborator DashboardYour ProfileSign OutCS PierceMS_641-6422Page 2 of 21OverviewTranscribeVersionsFacsimileTranscriptionThis page is not transcribedPlease help transcribe this pageor mark the page blankPage NotesNobody has written a note for this page yetSubmit© 2017 FromThePage. All rights reserved.AboutTerms & ConditionsPrivacy PolicyContact Us"
+      # ./spec/features/transcribe_annotate_spec.rb:31:in `block (2 levels) in <top (required)>'
+
+  12) category attributes tag with a button
+      Failure/Error: expect(page).to have_content(@category.title+'_id'+@category.id)
+
+      TypeError:
+        no implicit conversion of Fixnum into String
+      # ./spec/features/transcribe_annotate_spec.rb:52:in `+'
+      # ./spec/features/transcribe_annotate_spec.rb:52:in `block (2 levels) in <top (required)>'
+
+Finished in 1 minute 34.44 seconds (files took 2.42 seconds to load)
+106 examples, 12 failures, 47 pending, 1 error occurred outside of examples
+
+Failed examples:
+
+rspec ./spec/features/add_data_spec.rb:18 # uploads data for collections starts a new project from tab
+rspec ./spec/features/add_data_spec.rb:87 # uploads data for collections checks that the file has been uploaded
+rspec ./spec/features/category_attributes_spec.rb:41 # category attributes creates a new attribute value
+rspec ./spec/features/editor_actions_spec.rb:88 # editor actions transcribes a page
+rspec ./spec/features/guest_spec.rb:29 # guest user actions tests guest account transcription
+rspec ./spec/features/owner_actions_spec.rb:54 # owner actions checks for subject in a new collection
+rspec ./spec/features/role_view_spec.rb:63 # different user role logins signs in an editor with activity
+rspec ./spec/features/selenium_firefox_spec.rb:47 # Selenium Recipes - Start different browsers Invalid Login
+rspec ./spec/features/selenium_firefox_spec.rb:70 # Selenium Recipes - Start different browsers Login successfully
+rspec ./spec/features/selenium_firefox_spec.rb:80 # Selenium Recipes - Start different browsers go to Transcribe page, type a text and tag one word with a button successfully
+rspec ./spec/features/transcribe_annotate_spec.rb:21 # category attributes type some text
+rspec ./spec/features/transcribe_annotate_spec.rb:34 # category attributes tag with a button
+
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute fromthepage:process_tex_figures
+** Invoke fromthepage:process_tex_figures (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute fromthepage:process_tex_figures

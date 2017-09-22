@@ -1,21 +1,19 @@
-FromThePage is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
+Transc&Anno is an open source tool for transcription and on-the-fly annotation of handwritten documents.
 
 ### Features
 
-- Wiki-style Editing: Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
+- Intuitive transcription and annotation environment. The annotator uses hot keys or buttons triggering pop-up menus in oder to annotate.
+- Intuitive annotation scheme definition environment.
 - Version Control: Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
-- Wikilinks: Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
 - Presentation: Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject
-- Automatic Markup: FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
-- Internet Archive integration: FromThePage can be pointed at manuscripts hosted on Archive.org. It will import the page structure and any printed page titles into its native format for transcription, while serving page images from the Internet Archive.
 
 ### License
 
-FromThePage is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
+Transc&Anno is open source.
 
 ### Platform
 
-FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
+Transc&Anno currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
 
 ### Installation
 
@@ -23,7 +21,7 @@ Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
 
-    git clone git://github.com/benwbrum/fromthepage.git
+    git clone git://github.com/commul/fromthepage.git
 
 Install required gems
 
@@ -35,7 +33,7 @@ Install Graphviz
 
 Configure MySQL
 
-Create a database and user account for FromThePage to use.
+Create a database and user account for Transc&Anno to use.
 
 Then update the config/database.yml file to point to the MySQL user account and database you created above.
 
@@ -46,11 +44,6 @@ to load the schema definition into the database account.
 Modify the configuration parameters in config/initializers/01fromthepage.rb.
 
 Modify the config/environments/production.rb (or development.rb) file to configure your mailer.  (Search for "action_mailer".)
-
-If you wish to use latex formulas in your transcriptions, you'll need to install "pdflatex" and "pdfcrop".
-You can usually install them by typing:
-sudo apt-get install texlive-latex-base texlive-extra-utils
-
 
 Finally, start the application
 

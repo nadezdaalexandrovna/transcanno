@@ -80,3 +80,4 @@ gem 'devise_masquerade'
 gem 'chosen-rails'
 
 gem 'selenium-webdriver'
+gem 'chromedriver-helper'

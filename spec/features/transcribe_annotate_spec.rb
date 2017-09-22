@@ -1,8 +1,15 @@
 require 'spec_helper'
 
 describe "category attributes", :order => :defined do
-  Capybara.javascript_driver = :webkit
-  Capybara.current_driver = Capybara.javascript_driver
+  #Capybara.javascript_driver = :webkit
+  #Capybara.current_driver = Capybara.javascript_driver
+
+  Capybara.javascript_driver = :selenium
+  Capybara.register_driver :selenium do |app|
+    Capybara::Selenium::Driver.new(app, :browser => :firefox)
+  end
+
+  ActionController::Base.asset_host = "http://localhost:3000"
   
   before :all do
     @owner = User.find_by(login: OWNER)
@@ -18,17 +25,26 @@ describe "category attributes", :order => :defined do
     login_as(@user, :scope => :user)
   end
   
-  it "type some text" do
+  it "type some text", :js=>true do
   	test_page = @work.pages.second
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
+    puts "in type some text page.body: "+page.body
+    #expect(page).to have_content("Transcription finished")
 
-    el = find(:xpath, "//div[@contenteditable='true' and @id='page_source_text']")
-    el.set("hello bright sun")
+    #el = find(:xpath, "//div[@id='page_source_text']")
+    #el.set("hello bright sun")
     #page.fill_in 'page_source_text', with: "hello bright sun"
-    click_button('Save Changes')
-    expect(page).to have_content("Transcription")
+    #find('div[contenteditable]').set("hello bright sun")
+
+    find('#page_source_text').base.send_keys("hello bright sun")
+    #click_button('Save Changes')
+    click_button('Transcription finished')
+    #expect(page).to have_content("Transcription")
+    #puts "in type some text page.body: "+page.body
+    puts "in type some text after finished page.body: "+page.body
     expect(page).to have_content("hello bright sun")
+    
   end
 
   it "tag with a button" do
@@ -36,20 +52,22 @@ describe "category attributes", :order => :defined do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
 
-    el = find(:xpath, "//div[@contenteditable='true' and @id='page_source_text']")
-    el.set("hello ")
+    #el = find(:xpath, "//div[@contenteditable='true' and @id='page_source_text']")
+    #el.set("hello ")
 
-    expect(page).to have_content(@category.title)
+    find('#page_source_text').base.send_keys("hello bright sun")
+
+    #expect(page).to have_content(@category.title)
 
     page.find(:xpath,"//span[text()='People']", match: :first).click
     
     #page.fill_in 'page_source_text', with: "hello bright sun"
     click_button('Save Changes')
-    expect(page).to have_content("Transcription")
+    #expect(page).to have_content("Transcription")
 
     puts "page in tag: "+page.body
 
-    expect(page).to have_content(@category.title+'_id'+@category.id)
+    expect(page).to have_content(@category.title+'_id'+@category.id.to_s)
     #page.find(:xpath,"//"+@category.title+'_id'+@category.id, match: :first)
     
   end

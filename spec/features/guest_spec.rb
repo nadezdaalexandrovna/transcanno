@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "guest user actions" do
+xdescribe "guest user actions" do
 
   before :all do
     @collections = Collection.all

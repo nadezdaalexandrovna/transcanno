@@ -74,6 +74,36 @@ Capybara.configure do |config|
   config.asset_host = "http://localhost:3000"
 end
 
+#Added by nadya
+=begin
+Capybara.default_driver = :selenium
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+end
+
+Capybara.run_server = true
+
+RSpec.configure do |config|
+  config.run_all_when_everything_filtered = true
+end
+
+
+Capybara.register_driver :chrome do |app|
+      Capybara::Selenium::Driver.new(app, browser: :chrome)
+  end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chromeOptions: { args: %w(headless disable-gpu) })
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.javascript_driver = :headless_chrome
+=end
+#end of added by nadya
+
 REST_USER = "george"
 USER = "eleanor"
 OWNER = "margaret"
