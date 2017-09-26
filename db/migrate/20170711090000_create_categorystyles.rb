@@ -65,6 +65,23 @@ class CreateCategorystyles < ActiveRecord::Migration
 			valuestoattributesrelation_id int default null,
 			foreign key(valuestoattributesrelation_id ) references valuestoattributesrelations(id)
 		);"
+
+	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-');"
+	execute "INSERT INTO collections (id, title, owner_user_id) values (1, 'Example collection',2);"
+	execute "INSERT INTO categories (id, title, collection_id) values (1, 'infinitive', 1),(2, 'adv2', 1);"
+	execute "INSERT INTO attributecats (id, name) values (1, 'a1'),(2,'a2');"
+	execute "INSERT INTO categoryattributes (id, category_id, attributecat_id, allow_user_input, mode,initial) values (1,2,1,0,2,1),(2,2,2,1,2,1);"
+	execute "INSERT INTO attributevalues (id, value) values (1,'v1'), (2, 'v2');"
+	execute "INSERT INTO attributes_to_values (id, categoryattribute_id, attributevalue_id) values (1,1,1), (2, 1, 2);"
+
+	execute "INSERT INTO collection_owners (user_id, collection_id) values (2,1);"
+	execute "INSERT INTO works (id, title, owner_user_id, collection_id) values (1, 'first_work', 2, 1);"
+	execute "INSERT INTO work_statistics (id, work_id, transcribed_pages, annotated_pages,total_pages,blank_pages,incomplete_pages) values (1, 1, 0, 0,2,0,0);"
+	execute "INSERT INTO pages (id, title, work_id,base_image,base_width,base_height,position,lock_version) values (1, '1', 1,'public/images/uploaded/for_tests/page_0001.jpg',1649,2860,1,0);"
+	execute "INSERT INTO document_uploads (id, user_id, collection_id,file,status) values (1, 2, 1,'MS_844.ZIP','finished');"
+	execute "INSERT INTO categorystyles (colour, category_id) values ('blue',1), ('red',2);"
+	execute "INSERT INTO categoryscopes (id, category_id, mode) values (1,1,2);"
+
   end
 
   def self.down
