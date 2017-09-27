@@ -12,7 +12,7 @@ class LoginClass < Test::Unit::TestCase
     config = YAML.load_file(script_dir+'/config.yaml')
     url=config['url']
 
-    Selenium::WebDriver::Opera.driver_path=script_dir+"/operadriver"
+    #Selenium::WebDriver::Opera.driver_path=script_dir+"/operadriver"
     @driver = Selenium::WebDriver.for :opera
     @driver.get(url)  
   end
@@ -60,7 +60,7 @@ class LoginClass < Test::Unit::TestCase
     #@driver.find_element(:xpath, "//*[text()='Create Collection'").click
 
   end
- 
+=begin 
   def test_insert_tag_with_button_type_inside
     #Log in
     @driver.find_element(:link_text, "Sign In").click
@@ -428,7 +428,7 @@ def test_delete_tag_with_button
   
   end
 
-
+=end
 end
 
 

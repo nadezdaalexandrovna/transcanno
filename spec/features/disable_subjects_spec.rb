@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 #describe "disable subject linking", :order => :defined do
-xdescribe "disable subject linking", :order => :defined do
+describe "disable subject linking", :order => :defined do
 
   before :all do
     @owner = User.find_by(login: OWNER)
@@ -25,7 +25,7 @@ xdescribe "disable subject linking", :order => :defined do
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be true
   end
-
+=begin
   it "checks collection level subject items" do
     visit "/collection/show?collection_id=#{@collection.id}"
     #check for subject related items on Overview tab
@@ -52,7 +52,7 @@ xdescribe "disable subject linking", :order => :defined do
     expect(page).to have_content("Contributions")
     expect(page).not_to have_content("Recent Subjects")
   end
-
+=end
   it "checks work level subject items" do
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Help")
@@ -68,22 +68,6 @@ xdescribe "disable subject linking", :order => :defined do
 
   end
 
-  it "checks page level subject items" do
-    visit "/display/read_work?work_id=#{@work.id}"
-    page.find('.work-page', text: @title).click_link(@title)
-    expect(page).to have_content("Transcription")
-    page.find('.tabs').click_link("Transcribe")
-    expect(page).not_to have_content("Autolink")
-    expect(page).to have_content("A single newline")
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
-    click_button("Save Changes")
-    expect(page).to have_content("Texas")
-    expect(page).to have_content("Transcription")
-    expect(page).not_to have_selector('a', text: 'Texas')
-    page.find('.tabs').click_link("Translate")
-    expect(page).not_to have_content("Autolink")
-
-  end
 
   it "enables subject indexing" do
     visit "/collection/show?collection_id=#{@collection.id}"
@@ -95,7 +79,7 @@ xdescribe "disable subject linking", :order => :defined do
     collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be false
   end
-
+=begin
  it "checks links work when enabled" do
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@collection.title)
@@ -105,5 +89,5 @@ xdescribe "disable subject linking", :order => :defined do
     expect(page).to have_selector('a', text: 'Texas')
     
   end
-
+=end
 end

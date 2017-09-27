@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 #describe "owner views" do
-xdescribe "owner views" do
+describe "owner views" do
 
   before :all do
 
@@ -64,7 +64,7 @@ xdescribe "owner views" do
       expect(page).to have_content(w.title)
     end
   end
-
+=begin
   it "looks at collaborators tab" do
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Collaborators")
@@ -72,5 +72,5 @@ xdescribe "owner views" do
     expect(page).to have_content("Contributions Between")
     expect(page).to have_content("All Collaborators")
   end
-
+=end
 end

@@ -8,7 +8,7 @@ describe "different user role logins" do
 
     @password = "password"
   end
-
+=begin
   it "creates a new user account" do
     user_count = User.all.count
     visit root_path
@@ -30,7 +30,7 @@ describe "different user role logins" do
     expect(page).to have_content("Collaborator Dashboard")
     expect(new_user_count).to eq (user_count + 1)
   end
-
+=end
   it "tests guest dashboard" do
     visit root_path
     click_link('Dashboard')
@@ -59,7 +59,7 @@ describe "different user role logins" do
       click_link('Dashboard')
       expect(page.current_path).to eq dashboard_watchlist_path
   end
-
+=begin
   it "signs in an editor with activity" do
     #note: signs in with login id
     #find user activity
@@ -85,7 +85,7 @@ describe "different user role logins" do
     expect(page).not_to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
   end
-
+=end
   it "signs a user in with email address" do
     user = User.find_by(login: 'eleanor')
     visit new_user_session_path

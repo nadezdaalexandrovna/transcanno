@@ -1,7 +1,7 @@
 
 require 'spec_helper'
 
-describe "uploads data for collections", :order => :defined do
+xdescribe "uploads data for collections", :order => :defined do
 
   before :all do
 

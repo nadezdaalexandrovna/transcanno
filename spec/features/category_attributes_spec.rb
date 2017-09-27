@@ -49,18 +49,13 @@ describe "category attributes", :order => :defined do
     page.find(@name).find('a', text: 'Define Category Attribute Values').click
     click_button(first_attribute_name)
 
-    #browser = Capybara.current_session
-    #browser.find('input[class="attribute_value_input_field"]')
-    #expect(page).to have_css 'input'
-    #page.should have_selector?("#allow_user_input_")
-    #expect(page).to have_xpath("//input[@class='attribute_value_input_field']", :count => 1)
-	#expect(page).to have_selector(:css, '.attribute_value_input_field', :count => 1)
-	 expect(page).to have_css('#allow_user_input_', :count => 1)
-    #page.all(:xpath, '//input[@class="attribute_value_input_field"]')
-    #page.assert_selector(:xpath, '//input[@class="attribute_value_input_field"]', :count => 1)
-    #expect(page).to have_selector(".attribute_value_input_field")
-    #expect(page).to have_selector("add_attribute_value["+first_attribute_id.to_s+"]")
-    fill_in "add_attribute_value[#{first_attribute_id}][]", with: 'first_value'
+    print "\npage.body:\n"
+    puts page.body
+    print "\n"
+    #fill_in "add_attribute_value[#{first_attribute_id}][]", with: 'first_value'
+    #fill_in "attribute_value_input_field", with: 'first_value'
+    #el=find(:xpath, "//input[@class='attribute_value_input_field'")
+    fill_in (:xpath, "//input[@class='attribute_value_input_field'"), with: 'first_value'
     click_button("Apply all changes")
 
     visit "/article/list?collection_id=#{@collection.id}#category-#{@category.id}"    

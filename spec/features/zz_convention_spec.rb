@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 #describe "collection related tasks", :order => :defined do
-xdescribe "collection related tasks", :order => :defined do
+describe "collection related tasks", :order => :defined do
   Capybara.javascript_driver = :webkit
 
 

@@ -2,14 +2,14 @@
 require 'spec_helper'
 
 #describe "testing deletions" do
-xdescribe "testing deletions" do
+describe "testing deletions" do
 
   before :all do
     @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
     @collection = @collections.last
   end
-
+=begin
   it "deletes a page" do
     work = @collection.works.last
     count = work.pages.count
@@ -30,7 +30,7 @@ xdescribe "testing deletions" do
     versions = test_page.page_versions
     expect(versions).to be_empty
   end
-
+=end
   it "deletes a work" do
     work = @collection.works.first
     work_count = @collection.works.count

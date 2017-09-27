@@ -22,7 +22,7 @@ class LoginClass < Test::Unit::TestCase
     @driver.quit
   end
 
-
+=begin
  def test_login
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -71,6 +71,8 @@ class LoginClass < Test::Unit::TestCase
     sleep 1
 
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -81,6 +83,9 @@ class LoginClass < Test::Unit::TestCase
 	sleep 1
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
 	sleep 1
 	#Type some text
 	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
@@ -96,7 +101,7 @@ class LoginClass < Test::Unit::TestCase
 
   end
 
-def test_get_out_of_tag_hotkeys
+  def test_get_out_of_tag_hotkeys
 	#Log in
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -105,6 +110,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -115,6 +122,9 @@ def test_get_out_of_tag_hotkeys
 	sleep 1
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
 	sleep 1
 	#Type some text
 	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
@@ -148,6 +158,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -159,7 +171,9 @@ def test_get_out_of_tag_hotkeys
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-	
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#Open the hot keys modification menu
 	@driver.find_element(:class, "show_change_hotkeys").click
 	sleep 1
@@ -203,6 +217,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+	@driver.find_element(:link_text, "Collections").click
+	sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -214,7 +230,9 @@ def test_get_out_of_tag_hotkeys
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-	
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#puts Selenium::WebDriver::Keys::KEYS
 
 	#Open the dropdown menu via hot keys
@@ -233,7 +251,7 @@ def test_get_out_of_tag_hotkeys
 
   end
 
-  def test_tag_in_advanced_mode_with_button_type_inside
+  def test_tag_with_attributes_with_button_type_inside
   	#Log in
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -242,6 +260,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -253,14 +273,19 @@ def test_get_out_of_tag_hotkeys
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#Switch to the advanced mode
-	@driver.find_element(:id, "use_advanced_mode").click
+	#@driver.find_element(:id, "use_advanced_mode").click
 	sleep 1
 
-	#Open the dropdown menu via hot keys
-	@driver.find_element(:id, "page_source_text").send_keys ''
-	@driver.find_element(:class, "button-adv2_id2").click
+	#Type some text
+	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
+	sleep 1
+
+	@driver.find_element(:xpath, "//span[text()='adv2']").click
+	#@driver.find_element(:class, "button-adv2_id2").click
 	sleep 1
 	#Type the value of the attribute demanding user input
 	@driver.find_element(:id, "select-type-input").send_keys 'v1'
@@ -285,8 +310,6 @@ def test_get_out_of_tag_hotkeys
 
   end
 
-
-
   def test_try_to_modify_tag_without_attributes_with_hotkeys
   	#Log in
     @driver.find_element(:link_text, "Sign In").click
@@ -296,6 +319,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -307,7 +332,9 @@ def test_get_out_of_tag_hotkeys
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-	
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#Open the dropdown menu via hot keys
 	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'c']
 	sleep 1
@@ -324,10 +351,10 @@ def test_get_out_of_tag_hotkeys
 	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'm']
 	sleep 1
 	#Choose the tag to delete
-	@driver.find_element(:css, "#change_radio_INFINITIVE_id1").click
+	@driver.find_element(:id, "change_radio_INFINITIVE_ID1").click
 	sleep 1
 	#Confirm the choice
-	@driver.find_element(:css, "#change_tag_confirm_button").click
+	@driver.find_element(:id, "change_tag_confirm_button").click
 	sleep 1
 	#Verify the presence of an alert (because the infinitive tag can't be changed as it has no attributes)
 	driver.switch_to.alert.accept rescue Selenium::WebDriver::Error::NoAlertOpenError
@@ -345,6 +372,8 @@ def test_get_out_of_tag_hotkeys
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -356,7 +385,9 @@ def test_get_out_of_tag_hotkeys
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-	
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#Open the dropdown menu via hot keys
 	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'c']
 	sleep 1
@@ -373,10 +404,10 @@ def test_get_out_of_tag_hotkeys
 	@driver.find_element(:id, "page_source_text").send_keys [:alt, 'n']
 	sleep 1
 	#Choose the tag to delete
-	@driver.find_element(:css, "#delete_checkbox_INFINITIVE_id1").click
+	@driver.find_element(:id, "delete_checkbox_INFINITIVE_ID1").click
 	sleep 1
 	#Confirm the choice
-	@driver.find_element(:css, "#delete_tag_confirm_button").click
+	@driver.find_element(:id, "delete_tag_confirm_button").click
 	sleep 1
 	#Verify that the tag is absent from the page
 	assert_equal(@driver.find_elements(:xpath,"//*[@class='medium-infinitive_id1']").size, 0)
@@ -384,7 +415,7 @@ def test_get_out_of_tag_hotkeys
   end
 
 
-def test_delete_tag_with_button
+  def test_delete_tag_with_button
     #Log in
     @driver.find_element(:link_text, "Sign In").click
     sleep 1
@@ -393,6 +424,8 @@ def test_delete_tag_with_button
     @driver.find_element(:name, "button").click
     sleep 1
     #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
 	@driver.find_element(:link_text, "Example collection").click
 	sleep 1
 	#Go to the work
@@ -404,7 +437,9 @@ def test_delete_tag_with_button
 	#Go to the transcription page
 	@driver.find_element(:link_text, "Transcribe").click
 	sleep 1
-
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
 	#Type some text
 	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
 	sleep 1
@@ -412,16 +447,19 @@ def test_delete_tag_with_button
 	@driver.find_element(:xpath, "//span[text()='infinitive']").click
 	sleep 1
 	#Type inside the tag
-	@driver.find_element(:tag_name, "infinitive_id1").send_keys "inside the infinitive tag"
+	#@driver.find_element(:tag_name, "infinitive_id1").click
+	#@driver.execute_script('el = document.elementFromPoint(639, 351); el.click();')
+	@driver.execute_script("arguments[0].focus(); arguments[0].innerText=arguments[1];", @driver.find_element(:tag_name, "infinitive_id1"), "inside the infinitive tag");
+	#@driver.find_element(:tag_name, "infinitive_id1").send_keys "inside the infinitive tag"
 	sleep 1
 	#Push the "delete tag" button
-	@driver.find_element(:xpath, "//span[@class='delete_tag']").click
+	@driver.find_element(:xpath, "//div[@id='verticalMediumClickableSpans']//span[@class='delete_tag']").click
 	sleep 1
 	#Choose the tag to delete
-	@driver.find_element(:css, "#delete_checkbox_INFINITIVE_id1").click
+	@driver.find_element(:id, "delete_checkbox_INFINITIVE_ID1").click
 	sleep 1
 	#Confirm the deletion
-	@driver.find_element(:css, "#delete_tag_confirm_button").click
+	@driver.find_element(:id, "delete_tag_confirm_button").click
 	sleep 1
 	#Verify that the tag is absent from the page
 	assert_equal(@driver.find_elements(:xpath,"//*[@class='medium-infinitive_id1']").size, 0)
@@ -429,5 +467,70 @@ def test_delete_tag_with_button
   end
 
 
+  def test_delete_tag_with_button_2
+    #Log in
+    #@driver.find_element(:link_text, "Sign In").click
+    #sleep 1
+    #@driver.find_element(:id, "user_login_id").send_keys "collection_owner"
+    #@driver.find_element(:id, "user_password").send_keys "coll_coll"
+    #@driver.find_element(:name, "button").click
+    #sleep 1
+    #Go to the collection
+    @driver.find_element(:link_text, "Collections").click
+    sleep 1
+	@driver.find_element(:link_text, "Example collection").click
+	sleep 1
+	#Go to the work
+	@driver.find_element(:link_text, "first_work").click
+	sleep 1
+	#Go to the page
+	@driver.find_element(:link_text, "1").click
+	sleep 1
+	#Go to the transcription page
+	@driver.find_element(:link_text, "Transcribe").click
+	sleep 1
+	#Go to the transcription page
+	@driver.find_element(:xpath, "//input[@value='Transcribe as guest']").click
+	sleep 1
+	#Type some text
+	@driver.find_element(:id, "page_source_text").send_keys "some text to tag"
+	sleep 1
+	#Insert a tag with a button
+	@driver.find_element(:xpath, "//span[text()='infinitive']").click
+	sleep 1
+	#Type inside the tag
+	#@driver.find_element(:tag_name, "infinitive_id1").click
+	#@driver.execute_script('el = document.elementFromPoint(639, 351); el.click();')
+	@driver.execute_script("arguments[0].focus(); arguments[0].innerText=arguments[1];", @driver.find_element(:tag_name, "infinitive_id1"), "inside the infinitive tag");
+	#@driver.find_element(:tag_name, "infinitive_id1").send_keys "inside the infinitive tag"
+	sleep 1
+
+	#Open the tag deletion menu via hotkeys
+	#@driver.find_element(:id, "page_source_text").send_keys [:alt, 'n']
+	#@driver.find_element(:xpath, "//div[@id='verticalMediumClickableSpans']//span[@class='delete_tag']").click
+	#@driver.find_element(:xpath, "//span[text()='⛌']").click
+	#@driver.find_element(:id, "delete_tag_simple_mode").click
+	@driver.find_element(:xpath, "//span[text()='delete tag']").click
+	
+
+	sleep 10
+	#Choose the tag to delete
+	@driver.find_element(:id, "delete_checkbox_INFINITIVE_ID1").click
+	sleep 1
+	#Confirm the choice
+	@driver.find_element(:id, "delete_tag_confirm_button").click
+	sleep 1
+	#Verify that the tag is absent from the page
+	assert_equal(@driver.find_elements(:xpath,"//*[@class='medium-infinitive_id1']").size, 0)
+	
+	
+  end
+=end
 end
+
+
+
+
+
+
 

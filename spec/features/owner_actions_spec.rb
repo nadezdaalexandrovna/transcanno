@@ -51,14 +51,6 @@ describe "owner actions", :order => :defined do
     expect(Work.find_by(title: work_title)).not_to be nil
   end
 
-  it "checks for subject in a new collection" do
-    test_collection = Collection.find_by(title: 'New Test Collection')
-    visit dashboard_owner_path
-    click_link("#{test_collection.title}")
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Places")
-    expect(page).to have_content("People")
-  end
 
   it "deletes a collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
@@ -109,7 +101,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Create Empty Work")
     expect(page).to have_content("Title can't be blank")
   end
-
+=begin
   it "deletes a work" do
     visit dashboard_owner_path
     page.find('a', text: @title).click
@@ -119,7 +111,7 @@ describe "owner actions", :order => :defined do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content(@title)
   end
-
+=end
   it "checks an owner user profile/homepage" do
     visit dashboard_path
     page.find('a', text: 'Your Profile').click

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 #describe "IA import actions", :order => :defined do
-xdescribe "IA import actions", :order => :defined do
+describe "IA import actions", :order => :defined do
 
   before :all do
 
@@ -59,24 +59,7 @@ xdescribe "IA import actions", :order => :defined do
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.source_text).not_to be_nil
   end
-
-  it "tests ocr correction" do
-    @ocr_work = Work.find_by(title: @title)
-    @ocr_page = @ocr_work.pages.first
-    visit "/display/read_work?work_id=#{@ocr_work.id}"
-    expect(page).to have_content("This page is not corrected, please help correct this page")
-    click_link @ocr_page.title
-    expect(page).to have_content("This page is not corrected")
-    page.find('.tabs').click_link("Correct")
-    page.fill_in 'page_source_text', with: "Test OCR Correction"
-    click_button('Save Changes')
-    expect(page).to have_content("Test OCR Correction")
-    expect(page).to have_content("Facsimile")
-    expect(page.find('.tabs')).to have_content("Correct")
-    @ocr_page = @ocr_work.pages.first
-    expect(@ocr_page.status).to eq "transcribed" 
-  end
-
+=begin
   it "checks ocr/transcribe statistics" do
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_content("Works")
@@ -91,5 +74,5 @@ xdescribe "IA import actions", :order => :defined do
       end
     end
   end
-
+=end
 end

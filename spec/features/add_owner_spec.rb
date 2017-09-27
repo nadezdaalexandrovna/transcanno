@@ -1,7 +1,7 @@
-=begin
+
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+xdescribe "owner actions", :order => :defined do
   Capybara.javascript_driver = :webkit
 
   before :all do
@@ -11,7 +11,7 @@ describe "owner actions", :order => :defined do
     @collection = @collections.last
     @works = @user.owner_works
   end
-
+=begin
   it "adds an owner to a collection", :js => true do
     login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
@@ -58,6 +58,5 @@ describe "owner actions", :order => :defined do
     expect(@owner2.owner).to eq true
     #login as new owner, make sure can see tabs, add work
   end
-
-end
 =end
+end
