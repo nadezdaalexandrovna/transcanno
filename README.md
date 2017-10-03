@@ -1,5 +1,12 @@
 Transc&Anno is an open source tool for transcription and on-the-fly annotation of handwritten documents.
 
+In was developed on the basis of the FromThePage collaboration transcription tool: https://github.com/benwbrum/fromthepage
+
+For configuration instructions refer to the FromThePage wiki: https://github.com/benwbrum/fromthepage/wiki/
+
+For usage instructions refer to the user guide available on this page: fromthepage_user_guide.pdf
+
+
 ### Features
 
 - Intuitive transcription and annotation environment. The annotator uses hot keys or buttons triggering pop-up menus in oder to annotate.
