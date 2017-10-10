@@ -3,7 +3,7 @@
 require "selenium-webdriver"
 require "test/unit"
 require 'yaml'
-
+#Test in chrome can't be run, because the chromedriver cannot work with input elements used in this project. It is a deficiency of the chromedriver.
 class LoginClass < Test::Unit::TestCase
  
   def setup

@@ -5,18 +5,18 @@ transcriptionModule.init();
 setInterval(function () {
 transcriptionModule.repeatingFunction();
 }, transcriptionModule.getTranscriptionSavingInterval());
-$( ".button-People_id1" ).mousedown(function() {
+$( ".button-infinitive_id1" ).mousedown(function() {
 var position = $(this).offset();
 var coords = {x:position.left, y:position.top};
 var categoryid=$(this).attr("data-categoryid");
-transcriptionModule.buttonFunction(categoryid,'People_id1',coords);
+transcriptionModule.buttonFunction(categoryid,'infinitive_id1',coords);
 return false;
 });
-$( ".button-Places_id2" ).mousedown(function() {
+$( ".button-adv2_id2" ).mousedown(function() {
 var position = $(this).offset();
 var coords = {x:position.left, y:position.top};
 var categoryid=$(this).attr("data-categoryid");
-transcriptionModule.buttonFunction(categoryid,'Places_id2',coords);
+transcriptionModule.buttonFunction(categoryid,'adv2_id2',coords);
 return false;
 });
 });
