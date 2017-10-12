@@ -24,6 +24,12 @@ Transc&Anno currently requires Ruby on Rails version 4.1.1 and the RMagick, hpri
 
 ### Installation
 
+#### Docker installation
+
+A docker installation is provided in the following repository: https://github.com/commul/transcanno-docker
+
+#### Otherwise,
+
 Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
