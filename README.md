@@ -12,7 +12,7 @@ For usage instructions refer to the user guide available on this page: fromthepa
 - Intuitive transcription and annotation environment. The annotator uses hot keys or buttons triggering pop-up menus in oder to annotate.
 - Intuitive annotation scheme definition environment.
 - Version Control: Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
-- Presentation: Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject
+- Presentation: Readers can view transcriptions in a multi-page format or alongside page images.
 
 ### License
 
