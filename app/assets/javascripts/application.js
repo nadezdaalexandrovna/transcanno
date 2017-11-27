@@ -27,9 +27,6 @@
 
 
 
-console.log("\nRails.application.config.assets.paths:\n");
-console.log(Rails.application.config.assets.paths);
-
 ;(function($, window, document, undefined) {
 
 // Global flash messages auto close
