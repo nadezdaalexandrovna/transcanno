@@ -3,6 +3,10 @@ lock '3.4.1'
 
 #default_environment['MYAPP_RELATIVE_URL_ROOT'] = '/transcanno'
 
+# get relative links out of link_to
+# https://github.com/middleman/middleman/issues/368
+set :relative_links, true
+
 set :application, 'fromthepage'
 set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
 
