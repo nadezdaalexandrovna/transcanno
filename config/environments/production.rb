@@ -1,8 +1,12 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  Rails.application.routes.default_url_options[:host] = '10.8.83.147'
+  Rails.application.routes.default_url_options[:host] = '127.0.0.1'
 
+  config.relative_url_root = "/transcanno"
+  #config.root = '/transcanno' #My invention, didn't read it anywhere
+  #config.action_controller.asset_host = '/transcanno'
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -32,7 +36,7 @@ Rails.application.configure do
     :authentication => 'login',
     :domain => 'office365.com', # your domain to identify your server when connecting
   }
-  config.action_mailer.default_url_options =  { host: '10.8.83.147:3000' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_url_options =  { host: '10.8.83.147:3001' } #change this to match your server URL, i.e. www.fromthepage.com
   config.action_mailer.default_options
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -44,9 +48,13 @@ Rails.application.configure do
   config.assets.js_compressor = :uglifier
   config.assets.css_compressor = :sass
 
+  #config.public_file_server.enabled=true
+
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = true
   config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
+  #config.assets.precompile += ['javascripts/*']
+  #config.assets.precompile += ['plugins/*']
 
   # Generate digests for assets URLs.
   config.assets.digest = true

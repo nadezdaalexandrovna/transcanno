@@ -13,22 +13,22 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: xml_from_page
+  username: newtest_prod
   password: 33_Korovy
   socket: /var/run/mysqld/mysqld.sock
   strict: false
 
 development:
   <<: *default
-  database: xml_from_page
+  database: new_db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: testing
-  username: testing
+  database: new_db_testing
+  username: newtest_prod
   password: 33_Korovy
 
 # As with config/secrets.yml, you never want to store sensitive information,
@@ -52,6 +52,6 @@ test:
 #
 production:
   <<: *default
-  database: newtest_prod
+  database: new_db
   username: newtest_prod
   password: 33_Korovy

@@ -14,8 +14,21 @@
 //= require jquery_ujs
 //= require_tree ./plugins
 //= require chosen-jquery
+//= require medium
+//= require medium_subclass
+//= require rangy-core
+//= require rangy-classapplier
+//= require undo
+//= require_tree
+//= require_tree .
 //= require_self
+//= require_directory ./plugins
+//= require_directory .
 
+
+
+console.log("\nRails.application.config.assets.paths:\n");
+console.log(Rails.application.config.assets.paths);
 
 ;(function($, window, document, undefined) {
 

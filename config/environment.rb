@@ -22,6 +22,9 @@ end
 # Load the Rails application.
 require File.expand_path('../application', __FILE__)
 
+#PATH_PREFIX = '/transcanno'
+#config.action_controller.asset_host = PATH_PREFIX
+
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 

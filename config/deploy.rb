@@ -1,6 +1,8 @@
 # config valid only for Capistrano 3.1
 lock '3.4.1'
 
+#default_environment['MYAPP_RELATIVE_URL_ROOT'] = '/transcanno'
+
 set :application, 'fromthepage'
 set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
 
@@ -9,6 +11,7 @@ set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/fromthepage/deployment'
+#set :deploy_to, '/home/transcanno/fromthepage/deployment'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -27,7 +30,7 @@ set :linked_files, %w{config/database.yml config/newrelic.yml config/environment
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded"]
+set :linked_dirs, ["log", "public", "public/images/working", "public/uploads", "tmp", "public/images/uploaded"]
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

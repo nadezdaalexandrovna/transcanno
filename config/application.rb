@@ -2,6 +2,8 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require 'sprockets/railtie'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -20,11 +22,23 @@ module Fromthepage
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    #config.relative_url_root = '/transcanno'
+    #config.assets.prefix = '/transcanno'
+
+    #config.root = '/transcanno' #My invention, didn't read it anywhere
+
     config.autoload_paths += %W(#{config.root}/lib)
+
+    #config.autoload_paths += %W(#{config.relative_url_root}/lib)
 
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
 
+    #print "\nRails.application.config.assets.paths :\n"
+    #print Rails.application.config.assets.paths
+    
+
+    #config.assets.prefix = "#{ENV['MYAPP_RELATIVE_URL_ROOT']}#{config.assets.prefix}"
 
     config.action_dispatch.default_headers = {
         'Access-Control-Allow-Origin' => '*',
