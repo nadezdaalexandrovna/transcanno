@@ -1,5 +1,5 @@
 // Use the Module pattern
-var TranscriptionModule = (function() {
+var TranscriptionModule = (function () {
   "use strict";
 
   var focusOffset,
@@ -70,16 +70,7 @@ var TranscriptionModule = (function() {
 
       var container = article.parentNode;
 
-      /*
-      medium = new Medium({
-        element: article,
-        mode: Medium.richMode,
-        attributes: null,
-        placeholder:"",
-        tags:null,
-        pasteAsText: false
-      });
-      */
+      
       
       medium = new ExtendedMedium({
         element: article,
@@ -293,7 +284,9 @@ var TranscriptionModule = (function() {
   };
 
   return Module;
+  
 
+  
   function submitTranscription(){
     AddMediumValue(function(){
       document.getElementsByName("save")[0].click();
@@ -315,15 +308,7 @@ var TranscriptionModule = (function() {
       deleteTag(coords,true);
     }
     
-    /*
-    $( ".delete_tag" ).mousedown(function() {
-      var position = $(this).offset();
-      //console.log("position: "+position);
-      //var coords = {x:position.left, y:position.top};
-      var coords = {x:position.left, y:position.top};
-      deleteTag(coords,true);
-    });
-    */
+
     
     function fireChangeTag(){
       var position = $(".change_tag").offset();
@@ -333,15 +318,7 @@ var TranscriptionModule = (function() {
       changeTag(coords,true);
     }
     
-    /*
-    $( ".change_tag" ).mousedown(function() {
-      var position = $(this).offset();
-      //console.log("position: "+position);
-      //var coords = {x:position.left, y:position.top};
-      var coords = {x:position.left, y:position.top};
-      changeTag(coords,true);
-    });
-  */
+
     function fireModifyTag(){
       //var coords = getSelectionCoords();
       coords = getSelectionCoords();
@@ -377,7 +354,10 @@ var TranscriptionModule = (function() {
   //If the cursor is inside a tag, it goes out of this tag and is placed directly after this tag
   function goOutOfTheCurrentTag(){
     var offset,focusEl;
-    [offset,focusEl]=medium.returnOffset();
+    var TempTable=medium.returnOffset();
+    offset=TempTable[0];
+    focusEl=TempTable[1];
+    //[offset,focusEl]=medium.returnOffset();
 
     if(focusEl.textContent.length==1){
       if(focusEl.getAttribute("mode")!=null){
@@ -1816,7 +1796,13 @@ var TranscriptionModule = (function() {
     function tagButtonInSimpleMode(categoryid,categoryTag,coords){
       var userChosenAttributesAndValues=[['mode',0]];
       var selection = window.getSelection();
-      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      var TempT=medium.returnOffset();
+      focusOffset=TempT[0];
+      focusNode=TempT[1];
+      anchorOffset=TempT[2];
+      anchorNode=TempT[3];
+
+      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
 
       if(categoryid in categoryTypesHash){
@@ -1840,7 +1826,12 @@ var TranscriptionModule = (function() {
     function tagButtonInAdvancedMode(categoryid,categoryTag,coords){
       var userChosenAttributesAndValues=[['mode',1]];
       var selection = window.getSelection();
-      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      var TempTa=medium.returnOffset();
+      focusOffset=TempTa[0];
+      focusNode=TempTa[1];
+      anchorOffset=TempTa[2];
+      anchorNode=TempTa[3];
+      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
 
@@ -1896,7 +1887,13 @@ var TranscriptionModule = (function() {
       //var coords = getSelectionCoords();
       coords = getSelectionCoords();
 
-      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      var TempTab=medium.returnOffset();
+      focusOffset=TempTab[0];
+      focusNode=TempTab[1];
+      anchorOffset=TempTab[2];
+      anchorNode=TempTab[3];
+
+      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
       var selection = window.getSelection();
 
@@ -2012,8 +2009,14 @@ var TranscriptionModule = (function() {
       //var coords = getSelectionCoords();
       //var coords = getSelectionCoords();
       coords = getSelectionCoords();
+      
+      var TempTabb=medium.returnOffset();
+      focusOffset=TempTabb[0];
+      focusNode=TempTabb[1];
+      anchorOffset=TempTabb[2];
+      anchorNode=TempTabb[3];
 
-      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
       var selection = window.getSelection();
 
@@ -2108,7 +2111,12 @@ var TranscriptionModule = (function() {
     };
 
     function findParents(){
-      [focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
+      var TempTabl=medium.returnOffset();
+      focusOffset=TempTabl[0];
+      focusNode=TempTabl[1];
+      anchorOffset=TempTabl[2];
+      anchorNode=TempTabl[3];
+      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var els = [];
       var a=anchorNode;
       var inContenteditable=false;
@@ -2224,11 +2232,7 @@ var TranscriptionModule = (function() {
       var tagCodeToChange = $("input[name=change_tag_radio]:checked").val();
 
       //Delete the radios from the menu div
-      /*
-      $('#change_div').empty();
-      //Hide the menu
-      $("#change_div").hide();
-      */
+      
       hideChangePopup();
 
       var attrs=getAttributes($("[tagcode="+tagCodeToChange+"]"));
