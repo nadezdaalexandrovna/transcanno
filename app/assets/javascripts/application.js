@@ -14,16 +14,16 @@
 //= require jquery_ujs
 //= require_tree ./plugins
 //= require chosen-jquery
-//= require medium
-//= require medium_subclass
 //= require rangy-core
 //= require rangy-classapplier
 //= require undo
-//= require_tree
-//= require_tree .
+//= require medium
+//= require medium_subclass
+//= require transcription_module
+//= require views_article_list_functions
+
 //= require_self
-//= require_directory ./plugins
-//= require_directory .
+
 
 
 

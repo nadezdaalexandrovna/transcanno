@@ -279,6 +279,7 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 	};
 
 ExtendedMedium.prototype.insertHtmlNadya= function (html,pos, focusEl, callback, skipChangeEvent) {
+		console.log("in insterHtmlNadya in medium_subclass.js line 282");
 		var sel = rangy.getSelection();
 		var node = document.createTextNode(html);
 		var range, outerhtml;
