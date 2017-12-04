@@ -83,3 +83,5 @@ gem 'selenium-webdriver'
 gem 'chromedriver-helper'
 
 gem 'simple-send-keys'
+
+gem 'browserlog', '~> 0.0.2'

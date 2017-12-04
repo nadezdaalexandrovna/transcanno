@@ -2,6 +2,8 @@ Fromthepage::Application.routes.draw do
 
   #scope 'transcanno' do
 
+    mount Browserlog::Engine => '/logs'
+
     root :to => 'static#splash'
 
     devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}

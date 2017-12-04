@@ -39,6 +39,9 @@ GEM
     autoprefixer-rails (7.1.4)
       execjs
     bcrypt (3.1.11)
+    browserlog (0.0.2)
+      jquery-rails (~> 3)
+      rails (>= 3.2.18)
     builder (3.2.3)
     byebug (9.1.0)
     callsite (0.0.11)
@@ -297,6 +300,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   autoprefixer-rails
+  browserlog (~> 0.0.2)
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (= 1.1.3)
