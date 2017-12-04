@@ -19,4 +19,11 @@ var categoryid=$(this).attr("data-categoryid");
 transcriptionModule.buttonFunction(categoryid,'adv2_id2',coords);
 return false;
 });
+$( ".button-hei_hei_id4" ).mousedown(function() {
+var position = $(this).offset();
+var coords = {x:position.left, y:position.top};
+var categoryid=$(this).attr("data-categoryid");
+transcriptionModule.buttonFunction(categoryid,'hei_hei_id4',coords);
+return false;
+});
 });

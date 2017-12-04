@@ -13,14 +13,25 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
-//= require chosen-jquery
-//= require rangy-core
-//= require rangy-classapplier
-//= require undo
-//= require medium
-//= require medium_subclass
-//= require transcription_module
-//= require views_article_list_functions
+//= require_tree ./datepicker
+//= require_tree ./datepicker/lang
+//= require_tree ./bookreader
+//= require_tree ./textdiff
+//= require textdiff.js
+//= require iiif.js
+//= require sc_collections.js
+//= require sc_manifests.js
+//= require document_sets.js
+//= require openseadragon.js
+//= require chosen.jquery.min.js
+//= require rangy-classapplier.js
+//= require undo.js
+//= require medium.js
+//= require medium_subclass.js
+//= require transcription_module.js
+
+//= require views_article_list_functions.js
+
 
 //= require_self
 

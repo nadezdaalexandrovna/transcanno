@@ -22,10 +22,9 @@ module Fromthepage
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    #config.relative_url_root = '/transcanno'
-    #config.assets.prefix = '/transcanno'
 
-    #config.root = '/transcanno' #My invention, didn't read it anywhere
+    #config.assets.enabled = true
+
 
     config.autoload_paths += %W(#{config.root}/lib)
 
@@ -33,12 +32,7 @@ module Fromthepage
 
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
-
-    #print "\nRails.application.config.assets.paths :\n"
-    #print Rails.application.config.assets.paths
     
-
-    #config.assets.prefix = "#{ENV['MYAPP_RELATIVE_URL_ROOT']}#{config.assets.prefix}"
 
     config.action_dispatch.default_headers = {
         'Access-Control-Allow-Origin' => '*',

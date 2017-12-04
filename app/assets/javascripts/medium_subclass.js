@@ -88,7 +88,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 			range = rangy.createRange();		
 			range.setStart(anchorEl, beginningOfSelection);
 			range.setEnd(anchorEl, endOfSelection);
-			el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+			el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+			//el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 			range.surroundContents(el);
 			range.collapse(true);
@@ -114,7 +115,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 				if(beginningOfSelection!=null){				
 					range.setStart(nodeToTag, beginningOfSelection);
 					range.setEndAfter(nodeToTag);
-					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					//el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 					range.surroundContents(el);
 					sel.addRange(range);
@@ -137,7 +139,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
-							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							//el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
@@ -202,7 +205,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 				range.setStartBefore(nodeToTag2);
 				if(endOfSelection!=null){				
 					range.setEnd(nodeToTag2,endOfSelection);
-					el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+					//el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 					range.surroundContents(el);
 					sel.addRange(range);
@@ -225,7 +229,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
   							rangeIn = rangy.createRange();
   							rangeIn.setStartBefore(child);
 							rangeIn.setEndAfter(child);
-							el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+							//el=createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 							rangeIn.surroundContents(el);
 							sel.addRange(rangeIn);
@@ -279,7 +284,6 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 	};
 
 ExtendedMedium.prototype.insertHtmlNadya= function (html,pos, focusEl, callback, skipChangeEvent) {
-		console.log("in insterHtmlNadya in medium_subclass.js line 282");
 		var sel = rangy.getSelection();
 		var node = document.createTextNode(html);
 		var range, outerhtml;
