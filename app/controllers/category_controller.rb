@@ -654,7 +654,7 @@ class CategoryController < ApplicationController
     mediumOnmouseoverFunctions+="});"
 
     #File.write(ActionController::Base.helpers.asset_path('medium-tag-styles.css'), styleInstructions)
-    File.write('app/assets/javascripts/medium-tag-styles.css', styleInstructions)
+    File.write('app/assets/stylesheets/medium-tag-styles.css', styleInstructions)
     #File.write('public/medium-tag-styles.css', styleInstructions)
 
     #File.write(ActionController::Base.helpers.asset_path('my-medium-onmousedown-functions.js'), mediumOnmouseoverFunctions)
@@ -666,7 +666,7 @@ class CategoryController < ApplicationController
   def discard_all_styles
     Categorystyle.delete_all()
     #File.write(ActionController::Base.helpers.asset_path('medium-tag-styles.css'), styleInstructions)
-    File.write('app/assets/javascripts/medium-tag-styles.css', styleInstructions)
+    File.write('app/assets/stylesheets/medium-tag-styles.css', styleInstructions)
     #File.write('public/medium-tag-styles.css', '')
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
