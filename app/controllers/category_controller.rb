@@ -655,13 +655,20 @@ class CategoryController < ApplicationController
 
     #File.write(ActionController::Base.helpers.asset_path('medium-tag-styles.css'), styleInstructions)
     #File.write('app/assets/stylesheets/medium-tag-styles.css', styleInstructions)
-    File.write('public/assets/medium-tag-styles.css', styleInstructions)
-    #File.write('public/medium-tag-styles.css', styleInstructions)
+
+    #File.write(ActionController::Base.helpers.stylesheet_path('medium-tag-styles.css'), styleInstructions)
+
+    File.write(Rails.root.join("public/assets", "medium-tag-styles.css"), styleInstructions)
+    
+    #File.write('public/assets/medium-tag-styles.css', styleInstructions)
+    
 
     #File.write(ActionController::Base.helpers.asset_path('my-medium-onmousedown-functions.js'), mediumOnmouseoverFunctions)
     #File.write('app/assets/javascripts/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    File.write('public/assets/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    #File.write('public/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
+    File.write(Rails.root.join("public/assets", "my-medium-onmousedown-functions.js"), mediumOnmouseoverFunctions)
+    #File.write(ActionController::Base.helpers.javascript_path('my-medium-onmousedown-functions.js'), mediumOnmouseoverFunctions)
+    #File.write('public/assets/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
+    
     
   end
 
@@ -669,7 +676,9 @@ class CategoryController < ApplicationController
     Categorystyle.delete_all()
     #File.write(ActionController::Base.helpers.asset_path('medium-tag-styles.css'), styleInstructions)
     #File.write('app/assets/stylesheets/medium-tag-styles.css', styleInstructions)
-    File.write('public/assets/medium-tag-styles.css', styleInstructions)
+    File.write(Rails.root.join("public/assets", "medium-tag-styles.css"), styleInstructions)
+    #File.write(ActionController::Base.helpers.stylesheet_path('medium-tag-styles.css'), styleInstructions)
+    #File.write('public/assets/medium-tag-styles.css', styleInstructions)
     #File.write('public/medium-tag-styles.css', '')
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
