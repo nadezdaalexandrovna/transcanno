@@ -109,6 +109,6 @@ Rails.application.configure do
 
   #config.enable_dependency_loading = true; I found it on a forum, but it didn't help.
 
-  #RAKE = '/usr/bin/env rake'
+  RAKE = '/usr/bin/env rake'
 
 end
