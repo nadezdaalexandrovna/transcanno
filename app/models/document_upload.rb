@@ -18,8 +18,10 @@ class DocumentUpload < ActiveRecord::Base
   def submit_process
     self.status = Status::QUEUED
     self.save
-    rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
+    rake_call = "#{RAKE} debug fromthepage:process_document_upload[#{self.id}]  --trace"
+    #rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
     logger.info rake_call
+    logger.debug rake_call
     system(rake_call)
   end
 
