@@ -74,6 +74,7 @@ var TranscriptionModule = (function () {
       
       medium = new ExtendedMedium({
         element: article,
+        activeElement: article,
         mode: ExtendedMedium.richMode,
         attributes: null,
         placeholder:"",
@@ -255,7 +256,7 @@ var TranscriptionModule = (function () {
       jQuery('.hotkeyDropdownMenu').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
     },
 
-    buttonFunction: function(categoryid,categoryTag,coords){      
+    buttonFunction: function(categoryid,categoryTag,coords){   
       if(Cookies.get('use_advanced_mode')==1){
         tagButtonInAdvancedMode(categoryid,categoryTag,coords);
       }else{
@@ -269,6 +270,13 @@ var TranscriptionModule = (function () {
     repeatingFunction:function(){
       //Automatically submits the form (= saves the transcription to the database). The default automatic transcription saving interval is 3 minutes, but it can be modified by the user
       submitTranscription();
+    },
+
+    buttonClickFunction:function(categoryid, butTitle, domElement){
+      var position = domElement.getBoundingClientRect();
+      var coords = {x:position.left, y:position.top};
+      this.buttonFunction(categoryid,butTitle+"_id"+categoryid,coords);
+      return false;
     },
 
     getTranscriptionSavingInterval:function(){
@@ -875,6 +883,7 @@ var TranscriptionModule = (function () {
 
 
     function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode){
+      console.log("in addCategoryWithTypeS");
       var couple;
       var attrString="";
 
@@ -883,17 +892,19 @@ var TranscriptionModule = (function () {
       var d = new Date();
       var milliseconds = d.getTime();
       var tagCode=milliseconds.toString();
-
+      /*
       for (couple in userChosenAttributesAndValues){
         attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
       }
 
       var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
-
+      */
 
       medium.focusNadya(focusOffset,focusNode);
-      medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
-      tagWithType='';
+      medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues);
+      //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
+      //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+      //tagWithType='';
 
       $('#chosen-select-type').empty();
       $('#chosen-select-type')[0].value="";
@@ -941,6 +952,8 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
+              console.log("before focus");
+              $('#user-type-input').focus();
               userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -995,6 +1008,7 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
+          console.log("before focus");
           $('#user-type-input').focus();
           userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
@@ -1281,6 +1295,8 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
+                console.log("before focus");
+                $('#user-type-input').focus();
                 userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                 return;
               }
@@ -1351,6 +1367,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
+            console.log("before focus");
             $('#user-type-input').focus();
             userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
             return;
@@ -1418,6 +1435,8 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
+                console.log("before focus");
+                $('#user-type-input').focus();
                 userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
               }
 
@@ -1482,6 +1501,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
+            console.log("before focus");
             $('#user-type-input').focus();
             userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
@@ -1526,6 +1546,8 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
+              console.log("before focus");
+              $('#user-type-input').focus();
               userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -1578,6 +1600,7 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
+          console.log("before focus");
           $('#user-type-input').focus();
           userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
@@ -1589,7 +1612,7 @@ var TranscriptionModule = (function () {
       }
     }
 
-
+    /*
     function collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode){
       medium.focus();
 
@@ -1601,7 +1624,9 @@ var TranscriptionModule = (function () {
       var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" mode="'+userChosenAttributesAndValues[0][1]+'">\u200B</'+varTag+'>';
 
       medium.focusNadya(focusOffset,focusNode);
-      medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
+      medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues);
+      //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
+      //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
 
       tagWithType='';
       //$('.chosen-select-no-results').chosen_reset(config);
@@ -1612,6 +1637,7 @@ var TranscriptionModule = (function () {
                 
       return false;
     }
+    */
 
     //Remove forbidden characters from an attribute's value
     function cleanAttrValue(val){
@@ -1804,6 +1830,7 @@ var TranscriptionModule = (function () {
       //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
 
+      //If the category has types
       if(categoryid in categoryTypesHash){
         if(selection.isCollapsed){
           //userChosenAttributesAndValues=[];
@@ -1812,9 +1839,10 @@ var TranscriptionModule = (function () {
         }else{
           tagSelectionWithType(userChosenAttributesAndValues,categoryid, categoriesInfo, medium, categoryTag, focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
         }
-      }else{
+      }else{ //If the category doesn't have types
         if(selection.isCollapsed){
-          collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
+          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode);
+          //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
         }else{
           medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
         }
@@ -1851,8 +1879,8 @@ var TranscriptionModule = (function () {
           tagSeqsInitial(userChosenAttributesAndValues,categoryTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,true,false);
                 
         }else{ //If the category doesn't have types
-
-          collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
+          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode);
+          //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
 
         }
       }else{ //If the selection is not collapsed
@@ -1934,8 +1962,8 @@ var TranscriptionModule = (function () {
                 tagSeqsInitial(userChosenAttributesAndValues,varTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,false,false);
                 
               }else{ //If the category doesn't have types
-
-                collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
+                addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
 
               }
             }
@@ -2019,7 +2047,6 @@ var TranscriptionModule = (function () {
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
       var selection = window.getSelection();
 
-
       //If the cursor is in the medium, but nothing has been selected
       if(selection.isCollapsed){
         $(".popupBody").css({'top':coords.y,'left':coords.x});
@@ -2057,8 +2084,8 @@ var TranscriptionModule = (function () {
                 getNextCollapsed(userChosenAttributesAndValues,varTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
               }else{ //If the category doesn't have types
-
-                collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
+                addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
 
               }
             }

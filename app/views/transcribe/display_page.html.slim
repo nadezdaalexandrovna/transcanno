@@ -171,6 +171,9 @@
   <button type="button" id="changeSavingTimeButton">Change</button>
 </div>
 
+
+style #{@buttonsStyles}
+
 div [ id="verticalMediumClickableSpans" ]
   table
     tr
@@ -185,7 +188,7 @@ div [ id="verticalMediumClickableSpans" ]
     - @categories.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)"] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
@@ -207,7 +210,7 @@ div [ id="verticalMediumClickableSpansAdv" ]
     - @categoriesAdv.each do |c|
       tr
         td [ class="overMediumButtonTD" ]
-          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id ] = c.title
+          span[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)" ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
@@ -229,7 +232,8 @@ h2.legend Page Notes
 .categoryTypesDivAdv*{'id'=>'categoryTypesDivAdv', 'data'=>"#{@categoryTypesHashAdv}"}
 .initialAttrIds*{'id'=>'initialAttrIds', 'data'=>"#{@initialAttrIds}"}
 
-script type="text/javascript" src=javascript_path("my-medium-onmousedown-functions.js")
+
+script type="text/javascript" src=asset_path("button_functions.js")
 link rel="stylesheet" href=stylesheet_path("medium-tag-styles.css")
 
 -content_for :javascript
@@ -253,6 +257,7 @@ link rel="stylesheet" href=stylesheet_path("medium-tag-styles.css")
       });
 
     });
+
 
     /*
     function hidePopupBody(){

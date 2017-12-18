@@ -104,7 +104,70 @@ class TranscribeController  < ApplicationController
       end
     end
     @initialAttrIds=@initialAttrIds.to_json
+
+=begin
+    #Information for javascript button functions
+    sqlS="SELECT categories.id FROM `categories` inner join works on categories.collection_id=works.collection_id inner join pages on works.id=pages.work_id where pages.id="+params[:page_id]
+    connection = ActiveRecord::Base.connection
+    res=connection.execute(sqlS)
+
+    @categoriesIds={}
+    print "\nres:\n"
+    puts res.inspect
+    print "\n"
+    res.each do |r|
+      print "\nr:\n"
+      puts r.inspect
+      print "\n"
+      id=r[0].to_s
+      @categoriesIds[id]=0
+    end
+
+    @categoriesIds=@categoriesIds.to_json
+=end
+    sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
+    connection = ActiveRecord::Base.connection
+    res=connection.execute(sqlS)
+    styleInstructions=""
+    mediumOnmouseoverFunctions="$(document).ready(function($) {\n"+
+                                "var da;\n"+
+                                "var transcriptionModule = Object.create(TranscriptionModule);\n"+
+                                "transcriptionModule.init();\n"+
+                                "setInterval(function () {\n"+
+                                "transcriptionModule.repeatingFunction();\n"+
+                                "}, transcriptionModule.getTranscriptionSavingInterval());\n"
+    res.each do |r|
+      if r[1]!=nil
+        color = 'color:'+r[1]+';'
+      else
+        color = ''
+      end
+
+      if r[2]!=nil
+        textdecoration = r[2]
+      else
+        textdecoration =''
+      end
+
+      if r[3]!=nil
+        fontstyle = r[3]
+      else
+        fontstyle = ''
+      end
+
+      id=r[4].to_s
+
+      style = color+textdecoration+fontstyle
+      title=r[0]
+      styleInstructions+="\n.medium-"+title+'_id'+id+"{"+style+"}"
+      styleInstructions+="\n.button-"+title+'_id'+id+"{"+style+"}"
+    end
+
+  @buttonsStyles=styleInstructions
+
   end
+
+
 
   def guest
   end

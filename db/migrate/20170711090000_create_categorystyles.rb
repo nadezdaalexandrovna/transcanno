@@ -79,7 +79,7 @@ class CreateCategorystyles < ActiveRecord::Migration
 	execute "INSERT INTO work_statistics (id, work_id, transcribed_pages, annotated_pages,total_pages,blank_pages,incomplete_pages) values (1, 1, 0, 0,2,0,0);"
 	execute "INSERT INTO pages (id, title, work_id,base_image,base_width,base_height,position,lock_version) values (1, '1', 1,'public/images/uploaded/for_tests/page_0001.jpg',1649,2860,1,0);"
 	execute "INSERT INTO document_uploads (id, user_id, collection_id,file,status) values (1, 2, 1,'MS_844.ZIP','finished');"
-	execute "INSERT INTO categorystyles (colour, category_id) values ('blue',1), ('red',2);"
+	execute "INSERT INTO categorystyles (colour, category_id) values ('#0901F3',1), ('#FF0000',2);"
 	execute "INSERT INTO categoryscopes (id, category_id, mode) values (1,1,2);"
 
   end

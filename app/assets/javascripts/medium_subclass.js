@@ -2,10 +2,14 @@
 Extension of the Medium.js library: a few new functions 
 */
 function ExtendedMedium(settings) {
+	//console.log("in ExtendedMedium 1");
   Medium.call(this, settings);
+  //console.log("in ExtendedMedium 2");
 };
 
 ExtendedMedium.prototype = Object.create(Medium.prototype);
+
+
 
 ExtendedMedium.prototype.createElementForTagSelection3=function(tag, tagCode, attrValuesTable){
 		var i;
@@ -73,6 +77,7 @@ ExtendedMedium.prototype.cursorAfterTag= function (focusEl, callback, skipChange
 
 
 ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl, focusEl, beginningOfSelection, endOfSelection, callback, skipChangeEvent) {
+		//console.log("in ExtendedMedium.prototype.tagSelection3");
 		var range,
 			el3,
 			sel,
@@ -283,56 +288,48 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 		
 	};
 
-ExtendedMedium.prototype.insertHtmlNadya= function (html,pos, focusEl, callback, skipChangeEvent) {
+ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTable) {
+		console.log("in insertHtmlNadya");
 		var sel = rangy.getSelection();
-		var node = document.createTextNode(html);
 		var range, outerhtml;
+		var el;
 
         if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.collapse(false);
-
-            var rangeNode = range.startContainer;
-            
-            Medium.activeElement=rangeNode;
-
-            var result = (new Medium.Html(this, html))
-			.insertNadya(this.settings.beforeInsertHtml),
-			lastElement = result[result.length - 1];
+            range = sel.getRangeAt(0);            
+            el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+            range.insertNode(el);
+            range.selectNodeContents(el);
+            sel.removeAllRanges();
+			sel.addRange(range);
+            console.log("range");
+            console.log(range);
+            console.log("sel");
+            console.log(sel);
+			lastElement=el;
         }
-
 		return this;
 	};
 
-ExtendedMedium.prototype.insertNadya= function (fn, selectInserted) {
-			
-				if (fn) {
-					fn.apply(this);
-				}
+/*
+ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTable, html,pos, focusEl, callback, skipChangeEvent) {
+		var sel = rangy.getSelection();
+		var node = document.createTextNode(html);
+		var range, outerhtml;
+		var el;
 
-				var inserted = this.injector.inject(this.html, selectInserted);
-
-				if (this.clean) {
-					//cleanup
-					this.medium.clean();
-					this.medium.placeholders();
-				}
-
-				this.medium.makeUndoable();
-
-				var el=inserted[0];
-				var range = rangy.createRange();
-				var sel = rangy.getSelection();
-				
-				range.selectNodeContents(el);
-				range.collapse(false);
-
-				sel.setSingleRange(range);
-
-				Medium.activeElement=el;
-				return inserted;
-			
-		};
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);            
+            el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+            range.insertNode(el);
+            range.selectNodeContents(el);
+            sel.removeAllRanges();
+			sel.addRange(range);
+            
+			lastElement=el;
+        }
+		return this;
+	};
+*/
 
 ExtendedMedium.prototype.returnOffset=function() {
 		var win = win || window,
