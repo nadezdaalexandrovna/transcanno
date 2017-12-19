@@ -881,7 +881,7 @@ var TranscriptionModule = (function () {
       });
     };
 
-
+    // Inserts the tag into the text (for categories with and without types)
     function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode){
       console.log("in addCategoryWithTypeS");
       var couple;
@@ -892,15 +892,16 @@ var TranscriptionModule = (function () {
       var d = new Date();
       var milliseconds = d.getTime();
       var tagCode=milliseconds.toString();
-      /*
+      
       for (couple in userChosenAttributesAndValues){
         attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
       }
 
       var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
-      */
+      
 
       medium.focusNadya(focusOffset,focusNode);
+      //medium.insertHtml(tagWithType);
       medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues);
       //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
       //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
@@ -952,8 +953,7 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              console.log("before focus");
-              $('#user-type-input').focus();
+              
               userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -1008,8 +1008,7 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
-          console.log("before focus");
-          $('#user-type-input').focus();
+          
           userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
@@ -1295,8 +1294,7 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                console.log("before focus");
-                $('#user-type-input').focus();
+                
                 userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                 return;
               }
@@ -1367,8 +1365,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
-            console.log("before focus");
-            $('#user-type-input').focus();
+            
             userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
             return;
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
@@ -1435,8 +1432,7 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                console.log("before focus");
-                $('#user-type-input').focus();
+                
                 userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
               }
 
@@ -1501,8 +1497,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
-            console.log("before focus");
-            $('#user-type-input').focus();
+            
             userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
@@ -1546,8 +1541,7 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              console.log("before focus");
-              $('#user-type-input').focus();
+              
               userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -1600,8 +1594,8 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
-          console.log("before focus");
-          $('#user-type-input').focus();
+          console.log("before focus 1617");
+          
           userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 

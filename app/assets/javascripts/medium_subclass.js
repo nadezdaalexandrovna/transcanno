@@ -12,6 +12,9 @@ ExtendedMedium.prototype = Object.create(Medium.prototype);
 
 
 ExtendedMedium.prototype.createElementForTagSelection3=function(tag, tagCode, attrValuesTable){
+		console.log("in ExtendedMedium.prototype.createElementForTagSelection3");
+		console.log("attrValuesTable");
+		console.log(attrValuesTable);
 		var i;
 		var el=document.createElement(tag);
 		el.setAttribute("tagCode",tagCode);
@@ -23,6 +26,8 @@ ExtendedMedium.prototype.createElementForTagSelection3=function(tag, tagCode, at
 		}
 		return el;
 	};
+
+
 
 ExtendedMedium.prototype.focusNadya= function (pos,focusEl) {
 		var range = rangy.createRange();
@@ -297,14 +302,42 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
         if (sel.getRangeAt && sel.rangeCount) {
             range = sel.getRangeAt(0);            
             el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+
+
+			var textNode=document.createTextNode("\u200B"); //Inserting a zero width non-joiner Unicode code point, because if I create an empty text node, it does not work in Chrome
+			el.appendChild(textNode);
+
+            console.log("el");
+            console.log(el);
+
             range.insertNode(el);
-            range.selectNodeContents(el);
+
+            
+            var ra = rangy.createRange();
+            ra.setStartAfter(textNode);		
+		
+			
             sel.removeAllRanges();
-			sel.addRange(range);
+			
+			sel.addRange(ra);
+			
+			//$("#user-type-input").click();
+
+			
+
+			//document.getElementById("myCheck").click();
+
+			Medium.activeElement=el;
+			
+			console.log("Medium.activeElement");
+			console.log(Medium.activeElement);
+
             console.log("range");
-            console.log(range);
+            console.log(ra);
             console.log("sel");
             console.log(sel);
+            
+
 			lastElement=el;
         }
 		return this;
