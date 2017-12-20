@@ -20,6 +20,5 @@ Rails.application.config.assets.precompile += %w( views_article_list_functions.j
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 
 Rails.application.config.assets.precompile += %w( chosen.min.css )
-Rails.application.config.assets.precompile += %w( medium-tag-styles.css )
 Rails.application.config.assets.precompile += %w( medium.css )
 Rails.application.config.assets.precompile += %w( my_style.css )
