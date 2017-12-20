@@ -515,3 +515,13 @@ label[for="207"] span {
 .category_button, .change_tag, .delete_tag, .show_change_hotkeys, .show_saving_time, .undo {
   cursor:pointer;
 }
+
+.category_button {
+     background:none!important;
+     color:inherit;
+     border:none; 
+     padding:0!important;
+     font:inherit;
+     cursor:pointer;
+     box-shadow:none!important;
+}
