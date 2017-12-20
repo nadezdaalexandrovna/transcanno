@@ -15,7 +15,7 @@ class TranscribeController  < ApplicationController
   end
 
   def display_page
-    CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
+    #CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
 
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
@@ -105,37 +105,12 @@ class TranscribeController  < ApplicationController
     end
     @initialAttrIds=@initialAttrIds.to_json
 
-=begin
-    #Information for javascript button functions
-    sqlS="SELECT categories.id FROM `categories` inner join works on categories.collection_id=works.collection_id inner join pages on works.id=pages.work_id where pages.id="+params[:page_id]
-    connection = ActiveRecord::Base.connection
-    res=connection.execute(sqlS)
 
-    @categoriesIds={}
-    print "\nres:\n"
-    puts res.inspect
-    print "\n"
-    res.each do |r|
-      print "\nr:\n"
-      puts r.inspect
-      print "\n"
-      id=r[0].to_s
-      @categoriesIds[id]=0
-    end
-
-    @categoriesIds=@categoriesIds.to_json
-=end
+    #Information for javascript button functions    
     sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
     connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
     styleInstructions=""
-    mediumOnmouseoverFunctions="$(document).ready(function($) {\n"+
-                                "var da;\n"+
-                                "var transcriptionModule = Object.create(TranscriptionModule);\n"+
-                                "transcriptionModule.init();\n"+
-                                "setInterval(function () {\n"+
-                                "transcriptionModule.repeatingFunction();\n"+
-                                "}, transcriptionModule.getTranscriptionSavingInterval());\n"
     res.each do |r|
       if r[1]!=nil
         color = 'color:'+r[1]+';'

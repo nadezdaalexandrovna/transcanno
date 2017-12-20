@@ -597,7 +597,7 @@ class CategoryController < ApplicationController
       end
     end
   end
-
+=begin
   def apply_all_styles
     CategoryController.apply_all_styles_h
     flash[:notice] = "Category changes have been applied."
@@ -658,28 +658,23 @@ class CategoryController < ApplicationController
 
     #File.write(ActionController::Base.helpers.stylesheet_path('medium-tag-styles.css'), styleInstructions)
 
-    File.write(Rails.root.join("public/assets", "medium-tag-styles.css"), styleInstructions)
+    #File.write(Rails.root.join("public/assets", "medium-tag-styles.css"), styleInstructions)
     
     #File.write('public/assets/medium-tag-styles.css', styleInstructions)
     
 
     #File.write(ActionController::Base.helpers.asset_path('my-medium-onmousedown-functions.js'), mediumOnmouseoverFunctions)
     #File.write('app/assets/javascripts/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
-    File.write(Rails.root.join("public/assets", "my-medium-onmousedown-functions.js"), mediumOnmouseoverFunctions)
+    #File.write(Rails.root.join("public/assets", "my-medium-onmousedown-functions.js"), mediumOnmouseoverFunctions)
     #File.write(ActionController::Base.helpers.javascript_path('my-medium-onmousedown-functions.js'), mediumOnmouseoverFunctions)
     #File.write('public/assets/my-medium-onmousedown-functions.js', mediumOnmouseoverFunctions)
     
     
   end
+=end
 
   def discard_all_styles
     Categorystyle.delete_all()
-    #File.write(ActionController::Base.helpers.asset_path('medium-tag-styles.css'), styleInstructions)
-    #File.write('app/assets/stylesheets/medium-tag-styles.css', styleInstructions)
-    File.write(Rails.root.join("public/assets", "medium-tag-styles.css"), styleInstructions)
-    #File.write(ActionController::Base.helpers.stylesheet_path('medium-tag-styles.css'), styleInstructions)
-    #File.write('public/assets/medium-tag-styles.css', styleInstructions)
-    #File.write('public/medium-tag-styles.css', '')
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"

@@ -40,6 +40,7 @@ class CollectionController < ApplicationController
     @works_not_in_collection = current_user.owner_works - @collection.works
   end
 
+=begin
   def self.updateStylesIfCollectionIdNotInCookies(cookies, collection)
     #Check if this user has already visited this collection. If he has not, we add the colelction id to the cookies and rewrite the tag styles file and the tag buttons file
     cookiesCollectionId=cookies[:collection_id]
@@ -52,9 +53,10 @@ class CollectionController < ApplicationController
       CategoryController.apply_all_styles_h
     end
   end
-  
+=end  
+
   def show
-    CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
+    #CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
     @users = User.all
     @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
     @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
