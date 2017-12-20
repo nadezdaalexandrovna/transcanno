@@ -47,7 +47,7 @@ ExtendedMedium.prototype.removeTags= function (checkedTagcodes, callback, skipCh
 		for (i=0; i<checkedTagcodes.length; i++){
 			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
 		}
-		
+		this.makeUndoable();
 		return this;
 	};
 
@@ -56,6 +56,7 @@ ExtendedMedium.prototype.changeSelectedTag= function (tagCode, newAttrsValuesTab
 		for (attr in newAttrsValuesTable){
 			$("[tagcode="+tagCode+"]").attr(attr,newAttrsValuesTable[attr]);
 		}
+		this.makeUndoable();
 		return this;
 	};
 
@@ -105,6 +106,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 			range.collapse(true);
 			sel = rangy.getSelection();
 			sel.removeAllRanges();
+
+			this.makeUndoable();
 
 			return this;
 			
@@ -275,7 +278,7 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 				if(nodeToTag2===nodeToTag){
 					sel.removeAllRanges();
 
-					//medium.makeUndoable();
+					this.makeUndoable();
 					return this;
 				}
 
@@ -288,6 +291,7 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 			}
 			sel.removeAllRanges();
 
+			this.makeUndoable();
 			return this;
 		}
 		
@@ -321,16 +325,15 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
 			
 			sel.addRange(ra);
 			
-			//$("#user-type-input").click();
-
-			
-
-			//document.getElementById("myCheck").click();
 
 			Medium.activeElement=el;
+			this.activeElement=el;
+			ExtendedMedium.prototype.activeElement=el;
 			
 			console.log("Medium.activeElement");
 			console.log(Medium.activeElement);
+			console.log("this.activeElement");
+			console.log(this.activeElement);
 
             console.log("range");
             console.log(ra);
@@ -340,6 +343,8 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
 
 			lastElement=el;
         }
+
+        this.makeUndoable();
 		return this;
 	};
 

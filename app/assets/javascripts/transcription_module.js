@@ -953,7 +953,7 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              
+              setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
               userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -1008,7 +1008,7 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
-          
+          setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
           userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
@@ -1294,7 +1294,7 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                
+                setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
                 userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                 return;
               }
@@ -1365,7 +1365,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
-            
+            setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
             userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
             return;
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
@@ -1432,7 +1432,7 @@ var TranscriptionModule = (function () {
 
               if(allow_user_input==1){ //If the user can enter a new value for this attribute          
                 $('#user-type-input').show();
-                
+                setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
                 userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
               }
 
@@ -1497,7 +1497,7 @@ var TranscriptionModule = (function () {
             $('#chosen-select-type')[0].value="";
             $("#chosen-select-type").hide();          
             $('#user-type-input').show();
-            
+            setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
             userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
           }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
@@ -1541,7 +1541,7 @@ var TranscriptionModule = (function () {
 
             if(allow_user_input==1){ //If the user can enter a new value for this attribute          
               $('#user-type-input').show();
-              
+              setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
               userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             }
 
@@ -1549,7 +1549,7 @@ var TranscriptionModule = (function () {
             filterByTextCollapsed('#chosen-select-type', $('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
             
 
-            $("#chosen-select-type").off().change(attrName,function(event3){                        
+            $("#chosen-select-type").off().change(attrName,function(event3){                       
               document.getElementById('select_a_tag').innerHTML = "";                      
               if(event3.target == this){
                 var type=$(this).val();
@@ -1594,8 +1594,7 @@ var TranscriptionModule = (function () {
           $('#chosen-select-type')[0].value="";
           $("#chosen-select-type").hide();          
           $('#user-type-input').show();
-          console.log("before focus 1617");
-          
+          setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
           userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
         }else{ //The user can't enter a new value (erroneous case: the attribute exists, but has no values and can't obtain one)
 
