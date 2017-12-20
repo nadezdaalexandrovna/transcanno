@@ -674,7 +674,9 @@ class CategoryController < ApplicationController
 =end
 
   def discard_all_styles
-    Categorystyle.delete_all()
+    connection = ActiveRecord::Base.connection
+    sql="delete categorystyles from categorystyles inner join categories on categorystyles.category_id=categories.id where categories.collection_id="+params[:collection_id]
+    connection.execute(sql)
     flash[:notice] = "Category styles have been discarded."
     anchor = "#category-#{@category.id}"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
