@@ -12,9 +12,6 @@ ExtendedMedium.prototype = Object.create(Medium.prototype);
 
 
 ExtendedMedium.prototype.createElementForTagSelection3=function(tag, tagCode, attrValuesTable){
-		console.log("in ExtendedMedium.prototype.createElementForTagSelection3");
-		console.log("attrValuesTable");
-		console.log(attrValuesTable);
 		var i;
 		var el=document.createElement(tag);
 		el.setAttribute("tagCode",tagCode);
@@ -297,39 +294,50 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 		
 	};
 
-ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTable) {
-		console.log("in insertHtmlNadya");
+ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTable, frombutton) {
 		var sel = rangy.getSelection();
-		var range, outerhtml;
-		var el;
+		var range, ra, textNode;
+		var el, fromb;
+
+		//If no argument has been passed, it defaults to false
+        if(frombutton==true){
+           	fromb=true;
+        }else{
+        	fromb=false;
+        }
+
 
         if (sel.getRangeAt && sel.rangeCount) {
             range = sel.getRangeAt(0);            
             el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
-
-			var textNode=document.createTextNode("\u200B"); //Inserting a zero width non-joiner Unicode code point, because if I create an empty text node, it does not work in Chrome
-			el.appendChild(textNode);
-
-            console.log("el");
-            console.log(el);
-
-            range.insertNode(el);
-
-            
-            var ra = rangy.createRange();
-            ra.setStartAfter(textNode);		
-		
+			if(attrValuesTable.length==1 && fromb==true){
+				textNode = document.createTextNode("||");	//To circumvent a bug: the cursor is not put into the tag, when the tag is sent from a button and the category has no attributes filled by the user			
+			}else{
+				textNode=document.createTextNode("\u200B"); //Inserting a zero width non-joiner Unicode code point, because if I create an empty text node, it does not work in Chrome
+			}
 			
+			el.appendChild(textNode);
+			range.insertNode(el);
+			ra = rangy.createRange();
+            ra.setStartAfter(textNode);
+
             sel.removeAllRanges();
 			
 			sel.addRange(ra);
 			
+			el.tabindex=-1;
+
+			setTimeout(function(){el.focus()}, 1);
 
 			Medium.activeElement=el;
 			this.activeElement=el;
 			ExtendedMedium.prototype.activeElement=el;
-			
+
+			/*
+			console.log("document.activeElement");
+			console.log(document.activeElement);
+
 			console.log("Medium.activeElement");
 			console.log(Medium.activeElement);
 			console.log("this.activeElement");
@@ -339,13 +347,14 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
             console.log(ra);
             console.log("sel");
             console.log(sel);
-            
+            */
 
 			lastElement=el;
-        }
 
-        this.makeUndoable();
-		return this;
+			this.makeUndoable();
+			return this;
+        }
+        
 	};
 
 /*

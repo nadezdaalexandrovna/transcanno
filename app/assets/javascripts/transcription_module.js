@@ -882,8 +882,8 @@ var TranscriptionModule = (function () {
     };
 
     // Inserts the tag into the text (for categories with and without types)
-    function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode){
-      console.log("in addCategoryWithTypeS");
+    function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode, fromButton){
+      //console.log("in addCategoryWithTypeS");
       var couple;
       var attrString="";
 
@@ -897,12 +897,12 @@ var TranscriptionModule = (function () {
         attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
       }
 
-      var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
+      //var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
       
 
       medium.focusNadya(focusOffset,focusNode);
       //medium.insertHtml(tagWithType);
-      medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues);
+      medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, fromButton);
       //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
       //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
       //tagWithType='';
@@ -1834,7 +1834,7 @@ var TranscriptionModule = (function () {
         }
       }else{ //If the category doesn't have types
         if(selection.isCollapsed){
-          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode);
+          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode,true);
           //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
         }else{
           medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
@@ -1872,7 +1872,7 @@ var TranscriptionModule = (function () {
           tagSeqsInitial(userChosenAttributesAndValues,categoryTag,0, thisCategoryInitialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,true,false);
                 
         }else{ //If the category doesn't have types
-          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode);
+          addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode,true);
           //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
 
         }
@@ -2550,6 +2550,7 @@ var TranscriptionModule = (function () {
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
+      mediumValue = mediumValue.replace(/(>)\|([^<]+)\|(<)/g, "$1$2$3"); //Delete pipes around words, inserted in order to make new tags visible
 
       //mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
       mediumValue = mediumValue.replace(/&nbsp;/g, " "); // &nbsp; is not valid XML
