@@ -368,9 +368,9 @@ var TranscriptionModule = (function () {
 
     if(focusEl.textContent.length==1){
       if(focusEl.getAttribute("mode")!=null){
-        var content = document.createTextNode("|");
+        var content = document.createTextNode("|\u200C");
         focusEl.appendChild(content);
-        content = document.createTextNode("|");
+        content = document.createTextNode("\u200C|");
         focusEl.insertBefore(content, focusEl.firstChild);
         medium.focus();
         medium.focusNadya(0,focusEl.lastChild);
@@ -1776,7 +1776,7 @@ var TranscriptionModule = (function () {
                 if (spanF.getClientRects) {
                     // Ensure span has dimensions and position by
                     // adding a zero-width space character
-                    spanF.appendChild( docF.createTextNode("\u200b") );
+                    spanF.appendChild( docF.createTextNode("\u200B") );
                     rangeF.insertNode(spanF); // inserts a node at the end of the range
 
                     rangeChildNodes=rangeF.endContainer.childNodes;
@@ -2550,7 +2550,17 @@ var TranscriptionModule = (function () {
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
-      mediumValue = mediumValue.replace(/(>)\|([^<]+)\|(<)/g, "$1$2$3"); //Delete pipes around words, inserted in order to make new tags visible
+      /*
+      mediumValue = mediumValue.replace(/(\>)[\u200C]\|([^|]+)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
+      mediumValue = mediumValue.replace(/([^|]+)\|[\u200C](\<)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
+      mediumValue = mediumValue.replace(/(\>)[\u200C]\|([^|]+)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
+      mediumValue = mediumValue.replace(/([^|]+)\|[\u200C](\<)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
+      */
+      //Delete pipes around words, inserted in order to make new tags visible, taking into account pipes that are part of the text
+      mediumValue = mediumValue.replace(/(\>)[\u200C]\|(\|*[^|<\u200C]+)/g, "$1$2"); 
+      mediumValue = mediumValue.replace(/([^>|\u200C]+\|*)\|[\u200C](\<)/g, "$1$2"); 
+      //mediumValue = mediumValue.replace(/(\>)[\u200C]\|(\|*[^|<\u200C]+)/g, "$1$2"); 
+      //mediumValue = mediumValue.replace(/([^>|\u200C]+\|*)\|[\u200C](\<)/g, "$1$2"); 
 
       //mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
       mediumValue = mediumValue.replace(/&nbsp;/g, " "); // &nbsp; is not valid XML

@@ -41,9 +41,18 @@ ExtendedMedium.prototype.focusNadya= function (pos,focusEl) {
 
 ExtendedMedium.prototype.removeTags= function (checkedTagcodes, callback, skipChangeEvent){
 		var i;
+
+		for (i=0; i<checkedTagcodes.length; i++){
+			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { 
+				return this.innerHTML.replace(/^[\u200C]\|(.*)\|[\u200C]$/g, "$1"); //Takes into account tags that have pipes around the text
+			});
+		}
+
+		/*
 		for (i=0; i<checkedTagcodes.length; i++){
 			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
 		}
+		*/
 		this.makeUndoable();
 		return this;
 	};
@@ -312,7 +321,7 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
             el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
 
 			if(attrValuesTable.length==1 && fromb==true){
-				textNode = document.createTextNode("||");	//To circumvent a bug: the cursor is not put into the tag, when the tag is sent from a button and the category has no attributes filled by the user			
+				textNode = document.createTextNode("\u200C||\u200C");	//To circumvent a bug: the cursor is not put into the tag, when the tag is sent from a button and the category has no attributes filled by the user			
 			}else{
 				textNode=document.createTextNode("\u200B"); //Inserting a zero width non-joiner Unicode code point, because if I create an empty text node, it does not work in Chrome
 			}
