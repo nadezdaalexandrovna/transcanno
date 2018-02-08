@@ -1,0 +1,12 @@
+.litebox-embed(style="width:450px")
+  h1 Decide if a category is a header category
+
+  =form_for(@category, :url => { :action => 'is_header_category2' }) do |f|
+    =hidden_field_tag(:category_id, @category.id)
+    h5 <span id="category_title_for_attributes">#{@category.title}</span>
+      is a header category
+    
+    =check_box_tag 'is_header_category','1', (@isheader==true ? 'checked' : nil)
+
+    .toolbar
+      .toolbar_group.aright =f.button 'Assign Category As a Header Category'
