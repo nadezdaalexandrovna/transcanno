@@ -37,19 +37,20 @@
                       hr
                       =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
                       hr
-                      =link_to 'Is a Header Category', { :controller => 'category', :action => 'is_header_category', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      hr
-                      =link_to 'Assign Category Scope', { :controller => 'category', :action => 'assign_category_scope', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      hr
-                      =link_to 'Define Category Style', { :controller => 'category', :action => 'define_style', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      hr
                       =link_to 'Define Category Description', { :controller => 'category', :action => 'define_description', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
-                      =link_to 'Define Category Attributes', { :controller => 'category', :action => 'define_attributes', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      hr
-                      =link_to 'Define Category Attribute Values', { :controller => 'category', :action => 'define_attribute_values', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      hr
-                      =link_to 'Define Attribute Sequences', { :controller => 'category', :action => 'define_attribute_sequences', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      =link_to 'Is a Header Category', { :controller => 'category', :action => 'is_header_category', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      -if !category.headercategory or !category.headercategory.is_header_category
+                        hr
+                        =link_to 'Assign Category Scope', { :controller => 'category', :action => 'assign_category_scope', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                        hr
+                        =link_to 'Define Category Style', { :controller => 'category', :action => 'define_style', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                        hr
+                        =link_to 'Define Category Attributes', { :controller => 'category', :action => 'define_attributes', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                        hr
+                        =link_to 'Define Category Attribute Values', { :controller => 'category', :action => 'define_attribute_values', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                        hr
+                        =link_to 'Define Attribute Sequences', { :controller => 'category', :action => 'define_attribute_sequences', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       hr
                       =link_to 'Discard All Styles', { :controller => 'category', :action => 'discard_all_styles', :collection_id => @collection.id, :category_id => category.id }
                       =link_to 'Delete All Categories', { :controller => 'category', :action => 'delete_all_categories', :collection_id => @collection.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete all the categories? After deleting you won\'t be able to recover them!' }
