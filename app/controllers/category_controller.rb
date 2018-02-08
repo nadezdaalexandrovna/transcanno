@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
   
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories, :is_header_category]
 
   def edit
   end
@@ -20,13 +20,27 @@ class CategoryController < ApplicationController
   def add_new
     @new_category = Category.new({ :collection_id => @collection.id })
     @new_category.parent = @category if @category.present?
+    #By default the created category is not a header category
+    @isheader=false
   end
 
   def create
     @new_category = Category.new(params[:category])
-
+    @new_category.save!
     #I added this line: assign a default scope for the new category: by default, the new category can be used in both modes: simple and advanced
-    Categoryscope.new(category_id: @new_category.id, mode: 2)
+    #Categoryscope.new(category_id: @new_category.id, mode: 2)
+    connection = ActiveRecord::Base.connection
+    sql="insert into categoryscopes (category_id, mode) values ("+@new_category.id.to_s+", 2)"
+    connection.execute(sql)
+
+    header=Headercategory.find_or_create_by(category_id: @new_category.id.to_s)
+    header.is_header_category=params[:is_header_category].to_i
+    header.save
+
+    #By default the created category is not a header category
+    #Headercategory.new(category_id: @new_category.id, is_header_category: 0)
+    #sql2="insert into headercategories (category_id, is_header_category) values ("+@new_category.id.to_s+", 0)"
+    #connection.execute(sql2)
 
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
@@ -206,6 +220,38 @@ class CategoryController < ApplicationController
     end
   end
 
+  def is_header_category
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      header=Headercategory.where(category_id: params[:category_id]).first
+      if header==nil
+        @isheader=false
+      else
+        @isheader=header.is_header_category
+      end
+    end
+  end
+
+  def is_header_category2
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      header=Headercategory.find_or_create_by(category_id: params[:category_id])
+      newHeader=params[:is_header_category].to_i
+      if newHeader==nil
+        header.is_header_category=0
+      else
+        header.is_header_category=newHeader
+      end
+
+      if header.save
+        flash[:notice] = "Category has been assigned as header category (or not)."
+        ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+      else
+        render :action => 'is_header_category'
+      end
+    end
+  end
+
   def define_description
     #Checking for sql injection: the category_id and the collection_id should only contain numbers
     if params[:category_id].scan(/\D/).empty?
@@ -214,8 +260,7 @@ class CategoryController < ApplicationController
       for x in categorydescription
         @description=x.description
       end
-      print "@description"
-      puts @description
+
       if @description.nil?
         @description=""
       end
@@ -614,6 +659,8 @@ class CategoryController < ApplicationController
     Categorystyle.destroy_all(category_id: @category.id)
     Categoryattribute.destroy_all(category_id: @category.id)
     Categorydescription.destroy_all(category_id: @category.id)
+    Categoryscope.destroy_all(category_id: @category.id)
+    Headercategory.destroy_all(category_id: @category.id)
     #Delete attributes that no longer have categories associated to them
     sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
     connection.execute(sqlD)
@@ -651,6 +698,10 @@ class CategoryController < ApplicationController
     #Delete all the scopes of this collection
     sqlDa="DELETE categoryscopes FROM categoryscopes LEFT JOIN categories ON categories.id=categoryscopes.category_id WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDa)
+
+    #Delete all the scopes of this collection
+    sqlH="DELETE headercategories FROM headercategories LEFT JOIN categories ON categories.id=headercategories.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlH)
 
     sqlDs="DELETE categories FROM categories WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDs)

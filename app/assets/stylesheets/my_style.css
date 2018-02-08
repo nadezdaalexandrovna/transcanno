@@ -309,7 +309,7 @@ label[for="207"] span {
   position: absolute;
   right: 4vw;
   top: 205px;
-  z-index: 9998;
+  z-index: 9997;
 }
 
 #final_button_div{
@@ -524,4 +524,34 @@ label[for="207"] span {
      font:inherit;
      cursor:pointer;
      box-shadow:none!important;
+}
+
+
+#headerCategories{
+  position: absolute;
+  right: 24vw;
+  top: 87px;
+  width: 25vw;
+  max-width: 25vw;
+  height: 180px;
+  max-height: 160px;
+  overflow-y: scroll;
+  z-index: 9998;
+  background-color: #faf5eb;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.inputHeaderCat{
+  max-height: 2vh important!;
+  size: 0.5pt important!;
+}
+
+#tableHeaderCat{
+  width: 100%;
+}
+
+.headerCatLabelTd{
+  width: 40%;
+  padding-right: 2px;
 }

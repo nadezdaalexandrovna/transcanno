@@ -5,6 +5,7 @@
 =form_for(@page, :remote=> true, :url => { :action => 'save_transcription'}, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   <input type="hidden" name="page[source_text]"/>
+  <input type="hidden" name="page[header_text]"/>
   <input type="hidden" name="page[use_advanced_mode]"/>
   <input type="hidden" name="page[finished]"/>
   =validation_summary @page.errors
@@ -88,6 +89,13 @@
           .card*{'id'=>'page_source_text', 'contenteditable'=>'true'}
             = @page.source_text
 
+<div id="headerCategories">
+  <table id="tableHeaderCat">
+  - @headerCategories.each do |c|  
+    <tr class="trHeaderCat"><td class="headerCatLabelTd"><label for ="#{c.id}" class="labelHeaderCat">#{c.title}</label></td><td><input id="#{c.id}" name="#{c.title}" class="inputHeaderCat" type="text"></input></td></tr>
+  </table>
+</div>
+
 <div class="popupBody" id="popupBody" style="display:none;">
 <button type="button" class="hide_popup_small" id="hidePopupBody">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
@@ -136,8 +144,6 @@
   <select id="chosen-select-type">
   </select>
 </div>
-
-<input type="checkbox" id="myCheck" onclick="console.log('click event occured')">
 
 <div id="deletion_div" style="display:none;">
 </div>

@@ -52,6 +52,21 @@ var TranscriptionModule = (function () {
       //Parse the transcription text to transform it into XML
       var l=document.getElementById("page_source_text");
       var xml=l.textContent;
+
+      console.log("l.textContent: "+l.textContent);
+      //Take out the header
+      var str = l.textContent.match("<textinfoheader>(.*?)</textinfoheader>");
+      //console.log(str);
+      console.log("header content in init:");
+      if (str != null) {        
+        console.log("header: "+str[1]);
+        console.log("\n");
+        fillHeaderCategoriesValues(str[1]);
+      }
+
+      xml=xml.replace(/\<textinfoheader>.*?\<\/textinfoheader\>/, '');
+
+
       xml = "<div id=\"bigDiv\">"+xml+"</div>";
       xml = xml.replace(/<\/br>/g, "");
       var parser = new DOMParser();
@@ -2538,9 +2553,71 @@ var TranscriptionModule = (function () {
       }
     }
    
+   //Fires when the user presses the "Transcription finished" button
    function transcriptionFinishedFunction(){
     document.getElementsByName("page[finished]")[0].value=1;
-    submitTranscription();
+    if (!checkIfAllHeadersAreFilled()){
+      alert("You have to fill in all the header fields before submitting the transcription.");
+    }else{
+      //document.getElementsByName("page[header_text]")[0].value=header;
+      submitTranscription();
+    }
+    
+   }
+
+   //Check if the transcriber has filled all the header categories values. The function is called when the transcriber pushes the "Transcription finished" button.
+   function checkIfAllHeadersAreFilled(){
+    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
+    var hcIALength=headerCatInputsArray.length;
+    var i=0;
+    for (i=0; i<hcIALength; i++) {
+      if (headerCatInputsArray[i].value.replace(/\s/g, '').length<1){
+        return false;
+      }      
+    }
+    return true;
+   }
+
+   //Assembles the values of the header categories into an XML text
+   function getHeaderCategoriesValues(){
+    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
+    var hcIALength=headerCatInputsArray.length;
+    var text="";
+    var i=0;
+    for (i=0; i<hcIALength; i++) {
+      console.log(headerCatInputsArray[i].id);
+      console.log(headerCatInputsArray[i].name);
+      console.log(headerCatInputsArray[i].value);
+      if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
+        text+="<"+headerCatInputsArray[i].name+">"+headerCatInputsArray[i].value+"</"+headerCatInputsArray[i].name+">";
+      }      
+    }
+    if (text.length<1){
+      return false;
+    }else{
+      text="<textinfoheader>"+text+"</textinfoheader>";
+      return text;
+    }
+    
+   }
+
+   //Takes the header category values from the transcription text header (<textinfoheader>) and places them into the html table over the transcription textarea
+   function fillHeaderCategoriesValues(headerText){
+    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
+    var hcIALength=headerCatInputsArray.length;
+    for (var i=0; i<hcIALength; i++) {
+      //console.log(headerCatInputsArray[i].id);
+      //console.log(headerCatInputsArray[i].name);
+      //console.log(headerCatInputsArray[i].value);
+      
+      var str = headerText.match("<"+headerCatInputsArray[i].name+">(.*?)</"+headerCatInputsArray[i].name+">");
+      //console.log(str);
+      if (str != null) {
+        //console.log("header value: "+str[1]);
+        document.getElementById(headerCatInputsArray[i].id).value=str[1];
+      }
+    }
+    
    }
     
     //Add the transcription text to the form before sending it to the server
@@ -2572,7 +2649,20 @@ var TranscriptionModule = (function () {
       if(isXML(mediumValue)){
         mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
         mediumValue = mediumValue.replace(/<\/div>$/, '');
-        document.getElementsByName("page[source_text]")[0].value=mediumValue;
+
+        var header=getHeaderCategoriesValues();
+        console.log("header:");
+        console.log(header);
+        if (header!=false){
+          console.log("text that will be saved:");
+          console.log(header+mediumValue);
+          document.getElementsByName("page[source_text]")[0].value=header+mediumValue;
+        }else{
+          console.log("text that will be saved:");
+          console.log(mediumValue);
+          document.getElementsByName("page[source_text]")[0].value=mediumValue;
+        }
+        
         //return true;   // Returns Value
       }else{
         alert("The transcription contains tagging errors. Please, verify the work you've done during the last 3 minutes:\n"+mediumValue);

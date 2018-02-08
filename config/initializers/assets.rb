@@ -16,6 +16,7 @@ Rails.application.config.assets.precompile += %w( medium_subclass.js)
 Rails.application.config.assets.precompile += %w( transcription_module.js )
 Rails.application.config.assets.precompile += %w( button_functions.js )
 Rails.application.config.assets.precompile += %w( views_article_list_functions.js )
+Rails.application.config.assets.precompile += %w( overview_display_function.js )
 
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif]
 

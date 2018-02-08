@@ -65,6 +65,13 @@ class CreateCategorystyles < ActiveRecord::Migration
 			valuestoattributesrelation_id int default null,
 			foreign key(valuestoattributesrelation_id ) references valuestoattributesrelations(id)
 		);"
+	execute	"create table headercategories(
+			id int not null AUTO_INCREMENT,
+			primary key (id),
+			category_id int not null unique,
+    		foreign key (category_id) references categories (id),
+			is_header_category tinyint(1) not null default 0
+		);"
 
 	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1);"
 	execute "INSERT INTO collections (id, title, owner_user_id) values (1, 'Example collection',2);"

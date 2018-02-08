@@ -65,6 +65,7 @@ Fromthepage::Application.routes.draw do
     patch 'category/define_attribute_values2', :to => 'category#define_attribute_values2'
     patch 'category/define_attributes2', :to => 'category#define_attributes2'
     patch 'category/assign_category_scope2', :to => 'category#assign_category_scope2'
+    patch 'category/is_header_category2', :to => 'category#is_header_category2'
     patch 'category/define_attribute_sequences2', :to => 'category#define_attribute_sequences2'
     patch 'category/delete_all_categories', :to => 'category#delete_all_categories'
     patch 'page_version/register_version_in_pages', :to => 'page_version#register_version_in_pages'

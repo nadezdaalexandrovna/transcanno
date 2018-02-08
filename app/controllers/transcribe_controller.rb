@@ -23,7 +23,7 @@ class TranscribeController  < ApplicationController
     @use_advanced_mode = cookies[:use_advanced_mode] || 0;
 
     #For the simple mode
-    @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL') 
+    @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
 
     sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     connection = ActiveRecord::Base.connection
@@ -51,7 +51,7 @@ class TranscribeController  < ApplicationController
 
     #For the advanced mode
     #First we only select categories, because maybe they don't have attributes
-    @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL') 
+    @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
 
     #Then we select categories' attributes
     sqlAdv="SELECT categoryattributes.category_id,  categoryattributes.id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
@@ -139,6 +139,11 @@ class TranscribeController  < ApplicationController
     end
 
   @buttonsStyles=styleInstructions
+
+
+  #Get the header categories
+  @headerCategories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=1')
+
 
   end
 
