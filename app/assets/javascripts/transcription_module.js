@@ -130,6 +130,8 @@ var TranscriptionModule = (function () {
       hotkeysHash["modify_tag"] = localStorage["modify_tag"] || "Alt+M";
       hotkeysHash["delete_tag"] = localStorage["delete_tag"] || "Alt+N";
       hotkeysHash["hide_popup"] = localStorage["hide_popup"] || "Alt+R";
+      hotkeysHash["insert_lower_quote"] = localStorage["insert_lower_quote"] || "Alt+,";
+      hotkeysHash["insert_upper_quote"] = localStorage["insert_upper_quote"] || "Alt+.";
 
       updateHotkeysInButtonTitles();
 
@@ -158,6 +160,12 @@ var TranscriptionModule = (function () {
 
       this.fireChangeTagHandler=fireChangeTag.bind(this);
       $( ".change_tag" ).mousedown(this.fireChangeTagHandler);
+
+      this.fireInsertLowerQuoteHandler=fireInsertLowerQuote.bind(this);
+      $( ".insert_lower_quote" ).mousedown(this.fireInsertLowerQuoteHandler);
+
+      this.fireInsertUpperQuoteHandler=fireInsertUpperQuote.bind(this);
+      $( ".insert_upper_quote" ).mousedown(this.fireInsertUpperQuoteHandler);
 
       this.showChangeHotkeysHandler=showChangeHotkeysMenu.bind(this);
       $( ".show_change_hotkeys" ).mousedown(this.showChangeHotkeysHandler);
@@ -227,6 +235,8 @@ var TranscriptionModule = (function () {
       jQuery('.chosen-search').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('.chosen-search').children().bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('.hotkeyDropdownMenu').bind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['insert_lower_quote'], this.fireInsertLowerQuoteHandler);
+      jQuery('#page_source_text').bind('keydown', hotkeysHash['insert_upper_quote'], this.fireInsertUpperQuoteHandler);
       
       this.printMediumValueHandler=printMediumValue.bind(this);
       jQuery('#page_source_text').bind('keydown', 'alt+h', this.printMediumValueHandler);
@@ -241,6 +251,9 @@ var TranscriptionModule = (function () {
       jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['insert_tag'], this.addTagHandler);
       jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['modify_tag'], this.fireModifyTagHandler);
       jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['delete_tag'], this.fireDeleteFromHotkeyTagHandler);
+
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['insert_lower_quote'], this.fireInsertLowerQuoteHandler);
+      jQuery('#page_source_text').unbind('keydown', this.hotkeysHash['insert_upper_quote'], this.fireInsertUpperQuoteHandler);
 
       jQuery(document).unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
       jQuery('#page_source_text').unbind('keydown', hotkeysHash['hide_popup'], this.hidePopupsHandler);
@@ -329,8 +342,7 @@ var TranscriptionModule = (function () {
       //var coords = {x:position.left, y:390};
       coords = {x:position.left, y:390};
       deleteTag(coords,true);
-    }
-    
+    }    
 
     
     function fireChangeTag(){
@@ -340,7 +352,14 @@ var TranscriptionModule = (function () {
       coords = {x:position.left, y:430};
       changeTag(coords,true);
     }
+
+    function fireInsertLowerQuote(){
+      medium.insertHtml("\u201E");
+    }
     
+    function fireInsertUpperQuote(){
+      medium.insertHtml("\u201D");
+    }
 
     function fireModifyTag(){
       //var coords = getSelectionCoords();
@@ -1620,32 +1639,6 @@ var TranscriptionModule = (function () {
       }
     }
 
-    /*
-    function collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode){
-      medium.focus();
-
-      var d = new Date();
-      var milliseconds = d.getTime();
-      var tagCode=milliseconds.toString();
-
-
-      var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" mode="'+userChosenAttributesAndValues[0][1]+'">\u200B</'+varTag+'>';
-
-      medium.focusNadya(focusOffset,focusNode);
-      medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues);
-      //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
-      //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
-
-      tagWithType='';
-      //$('.chosen-select-no-results').chosen_reset(config);
-      chosenReset(".chosen-select-no-results");
-
-      $(".popupBody").hide();
-      document.getElementById('select_a_tag').innerHTML = "";
-                
-      return false;
-    }
-    */
 
     //Remove forbidden characters from an attribute's value
     function cleanAttrValue(val){
@@ -2585,9 +2578,6 @@ var TranscriptionModule = (function () {
     var text="";
     var i=0;
     for (i=0; i<hcIALength; i++) {
-      console.log(headerCatInputsArray[i].id);
-      console.log(headerCatInputsArray[i].name);
-      console.log(headerCatInputsArray[i].value);
       if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
         text+="<"+headerCatInputsArray[i].name+">"+headerCatInputsArray[i].value+"</"+headerCatInputsArray[i].name+">";
       }      
@@ -2605,15 +2595,9 @@ var TranscriptionModule = (function () {
    function fillHeaderCategoriesValues(headerText){
     var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
     var hcIALength=headerCatInputsArray.length;
-    for (var i=0; i<hcIALength; i++) {
-      //console.log(headerCatInputsArray[i].id);
-      //console.log(headerCatInputsArray[i].name);
-      //console.log(headerCatInputsArray[i].value);
-      
+    for (var i=0; i<hcIALength; i++) {      
       var str = headerText.match("<"+headerCatInputsArray[i].name+">(.*?)</"+headerCatInputsArray[i].name+">");
-      //console.log(str);
       if (str != null) {
-        //console.log("header value: "+str[1]);
         document.getElementById(headerCatInputsArray[i].id).value=str[1];
       }
     }
@@ -2627,19 +2611,11 @@ var TranscriptionModule = (function () {
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
-      /*
-      mediumValue = mediumValue.replace(/(\>)[\u200C]\|([^|]+)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
-      mediumValue = mediumValue.replace(/([^|]+)\|[\u200C](\<)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
-      mediumValue = mediumValue.replace(/(\>)[\u200C]\|([^|]+)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
-      mediumValue = mediumValue.replace(/([^|]+)\|[\u200C](\<)/g, "$1$2"); //Delete pipes around words, inserted in order to make new tags visible
-      */
+
       //Delete pipes around words, inserted in order to make new tags visible, taking into account pipes that are part of the text
       mediumValue = mediumValue.replace(/(\>)[\u200C]\|(\|*[^|<\u200C]+)/g, "$1$2"); 
       mediumValue = mediumValue.replace(/([^>|\u200C]+\|*)\|[\u200C](\<)/g, "$1$2"); 
-      //mediumValue = mediumValue.replace(/(\>)[\u200C]\|(\|*[^|<\u200C]+)/g, "$1$2"); 
-      //mediumValue = mediumValue.replace(/([^>|\u200C]+\|*)\|[\u200C](\<)/g, "$1$2"); 
 
-      //mediumValue = mediumValue.replace(/&nbsp;/g, "&#160;"); // &nbsp; is not valid XML
       mediumValue = mediumValue.replace(/&nbsp;/g, " "); // &nbsp; is not valid XML
 
       if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
@@ -2663,10 +2639,8 @@ var TranscriptionModule = (function () {
           document.getElementsByName("page[source_text]")[0].value=mediumValue;
         }
         
-        //return true;   // Returns Value
       }else{
         alert("The transcription contains tagging errors. Please, verify the work you've done during the last 3 minutes:\n"+mediumValue);
-        //return false;
       }
 
       if(callback){

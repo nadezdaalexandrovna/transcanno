@@ -329,8 +329,14 @@ label[for="207"] span {
   font-size: large;
 }
 
-.undo, .delete_tag, .change_tag, .show_change_hotkeys, .show_saving_time{
+.undo, .delete_tag, .change_tag, .show_change_hotkeys, .show_saving_time, .insert_lower_quote, .insert_upper_quote{
   font-size: xx-large;
+}
+
+.insert_lower_quote, .insert_upper_quote{
+  padding: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .delete_tag{
@@ -512,7 +518,7 @@ label[for="207"] span {
   margin-bottom: 20px;
 }
 
-.category_button, .change_tag, .delete_tag, .show_change_hotkeys, .show_saving_time, .undo {
+.category_button, .change_tag, .delete_tag, .show_change_hotkeys, .show_saving_time, .undo, .insert_lower_quote, .insert_upper_quote {
   cursor:pointer;
 }
 
