@@ -91,8 +91,9 @@
 
 <div id="headerCategories">
   <table id="tableHeaderCat">
-  - @headerCategories.each do |c|  
-    <tr class="trHeaderCat"><td class="headerCatLabelTd"><label for ="#{c.id}" class="labelHeaderCat">#{c.title}</label></td><td><input id="#{c.id}" name="#{c.title}" class="inputHeaderCat" type="text"></input></td></tr>
+  - if @headerCategories.length > 0
+    - @headerCategories.each do |c|  
+      <tr class="trHeaderCat"><td class="headerCatLabelTd"><label for ="#{c.id}" class="labelHeaderCat">#{c.title}</label></td><td><input id="#{c.id}" name="#{c.title}" class="inputHeaderCat" type="text"></input></td></tr>
   </table>
 </div>
 
@@ -100,8 +101,9 @@
 <button type="button" class="hide_popup_small" id="hidePopupBody">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - @categories.each do |c|
-    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categories.length > 0
+    - @categories.each do |c|
+      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -109,8 +111,9 @@
 <button type="button" class="hide_popup_small" id="hidePopupBody2">&#9932;</button>
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - @categories.each do |c|
-    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categories.length > 0
+    - @categories.each do |c|
+      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -120,8 +123,9 @@
 <button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - @categoriesAdv.each do |c|
-    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categoriesAdv.length > 0
+    - @categoriesAdv.each do |c|
+      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -130,8 +134,9 @@
 <button type="button" class="hide_popup_small" title="" id="hidePopupBodyAdv2">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - @categoriesAdv.each do |c|
-    option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categoriesAdv.length > 0
+    - @categoriesAdv.each do |c|
+      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 

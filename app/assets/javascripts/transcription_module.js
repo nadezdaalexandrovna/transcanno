@@ -53,14 +53,10 @@ var TranscriptionModule = (function () {
       var l=document.getElementById("page_source_text");
       var xml=l.textContent;
 
-      console.log("l.textContent: "+l.textContent);
       //Take out the header
       var str = l.textContent.match("<textinfoheader>(.*?)</textinfoheader>");
-      //console.log(str);
-      console.log("header content in init:");
+
       if (str != null) {        
-        console.log("header: "+str[1]);
-        console.log("\n");
         fillHeaderCategoriesValues(str[1]);
       }
 
@@ -917,7 +913,6 @@ var TranscriptionModule = (function () {
 
     // Inserts the tag into the text (for categories with and without types)
     function addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode, fromButton){
-      //console.log("in addCategoryWithTypeS");
       var couple;
       var attrString="";
 
@@ -931,15 +926,9 @@ var TranscriptionModule = (function () {
         attrString+=" "+userChosenAttributesAndValues[couple][0]+"=\""+userChosenAttributesAndValues[couple][1]+"\"";
       }
 
-      //var tagWithType='<'+varTag+' tagcode="'+tagCode+'" class="medium-'+varTag+'" '+attrString+'>\u200B</'+varTag+'>';
-      
-
       medium.focusNadya(focusOffset,focusNode);
-      //medium.insertHtml(tagWithType);
       medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, fromButton);
-      //medium.insertHtmlNadya(varTag, tagCode, userChosenAttributesAndValues, tagWithType, focusOffset, focusNode);
-      //medium.insertHtmlNadya(tagWithType, focusOffset, focusNode);
-      //tagWithType='';
+
 
       $('#chosen-select-type').empty();
       $('#chosen-select-type')[0].value="";
@@ -2627,15 +2616,10 @@ var TranscriptionModule = (function () {
         mediumValue = mediumValue.replace(/<\/div>$/, '');
 
         var header=getHeaderCategoriesValues();
-        console.log("header:");
-        console.log(header);
+
         if (header!=false){
-          console.log("text that will be saved:");
-          console.log(header+mediumValue);
           document.getElementsByName("page[source_text]")[0].value=header+mediumValue;
         }else{
-          console.log("text that will be saved:");
-          console.log(mediumValue);
           document.getElementsByName("page[source_text]")[0].value=mediumValue;
         }
         
