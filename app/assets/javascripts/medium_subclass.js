@@ -2,9 +2,7 @@
 Extension of the Medium.js library: a few new functions 
 */
 function ExtendedMedium(settings) {
-	//console.log("in ExtendedMedium 1");
   Medium.call(this, settings);
-  //console.log("in ExtendedMedium 2");
 };
 
 ExtendedMedium.prototype = Object.create(Medium.prototype);
@@ -48,11 +46,6 @@ ExtendedMedium.prototype.removeTags= function (checkedTagcodes, callback, skipCh
 			});
 		}
 
-		/*
-		for (i=0; i<checkedTagcodes.length; i++){
-			$("[tagcode="+checkedTagcodes[i]+"]").replaceWith(function() { return this.innerHTML; });
-		}
-		*/
 		this.makeUndoable();
 		return this;
 	};
@@ -343,21 +336,6 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
 			this.activeElement=el;
 			ExtendedMedium.prototype.activeElement=el;
 
-			/*
-			console.log("document.activeElement");
-			console.log(document.activeElement);
-
-			console.log("Medium.activeElement");
-			console.log(Medium.activeElement);
-			console.log("this.activeElement");
-			console.log(this.activeElement);
-
-            console.log("range");
-            console.log(ra);
-            console.log("sel");
-            console.log(sel);
-            */
-
 			lastElement=el;
 
 			this.makeUndoable();
@@ -366,26 +344,6 @@ ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTabl
         
 	};
 
-/*
-ExtendedMedium.prototype.insertHtmlNadya= function (tag, tagCode, attrValuesTable, html,pos, focusEl, callback, skipChangeEvent) {
-		var sel = rangy.getSelection();
-		var node = document.createTextNode(html);
-		var range, outerhtml;
-		var el;
-
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);            
-            el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
-            range.insertNode(el);
-            range.selectNodeContents(el);
-            sel.removeAllRanges();
-			sel.addRange(range);
-            
-			lastElement=el;
-        }
-		return this;
-	};
-*/
 
 ExtendedMedium.prototype.returnOffset=function() {
 		var win = win || window,

@@ -97,6 +97,10 @@ class CollectionController < ApplicationController
     sqlDa="DELETE categoryscopes FROM categoryscopes LEFT JOIN categories ON categories.id=categoryscopes.category_id WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDa)
 
+    #Delete all the headercategories values of this collection
+    sqlH="DELETE headercategories FROM headercategories LEFT JOIN categories ON categories.id=headercategories.category_id WHERE categories.collection_id="+@collection.id.to_s
+    connection.execute(sqlH)
+
     sqlDs="DELETE categories FROM categories WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDs)
 
