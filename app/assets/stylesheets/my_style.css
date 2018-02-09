@@ -549,8 +549,8 @@ label[for="207"] span {
 }
 
 .inputHeaderCat{
-  max-height: 2vh important!;
-  size: 0.5pt important!;
+  max-height: 2vh important;
+  size: 0.5pt important;
 }
 
 #tableHeaderCat{
