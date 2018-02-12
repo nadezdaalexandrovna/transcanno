@@ -85,7 +85,8 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 		//console.log("in ExtendedMedium.prototype.tagSelection3");
 		var range,
 			el3,
-			sel,
+			sel=rangy.getSelection(),
+			rangeR = sel.getRangeAt(0),
 			el;
 
 		var d = new Date();
@@ -110,7 +111,24 @@ ExtendedMedium.prototype.tagSelection3= function (tag, attrValuesTable, anchorEl
 
 			return this;
 			
-		}else{
+		}else if(rangeR.canSurroundContents()){
+
+				range = rangy.createRange();		
+				range.setStart(anchorEl, beginningOfSelection);
+				range.setEnd(focusEl, endOfSelection);
+				el=ExtendedMedium.prototype.createElementForTagSelection3(tag, tagCode, attrValuesTable);
+
+				range.surroundContents(el);
+				range.collapse(true);
+				sel = rangy.getSelection();
+				sel.removeAllRanges();
+
+				this.makeUndoable();
+
+				return this;
+			
+		}else{	
+
 			sel = rangy.getSelection();
 			sel.removeAllRanges();
 
