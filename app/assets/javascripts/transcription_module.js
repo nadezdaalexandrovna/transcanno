@@ -818,6 +818,7 @@ var TranscriptionModule = (function () {
 
     //If the user types text in the input field of the category type select box in order to select one of the options
     function filterByTextCollapsed (selector,textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
+      console.log("in filterByTextCollapsed line 820");
       var option;
       var select;
       var options;
@@ -953,8 +954,19 @@ var TranscriptionModule = (function () {
         var allow_user_input=categoryTable[num][1];
 
         
-        //If there are predefined values for this attribute
-      if(categoryTypesTable.length>0){
+        
+      if(categoryTypesTable.length==1){
+        userChosenAttributesAndValues.push([attrName,categoryTypesTable[0]]);
+
+        if (num<(categoryTable.length-1)){
+          getNextSomethingSelected(userChosenAttributesAndValues,varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+        }
+
+        if (num==(categoryTable.length-1)){
+          medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
+        }
+
+      }else if(categoryTypesTable.length>0){  //If there are predefined values for this attribute
         //Create the new dropdown menu for category types
         newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
 
@@ -1291,6 +1303,38 @@ var TranscriptionModule = (function () {
       //If an attribute has no predefined values and no user input possibility, give an error message
       if(categoryTypesTable.length==0 && allow_user_input==0){
         alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
+      }else if(categoryTypesTable.length==1 && allow_user_input==0){
+        console.log("categoryTypesTable: "+categoryTypesTable);
+        var newType=categoryTypesTable[0];
+        userChosenAttributesAndValues.push([attrName,newType]);
+        //If the chosen value has consequent attributes
+        if(attrHash[newType].length>0){
+          seqAttrsTable=attrHash[newType];
+          numSeqAttr=0;
+
+          tagSeqs(userChosenAttributesAndValues,level+1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          return;
+
+        }else{ //If the chosen value doesn't have consequent attributes
+ 
+          if (numSeqAttr<(seqAttrsTable.length-1)){
+            tagSeqs(userChosenAttributesAndValues,level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+            return;
+          }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
+            seqAttrsTable=seqAttrsPerLevel[level-1];
+            tagSeqs(userChosenAttributesAndValues,level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+            return;
+          }else if (numSeqAttr==(seqAttrsTable.length-1)){
+            if(level==1 || level==0){
+              tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              return;
+            }else{
+              seqAttrsTable=seqAttrsPerLevel[level-1];
+              tagSeqs(userChosenAttributesAndValues,level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              return;
+            }
+          }
+        }
       }else{
         //If there are predefined values for this attribute
         if(categoryTypesTable.length>0){
@@ -1428,6 +1472,31 @@ var TranscriptionModule = (function () {
       //If an attribute has no predefined values and no user input possibility, give an error message
       if(categoryTypesTable.length==0 && allow_user_input==0){
         alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
+      }else if(categoryTypesTable.length==1 && allow_user_input==0){ //If an attribute has one predefined value and no user input possibility
+        var newType=categoryTypesTable[0];
+        userChosenAttributesAndValues.push([attrName,newType]);
+        //If the chosen value has consequent attributes
+        if(Object.keys(attrHash).length>0 && attrHash[newType].length>0){
+
+          seqAttrsTable=attrHash[newType];
+
+          var numSeqAttr=0;
+          var seqAttrId=seqAttrsTable[numSeqAttr][0];
+          var seqAttrName=seqAttrsTable[numSeqAttr][1];
+
+            tagSeqs(userChosenAttributesAndValues,1,varTag,initialAttrIds, num, numSeqAttr, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+        }else{
+                            
+          if (num<(initialAttrIds.length-1)){
+            tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          }else if (num==(initialAttrIds.length-1)){
+            if(selected==true){
+              medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
+            }else{
+              addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+            }
+          }
+        }
       }else{
         //If there are predefined values for this attribute
         if(categoryTypesTable.length>0){
@@ -1537,10 +1606,22 @@ var TranscriptionModule = (function () {
       var i;    
       var categoryTypesTable=categoryTable[num][2];
       var attrName=categoryTable[num][0];
-      var allow_user_input=categoryTable[num][1];        
+      var allow_user_input=categoryTable[num][1];
 
-      //If there are predefined values for this attribute
-      if(categoryTypesTable.length>0){
+      console.log("allow_user_input: "+allow_user_input);       
+      //If there is only one possible value for this attribute
+      if(categoryTypesTable.length==1){
+        userChosenAttributesAndValues.push([attrName,categoryTypesTable[0]]);
+
+        if (num<(categoryTable.length-1)){
+          getNextCollapsed(userChosenAttributesAndValues, varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+        }
+
+        if (num==(categoryTable.length-1)){
+          addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+        }
+
+      }else if(categoryTypesTable.length>0){ //If there are more than one predefined values for this attribute
         //Create the new dropdown menu for category types
         newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
 
@@ -1825,6 +1906,10 @@ var TranscriptionModule = (function () {
         if(selection.isCollapsed){
           //userChosenAttributesAndValues=[];
           var categoryTable=categoriesInfo[categoryid];
+          console.log("categoriesInfo:");
+          dump(categoriesInfo)
+          console.log("\ncategoryTable:");
+          dump(categoryTable);
           getNextCollapsed(userChosenAttributesAndValues, categoryTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
         }else{
           tagSelectionWithType(userChosenAttributesAndValues,categoryid, categoriesInfo, medium, categoryTag, focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
@@ -2070,6 +2155,10 @@ var TranscriptionModule = (function () {
                 //userChosenAttributesAndValues=[];
 
                 var categoryTable=categoriesInfo[categoryid];
+                console.log("categoriesInfo:");
+                console.log(categoriesInfo)
+                console.log("\ncategoryTable:");
+                console.log(categoryTable);
                 
                 getNextCollapsed(userChosenAttributesAndValues,varTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
