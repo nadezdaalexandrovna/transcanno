@@ -36,11 +36,11 @@ var TranscriptionModule = (function () {
       for (catID in categoryTypesHash){
         categoriesInfo[catID]=[];
         for (attr_name in categoryTypesHash[catID]){
-          categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values']]);
+          categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values'], categoryTypesHash[catID][attr_name]['default']]);
         }
       }
 
-      //Get the information about categories, their attributes, values and sequnces of these values (attributes to be filled) for the advanced mode
+      //Get the information about categories, their attributes, values and sequences of these values (attributes to be filled) for the advanced mode
       categoryTypesHashAdv=parseJsonData("categoryTypesDivAdv");
 
       //Get the initial attributes' ids
@@ -952,10 +952,10 @@ var TranscriptionModule = (function () {
         var categoryTypesTable=categoryTable[num][2];
         var attrName=categoryTable[num][0];
         var allow_user_input=categoryTable[num][1];
-
+        var defaultValue=categoryTable[num][3];
         
         
-      if(categoryTypesTable.length==1){
+      if(categoryTypesTable.length==1 && allow_user_input==0){ //If there is only one predefined value and the user input is not allowed
         userChosenAttributesAndValues.push([attrName,categoryTypesTable[0]]);
 
         if (num<(categoryTable.length-1)){
@@ -983,10 +983,11 @@ var TranscriptionModule = (function () {
             
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
-            $("#select-type-input")[0].value="";
+            $("#select-type-input")[0].value=defaultValue;
             $('#select-type-input').focus();
 
-            if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+            if(allow_user_input==1){ //If the user can enter a new value for this attribute
+              $('#user-type-input').value=defaultValue;         
               $('#user-type-input').show();
               setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
               userInputAttrValueSomethingSelected ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -1295,6 +1296,7 @@ var TranscriptionModule = (function () {
       var categoryTypesHa=categorySeqHash[attrId];
       var attrName=categoryTypesHa['name'];
       var allow_user_input=categoryTypesHa['allow_user_input'];
+      var defaultValue=categoryTypesHa['default'];
       attrHash=categoryTypesHa['values'];
       var categoryTypesTable=Object.keys(attrHash);
       
@@ -1354,12 +1356,13 @@ var TranscriptionModule = (function () {
             
               $("#newDropdownDiv").show();
               $('#select-type-input').show();
-              $("#select-type-input")[0].value="";
+              $("#select-type-input")[0].value=defaultValue;
               $('#select-type-input').focus();
-              $('#chosen-select-type')[0].value="";
+              $('#chosen-select-type')[0].value=defaultValue;
               $("#chosen-select-type").show();
 
-              if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+              if(allow_user_input==1){ //If the user can enter a new value for this attribute
+                $('#user-type-input').value=defaultValue;      
                 $('#user-type-input').show();
                 setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
                 userInputAttrValueAdvanced (level,$('#user-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
@@ -1465,6 +1468,7 @@ var TranscriptionModule = (function () {
       var attrName=categoryTypesHa['name'];
       var allow_user_input=categoryTypesHa['allow_user_input'];
       attrHash=categoryTypesHa['values'];
+      var defaultValue=categoryTypesHa['default'];
       var categoryTypesTable=Object.keys(attrHash); // categoryTypesTable now contains all the possible values of this attribute
       var i;
    
@@ -1516,13 +1520,14 @@ var TranscriptionModule = (function () {
             
               $("#newDropdownDiv").show();
               $('#select-type-input').show();
-              $("#select-type-input")[0].value="";
+              $("#select-type-input")[0].value=defaultValue;
               $('#select-type-input').focus();
               //$('#chosen-select-type').empty();
               $('#chosen-select-type')[0].value="";
               $("#chosen-select-type").show();
 
-              if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+              if(allow_user_input==1){ //If the user can enter a new value for this attribute
+                $('#user-type-input').value=defaultValue;        
                 $('#user-type-input').show();
                 setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
                 userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
@@ -1607,6 +1612,7 @@ var TranscriptionModule = (function () {
       var categoryTypesTable=categoryTable[num][2];
       var attrName=categoryTable[num][0];
       var allow_user_input=categoryTable[num][1];
+      var defaultValue=categoryTable[num][3];
 
       console.log("allow_user_input: "+allow_user_input);       
       //If there is only one possible value for this attribute
@@ -1638,12 +1644,13 @@ var TranscriptionModule = (function () {
             
             $("#newDropdownDiv").show();
             $('#select-type-input').show();
-            $("#select-type-input")[0].value="";
+            $("#select-type-input")[0].value=defaultValue;
             $('#select-type-input').focus();
             //$('#chosen-select-type').empty();
             $("#chosen-select-type").show();
 
-            if(allow_user_input==1){ //If the user can enter a new value for this attribute          
+            if(allow_user_input==1){ //If the user can enter a new value for this attribute
+              $('#user-type-input').value=defaultValue;         
               $('#user-type-input').show();
               setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
               userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -2651,6 +2658,42 @@ var TranscriptionModule = (function () {
 
    //Assembles the values of the header categories into an XML text
    function getHeaderCategoriesValues(){
+    var headerHash={};
+    var i=0;
+    //First we take the values chosen from the dropdown lists
+    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCatOpt");    
+    var hcIALength=headerCatInputsArray.length;
+    for (i=0; i<hcIALength; i++) {
+      if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
+        headerHash[headerCatInputsArray[i].name]=headerCatInputsArray[i].value;
+      }      
+    }
+
+    //Then we take the values from the user input fields
+    var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatInp");    
+    var hcIALength2=headerCatInputsArray2.length;
+    for (i=0; i<hcIALength2; i++) {
+      if (headerCatInputsArray2[i].value.replace(/\s/g, '').length>0){
+        headerHash[headerCatInputsArray2[i].name]=headerCatInputsArray2[i].value;
+      }      
+    }
+
+    var text="";
+    Object.keys(headerHash).forEach(function (catName) { 
+      text+="<"+catName+">"+headerHash[catName]+"</"+catName+">";
+    })
+
+    if (text.length<1){
+      return false;
+    }else{
+      text="<textinfoheader>"+text+"</textinfoheader>";
+      return text;
+    }
+    
+   }
+
+   //Assembles the values of the header categories into an XML text
+   function getHeaderCategoriesValues_Old(){
     var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
     var hcIALength=headerCatInputsArray.length;
     var text="";
@@ -2671,12 +2714,24 @@ var TranscriptionModule = (function () {
 
    //Takes the header category values from the transcription text header (<textinfoheader>) and places them into the html table over the transcription textarea
    function fillHeaderCategoriesValues(headerText){
-    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
+    //First we put them into the user input fields
+    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCatInp");
     var hcIALength=headerCatInputsArray.length;
     for (var i=0; i<hcIALength; i++) {      
       var str = headerText.match("<"+headerCatInputsArray[i].name+">(.*?)</"+headerCatInputsArray[i].name+">");
       if (str != null) {
         document.getElementById(headerCatInputsArray[i].id).value=str[1];
+      }
+    }
+
+    //Then we select the right items from the dropdown lists
+    //DOES NOT WORK YET !!!
+    var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatOpt");
+    var hcIALength2=headerCatInputsArray2.length;
+    for (var i=0; i<hcIALength2; i++) {      
+      var str = headerText.match("<"+headerCatInputsArray2[i].name+">(.*?)</"+headerCatInputsArray2[i].name+">");
+      if (str != null) {
+        document.getElementById(headerCatInputsArray2[i].id).selected="selected";
       }
     }
     

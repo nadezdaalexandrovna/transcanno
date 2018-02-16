@@ -1,0 +1,47 @@
+.litebox-embed(style="width:450px;")
+  h1 Define Header Category Values
+
+  =form_for(@category, :url => { :action => 'define_header_values2' }) do |f|
+    =hidden_field_tag(:category_id, @category.id)
+    <div id="hiddenHeaderValue">
+    </div>
+    h5 Define values of
+      <span id="category_title_for_attributes">#{@category.title}</span>
+    h5 Existing values
+    table[ class="already_attribute" ]
+      head
+        tr
+          th name
+          th is default
+          th delete
+          th rename
+      body
+        -noneChecked=1
+        -@headerValues.each do |r|
+          - noneChecked=0 if r[2].to_i==1
+          tr
+            <td>#{r[1]}</td>
+            <td><input type="radio" name="default" value="#{r[0]}" #{r[2].to_i==1 ? 'checked' : nil}/></td>
+            <td><button type="button" class="delete_attribute_button" id="delete_header_value_#{r[0]}" onclick="deleteHeaderValue(#{r[0]})">Delete</button></td>
+            <td><button type="button" class="rename_attribute_button" id="rename_header_value_#{r[0]}" onclick="renameHeaderValue(#{r[0]})">Rename</button></td>
+          tr
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="2"><input id="rename_header_value#{r[0]}" name="new_header_value[#{r[0]}]" class="header_value_rename_field" style="display: none;"></input></td>
+        tr
+            <td></td>
+            <td><input type="radio" name="default" value="x" #{noneChecked==1 ? 'checked' : nil}/></td>
+            <td></td>
+            <td></td>
+
+    h5 Add new values
+    <div id="fieldsHeader">
+      <input name="header_value[]" class="header_value_input_field" type="text"/><br>
+    </div>
+    <button type="button" id="add_field"  onclick="addHeaderValueField()">Add another value</button><br><br>
+ 
+    .toolbar
+      .toolbar_group.aright =f.button 'Define Values'
+
+

@@ -16,37 +16,45 @@ class TranscribeController  < ApplicationController
 
   def display_page
     #CollectionController.updateStylesIfCollectionIdNotInCookies(cookies, @collection)
-
+    connection = ActiveRecord::Base.connection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
 
     @use_advanced_mode = cookies[:use_advanced_mode] || 0;
 
     #For the simple mode
+    #First we only select categories, because maybe they don't have attributes
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
 
+    #Then we select categories' attributes
     sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
-    connection = ActiveRecord::Base.connection
+    
     categorytypes=connection.execute(sqlS)
 
     @categoryTypesHash=Hash.new()
     categorytypes.each do |row|
       if @categoryTypesHash.key?(row[0]) #If this category is already in the hash
-          @categoryTypesHash[row[0]][row[1]]={'allow_user_input'=>row[2],'values'=>[]}
+          @categoryTypesHash[row[0]][row[1]]={'allow_user_input'=>row[2],'values'=>[], 'default'=>''}
       else #If this category is not yet in the hash
-        @categoryTypesHash[row[0]]={row[1]=>{'allow_user_input'=>row[2], 'values'=>[]}}
+        @categoryTypesHash[row[0]]={row[1]=>{'allow_user_input'=>row[2], 'values'=>[], 'default'=>''}}
       end
     end
 
-    sqlS="SELECT DISTINCT categoryattributes.category_id, attributecats.name, attributevalues.value FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
-    connection = ActiveRecord::Base.connection
+    #Then we select attribute values, because some attributes don't have values and have allow_user_input=true
+    sqlS="SELECT DISTINCT categoryattributes.category_id, attributecats.name, attributevalues.value, attributes_to_values.is_default FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     typesAttributes=connection.execute(sqlS)
 
     #categorytypes=Categoryattribute.joins(:category).joins('inner join attributevalues on categoryattributes.id=attributevalues.categoryattribute_id').where.not(mode: 1)
     
     typesAttributes.each do |row|
       @categoryTypesHash[row[0]][row[1]]['values'].push(row[2])
+      if row[3]==1
+        @categoryTypesHash[row[0]][row[1]]['default']=row[2]
+      end
     end
+    print "\n\n@categoryTypesHash:\n"
+    puts @categoryTypesHash.inspect
+    print "\n\n"
     @categoryTypesHash=@categoryTypesHash.to_json
 
     #For the advanced mode
@@ -55,27 +63,28 @@ class TranscribeController  < ApplicationController
 
     #Then we select categories' attributes
     sqlAdv="SELECT categoryattributes.category_id,  categoryattributes.id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
-    connection = ActiveRecord::Base.connection
     categorytypesAdv=connection.execute(sqlAdv)
 
     @categoryTypesHashAdv=Hash.new()
     categorytypesAdv.each do |row|
       if @categoryTypesHashAdv.key?(row[0]) #If this category is already in the hash
-          @categoryTypesHashAdv[row[0]][row[1]]={'allow_user_input'=>row[3],'name'=>row[2],'values'=>{}}
+          @categoryTypesHashAdv[row[0]][row[1]]={'allow_user_input'=>row[3],'name'=>row[2],'values'=>{}, 'default'=>''}
       else #If this category is not yet in the hash
-        @categoryTypesHashAdv[row[0]]={row[1]=>{'allow_user_input'=>row[3], 'name'=>row[2], 'values'=>{}}}
+        @categoryTypesHashAdv[row[0]]={row[1]=>{'allow_user_input'=>row[3], 'name'=>row[2], 'values'=>{}, 'default'=>''}}
       end
     end
 
     #Then we select attribute values, because some attributes don't have values and have allow_user_input=true
-    sqlAdvS="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value FROM categoryattributes INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
-    connection = ActiveRecord::Base.connection
+    sqlAdvS="SELECT categoryattributes.category_id, categoryattributes.id, attributevalues.value, attributes_to_values.is_default FROM categoryattributes INNER JOIN attributes_to_values ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributevalues ON attributevalues.id=attributes_to_values.attributevalue_id inner join categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
     typesAttributesAdv=connection.execute(sqlAdvS)
 
     #categorytypes=Categoryattribute.joins(:category).joins('inner join attributevalues on categoryattributes.id=attributevalues.categoryattribute_id').where.not(mode: 1)
     
     typesAttributesAdv.each do |row|
       @categoryTypesHashAdv[row[0]][row[1]]['values'][row[2]]=[]
+      if row[3]==1
+        @categoryTypesHashAdv[row[0]][row[1]]['default']=row[2]
+      end
     end
 
     #At last, we select consequences: when a certain attribute value is selected, certain other attributes should be given values
@@ -108,7 +117,6 @@ class TranscribeController  < ApplicationController
 
     #Information for javascript button functions    
     sqlS="SELECT categories.title, categorystyles.colour, categorystyles.textdecoration, categorystyles.fontstyle, categories.id FROM `categorystyles` INNER JOIN `categories` ON `categories`.`id` = `categorystyles`.`category_id`"
-    connection = ActiveRecord::Base.connection
     res=connection.execute(sqlS)
     styleInstructions=""
     res.each do |r|
@@ -142,7 +150,30 @@ class TranscribeController  < ApplicationController
 
 
   #Get the header categories
-  @headerCategories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=1')
+  #headerCategories = Category.select(:id, :title, :allow_user_input).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=1')
+
+  sqlHC="select categories.id, categories.title, headercategories.allow_user_input from categories inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
+  headerCategories=connection.execute(sqlHC)
+
+  #Get the header categories values
+  sqlH="select categories.id, categories.title, headercategories.allow_user_input, headervalues.id, headervalues.value, headervalues.is_default from headervalues inner join categories on headervalues.category_id=categories.id inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
+  headerCategoriesValues=connection.execute(sqlH)
+
+  @headerCatsHash={}
+
+  headerCategoriesValues.each do |row|
+    if @headerCatsHash.key?(row[0])
+      @headerCatsHash[row[0]][2][row[3]]=[row[4],row[5]]
+    else
+      @headerCatsHash[row[0]]=[row[1], row[2], {row[3]=>[row[4],row[5]]}]
+    end
+  end
+
+  headerCategories.each do |row|
+    if !@headerCatsHash.key?(row[0])
+      @headerCatsHash[row[0]]=[row[1], row[2]]
+    end
+  end
 
 
   end

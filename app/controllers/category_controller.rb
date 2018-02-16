@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
   
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories, :is_header_category]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories, :is_header_category, :define_header_values]
 
   def edit
   end
@@ -226,8 +226,10 @@ class CategoryController < ApplicationController
       header=Headercategory.where(category_id: params[:category_id]).first
       if header==nil
         @isheader=false
+        @allow_user_input=false
       else
         @isheader=header.is_header_category
+        @allow_user_input=header.allow_user_input
       end
     end
   end
@@ -235,12 +237,32 @@ class CategoryController < ApplicationController
   def is_header_category2
     #Checking for sql injection: the category_id and the collection_id should only contain numbers
     if params[:category_id].scan(/\D/).empty?
-      header=Headercategory.find_or_create_by(category_id: params[:category_id])
-      newHeader=params[:is_header_category].to_i
-      if newHeader==nil
-        header.is_header_category=0
-      else
-        header.is_header_category=newHeader
+      header=Headercategory.where(category_id: params[:category_id])[0]
+
+      newHeader=0
+      if params[:is_header_category]!=nil
+        newHeader=params[:is_header_category].to_i
+      end
+
+      allow_user_input=0
+      if params[:allow_user_input]!=nil
+        allow_user_input=params[:allow_user_input].to_i
+      end
+
+      if newHeader==0
+        if header!=nil
+          header.is_header_category=0
+          header.allow_user_input=allow_user_input
+          header.save
+        end
+      elsif newHeader==1
+        if header!=nil
+          header.is_header_category=newHeader
+          header.allow_user_input=allow_user_input
+          header.save
+        else
+          Headercategory.create(category_id: params[:category_id], is_header_category: is_header_category, allow_user_input: allow_user_input)
+        end
       end
 
       if header.save
@@ -249,6 +271,106 @@ class CategoryController < ApplicationController
       else
         render :action => 'is_header_category'
       end
+    end
+  end
+
+  def define_header_values
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection      
+
+      #Select all predefined values of this header category
+      sql="SELECT DISTINCT headervalues.id, headervalues.value, headervalues.is_default from headervalues WHERE category_id="+params[:category_id]
+      @headerValues=connection.execute(sql)
+
+      print "\n@headerValues:\n"
+      print @headerValues.inspect
+      @headerValues.each do |r|
+        print "\n"
+        print r[0]
+        print "\n"
+        print r[2]
+      end
+
+    end
+  end
+
+  def define_header_values2
+    #Checking for sql injection: the category_id and the collection_id should only contain numbers
+    if params[:category_id].scan(/\D/).empty?
+      connection = ActiveRecord::Base.connection
+      @category.id=params[:category_id]
+      giveNotice=false
+
+      #Deleting values
+      if params[:delete_header_value]!=nil
+        forSql=""
+        params[:delete_header_value].each do |type|
+          if type!=nil && type!="" && type.scan(/\D/).empty?
+            giveNotice=true
+            forSql+=type+", "
+          end
+        end
+
+        if forSql!=""
+          #Delete attributes that no longer have categories associated to them
+          sqlDa="DELETE FROM headervalues WHERE id IN ("+forSql[0..-3]+");"
+          connection.execute(sqlDa)
+        end
+      end
+
+      #Adding new values
+      if params[:header_value]!=nil
+        numberNews=0
+        is_default=0
+        allow_user_input=0
+        params[:header_value].each do |type|
+            giveNotice=true
+            #If the header value contains SQL meta-characters, we put underscores around them in order to prevent sql injection
+            type.gsub!(/(\%27)|(\')|(\%3[bB])|(\;)|(\%2[aA])|\*|(\-\-)|(\%23)|(#)|(\%3C)|(\<)|(\%3D)|(\=)|(\%3E)|(\>)|(\%28)|(\()|(\%29)|(\))/i) { |m| '_'+m+'_' }
+
+            headerValue=Headervalue.create(value: type, category_id: params[:category_id], is_default: is_default)
+
+            numberNews+=1
+
+        end
+      end
+
+      #Renaming existing values
+      if params[:new_header_value]!=nil
+        params[:new_header_value].each do |id, newValue|
+          if newValue.length>0
+
+            #If the header value contains SQL meta-characters, we put underscores around them in order to prevent sql injection
+            newValue.gsub!(/(\%27)|(\')|(\%3[bB])|(\;)|(\%2[aA])|\*|(\-\-)|(\%23)|(#)|(\%3C)|(\<)|(\%3D)|(\=)|(\%3E)|(\>)|(\%28)|(\()|(\%29)|(\))/i) { |m| '_'+m+'_' }
+
+            headerValue=Headervalue.find(id)
+            headerValue.value=newValue
+            headerValue.save
+          end
+        end
+      end
+
+      #Making default values
+      if params[:default]!=nil
+        defaultId=params[:default]
+        if defaultId!="x"
+          headerValue=Headervalue.find(defaultId)
+          headerValue.is_default=1
+          headerValue.save
+        else
+          headerValue=Headervalue.where(category_id: params[:category_id], is_default: 1)[0]
+          if headerValue!=nil
+            headerValue.is_default=0
+            headerValue.save
+          end
+        end
+      end
+
+      if giveNotice==true
+        flash[:notice] = "Category attributes have been defined."
+      end
+      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
     end
   end
 
@@ -348,15 +470,16 @@ class CategoryController < ApplicationController
         @categoryattributes.push([r[0],r[1],r[2],r[3]])
       end
 
+      #Values of each attribute of this category
       @attributeValuesHash={}
-      sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+      sqlS="SELECT DISTINCT categoryattributes.id, attributecats.name, attributevalues.id, attributevalues.value, categoryattributes.mode, attributes_to_values.is_default FROM `attributevalues` INNER JOIN attributes_to_values on attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN `categoryattributes` ON `categoryattributes`.`id` = `attributes_to_values`.`categoryattribute_id` INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
       res=connection.execute(sqlS)
 
       res.each do |r|
         if @attributeValuesHash.key?(r[0].to_s)
-          @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3]})
+          @attributeValuesHash[r[0].to_s].push({'valueid':r[2], 'value':r[3], 'is_default':r[5]})
         else
-          @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3]}]
+          @attributeValuesHash[r[0].to_s]=[{'valueid':r[2], 'value':r[3], 'is_default':r[5]}]
         end
       end
 
@@ -460,6 +583,20 @@ class CategoryController < ApplicationController
           end
         end
       end
+
+      if params[:default_attr_vals]!=nil
+        params[:default_attr_vals].each do |attrid, valueIds|
+          if attrid.scan(/\D/).empty?
+            valueId=valueIds[-1]
+            if valueId.length>0 && valueId.scan(/\D/).empty?
+              attrVal=AttributesToValue.where(categoryattribute_id: attrid, attributevalue_id: valueId)[0]
+              attrVal.is_default=1
+              attrVal.save
+            end
+          end
+        end
+      end
+      
 
       if giveNotice==true
         flash[:notice] = "Category attributes have been defined."

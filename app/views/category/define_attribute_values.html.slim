@@ -3,6 +3,7 @@
 
   =form_for(@category, :url => { :action => 'define_attribute_values2' }, :html => { :onsubmit=>'return verifyValueType2()' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    <div id="default_attribute_values"></div>
     <div id="hidden"></div>
     h5 Define attribute values for the category
       <span id="category_title_for_attributes">#{@category.title}</span>
@@ -21,10 +22,17 @@
           <div id="one_attribute_div_#{r[0]}" class="one_attribute_div" style="display: none;">
             h5 Existing values of the attribute <span class="attribute_name_span">#{r[1]}</span>:
             table [ class="already_value" ]
+              -noneChecked=1
               -@attributeValuesHash.fetch("#{r[0]}").each do |v|
+                - noneChecked=0 if v.fetch(:is_default).to_i==1
                 tr
                   <td>#{v.fetch(:value)}</td>
+                  <td><input name="is_default_attribute_value" class="radioDefault" type='radio' onclick="addToDefaultValues(#{r[0]},#{v.fetch(:valueid)})" value="#{v.fetch(:valueid)}" #{v.fetch(:is_default).to_i==1 ? 'checked':nil}/>default</td>
                   <td><button type="button" class="delete_attributevalue_button" id="delete_attribute_value_#{v.fetch(:valueid)}" value="#{v.fetch(:valueid)}" onclick="deleteAttributeValue(#{v.fetch(:valueid)},#{r[0]})">Delete</button></td>
+              tr
+                <td></td>
+                <td><input name="is_default_attribute_value" class="radioDefault" type='radio' #{noneChecked==1 ? 'checked':nil}/></td>
+                <td></td>
           </div>
         <div  id="big_new_values_div_#{r[0]}" class="big_new_values_div" style="display: none;">
           h5 Add new values for the attribute <span class="attribute_name_span">#{r[1]}</span>
@@ -48,3 +56,8 @@
     .toolbar
       .toolbar_group.aright =f.button "Apply all changes"
 
+    .attributeValuesHash*{'id'=>'attributeValuesHash', 'data'=>"#{@attributeValuesHash}"}
+    -content_for :javascript
+      javascript:
+        var data = #{{ @attributeValuesHash.to_json }};
+        //unckeckAllRadiosDefaultAttributeValues(data);

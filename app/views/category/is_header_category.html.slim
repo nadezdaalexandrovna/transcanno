@@ -5,8 +5,12 @@
     =hidden_field_tag(:category_id, @category.id)
     h5 <span id="category_title_for_attributes">#{@category.title}</span>
       is a header category
-    
+
+    </br>is a header category  
     =check_box_tag 'is_header_category','1', (@isheader==true ? 'checked' : nil)
+
+    </br></br>allow user input  
+    =check_box_tag 'allow_user_input','1', (@allow_user_input==true ? 'checked' : nil)
 
     .toolbar
       .toolbar_group.aright =f.button 'Assign Category As a Header Category'

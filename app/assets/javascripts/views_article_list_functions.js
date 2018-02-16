@@ -8,6 +8,38 @@
   var activeAttributeId=null;
   var previousActiveAttributeId=null;
 
+
+
+  function addToDefaultValues(attr_id,value_id){
+    console.log("in addToDefaultValues");
+
+    var html = "<input type='hidden' name='default_attr_vals["+attr_id+"][]' id='default_"+attr_id+"_"+value_id+"' value='"+value_id+"'>";
+    $('#default_attribute_values').append(html);
+
+    //attributeValuesHash[attr_id]=value_id;
+  }
+
+ 
+    //Functions for the attributes menu
+    function addHeaderValueField(style) {      
+      numberOfAddedAttributes+=1;
+      var html = "<input name='header_value[]' class='header_value_input_field' type='text'><br>";
+      html+='</div>';
+      $('#fieldsHeader').append(html);      
+    }
+
+    function deleteHeaderValue(headerValueId){
+      var html = "<input type='hidden' name='delete_header_value[]' value='"+headerValueId+"'>";
+      $('#hiddenHeaderValue').append(html);
+      document.getElementById("delete_header_value_"+headerValueId).disabled=true;
+
+    }
+
+    function renameHeaderValue(valueId){
+      $("#rename_header_value"+valueId).show();
+    }
+
+
     //Functions for the attributes menu
     function addField(style) {
       
@@ -213,7 +245,7 @@
 
     }
 
-    
+        
     //Sequences functions
     function activateSequence(activeAttributeIdFrom,valueId,valueName,activeAttributeName){
 
