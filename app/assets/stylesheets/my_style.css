@@ -561,3 +561,7 @@ label[for="207"] span {
   width: 40%;
   padding-right: 2px;
 }
+
+input.unchangeableInput{
+  background-color: #faf5eb;
+}

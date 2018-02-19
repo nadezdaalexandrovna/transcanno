@@ -1,5 +1,5 @@
 class AttributesToValue < ActiveRecord::Base
-  attr_accessible :categoryattribute_id, :attributevalue_id, :id, :valuestoattributesrelation_id
+  attr_accessible :categoryattribute_id, :attributevalue_id, :id, :valuestoattributesrelation_id, :is_default
   validates :attributevalue_id, presence: true
   validates :categoryattribute_id, presence: true
   has_and_belongs_to_many :attributevalues

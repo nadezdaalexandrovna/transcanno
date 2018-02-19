@@ -483,7 +483,6 @@ class CategoryController < ApplicationController
         end
       end
 
-
       scope=Categoryscope.where(category_id: params[:category_id])
       @categoryScope=2
       unless scope.empty?

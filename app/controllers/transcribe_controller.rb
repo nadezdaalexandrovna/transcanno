@@ -52,9 +52,7 @@ class TranscribeController  < ApplicationController
         @categoryTypesHash[row[0]][row[1]]['default']=row[2]
       end
     end
-    print "\n\n@categoryTypesHash:\n"
-    puts @categoryTypesHash.inspect
-    print "\n\n"
+
     @categoryTypesHash=@categoryTypesHash.to_json
 
     #For the advanced mode

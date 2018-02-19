@@ -51,17 +51,15 @@ var TranscriptionModule = (function () {
 
       //Parse the transcription text to transform it into XML
       var l=document.getElementById("page_source_text");
-      var xml=l.textContent;
+      //var xml=l.textContent;
 
       //Take out the header
       var str = l.textContent.match("<textinfoheader>(.*?)</textinfoheader>");
-
-      if (str != null) {        
+      if (str != null) {
+        //Put the header categories values into the menu above the transcription text area   
         fillHeaderCategoriesValues(str[1]);
       }
-
-      xml=xml.replace(/\<textinfoheader>.*?\<\/textinfoheader\>/, '');
-
+      var xml=l.textContent.replace(/\<textinfoheader>.*?\<\/textinfoheader\>/, '');
 
       xml = "<div id=\"bigDiv\">"+xml+"</div>";
       xml = xml.replace(/<\/br>/g, "");
@@ -818,7 +816,6 @@ var TranscriptionModule = (function () {
 
     //If the user types text in the input field of the category type select box in order to select one of the options
     function filterByTextCollapsed (selector,textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton) {
-      console.log("in filterByTextCollapsed line 820");
       var option;
       var select;
       var options;
@@ -1306,7 +1303,6 @@ var TranscriptionModule = (function () {
       if(categoryTypesTable.length==0 && allow_user_input==0){
         alert("There is an error in the attribute's "+attrName+" conception. It should either have predefined values or allow user input.");
       }else if(categoryTypesTable.length==1 && allow_user_input==0){
-        console.log("categoryTypesTable: "+categoryTypesTable);
         var newType=categoryTypesTable[0];
         userChosenAttributesAndValues.push([attrName,newType]);
         //If the chosen value has consequent attributes
@@ -1613,8 +1609,7 @@ var TranscriptionModule = (function () {
       var attrName=categoryTable[num][0];
       var allow_user_input=categoryTable[num][1];
       var defaultValue=categoryTable[num][3];
-
-      console.log("allow_user_input: "+allow_user_input);       
+       
       //If there is only one possible value for this attribute
       if(categoryTypesTable.length==1){
         userChosenAttributesAndValues.push([attrName,categoryTypesTable[0]]);
@@ -1913,10 +1908,6 @@ var TranscriptionModule = (function () {
         if(selection.isCollapsed){
           //userChosenAttributesAndValues=[];
           var categoryTable=categoriesInfo[categoryid];
-          console.log("categoriesInfo:");
-          dump(categoriesInfo)
-          console.log("\ncategoryTable:");
-          dump(categoryTable);
           getNextCollapsed(userChosenAttributesAndValues, categoryTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,true);
         }else{
           tagSelectionWithType(userChosenAttributesAndValues,categoryid, categoriesInfo, medium, categoryTag, focusOffset, focusNode, [anchorNode, anchorOffset], coords,true);
@@ -2161,12 +2152,7 @@ var TranscriptionModule = (function () {
                 
                 //userChosenAttributesAndValues=[];
 
-                var categoryTable=categoriesInfo[categoryid];
-                console.log("categoriesInfo:");
-                console.log(categoriesInfo)
-                console.log("\ncategoryTable:");
-                console.log(categoryTable);
-                
+                var categoryTable=categoriesInfo[categoryid];                
                 getNextCollapsed(userChosenAttributesAndValues,varTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
               }else{ //If the category doesn't have types
@@ -2634,8 +2620,10 @@ var TranscriptionModule = (function () {
    //Fires when the user presses the "Transcription finished" button
    function transcriptionFinishedFunction(){
     document.getElementsByName("page[finished]")[0].value=1;
-    if (!checkIfAllHeadersAreFilled()){
-      alert("You have to fill in all the header fields before submitting the transcription.");
+    //Check if all the header categories values have been filled
+    var missedCategories=checkIfAllHeadersAreFilled();
+    if (missedCategories.length>0){
+      alert("You have to fill in all the header fields before submitting the transcription. You forgot "+missedCategories.slice(0, -2)+".");
     }else{
       //document.getElementsByName("page[header_text]")[0].value=header;
       submitTranscription();
@@ -2643,18 +2631,50 @@ var TranscriptionModule = (function () {
     
    }
 
-   //Check if the transcriber has filled all the header categories values. The function is called when the transcriber pushes the "Transcription finished" button.
+
+    //Check if the transcriber has filled all the header categories values. The function is called when the transcriber pushes the "Transcription finished" button.
    function checkIfAllHeadersAreFilled(){
-    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
-    var hcIALength=headerCatInputsArray.length;
-    var i=0;
-    for (i=0; i<hcIALength; i++) {
-      if (headerCatInputsArray[i].value.replace(/\s/g, '').length<1){
-        return false;
-      }      
-    }
-    return true;
+     var headerHash={};
+      var i=0;
+      //First we take the values chosen from the dropdown lists
+      var headerCatInputsArray=document.getElementsByClassName("inputHeaderCatOpt");    
+      var hcIALength=headerCatInputsArray.length;
+      for (i=0; i<hcIALength; i++) {
+        if (!(headerCatInputsArray[i].parentElement.id in headerHash)){
+          headerHash[headerCatInputsArray[i].parentElement.id]=false;
+        }
+        if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
+          if(headerCatInputsArray[i].selected==true){
+            headerHash[headerCatInputsArray[i].parentElement.id]=true;
+          }
+        }      
+      }
+
+      //Then we take the values from the user input fields
+      var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatInp");    
+      var hcIALength2=headerCatInputsArray2.length;
+      for (i=0; i<hcIALength2; i++) {
+        if (!(headerCatInputsArray2[i].name in headerHash)){
+          headerHash[headerCatInputsArray2[i].name]=false;
+        }
+        if (headerCatInputsArray2[i].value.replace(/\s/g, '').length>0){
+          headerHash[headerCatInputsArray2[i].name]=true;
+        }      
+      }
+
+      var missedCategories=""; //Will contain names of header categories which don't have values
+
+      for(i in headerHash) {
+        if (headerHash.hasOwnProperty(i)) {
+          if (!headerHash[i]){
+            missedCategories+=i+", ";
+          }
+        }
+      }
+
+      return missedCategories;
    }
+
 
    //Assembles the values of the header categories into an XML text
    function getHeaderCategoriesValues(){
@@ -2665,7 +2685,9 @@ var TranscriptionModule = (function () {
     var hcIALength=headerCatInputsArray.length;
     for (i=0; i<hcIALength; i++) {
       if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
-        headerHash[headerCatInputsArray[i].name]=headerCatInputsArray[i].value;
+        if(headerCatInputsArray[i].selected==true){
+          headerHash[headerCatInputsArray[i].parentElement.id]=headerCatInputsArray[i].value;
+        }
       }      
     }
 
@@ -2679,7 +2701,7 @@ var TranscriptionModule = (function () {
     }
 
     var text="";
-    Object.keys(headerHash).forEach(function (catName) { 
+    Object.keys(headerHash).forEach(function (catName) {
       text+="<"+catName+">"+headerHash[catName]+"</"+catName+">";
     })
 
@@ -2692,32 +2714,14 @@ var TranscriptionModule = (function () {
     
    }
 
-   //Assembles the values of the header categories into an XML text
-   function getHeaderCategoriesValues_Old(){
-    var headerCatInputsArray=document.getElementsByClassName("inputHeaderCat");
-    var hcIALength=headerCatInputsArray.length;
-    var text="";
-    var i=0;
-    for (i=0; i<hcIALength; i++) {
-      if (headerCatInputsArray[i].value.replace(/\s/g, '').length>0){
-        text+="<"+headerCatInputsArray[i].name+">"+headerCatInputsArray[i].value+"</"+headerCatInputsArray[i].name+">";
-      }      
-    }
-    if (text.length<1){
-      return false;
-    }else{
-      text="<textinfoheader>"+text+"</textinfoheader>";
-      return text;
-    }
-    
-   }
 
    //Takes the header category values from the transcription text header (<textinfoheader>) and places them into the html table over the transcription textarea
    function fillHeaderCategoriesValues(headerText){
+    var i,j;
     //First we put them into the user input fields
     var headerCatInputsArray=document.getElementsByClassName("inputHeaderCatInp");
     var hcIALength=headerCatInputsArray.length;
-    for (var i=0; i<hcIALength; i++) {      
+    for (i=0; i<hcIALength; i++) {      
       var str = headerText.match("<"+headerCatInputsArray[i].name+">(.*?)</"+headerCatInputsArray[i].name+">");
       if (str != null) {
         document.getElementById(headerCatInputsArray[i].id).value=str[1];
@@ -2725,17 +2729,34 @@ var TranscriptionModule = (function () {
     }
 
     //Then we select the right items from the dropdown lists
-    //DOES NOT WORK YET !!!
     var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatOpt");
     var hcIALength2=headerCatInputsArray2.length;
-    for (var i=0; i<hcIALength2; i++) {      
-      var str = headerText.match("<"+headerCatInputsArray2[i].name+">(.*?)</"+headerCatInputsArray2[i].name+">");
-      if (str != null) {
-        document.getElementById(headerCatInputsArray2[i].id).selected="selected";
+    var str;
+
+    for (j=0; j<hcIALength2; j++) {
+      str = headerText.match("<"+headerCatInputsArray2[j].parentElement.id+">(.*?)</"+headerCatInputsArray2[j].parentElement.id+">");
+      if(str){
+        selectItemByValue(document.getElementById(headerCatInputsArray2[j].parentElement.id),str[1]);
       }
     }
-    
+    return;
    }
+
+   /*
+   Selects the item of a dropdown select list corresponding to the given value
+   Arguments:
+   - elmnt : the select element
+   - value : the value to select
+   */
+   function selectItemByValue(elmnt, value){
+    for(var i=0; i < elmnt.options.length; i++){
+      if(elmnt.options[i].value === value) {
+        elmnt.selectedIndex = i;
+        //break;
+        return;
+      }
+    }
+  }
     
     //Add the transcription text to the form before sending it to the server
     function AddMediumValue(callback) {

@@ -91,7 +91,7 @@
 
 <div id="headerCategories">
   <table id="tableHeaderCat">
-  - if @headerCatsHash.length > 0
+  - if @headerCatsHash!=nil
     - @headerCatsHash.each do |c, array|  
       <tr class="trHeaderCat">
         <td class="headerCatLabelTd"><label for ="#{c}" class="labelHeaderCat">#{array[0]}</label></td>
@@ -99,12 +99,12 @@
           - defaultValue=""
           - if array.length==3
             - if array[2].length>1
-              <td><select>
+              <td><select id="#{array[0]}" onchange="putValueInInputField(this)">
                 - array[2].each do |valId, valArray|
                   - if valArray[1].to_i==1
                     - existsDefault=1
                     - defaultValue=valArray[0]
-                  <option name="#{array[0]}" value="#{valId}"  id="#{valArray[0]}" class="inputHeaderCatOpt" data-categoryid=c "#{valArray[1].to_i==1 ? 'selected':nil}">#{valArray[0]}</option>
+                  <option name="#{array[0]}" value="#{valArray[0]}"  id="#{valId}" class="inputHeaderCatOpt" data-categoryid=c "#{valArray[1].to_i==1 ? 'selected':nil}">#{valArray[0]}</option>
               </select>
               </td>
             - if array[2].length==1
@@ -113,21 +113,21 @@
                   - existsDefault=1
                   - defaultValue=valArray[0]
                 -if array[1].to_i==0
-                  <td><span>#{valArray[0]}</span></td>
+                  <td><input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp unchangeableInput" type="text" value="#{valArray[0]}" readonly></input></td>
                 -else
                   <td>
-                    <select>
+                    <select id="#{array[0]}" onchange="putValueInInputField(this)">
                       <option value=""></option>
-                      <option name="#{array[0]}" value="#{valId}" id="#{valArray[0]}" class="inputHeaderCatOpt" data-categoryid=c "#{valArray[1].to_i==1 ? 'selected':nil}">#{valArray[0]}</option>
+                      <option name="#{array[0]}" value="#{valArray[0]}" id="#{valId}" class="inputHeaderCatOpt" data-categoryid=c "#{valArray[1].to_i==1 ? 'selected':nil}">#{valArray[0]}</option>
                     </select>
                   </td>
 
             -if array[1].to_i==1
               <td>
                 -if existsDefault==1
-                  <input id="#{c}" name="#{array[0]}" class="inputHeaderCatInp" type="text" value="#{defaultValue}"></input>
+                  <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text" value="#{defaultValue}"></input>
                 - else
-                  <input id="#{c}" name="#{array[0]}" class="inputHeaderCatInp" type="text"></input>
+                  <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text"></input>
               </td>
             -else
               <td></td>
@@ -157,7 +157,6 @@
 
 
 <div class="popupBodyAdv" id="popupBodyAdv" style="display:none;">
-<!--<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv" onclick="hidePopupBodyAdv();">&#9932;</button>-->
 <button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -168,7 +167,6 @@
 </div>
 
 <div class="popupBodyAdv2" id="popupBodyAdv2" style="display:none;">
-<!--<button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv2" onclick="hidePopupBodyAdv2();">&#9932;</button>-->
 <button type="button" class="hide_popup_small" title="" id="hidePopupBodyAdv2">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
@@ -292,7 +290,7 @@ h2.legend Page Notes
 .initialAttrIds*{'id'=>'initialAttrIds', 'data'=>"#{@initialAttrIds}"}
 
 
-script type="text/javascript" src=asset_path("button_functions.js")
+script type="text/javascript" src=asset_path("transcription_module_init.js")
 
 -content_for :javascript
   javascript:
@@ -315,6 +313,7 @@ script type="text/javascript" src=asset_path("button_functions.js")
       });
 
     });
+
 
 
     
