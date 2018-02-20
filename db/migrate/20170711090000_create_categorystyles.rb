@@ -63,6 +63,7 @@ class CreateCategorystyles < ActiveRecord::Migration
     		attributevalue_id int not null,
     		foreign key (attributevalue_id) references attributevalues(id),
 			valuestoattributesrelation_id int default null,
+			is_default tinyint(1) default 0,
 			foreign key(valuestoattributesrelation_id ) references valuestoattributesrelations(id)
 		);"
 	execute	"create table headercategories(
@@ -70,7 +71,17 @@ class CreateCategorystyles < ActiveRecord::Migration
 			primary key (id),
 			category_id int not null unique,
     		foreign key (category_id) references categories (id),
-			is_header_category tinyint(1) not null default 0
+			is_header_category tinyint(1) not null default 0,
+			allow_user_input tinyint(1) not null default 0
+		);"
+
+	execute	"create table headervalues(
+			id int not null AUTO_INCREMENT,
+			primary key (id),
+			category_id int not null,
+    		foreign key (category_id) references categories (id),
+    		value varchar(255) not null,
+    		is_default tinyint(1) not null default 0
 		);"
 
 	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1);"
