@@ -84,6 +84,8 @@ class CreateCategorystyles < ActiveRecord::Migration
     		is_default tinyint(1) not null default 0
 		);"
 
+	execute "ALTER TABLE headervalues ADD CONSTRAINT UniqueValuePercategory UNIQUE (category_id,value);"
+
 	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1);"
 	execute "INSERT INTO collections (id, title, owner_user_id) values (1, 'Example collection',2);"
 	execute "INSERT INTO categories (id, title, collection_id) values (1, 'infinitive', 1),(2, 'adv2', 1);"
