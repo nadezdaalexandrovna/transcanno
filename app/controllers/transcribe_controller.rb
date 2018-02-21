@@ -159,18 +159,29 @@ class TranscribeController  < ApplicationController
 
   @headerCatsHash={}
 
+  headerCatExistsDefault={}
+
   headerCategoriesValues.each do |row|
+    if row[5].to_i==1
+      headerCatExistsDefault[row[0]]=1
+    end
     if @headerCatsHash.key?(row[0])
-      @headerCatsHash[row[0]][2][row[3]]=[row[4],row[5]]
+      @headerCatsHash[row[0]][3][row[3]]=[row[4],row[5]]
     else
-      @headerCatsHash[row[0]]=[row[1], row[2], {row[3]=>[row[4],row[5]]}]
+      @headerCatsHash[row[0]]=[row[1], row[2], 0, {row[3]=>[row[4],row[5]]}]
     end
   end
 
+  #Add categories that don't have predefined values
   headerCategories.each do |row|
     if !@headerCatsHash.key?(row[0])
-      @headerCatsHash[row[0]]=[row[1], row[2]]
+      @headerCatsHash[row[0]]=[row[1], row[2],0]
     end
+  end
+
+  #Set exists_default to true for categories that have default values
+  headerCatExistsDefault.each do |catId, one|
+    @headerCatsHash[catId][2]=1
   end
 
 

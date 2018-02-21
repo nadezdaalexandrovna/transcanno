@@ -97,18 +97,20 @@
         <td class="headerCatLabelTd"><label for ="#{c}" class="labelHeaderCat">#{array[0]}</label></td>
           - existsDefault=0
           - defaultValue=""
-          - if array.length==3
-            - if array[2].length>1
+          - if array.length==4
+            - if array[3].length>1
               <td><select id="#{array[0]}" onchange="putValueInInputField(this)">
-                - array[2].each do |valId, valArray|
+                - if array[2]==0
+                  <option name="#{array[0]}" value=""  id="#{array[0]}_empty" class="inputHeaderCatOpt" data-categoryid=c selected></option>
+                - array[3].each do |valId, valArray|
                   - if valArray[1].to_i==1
                     - existsDefault=1
                     - defaultValue=valArray[0]
                   <option name="#{array[0]}" value="#{valArray[0]}"  id="#{valId}" class="inputHeaderCatOpt" data-categoryid=c "#{valArray[1].to_i==1 ? 'selected':nil}">#{valArray[0]}</option>
               </select>
               </td>
-            - if array[2].length==1
-              - array[2].each do |valId, valArray|
+            - if array[3].length==1
+              - array[3].each do |valId, valArray|
                 - if valArray[1].to_i==1
                   - existsDefault=1
                   - defaultValue=valArray[0]
@@ -139,9 +141,10 @@
 <button type="button" class="hide_popup_small" id="hidePopupBody">&#9932;</button>
 <select class="chosen-select-no-results" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - if @categories.length > 0
-    - @categories.each do |c|
-      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categories!=nil
+    - if @categories.length > 0
+      - @categories.each do |c|
+        option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -149,9 +152,10 @@
 <button type="button" class="hide_popup_small" id="hidePopupBody2">&#9932;</button>
 <select class="chosen-select-no-results2" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - if @categories.length > 0
-    - @categories.each do |c|
-      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categories!=nil
+    - if @categories.length > 0
+      - @categories.each do |c|
+        option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -160,9 +164,10 @@
 <button type="button" class="hide_popup_small" title="Alt+R" id="hidePopupBodyAdv">&#9932;</button>
 <select class="chosen-adv" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - if @categoriesAdv.length > 0
-    - @categoriesAdv.each do |c|
-      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categoriesAdv!=nil
+    - if @categoriesAdv.length > 0
+      - @categoriesAdv.each do |c|
+        option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -170,9 +175,10 @@
 <button type="button" class="hide_popup_small" title="" id="hidePopupBodyAdv2">&#9932;</button>
 <select class="chosen-adv2" data-placeholder="Choose a category">
   option[ value="" ] = ""
-  - if @categoriesAdv.length > 0
-    - @categoriesAdv.each do |c|
-      option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
+  - if @categoriesAdv!=nil
+    - if @categoriesAdv.length > 0
+      - @categoriesAdv.each do |c|
+        option[ value="#{c.title}_id#{c.id}" data-categoryid=c.id ] =c.title
 </select>
 </div>
 
@@ -238,10 +244,11 @@ div [ id="verticalMediumClickableSpans" ]
       td [ class="overMediumButtonTD" ]
         <span  title="insert lower double quotes at cursor position" class="insert_lower_quote">&#8222;</span>
         <span  title="insert upper double quotes at cursor position" class="insert_upper_quote">&#8221;</span>
-    - @categories.each do |c|
-      tr
-        td [ class="overMediumButtonTD" ]
-          button[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)"] = c.title
+    - if @categories!=nil
+      - @categories.each do |c|
+        tr
+          td [ class="overMediumButtonTD" ]
+            button[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)"] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
@@ -264,10 +271,11 @@ div [ id="verticalMediumClickableSpansAdv" ]
       td [ class="overMediumButtonTD" ]
         <span  title="insert lower double quotes at cursor position" class="insert_lower_quote">&#8222;</span>
         <span  title="insert upper double quotes at cursor position" class="insert_upper_quote">&#8221;</span>
-    - @categoriesAdv.each do |c|
-      tr
-        td [ class="overMediumButtonTD" ]
-          button[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)" ] = c.title
+    - if @categoriesAdv!=nil
+      - @categoriesAdv.each do |c|
+        tr
+          td [ class="overMediumButtonTD" ]
+            button[ class="button-#{c.title}_id#{c.id}" class="category_button" data-categoryid=c.id onMouseDown="transcriptionModule.buttonClickFunction('#{c.id}', '#{c.title}',this)" ] = c.title
     tr
       td [ class="overMediumButtonTD" ]
         <span title="change hot keys" class="show_change_hotkeys">&#9911;</span>
