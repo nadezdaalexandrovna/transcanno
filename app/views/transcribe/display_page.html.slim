@@ -128,7 +128,17 @@
               <td>
                 -if existsDefault==1
                   <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text" value="#{defaultValue}"></input>
-                - else
+                -else
+                  <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text"></input>
+              </td>
+            -else
+              <td></td>
+          - else
+            -if array[1].to_i==1
+              <td>
+                -if existsDefault==1
+                  <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text" value="#{defaultValue}"></input>
+                -else
                   <input id="input_#{array[0]}" name="#{array[0]}" class="inputHeaderCatInp" type="text"></input>
               </td>
             -else
