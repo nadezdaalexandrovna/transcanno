@@ -25,7 +25,7 @@
             .headline
               //h3.headline_title ==(category.ancestors.reverse.push(category).map { |c| c.title }).join(" &rarr; ")
               h3.headline_title(data-category-title="#{category.id}") =category.title
-              -if user_signed_in? && current_user.like_owner?(@collection)
+              -if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
                 .headline_aside
                   dl.dropdown.right
                     dt.h5

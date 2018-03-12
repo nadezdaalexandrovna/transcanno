@@ -1,16 +1,25 @@
--tabs = [{\
-  :name => 'Start A Project',
-  :selected => 5,
-  :options => {\
-    :action => 'startproject',
-  },
-},{\
-  :name => 'Your Works',
-  :selected => 1,
-  :options => {\
-    :action => 'owner',
-  },
-}]
+-if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
+  -tabs = [{\
+    :name => 'Start A Project',
+    :selected => 5,
+    :options => {\
+      :action => 'startproject',
+    },
+  },{\
+    :name => 'Your Works',
+    :selected => 1,
+    :options => {\
+      :action => 'owner',
+    },
+  }]
+-else
+  -tabs = [{\
+    :name => 'Your Works',
+    :selected => 1,
+    :options => {\
+      :action => 'owner',
+    },
+  }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -content_for :page_title, "#{selected_tab} - Owner Dashboard"

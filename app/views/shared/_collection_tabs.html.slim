@@ -24,7 +24,7 @@
   },
 }]
 
--if user_signed_in? && current_user.like_owner?(@collection)
+-if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
   -tabs += [{\
     :name => 'Settings',
     :selected => 2,
@@ -52,13 +52,6 @@
   }]
 
   -tabs += [{\
-    :name => 'Collaborators',
-    :selected => 9,
-    :options => {\
-      :controller => 'collection',
-      :action => 'contributors',
-    },
-  },{\
     :name => 'Add Work',
     :selected => 4,
     :options => {\

@@ -69,45 +69,45 @@
               -unless progress_review == 0
                 span(style="width:#{progress_review}%")
 
+-if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
+  h2 Collaborators
 
-h2 Collaborators
-
-.collection-users.justified
-  .justified_box>
-    -unless @all_transcribers.empty?
-      h3 Transcribing
-      -@all_transcribers.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-            span.vmiddle =user.display_name
-    -else
-      h3 Transcribing
-      p.a50 No transcribers
-
-  .justified_box>
-    -unless @all_editors.empty?
-      h3 Editing
-      -@all_editors.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-            span.vmiddle =user.display_name
-    -else
-      h3 Editing
-      p.a50 No editors
-      
-  -unless @collection.subjects_disabled
+  .collection-users.justified
     .justified_box>
-      -unless @all_indexers.empty?
-        h3 Indexing
-        -@all_indexers.each do |user, count|
+      -unless @all_transcribers.empty?
+        h3 Transcribing
+        -@all_transcribers.each do |user, count|
           .collection-user(data-prefix="#{count}")
             =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
               span.userpic =gravatar_image_tag user.email, :alt => user.display_name
               span.vmiddle =user.display_name
       -else
-        h3 Indexing
-        p.a50 No indexers
+        h3 Transcribing
+        p.a50 No transcribers
+
+    .justified_box>
+      -unless @all_editors.empty?
+        h3 Editing
+        -@all_editors.each do |user, count|
+          .collection-user(data-prefix="#{count}")
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Editing
+        p.a50 No editors
+      
+    -unless @collection.subjects_disabled
+      .justified_box>
+        -unless @all_indexers.empty?
+          h3 Indexing
+          -@all_indexers.each do |user, count|
+            .collection-user(data-prefix="#{count}")
+              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+                span.vmiddle =user.display_name
+        -else
+          h3 Indexing
+          p.a50 No indexers
 
 =render({ :partial => '/shared/collection_footer' })

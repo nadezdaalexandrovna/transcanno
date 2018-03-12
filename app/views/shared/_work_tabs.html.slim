@@ -38,7 +38,7 @@
     },
   }]
 
--if user_signed_in? && current_user.like_owner?(@collection)
+-if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
   -tabs += [{\
     :name => 'Settings',
     :selected => 6,
@@ -55,14 +55,6 @@
     },
   }]
 
--tabs += [{\
-  :name => 'Help',
-  :selected => 9,
-  :options => {\
-    :controller => 'static',
-    :action => 'transcribe_help',
-  },
-}]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -tab_title = ([1,3,5].include? selected) ? "#{selected_tab.downcase} work" : "work #{selected_tab.downcase}"

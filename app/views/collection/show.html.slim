@@ -52,7 +52,7 @@
               -unless progress_review == 0
                 span(style="width:#{progress_review}%")
 
-    -if user_signed_in? && current_user.like_owner?(@collection)
+    -if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
     
     -unless @collection.subjects_disabled
