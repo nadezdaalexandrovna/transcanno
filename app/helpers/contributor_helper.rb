@@ -34,13 +34,16 @@ module ContributorHelper
     @recent_xlat_index = @collection_deeds.where(deed_type: translate_index)
     @recent_xlat_review = @collection_deeds.where(deed_type: translate_review)
     #get distinct user ids per deed and create list of users
-    user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
+    #user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
+    user_deeds = @collection.deeds.where(condition, start_date, end_date).pluck(:user_id)
     @all_transcribers = User.where(id: user_deeds)
 
     #find recent transcription deeds by user, then older deeds by user
-    recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).distinct.pluck(:user_id)
+    #recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).distinct.pluck(:user_id)
+    recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).pluck(:user_id)
     recent_users = User.where(id: recent_trans_deeds)
-    older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).distinct.pluck(:user_id)
+    #older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).distinct.pluck(:user_id)
+    older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).pluck(:user_id)
     older_users = User.where(id: older_trans_deeds)
 
     #compare older to recent list to get new transcribers
