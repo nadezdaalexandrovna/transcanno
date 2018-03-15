@@ -309,14 +309,14 @@ label[for="207"] span {
   position: absolute;
   right: 4vw;
   top: 205px;
-  z-index: 9997;
+
 }
 
 #final_button_div{
   position: absolute;
   right: 4vw;
   top: 105px;
-  z-index: 9998;
+
 
   button{
     color: red;
