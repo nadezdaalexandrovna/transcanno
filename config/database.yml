@@ -54,4 +54,4 @@ production:
   <<: *default
   database: <%= ENV['TRANSCANNODB'] %>
   username: <%= ENV['TRANSCANNOUSERNAME'] %>
-  password: 3<%= ENV['TRANSCANNOPASSWORD'] %>
+  password: <%= ENV['TRANSCANNOPASSWORD'] %>
