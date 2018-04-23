@@ -52,6 +52,6 @@ test:
 #
 production:
   <<: *default
-  database: new_db
-  username: newtest_prod
-  password: 33_Korovy
+  database: <%= ENV['TRANSCANNODB'] %>
+  username: <%= ENV['TRANSCANNOUSERNAME'] %>
+  password: 3<%= ENV['TRANSCANNOPASSWORD'] %>
