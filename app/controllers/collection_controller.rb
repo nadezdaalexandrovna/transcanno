@@ -175,6 +175,12 @@ class CollectionController < ApplicationController
 def contributors
   @collection = Collection.find_by(id: params[:collection_id])
 
+  deedObjects=Deed.select(:deed_type).distinct
+  @deed_types=[]
+  for deedObj in deedObjects
+    @deed_types.push(deedObj.deed_type)
+  end
+  
   #Get the start and end date params from date picker, if none, set defaults
   start_date = params[:start_date]
   end_date = params[:end_date]
@@ -190,7 +196,22 @@ def contributors
   @start_deed = start_date.strftime("%b %d, %Y")
   @end_deed = end_date.strftime("%b %d, %Y")
 
-  new_contributors(@collection, start_date, end_date)
+  @contributor = params[:contributor]
+  if @contributor == nil
+    @contributor=""
+  end
+
+  contributorObject=User.where("display_name LIKE :contr",{contr: '%'+@contributor+'%'})
+  contributor_ids=contributorObject.ids
+  @workType = params[:work]
+  if @workType == nil
+    @workType=""
+  end
+  workObject=Work.where("title LIKE :title",{title: '%'+@workType+'%'})
+  work_ids=workObject.ids
+  @activity = params[:activity]
+
+  new_contributors2(@collection, start_date, end_date, contributor_ids, work_ids, @activity)
   
 end
 

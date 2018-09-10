@@ -14,7 +14,26 @@ h4.normargin Select a new date range
   =label_tag(:end_date, "End date")
   |  
   =text_field_tag(:end_date, @end_deed, style: "width:30%")
+  |
+  br/
+  br/  
+  =label_tag(:contributor, "Contributor")
   |  
+  =text_field_tag(:contributor, @contributor, id:"contributor_textfield")
+  |  
+  =label_tag(:work, "Work")
+  |  
+  =text_field_tag(:work, @workType, id:"work_type_textfield")
+  |
+  =label_tag(:activity, "Activity")
+  |
+  <select name="activity" data-placeholder="" id="activity_dropdown_menu">
+    <option value="" #{@activity == "" ? 'selected' : 'selected'} ></option>  
+    -@deed_types.each do |d|
+      <option value="#{d}" #{@activity == d ? 'selected' : d} >#{d}</option>
+  </select>
+  |
+  br/  
   =submit_tag("Update")
 br/
 

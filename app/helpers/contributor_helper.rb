@@ -1,5 +1,69 @@
 module ContributorHelper
 
+def new_contributors2(collection_id, start_date, end_date, contributor_ids, work_ids, activity)
+    @collection = Collection.find_by(id: collection_id)
+
+    #set deed type variables
+    trans_type = ["page_trans", "page_edit"]
+    ocr_type = "ocr_corr"
+    note_type = "note_add"
+    article_type = "art_edit"
+    index_type = 'page_index'
+    review_type = 'review'
+    translate_index = 'xlat_index'
+    translate_review = 'xlat_rev'
+    translate_type = ["pg_xlat", "pg_xlat_ed"]
+    condition = "created_at >= ? AND created_at <= ?"
+
+    #get the start and end date params from date picker, if none, set defaults
+    start_date = start_date
+    end_date = end_date
+
+    #check to see if there are any deeds in the collection
+    @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
+
+    transcription_deeds = @collection.deeds.where(deed_type: trans_type)
+
+    if activity != nil and activity.length>0
+        @recent_notes = []
+        @recent_transcriptions = @collection_deeds.where(deed_type: activity, user_id: contributor_ids, work_id: work_ids)
+        @recent_articles = []
+        @recent_translations = []
+        @recent_ocr = []
+        @recent_index = []
+        @recent_review = []
+        @recent_xlat_index = []
+        @recent_xlat_review = []
+    else
+        @recent_notes = @collection_deeds.where(deed_type: note_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_transcriptions = @collection_deeds.where(deed_type: trans_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_articles = @collection_deeds.where(deed_type: article_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_translations = @collection_deeds.where(deed_type: translate_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_ocr = @collection_deeds.where(deed_type: ocr_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_index = @collection_deeds.where(deed_type: index_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_review = @collection_deeds.where(deed_type: review_type, user_id: contributor_ids, work_id: work_ids)
+        @recent_xlat_index = @collection_deeds.where(deed_type: translate_index, user_id: contributor_ids, work_id: work_ids)
+        @recent_xlat_review = @collection_deeds.where(deed_type: translate_review, user_id: contributor_ids, work_id: work_ids)
+    end
+    #get distinct user ids per deed and create list of users
+    #user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
+    user_deeds = @collection.deeds.where(condition, start_date, end_date).pluck(:user_id)
+    @all_transcribers = User.where(id: user_deeds)
+
+    #find recent transcription deeds by user, then older deeds by user
+    #recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).distinct.pluck(:user_id)
+    recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).pluck(:user_id)
+    recent_users = User.where(id: recent_trans_deeds)
+    #older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).distinct.pluck(:user_id)
+    older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).pluck(:user_id)
+    older_users = User.where(id: older_trans_deeds)
+
+    #compare older to recent list to get new transcribers
+    @new_transcribers = recent_users - older_users
+
+  end
+
+
   def new_contributors(collection_id, start_date, end_date)
     @collection = Collection.find_by(id: collection_id)
 

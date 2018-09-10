@@ -565,3 +565,15 @@ label[for="207"] span {
 input.unchangeableInput{
   background-color: #faf5eb;
 }
+
+#work_type_textfield, #contributor_textfield{
+  width: 20%;
+  margin-left: 1%;
+  margin-right: 3%;
+}
+
+#activity_dropdown_menu{
+  width: 15%;
+  margin-left: 1%;
+  margin-right: 3%;
+}
