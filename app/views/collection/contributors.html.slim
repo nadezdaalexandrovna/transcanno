@@ -28,9 +28,9 @@ h4.normargin Select a new date range
   =label_tag(:activity, "Activity")
   |
   <select name="activity" data-placeholder="" id="activity_dropdown_menu">
-    <option value="" #{@activity == "" ? 'selected' : 'selected'} ></option>  
+    <option value="" #{@activity == "" ? 'selected' : nil} ></option>  
     -@deed_types.each do |d|
-      <option value="#{d}" #{@activity == d ? 'selected' : d} >#{d}</option>
+      <option value="#{d}" #{@activity == d ? 'selected' : nil} >#{d}</option>
   </select>
   |
   br/  
