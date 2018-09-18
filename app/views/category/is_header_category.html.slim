@@ -10,7 +10,38 @@
     =check_box_tag 'is_header_category','1', (@isheader==true ? 'checked' : nil)
 
     </br></br>allow user input  
-    =check_box_tag 'allow_user_input','1', (@allow_user_input==true ? 'checked' : nil)
+    =check_box_tag 'allow_user_input','1', (@allow_user_input==true ? 'checked' : nil), 'onclick': 'showRadioButtons(this)'
+
+    </br></br>
+    <div id="only_radio_buttons" style="#{@display}">
+      |  
+      =label_tag(:max_len, "Length")
+      |  
+      =text_field_tag(:max_len, @max_len, id:"max_len_textfield", maxlength:'2', placeholder:"#{@max_len}")
+
+      </br></br>Allowed content
+      </br></br>any  
+      =radio_button_tag 'only','0', (@only==0 ? 'checked' : nil)
+
+      table [ class="allowed_content" ]
+        tr
+          td         
+            =label_tag(:only, "only numbers") 
+            =radio_button_tag 'only','1', (@only==1 ? 'checked' : nil)
+          td
+            =label_tag(:only, "only letters")
+            =radio_button_tag 'only','2', (@only==2 ? 'checked' : nil)
+        tr
+          td
+            =label_tag(:only, "no numbers")
+            =radio_button_tag 'only','3', (@only==3 ? 'checked' : nil)
+          td
+            =label_tag(:only, "no letters")
+            =radio_button_tag 'only','4', (@only==4 ? 'checked' : nil)
+    </div>
 
     .toolbar
       .toolbar_group.aright =f.button 'Assign Category As a Header Category'
+
+
+    

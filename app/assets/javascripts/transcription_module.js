@@ -36,7 +36,7 @@ var TranscriptionModule = (function () {
       for (catID in categoryTypesHash){
         categoriesInfo[catID]=[];
         for (attr_name in categoryTypesHash[catID]){
-          categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values'], categoryTypesHash[catID][attr_name]['default']]);
+          categoriesInfo[catID].push([attr_name, categoryTypesHash[catID][attr_name]['allow_user_input'], categoryTypesHash[catID][attr_name]['values'], categoryTypesHash[catID][attr_name]['default'], categoryTypesHash[catID][attr_name]['only'], categoryTypesHash[catID][attr_name]['max_len']]);
         }
       }
 
@@ -936,7 +936,6 @@ var TranscriptionModule = (function () {
 
 
     function tagSelectionWithType (userChosenAttributesAndValues,categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords,onButton){
-
       var categoryTable=categoriesInfo[categoryid];
                 
       getNextSomethingSelected(userChosenAttributesAndValues,varTag, 0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -965,7 +964,12 @@ var TranscriptionModule = (function () {
 
       }else if(categoryTypesTable.length>0){  //If there are predefined values for this attribute
         //Create the new dropdown menu for category types
-        newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var option = document.createElement("option");
+        option.value="";
+        option.selected="checked";
+        option.innerHTML="";
+        newDropdown.append(option);
 
         for(i=0; i< categoryTypesTable.length; i++){
           //Add an option for the category types dropdown menu
@@ -1002,7 +1006,7 @@ var TranscriptionModule = (function () {
                   type='';
 
                   userChosenAttributesAndValues.push([attrName,newType]);
-                            
+                  hidePopups();       
                   $("#newDropdownDiv").hide();
                   $('#chosen-select-type').empty();
                   $('#chosen-select-type')[0].value="";
@@ -1025,7 +1029,12 @@ var TranscriptionModule = (function () {
       }else{//If there are no predefined values for this attribute
         if(allow_user_input==1){ //If the user can enter a new value for this attribute
           //Create the new dropdown menu for category types
-          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+          var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+          var option = document.createElement("option");
+          option.value="";
+          option.selected="checked";
+          option.innerHTML="";
+          newDropdown.append(option);
 
           if(onButton==true){
             $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
@@ -1194,23 +1203,33 @@ var TranscriptionModule = (function () {
           $('#user-type-input').hide();
           document.getElementById('select_a_tag').innerHTML = "";
 
-          userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
-          $(textbox).val('');
-          if (numSeqAttr<(seqAttrsTable.length-1)){
-            tagSeqs(userChosenAttributesAndValues,level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-            return;
-          }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
-            seqAttrsTable=seqAttrsPerLevel[level-1];
-            tagSeqs(userChosenAttributesAndValues,level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-            return;
-          }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr!=0){
-            if(level==1 || level==0){
-              tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+          var attrId=seqAttrsTable[numSeqAttr][0];
+          var only=categorySeqHash[attrId]['only'];
+          var length=categorySeqHash[attrId]['max_len'];
+
+          var typedValue=cleanAttrValueRestrictAdvanced($(textbox).val(),only,length,level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+          if (typedValue.length>0){
+            hidePopups();
+            userChosenAttributesAndValues.push([attrName,cleanAttrValue(typedValue)]);
+          
+            if (numSeqAttr<(seqAttrsTable.length-1)){
+              tagSeqs(userChosenAttributesAndValues,level,varTag,initialAttrIds, num, numSeqAttr+1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
               return;
-            }else{
+            }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr==0){
               seqAttrsTable=seqAttrsPerLevel[level-1];
               tagSeqs(userChosenAttributesAndValues,level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
               return;
+            }else if (numSeqAttr==(seqAttrsTable.length-1) && numSeqAttr!=0){
+              if(level==1 || level==0){
+                tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                return;
+              }else{
+                seqAttrsTable=seqAttrsPerLevel[level-1];
+                tagSeqs(userChosenAttributesAndValues,level-1,varTag,initialAttrIds, num, -1, seqAttrsTable, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                return;
+              }
             }
           }
         }
@@ -1239,18 +1258,26 @@ var TranscriptionModule = (function () {
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
-              $(textbox).val('');
+              var attrId=initialAttrIds[0];
+              var only=categorySeqHash[attrId]['only'];
+              var length=categorySeqHash[attrId]['max_len'];
+
+              var typedValue=cleanAttrValueRestrictAdvancedInitial($(textbox).val(),only,length,level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+              $(textbox).empty();
+              if (typedValue.length>0){
+                hidePopups();
+                userChosenAttributesAndValues.push([attrName,typedValue]);
+                $(textbox).val('');
               
-              if (num<(initialAttrIds.length-1)){
-                tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                return;
-              }else if (num==(initialAttrIds.length-1)){
-                //addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
-                return;
+                if (num<(initialAttrIds.length-1)){
+                  tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                  return;
+                }else if (num==(initialAttrIds.length-1)){
+                  //addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                  tagSeqsInitial(userChosenAttributesAndValues,varTag,num+1, initialAttrIds, categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                  return;
+                }
               }
-            
           }
       });
       
@@ -1337,7 +1364,12 @@ var TranscriptionModule = (function () {
         //If there are predefined values for this attribute
         if(categoryTypesTable.length>0){
           //Create the new dropdown menu for category types
-          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+          var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+          var option = document.createElement("option");
+          option.value="";
+          option.selected="checked";
+          option.innerHTML="";
+          newDropdown.append(option);
 
           for(i=0; i< categoryTypesTable.length; i++){
             //Add an option for the category types dropdown menu
@@ -1376,7 +1408,7 @@ var TranscriptionModule = (function () {
                     type='';
 
                     userChosenAttributesAndValues.push([attrName,newType]);
-                            
+                    hidePopups();    
                     $("#newDropdownDiv").hide();
                     $('#chosen-select-type').empty();
                     $('#chosen-select-type')[0].value="";
@@ -1417,7 +1449,7 @@ var TranscriptionModule = (function () {
         }else{ //If there are no predefined values for this attribute
           if(allow_user_input==1){ //If the user can enter a new value for this attribute
             //Create the new dropdown menu for category types
-            newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+            var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
             if(onButton){
               $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
             }else{
@@ -1501,7 +1533,12 @@ var TranscriptionModule = (function () {
         //If there are predefined values for this attribute
         if(categoryTypesTable.length>0){
           //Create the new dropdown menu for category types
-          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+          var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+          var option = document.createElement("option");
+          option.value="";
+          option.selected="checked";
+          option.innerHTML="";
+          newDropdown.append(option);
 
           for(i=0; i< categoryTypesTable.length; i++){
             //Add an option for the category types dropdown menu
@@ -1526,13 +1563,14 @@ var TranscriptionModule = (function () {
                 $('#user-type-input').value=defaultValue;        
                 $('#user-type-input').show();
                 setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+
                 userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+                
               }
 
               filterByTextAdvanced($('#chosen-select-type'),0,$('#select-type-input'), medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, attrHash,num,num,initialAttrIds,categorySeqHash,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
                      
-              $("#chosen-select-type").off().change(attrName,function(event3){   
-
+              $("#chosen-select-type").off().change(attrName,function(event3){
                 if(event3.target == this){
                   var type=$(this).val();
                   if(type!=null && type!=''){
@@ -1540,7 +1578,9 @@ var TranscriptionModule = (function () {
                     type='';
 
                     userChosenAttributesAndValues.push([attrName,newType]);
+                    hidePopups();
                     $("#newDropdownDiv").hide();
+                    $('#user-type-input').empty();
                     $('#chosen-select-type').empty();
                     $('#chosen-select-type')[0].value="";
                     document.getElementById('select_a_tag').innerHTML = "";
@@ -1576,7 +1616,7 @@ var TranscriptionModule = (function () {
         }else{ //If there are no predefined values for this attribute
           if(allow_user_input==1){ //If the user can enter a new value for this attribute
             //Create the new dropdown menu for category types
-            newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+            var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
             if(onButton){
               $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
             }else{
@@ -1609,9 +1649,9 @@ var TranscriptionModule = (function () {
       var attrName=categoryTable[num][0];
       var allow_user_input=categoryTable[num][1];
       var defaultValue=categoryTable[num][3];
-       
-      //If there is only one possible value for this attribute
-      if(categoryTypesTable.length==1){
+
+      //If there is only one possible value for this attribute and no user input is allowed
+      if(categoryTypesTable.length==1 && allow_user_input!=1){
         userChosenAttributesAndValues.push([attrName,categoryTypesTable[0]]);
 
         if (num<(categoryTable.length-1)){
@@ -1623,8 +1663,14 @@ var TranscriptionModule = (function () {
         }
 
       }else if(categoryTypesTable.length>0){ //If there are more than one predefined values for this attribute
+        
         //Create the new dropdown menu for category types
-        newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var option = document.createElement("option");
+        option.value="";
+        option.selected="checked";
+        option.innerHTML="";
+        newDropdown.append(option);
 
         for(i=0; i< categoryTypesTable.length; i++){
           //Add an option for the category types dropdown menu
@@ -1648,7 +1694,9 @@ var TranscriptionModule = (function () {
               $('#user-type-input').value=defaultValue;         
               $('#user-type-input').show();
               setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
-              userInputAttrValueCollapsed ($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              $('#user-type-input').off().on('change keyup', function(e) {
+                userInputAttrValueCollapsed($('#user-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              });
             }
 
             //$('#chosen-select-type').filterByTextCollapsed($('#select-type-input'), medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
@@ -1664,7 +1712,7 @@ var TranscriptionModule = (function () {
                   type='';
 
                   userChosenAttributesAndValues.push([attrName,newType]);
-                            
+                  hidePopups();         
                   $("#newDropdownDiv").hide();
                   $('#chosen-select-type').empty();
                   $('#chosen-select-type')[0].value="";
@@ -1686,7 +1734,7 @@ var TranscriptionModule = (function () {
       }else{ //If there are no predefined values for this attribute
         if(allow_user_input==1){ //If the user can enter a new value for this attribute
           //Create the new dropdown menu for category types
-          newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
+          var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Input");
           if(onButton){
             $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
           }else{
@@ -1711,6 +1759,310 @@ var TranscriptionModule = (function () {
       }
     }
 
+    function launchNewInput(textbox, medium, varTag, userInputAttrValueFunctionType, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+      var defaultValue=categoryTable[num][3];
+      var categoryTypesTable=categoryTable[num][2];
+      var i;
+
+      if(categoryTypesTable.length>0){  //If there are predefined values for this attribute
+        //Create the new dropdown menu for category types
+        var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var option = document.createElement("option");
+        option.value="";
+        option.selected="checked";
+        option.innerHTML="";
+        newDropdown.append(option);
+
+        for(i=0; i< categoryTypesTable.length; i++){
+          //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+            $("#newDropdownDiv").show();
+            $('#select-type-input').show();
+            $("#select-type-input")[0].value=defaultValue;
+            $('#select-type-input').focus();
+
+              $('#user-type-input').value=defaultValue;         
+              $('#user-type-input').show();
+              setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+              
+              if (userInputAttrValueFunctionType=="ss"){
+                userInputAttrValueSomethingSelected (textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }else if (userInputAttrValueFunctionType=="co"){
+                userInputAttrValueCollapsed (textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              }
+            }
+          }
+        }else{  //If there are no predefined values for this attribute
+          if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+          $("#newDropdownDiv").show();
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
+          $("#select-type-input").hide();
+          $("#chosen-select-type").hide();
+          $('#user-type-input').value=defaultValue;         
+          $('#user-type-input').show();
+          setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+          
+          if (userInputAttrValueFunctionType=="ss"){  
+            userInputAttrValueSomethingSelected (textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+          }else if (userInputAttrValueFunctionType=="co"){
+            userInputAttrValueCollapsed (textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+          }
+        }
+    }
+
+
+    function launchNewInputAdvanced(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected){
+      var attrId=seqAttrsTable[numSeqAttr][num];
+
+      var predefinedValues=categorySeqHash[attrId]['values'];
+      var defaultValue=categorySeqHash[attrId]['default'];
+      if(defaultValue==null){
+        defaultValue="";
+      }
+
+      var categoryTypesTable=Object.keys(predefinedValues);
+
+      if(categoryTypesTable.length>0){  //If there are predefined values for this attribute
+        //Create the new dropdown menu for category types
+        var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var option = document.createElement("option");
+        option.value="";
+        option.selected="checked";
+        option.innerHTML="";
+        newDropdown.append(option);
+        var i;
+        for(i=0; i< categoryTypesTable.length; i++){
+          //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+            $("#newDropdownDiv").show();
+            $('#select-type-input').show();
+            $("#select-type-input")[0].value=defaultValue;
+            $('#select-type-input').focus();
+
+              $('#user-type-input').value=defaultValue;         
+              $('#user-type-input').show();
+              setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+              userInputAttrValueAdvanced(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);  
+              
+            }
+          }
+        }else{  //If there are no predefined values for this attribute
+          if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+          $("#newDropdownDiv").show();
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
+          $("#select-type-input").hide();
+          $("#chosen-select-type").hide();
+          $('#user-type-input').value=defaultValue;         
+          $('#user-type-input').show();
+          setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+          userInputAttrValueAdvanced (level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);  
+          
+        }
+    }
+
+    function launchNewInputAdvancedInitial(level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected){
+      var attrId=initialAttrIds[num];
+      var attrName=categorySeqHash[attrId]['name'];
+      var predefinedValues=categorySeqHash[attrId]['values'];
+      var defaultValue=categorySeqHash[attrId]['default'];
+      if(defaultValue==null){
+        defaultValue="";
+      }
+
+      var categoryTypesTable=Object.keys(predefinedValues);
+
+      if(categoryTypesTable.length>0){  //If there are predefined values for this attribute
+        hidePopups();
+        //Create the new dropdown menu for category types
+        var newDropdown=addNewDropdown(categoryTypesTable.length,attrName, "Select");
+        var option = document.createElement("option");
+        option.value="";
+        option.selected="checked";
+        option.innerHTML="";
+        newDropdown.append(option);
+
+        var i;
+
+        for(i=0; i< categoryTypesTable.length; i++){
+          //Add an option for the category types dropdown menu
+            addAnOption(newDropdown,categoryTypesTable[i]);
+                    
+            if(i==(categoryTypesTable.length-1)){
+              if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+            $("#newDropdownDiv").show();
+            $('#select-type-input').show();
+            $("#select-type-input")[0].value=defaultValue;
+            $('#select-type-input').focus();
+
+              $('#user-type-input').value=defaultValue;         
+              $('#user-type-input').show();
+              setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+              userInputAttrValueAdvancedInitial(0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+            }
+          }
+        }else{  //If there are no predefined values for this attribute
+          if(onButton==true){
+              $("#newDropdownDiv").css({'top':coords.y,'left':'','right':'4vw', 'position':'absolute'});
+            }else{
+              $("#newDropdownDiv").css({'top':coords.y,'left':coords.x, 'right':'','position':'absolute'});
+            }
+            
+          $("#newDropdownDiv").show();
+          $('#chosen-select-type').empty();
+          $('#chosen-select-type')[0].value="";
+          $("#select-type-input").hide();
+          $("#chosen-select-type").hide();
+          $('#user-type-input').value=defaultValue;         
+          $('#user-type-input').show();
+          setTimeout(function(){$('#user-type-input').focus()}, 1); //A trick to make focus work (known bug in the internet dev community)
+          
+          userInputAttrValueAdvancedInitial (0,$('#user-type-input'), medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+        }
+    }
+
+    //Remove forbidden characters from an attribute's value
+    function cleanAttrValueRestrict(val, only, length, userInputAttrValueFunctionType, textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+      var defaultValue=categoryTable[num][3];
+      var categoryTypesTable=categoryTable[num][2];
+
+      val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
+      if(val==null || val==''){
+        alert("The attribute's value is empty.");
+        return "";
+      }else{
+        val=val.replace(/[<&"'>]+/g, "_");
+        if (length!=0 && val.length!=length){
+          var okOrNot=checkIfInputValueCorrespondsToRestrictionsLength(only.toString(), val, "the attribute", length);
+
+          launchNewInput(textbox, medium, varTag, userInputAttrValueFunctionType, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+          
+        }else{
+          var okOrNot=checkIfInputValueCorrespondsToRestrictions(only.toString(), val, "the attribute", length);
+          if(okOrNot==true){
+            return val;
+          }else{
+
+            launchNewInput(textbox, medium, varTag, userInputAttrValueFunctionType, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+
+            }
+        }
+      }     
+    }
+
+    function cleanAttrValueRestrictAdvancedInitial(val,only,length,level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected){
+      val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
+
+      if(val==null || val==''){
+        alert("The attribute's value is empty.");
+        return "";
+      }else{
+        val=val.replace(/[<&"'>]+/g, "_");
+        if (length!=0 && val.length!=length){
+          var okOrNot=checkIfInputValueCorrespondsToRestrictionsLength(only.toString(), val, "the attribute", length);
+
+          launchNewInputAdvancedInitial(level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+        }else{
+          var okOrNot=checkIfInputValueCorrespondsToRestrictions(only.toString(), val, "the attribute", length);
+          if(okOrNot==true){
+            hidePopups();
+            $(textbox).empty();
+            return val;
+          }else{
+
+            launchNewInputAdvancedInitial(level,textbox, medium, varTag,initialAttrIds,categorySeqHash, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+
+          }
+        }
+      }
+    }
+
+    function cleanAttrValueRestrictAdvanced(val,only,length,level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected){
+      val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
+
+      if(val==null || val==''){
+        alert("The attribute's value is empty.");
+        return "";
+      }else{
+        val=val.replace(/[<&"'>]+/g, "_");
+        if (length!=0 && val.length!=length){
+          var okOrNot=checkIfInputValueCorrespondsToRestrictionsLength(only.toString(), val, "the attribute", length);
+          launchNewInputAdvanced(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+          
+        }else{
+          var okOrNot=checkIfInputValueCorrespondsToRestrictions(only.toString(), val, "the attribute", length);
+          if(okOrNot==true){
+            hidePopups();
+            $(textbox).empty();
+            return val;
+          }else{
+
+            launchNewInputAdvanced(level,textbox, medium, varTag,initialAttrIds, userChosenAttributesAndValues, attrName, num,numSeqAttr, seqAttrsTable,categorySeqHash, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton,selected);
+
+          }
+        }
+      }
+    }
+            
+
+    function cleanAttrValueForChangeMenu(name, val, only, length){
+      val=$( $.parseHTML(val) ).text(); //Against malicious user input (a script in an input field)
+      if(val==null || val==''){
+        alert("The attribute's "+name+" value is empty.");
+        return "";
+      }else{
+        val=val.replace(/[<&"'>]+/g, "_");
+        if (length!=0 && val.length!=length){
+          var okOrNot=checkIfInputValueCorrespondsToRestrictionsLength(only.toString(), val, name, length);
+          return "";
+             
+        }else{
+          var okOrNot=checkIfInputValueCorrespondsToRestrictions(only.toString(), val, name, length);
+          if(okOrNot==true){
+            hidePopups();
+            $(textbox).empty();
+            return val;
+          }else{
+            return "";
+          }
+        }
+      }
+    }
 
     //Remove forbidden characters from an attribute's value
     function cleanAttrValue(val){
@@ -1742,16 +2094,21 @@ var TranscriptionModule = (function () {
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
+              var typedValue=cleanAttrValueRestrict($(textbox).val(),categoryTable[num][4],categoryTable[num][5],"ss",textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              //var typedValue=cleanAttrValue($(textbox).val());
+              if (typedValue.length>0){
+                userChosenAttributesAndValues.push([attrName,typedValue]);
+                $(textbox).val('');
+                if (num<(categoryTable.length-1)){
+                  getNextSomethingSelected(userChosenAttributesAndValues,varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+                }
 
-              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
-              $(textbox).val('');
-              if (num<(categoryTable.length-1)){
-                getNextSomethingSelected(userChosenAttributesAndValues,varTag, num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-              }
+                if (num==(categoryTable.length-1)){
+                  medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
 
-              if (num==(categoryTable.length-1)){
-                medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode, focusNode, anchorOffset, focusOffset);
-
+                }
+              }else{
+                alert("Please type a valid attribute value.");
               }
             
           }
@@ -1781,16 +2138,18 @@ var TranscriptionModule = (function () {
               $('#user-type-input').hide();
               document.getElementById('select_a_tag').innerHTML = "";
 
-              userChosenAttributesAndValues.push([attrName,cleanAttrValue($(textbox).val())]);
-              $(textbox).val('');
-              if (num<(categoryTable.length-1)){
+              var typedValue=cleanAttrValueRestrict($(textbox).val(),categoryTable[num][4],categoryTable[num][5],"co",textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+              if (typedValue.length>0){
+                userChosenAttributesAndValues.push([attrName,typedValue]);
+                $(textbox).val('');
+                if (num<(categoryTable.length-1)){
                   getNextCollapsed(userChosenAttributesAndValues, varTag,num+1, categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-              }
+                }
 
-              if (num==(categoryTable.length-1)){
-                addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-              }
-            
+                if (num==(categoryTable.length-1)){
+                  addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
+                }
+            }
           }
       });
       
@@ -1798,8 +2157,8 @@ var TranscriptionModule = (function () {
 
     //Create the new dropdown menu for category types
     function addNewDropdown (length, attr_name, selectOrType){
-      newDropdown=document.getElementById('chosen-select-type');
-      newDropdown.setAttribute("size", length);
+      var newDropdown=document.getElementById('chosen-select-type');
+      newDropdown.setAttribute("size", length+1);
       
       var title=document.getElementById('select_a_tag');
       var content = document.createTextNode(selectOrType+" "+attr_name);
@@ -1931,15 +2290,12 @@ var TranscriptionModule = (function () {
       focusNode=TempTa[1];
       anchorOffset=TempTa[2];
       anchorNode=TempTa[3];
-      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
 
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
 
       if(selection.isCollapsed){
         //If the category has types
         if(categoryid in categoryTypesHashAdv){
-          
-          //userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
           var thisCategoryInitialAttrIds=[];
@@ -1953,14 +2309,11 @@ var TranscriptionModule = (function () {
                 
         }else{ //If the category doesn't have types
           addCategoryWithTypeS (medium, categoryTag, userChosenAttributesAndValues, focusOffset,focusNode,true);
-          //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,categoryTag,focusOffset,focusNode);
 
         }
       }else{ //If the selection is not collapsed
         //If the category has types
         if(categoryid in categoryTypesHashAdv){
-
-          //userChosenAttributesAndValues=[];
 
           var categorySeqHash=categoryTypesHashAdv[categoryid];
           var thisCategoryInitialAttrIds=[];
@@ -1974,7 +2327,6 @@ var TranscriptionModule = (function () {
                   
         }else{ //If the category doesn't have types
           medium.tagSelection3(categoryTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
-          //medium.tagSelection3(categoryTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
 
           return false;
         }
@@ -1983,8 +2335,6 @@ var TranscriptionModule = (function () {
 
     function tagInAdvancedMode(){
       var userChosenAttributesAndValues=[['mode',1]];
-      //var coords = getSelectionCoords();
-      //var coords = getSelectionCoords();
       coords = getSelectionCoords();
 
       var TempTab=medium.returnOffset();
@@ -1993,7 +2343,6 @@ var TranscriptionModule = (function () {
       anchorOffset=TempTab[2];
       anchorNode=TempTab[3];
 
-      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
       var selection = window.getSelection();
 
@@ -2001,9 +2350,7 @@ var TranscriptionModule = (function () {
       if(selection.isCollapsed){
         $(".popupBodyAdv").css({'top':coords.y,'left':coords.x});
         $(".popupBodyAdv").show();
-        $(".chosen-adv").trigger('chosen:activate');
-        //$(".chosen-adv").show();
-        
+        $(".chosen-adv").trigger('chosen:activate');        
 
         $(".chosen-adv").chosen().change(function(event){
           if(event.target == this){
@@ -2014,15 +2361,13 @@ var TranscriptionModule = (function () {
               var options = $( ".chosen-adv option:selected" );
               var categoryid=options[0].attributes[1].value;
               chosenReset(".chosen-adv");
-              //$('.chosen-adv').chosen_reset(config);
+
               $(".popupBodyAdv").hide();
               $(".popupBodyAdv").css({'top':0,'left':0});
               document.getElementById('select_a_tag').innerHTML = "";
 
               //If the category has types
               if(categoryid in categoryTypesHashAdv){
-                
-                //userChosenAttributesAndValues=[];
 
                 var categorySeqHash=categoryTypesHashAdv[categoryid];
                 var thisCategoryInitialAttrIds=[];
@@ -2036,7 +2381,6 @@ var TranscriptionModule = (function () {
                 
               }else{ //If the category doesn't have types
                 addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
 
               }
             }
@@ -2106,8 +2450,6 @@ var TranscriptionModule = (function () {
         categoryid;
 
       var userChosenAttributesAndValues=[['mode',0]];
-      //var coords = getSelectionCoords();
-      //var coords = getSelectionCoords();
       coords = getSelectionCoords();
       
       var TempTabb=medium.returnOffset();
@@ -2116,7 +2458,6 @@ var TranscriptionModule = (function () {
       anchorOffset=TempTabb[2];
       anchorNode=TempTabb[3];
 
-      //[focusOffset,focusNode,anchorOffset,anchorNode]=medium.returnOffset();
       var notCollapsedArgsTable=[anchorNode,anchorOffset];
       var selection = window.getSelection();
 
@@ -2138,10 +2479,7 @@ var TranscriptionModule = (function () {
               var options = $( ".chosen-select-no-results option:selected" );
               var categoryid=options[0].attributes[1].value;
 
-              //$('.chosen-select-no-results').chosen_reset(config);
               chosenReset(".chosen-select-no-results");
-              //$('.chosen-select-no-results').chosen('destroy');
-              //$('.chosen-select-no-results').prop('selectedIndex', 0);
 
               $(".popupBody").hide();
               $(".popupBody").css({'top':0,'left':0});
@@ -2149,16 +2487,11 @@ var TranscriptionModule = (function () {
 
               //If the category has types
               if(categoryid in categoriesInfo){
-                
-                //userChosenAttributesAndValues=[];
-
                 var categoryTable=categoriesInfo[categoryid];                
                 getNextCollapsed(userChosenAttributesAndValues,varTag,0, categoryTable,focusOffset,focusNode, notCollapsedArgsTable,coords,false);
                 
               }else{ //If the category doesn't have types
                 addCategoryWithTypeS (medium, varTag, userChosenAttributesAndValues, focusOffset,focusNode);
-                //collapsedNoAttributesInsertTag(userChosenAttributesAndValues,varTag,focusOffset,focusNode);
-
               }
             }
             return false;
@@ -2192,8 +2525,6 @@ var TranscriptionModule = (function () {
                 tagSelectionWithType(userChosenAttributesAndValues,categoryid, categoriesInfo, medium, varTag, focusOffset,focusNode, notCollapsedArgsTable, coords, false);
                   
               }else{ //If the category doesn't have types
-                
-                //medium.tagSelection3(varTag, [], anchorNode,focusNode,anchorOffset, focusOffset);
                 medium.tagSelection3(varTag, userChosenAttributesAndValues, anchorNode,focusNode,anchorOffset, focusOffset);
                 return false;
               }
@@ -2325,12 +2656,10 @@ var TranscriptionModule = (function () {
 
     //Functions that calls medium.js in order to remove the tags chosen via the popup menu checkboxes
     function changeSelectedTag(coords,onButton){
-
       //Get the checked tagcode
       var tagCodeToChange = $("input[name=change_tag_radio]:checked").val();
 
-      //Delete the radios from the menu div
-      
+      //Delete the radios from the menu div      
       hideChangePopup();
 
       var attrs=getAttributes($("[tagcode="+tagCodeToChange+"]"));
@@ -2367,7 +2696,6 @@ var TranscriptionModule = (function () {
       titlediv.className="popup_title_div";
       div.appendChild(titlediv);
 
-      //var attrsHash=categoryTypesHash[parseInt(catId)];
       var attrsHashBefore={};
       var attrsHash={};
 
@@ -2401,6 +2729,10 @@ var TranscriptionModule = (function () {
               input.id = "value_"+attrName;
               input.value = attrs[attrName];
               input.name=tagCodeToChange;
+              input.setAttribute('data-only', attrsHash[attrName]['only']);
+              input.setAttribute('data-max_len', attrsHash[attrName]['max_len']);
+              //input.data-only=attrsHash[attrName]['only'];
+              //input.data-max_len=attrsHash[attrName]['max_len'];
               input.className="input_attribute_value_transcribe";
               div.appendChild(input);
             }
@@ -2416,6 +2748,11 @@ var TranscriptionModule = (function () {
                 updateCorrespondingInput(this.id,this.value);
               };
 
+              option = document.createElement("option");
+              option.value="";
+              option.selected="checked";
+              option.innerHTML="";
+              select.appendChild(option);
 
               for (i=0; i<attrsHash[attrName]['values'].length; i++){
                 option = document.createElement("option");
@@ -2461,6 +2798,13 @@ var TranscriptionModule = (function () {
             
     }
 
+    function removeOptions(selectbox){
+      var i;
+      for(i = selectbox.options.length - 1 ; i >= 0 ; i--){
+        selectbox.remove(i);
+      }
+    }
+
     //Save changes the user made in the values of attributes of the chosen tag
     function saveChangesInAttributeValues(tagCode){
       //Get new values
@@ -2473,11 +2817,14 @@ var TranscriptionModule = (function () {
       //Create a hash with attribute names and their new values
       //First put inside values from the drop down select
       if(nodeListSelect.length>0){
+
       for (el=0; el<nodeListSelect.length; el++){
         id=nodeListSelect[el].id.substring(6);
         newAttrsValuesTable[id]=nodeListSelect[el].value;
 
         if(el==(nodeListSelect.length-1)){
+          $('.select_'+tagCode).empty();
+
           if(nodeList.length>0){
           //Next put inside values from the input fields
           for (el=0; el<nodeList.length; el++){
@@ -2501,12 +2848,19 @@ var TranscriptionModule = (function () {
         //Next put inside values from the input fields
           for (el=0; el<nodeList.length; el++){
             id=nodeList[el].id.substring(6);
-            newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
 
-            if(el==(nodeList.length-1)){
-              hideChangeAttributesPopup();
-              medium.changeSelectedTag(tagCode,newAttrsValuesTable);
-              return false;
+            var cleanedValue=cleanAttrValueForChangeMenu(nodeList[el].id.substring(6,nodeList[el].id.length),nodeList[el].value,nodeList[el].getAttribute('data-only'),nodeList[el].getAttribute('data-max_len'));
+            if (cleanedValue.length>0){
+              //newAttrsValuesTable[id]=cleanAttrValue(nodeList[el].value);
+              newAttrsValuesTable[id]=cleanedValue;
+
+              if(el==(nodeList.length-1)){
+                hideChangeAttributesPopup();
+                medium.changeSelectedTag(tagCode,newAttrsValuesTable);
+                return false;
+            }
+          }else{
+            break;
           }
         }
       }
@@ -2625,12 +2979,172 @@ var TranscriptionModule = (function () {
     if (missedCategories.length>0){
       alert("You have to fill in all the header fields before submitting the transcription. You forgot "+missedCategories.slice(0, -2)+".");
     }else{
+      var ok=checkIfHeadCategoriesTextValuesCorrespondToFormat();
       //document.getElementsByName("page[header_text]")[0].value=header;
-      submitTranscription();
+      if (ok==true){
+        submitTranscription();
+      }
     }
     
    }
 
+
+   //Check if all the header categories values with free user input have values corresponding to restrictions. The function is called when the transcriber pushes the "Transcription finished" button.
+   function checkIfHeadCategoriesTextValuesCorrespondToFormat(){      
+      //We take the values from the user input fields of header categories
+      var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatInp");    
+      var hcIALength2=headerCatInputsArray2.length;
+      var trueOrFalseForAllHeaderCategoriesArray=[];
+
+      var i;
+      for (i=0; i<hcIALength2; i++) {
+        var value=headerCatInputsArray2[i].value;
+        
+        var only=headerCatInputsArray2[i].getAttribute("data-only");
+        var length=headerCatInputsArray2[i].getAttribute("data-length");
+        
+        if (length!=0 && value.length!=length){
+          var trueOrFalse=checkIfInputValueCorrespondsToRestrictionsLength(only,value, headerCatInputsArray2[i].name, length);
+          trueOrFalseForAllHeaderCategoriesArray.push(trueOrFalse);
+
+        }else if(only!=0){
+          var trueOrFalse=checkIfInputValueCorrespondsToRestrictions(only,value, headerCatInputsArray2[i].name, length);
+          trueOrFalseForAllHeaderCategoriesArray.push(trueOrFalse);
+
+        }else{
+            trueOrFalseForAllHeaderCategoriesArray.push(true);
+        }
+
+        if(i==(hcIALength2-1) && trueOrFalseForAllHeaderCategoriesArray.length==hcIALength2){
+          if(trueOrFalseForAllHeaderCategoriesArray.includes(false)){
+            return false;
+          }else{
+            return true;
+          }
+        }
+      }
+   }
+
+   /*
+   If the length of the headercategory value is certainly incorrect, it's useless to check the content. But we give a precise message for each case.
+   */
+   function checkIfInputValueCorrespondsToRestrictionsLength(only,value, name, length){
+    var returnValue;
+
+    switch(only) {
+      case "0":
+            return true;
+            break;
+      case "1":
+            alert("The value of "+name+" must contain "+length+" numbers.");
+            returnValue=false;
+            break;
+      case "2":
+          alert("The value of "+name+" must contain "+length+" letters.");
+          returnValue=false;
+          break;
+      case "3":
+            alert("The value of "+name+" must contain no numbers and be "+length+" characters long.");
+            returnValue=false;
+            break;
+      case "4":
+            alert("The value of "+name+" must contain no letters and be "+length+" characters long.");
+            returnValue=false;
+            break;
+    } 
+
+    if (returnValue!=null){
+      return returnValue;
+    }
+    
+   }
+
+   /*
+   If the length of the headercategory value is correct (or can be of any length), we need to check if the content corresponds to the restriction.
+   */
+   function checkIfInputValueCorrespondsToRestrictions(only,value, name, length){   
+
+    var returnValue;
+    var unicodeLetterRegex=/^[\u0041-\u005A\u0061-\u007A\u00C0-\u01BF\u01C4-\u02B8\u0373\u0376\u0377\u037F\u0386\u0388\u0389\u038A\u038C\u038E-\u03A1\u03A3-\u0481\u048A-\u052F\u0531-\u0556\u0561-\u0587\u05C6\u05D0-\u05EA\u05F0-\u05F2\u060E-\u060F\u0620-\u064A\066E\u066F\u0676-\u06D3\u06EE-\u06FF\u0710-\u072F\u074D-\u07B1]+$/u;
+    var unicodeLetterRegex2=/[\u0041-\u005A\u0061-\u007A\u00C0-\u01BF\u01C4-\u02B8\u0373\u0376\u0377\u037F\u0386\u0388\u0389\u038A\u038C\u038E-\u03A1\u03A3-\u0481\u048A-\u052F\u0531-\u0556\u0561-\u0587\u05C6\u05D0-\u05EA\u05F0-\u05F2\u060E-\u060F\u0620-\u064A\066E\u066F\u0676-\u06D3\u06EE-\u06FF\u0710-\u072F\u074D-\u07B1]/u;
+    var noUnicodeLetterRegex=/^[^\u0041-\u005A\u0061-\u007A\u00C0-\u01BF\u01C4-\u02B8\u0373\u0376\u0377\u037F\u0386\u0388\u0389\u038A\u038C\u038E-\u03A1\u03A3-\u0481\u048A-\u052F\u0531-\u0556\u0561-\u0587\u05C6\u05D0-\u05EA\u05F0-\u05F2\u060E-\u060F\u0620-\u064A\066E\u066F\u0676-\u06D3\u06EE-\u06FF\u0710-\u072F\u074D-\u07B1]+$/u;
+    var digitsRegex=/^\d+$/u;
+
+    /*
+    console.log("value.match(unicodeLetterRegex2):");
+    console.log(value.match(unicodeLetterRegex2));
+    console.log("unicodeLetterRegex2.test(value):");
+    console.log(unicodeLetterRegex2.test(value));
+    */
+
+    switch(only) {
+      case "0":
+        return true;
+        break;
+      case "1":
+        var regex=/^\d+$/u;
+        if (value.match(regex)==null){
+          if (length!=0){
+            alert("The value of "+name+" must contain "+length+" numbers.");
+            returnValue=false;
+          }
+          else{
+            alert("The value of "+name+" must contain only numbers.");
+            returnValue=false;
+          }
+        }else{
+          return true;
+        }
+        break;
+      case "2":
+        if (value.match(unicodeLetterRegex)==null){
+          if (length!=0){
+            alert("The value of "+name+" must contain "+length+" letters.");
+            returnValue=false;
+          }else{
+            alert("The value of "+name+" must contain only letters.");
+            returnValue=false;
+          }
+        }else{
+          return true;
+        }
+        break;
+      case "3":
+        var regex=/^\D+$/u;
+        if (value.match(regex)==null){
+          if (length!=0){
+            alert("The value of "+name+" must contain no numbers and be "+length+" characters long.");
+            returnValue=false;;
+          }else{
+            alert("The value of "+name+" must contain no numbers.");
+            returnValue=false;
+          }
+        }else{
+          return true;
+        }
+        break;
+      case "4":
+        //if (value.match(unicodeLetterRegex2).length!=null && value.match(unicodeLetterRegex2).length!=0 && value.match(unicodeLetterRegex2)[0].length!=0){
+        if (unicodeLetterRegex2.test(value)==true && value.match(digitsRegex)==null){
+        //if (value.match(noUnicodeLetterRegex)==null){
+          if (length!=0){
+            alert("The value of "+name+" must contain no letters and be "+length+" characters long.");
+            returnValue=false;
+          }else{
+            alert("The value of "+name+" must contain no letters.");
+            returnValue=false;
+          }
+        }else{
+          return true;
+        }
+        break;
+    }
+
+    if (returnValue!=null){
+      return returnValue;
+    }
+    
+   }
 
     //Check if the transcriber has filled all the header categories values. The function is called when the transcriber pushes the "Transcription finished" button.
    function checkIfAllHeadersAreFilled(){

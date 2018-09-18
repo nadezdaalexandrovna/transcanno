@@ -54,9 +54,10 @@
           =link_to({ :action => 'add_work_to_collection', :work_id => work.id, :collection_id => @collection.id }, class: 'action')
             =svg_symbol '#icon-plus-sign', class: 'icon'
             small Include
-    h5 Add a new work
-    -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }
-    p.nodata_text You can add another work under #{start_project}  
+    -if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
+      h5 Add a new work
+      -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }
+      p.nodata_text You can add another work under #{start_project}  
 
   aside.sidecol
     h3 Collection Image

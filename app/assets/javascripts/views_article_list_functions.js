@@ -11,12 +11,9 @@
 
 
   function addToDefaultValues(attr_id,value_id){
-    console.log("in addToDefaultValues");
 
     var html = "<input type='hidden' name='default_attr_vals["+attr_id+"][]' id='default_"+attr_id+"_"+value_id+"' value='"+value_id+"'>";
     $('#default_attribute_values').append(html);
-
-    //attributeValuesHash[attr_id]=value_id;
   }
 
  
@@ -157,7 +154,47 @@
       return false;
     }
 
+    //For is_header_category.html.slim
+    function showRadioButtons(cb){
+      
+      if(cb.checked){
+        $("#only_radio_buttons").show();
+        $("#only_radio_buttons").setAttribute("style","");
+      }else{
+        $("#only_radio_buttons").hide();
+        $("#only_radio_buttons").setAttribute("style","display:none;");
+      }
+      
+    }
 
+    function showRadioButtonsAttributeValues(cb, attr_id){
+      
+      if(cb.checked){
+        
+        $("#only_radio_buttons_attr_values_"+attr_id).show();
+        $("#only_radio_buttons_attr_values_"+attr_id).setAttribute("style","");
+
+        $("#only_"+attr_id+"_0").setAttribute("checked",true);
+        $("#only_"+attr_id+"_1").setAttribute("checked",false);
+        $("#only_"+attr_id+"_2").setAttribute("checked",false);
+        $("#only_"+attr_id+"_3").setAttribute("checked",false);
+        $("#only_"+attr_id+"_4").setAttribute("checked",false);
+        $("#max_len["+attr_id+"]").setAttribute("value","");
+        
+      }else{
+
+        $("#only_radio_buttons_attr_values_"+attr_id).hide();
+        $("#only_radio_buttons_attr_values_"+attr_id).setAttribute("style","display:none;");
+        
+        $("#only_"+attr_id+"_0").setAttribute("checked",true);
+        $("#only_"+attr_id+"_1").setAttribute("checked",false);
+        $("#only_"+attr_id+"_2").setAttribute("checked",false);
+        $("#only_"+attr_id+"_3").setAttribute("checked",false);
+        $("#only_"+attr_id+"_4").setAttribute("checked",false);
+        $("#max_len["+attr_id+"]").setAttribute("value","");
+      }
+      
+    }
 
     //Show possible values of the chosen attribute in the sequences menu
     function showSeqAttrValues(attributeId){

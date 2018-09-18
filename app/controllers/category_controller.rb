@@ -224,12 +224,24 @@ class CategoryController < ApplicationController
     #Checking for sql injection: the category_id and the collection_id should only contain numbers
     if params[:category_id].scan(/\D/).empty?
       header=Headercategory.where(category_id: params[:category_id]).first
+      @display=""
       if header==nil
         @isheader=false
         @allow_user_input=false
+        @only=0
+        @max_len=""
       else
         @isheader=header.is_header_category
         @allow_user_input=header.allow_user_input
+        @only=header.only
+        @max_len=header.max_len
+
+        if @max_len==0
+          @max_len=""
+        end
+        if @allow_user_input==false
+          @display="display:none;"
+        end
       end
     end
   end
@@ -244,24 +256,48 @@ class CategoryController < ApplicationController
         newHeader=params[:is_header_category].to_i
       end
 
+
       allow_user_input=0
       if params[:allow_user_input]!=nil
         allow_user_input=params[:allow_user_input].to_i
       end
 
+      only=0
+      if params[:only]!=nil
+        only=params[:only].to_i        
+      end
+
+      max_len=0
+      if params[:max_len]!=nil
+        max_len=params[:max_len].to_i
+      end
+
+      if allow_user_input==0
+        only=0
+        max_len=0
+      end
+
+      connection = ActiveRecord::Base.connection
+
       if newHeader==0
         if header!=nil
           header.is_header_category=0
           header.allow_user_input=allow_user_input
+          header.only=only
+          header.max_len=max_len
           header.save
+          header.update_attribute(:max_len, max_len)
         end
       elsif newHeader==1
         if header!=nil
           header.is_header_category=newHeader
           header.allow_user_input=allow_user_input
+          header.only=only
+          header.max_len=max_len
           header.save
+          header.update_attribute(:max_len, max_len)
         else
-          Headercategory.create(category_id: params[:category_id], is_header_category: is_header_category, allow_user_input: allow_user_input)
+          Headercategory.create(category_id: params[:category_id], is_header_category: is_header_category, allow_user_input: allow_user_input, only: only, max_len: max_len)
         end
       end
 
@@ -282,15 +318,6 @@ class CategoryController < ApplicationController
       #Select all predefined values of this header category
       sql="SELECT DISTINCT headervalues.id, headervalues.value, headervalues.is_default from headervalues WHERE category_id="+params[:category_id]
       @headerValues=connection.execute(sql)
-
-      print "\n@headerValues:\n"
-      print @headerValues.inspect
-      @headerValues.each do |r|
-        print "\n"
-        print r[0]
-        print "\n"
-        print r[2]
-      end
 
     end
   end
@@ -464,10 +491,17 @@ class CategoryController < ApplicationController
 
       #All the existing values of the attributes of this category
       @categoryattributes=[]
-      sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
+      sqlAt="SELECT DISTINCT categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.initial, categoryattributes.only, categoryattributes.max_len FROM categoryattributes INNER JOIN attributecats ON attributecats.id=categoryattributes.attributecat_id where `categoryattributes`.`category_id`="+params[:category_id]
       resAt=connection.execute(sqlAt)
+      @display={}
       resAt.each do |r|
-        @categoryattributes.push([r[0],r[1],r[2],r[3]])
+        @categoryattributes.push([r[0],r[1],r[2],r[3],r[4],r[5]])
+
+        if r[2]==0
+          @display[r[0]]="display:none;"
+        else
+          @display[r[0]]=""
+        end
       end
 
       #Values of each attribute of this category
@@ -537,7 +571,7 @@ class CategoryController < ApplicationController
         connection.execute(sql2)
       end
 
-      sql="update categoryattributes set allow_user_input=false where category_id="+params[:category_id]+";"
+      sql="update categoryattributes set allow_user_input=false, max_len=0, only=0 where category_id="+params[:category_id]+";"
       connection.execute(sql)
 
       if params[:allow_user_input]!=nil
@@ -551,6 +585,32 @@ class CategoryController < ApplicationController
         if forSql!=""
           sql="update categoryattributes set allow_user_input=true where id in ("+forSql[0..-3]+");"
           connection.execute(sql)
+        end
+      end
+
+      if params[:max_len]!=nil
+        forSql=""
+        params[:max_len].each do |attrid, attrLength|
+          if attrid.scan(/\D/).empty? and attrLength.scan(/\D/).empty?
+            if  ((params.include? "allow_user_input") && !(params[:allow_user_input].include? attrid)) or !(params.include? "allow_user_input")
+              attrLength="0"
+            end
+              sql="update categoryattributes set max_len="+attrLength+" where id="+attrid+";"
+              connection.execute(sql)
+          end
+        end
+      end
+
+      if params[:only]!=nil
+        forSql=""
+        params[:only].each do |attrid, only|
+          if attrid.scan(/\D/).empty? and only.scan(/\D/).empty?
+            if ((params.include? "allow_user_input") && !(params[:allow_user_input].include? attrid)) or !(params.include? "allow_user_input")
+              only="0"
+            end
+              sql="update categoryattributes set only="+only+" where id="+attrid+";"
+              connection.execute(sql)
+          end
         end
       end
 

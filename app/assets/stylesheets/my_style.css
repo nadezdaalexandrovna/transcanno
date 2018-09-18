@@ -577,3 +577,7 @@ input.unchangeableInput{
   margin-left: 1%;
   margin-right: 3%;
 }
+
+#max_len_textfield{
+  width: 5%;
+}

@@ -16,7 +16,33 @@
       -@categoryattributes.each do |r|
         <div  id="allow_input_div_#{r[0]}" style="display: none;">
           h5 Allow user input for the attribute <span class="attribute_name_span">#{r[1]}</span>
-          =check_box_tag 'allow_user_input[]', r[0].to_s, (r[2]==1 ? 'checked' : nil)
+          =check_box_tag 'allow_user_input[]', r[0].to_s, (r[2]==1 ? 'checked' : nil), 'onclick': "showRadioButtonsAttributeValues(this,#{r[0]})"
+          <div id="only_radio_buttons_attr_values_#{r[0]}" style="#{@display[r[0]]}">
+            |  
+            =label_tag(:max_len, "Length")
+            |  
+            =text_field_tag("max_len[#{r[0]}]", r[5], id:"max_len_textfield", maxlength:'2', placeholder:"#{r[4]}")
+
+            </br>Allowed content:
+            </br>any  
+            =radio_button_tag "only[#{r[0]}]",'0', (r[4]==0 ? 'checked' : nil)
+
+            table [ class="allowed_content" ]
+              tr
+                td         
+                  =label_tag(:only, "only numbers") 
+                  =radio_button_tag "only[#{r[0]}]",'1', (r[4]==1 ? 'checked' : nil)
+                td
+                  =label_tag(:only, "only letters")
+                  =radio_button_tag "only[#{r[0]}]",'2', (r[4]==2 ? 'checked' : nil)
+              tr
+                td
+                  =label_tag(:only, "no numbers")
+                  =radio_button_tag "only[#{r[0]}]",'3', (r[4]==3 ? 'checked' : nil)
+                td
+                  =label_tag(:only, "no letters")
+                  =radio_button_tag "only[#{r[0]}]",'4', (r[4]==4 ? 'checked' : nil)
+            </div>
         </div>
         -if @attributeValuesHash.has_key?("#{r[0]}")
           <div id="one_attribute_div_#{r[0]}" class="one_attribute_div" style="display: none;">

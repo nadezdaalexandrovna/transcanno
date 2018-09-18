@@ -1,6 +1,6 @@
 class CreateCategorystyles < ActiveRecord::Migration
-  def self.up
-    execute "create table categorystyles(
+def self.up
+  	execute "create table categorystyles(
 			id int not null AUTO_INCREMENT,
     		colour varchar (255),
     		textdecoration varchar (255),
@@ -31,7 +31,9 @@ class CreateCategorystyles < ActiveRecord::Migration
 			foreign key(attributecat_id) references attributecats(id),
 			allow_user_input boolean,
 			mode tinyint not null default 2,
-			initial BOOLEAN NOT NULL default false
+			initial BOOLEAN NOT NULL default false,
+			only int not null default 0,
+			max_len int not null default 0 
 		);"
 	execute "ALTER TABLE categoryattributes ADD CONSTRAINT UniqueAttrPercategory UNIQUE (category_id,attributecat_id);"
 
@@ -72,7 +74,9 @@ class CreateCategorystyles < ActiveRecord::Migration
 			category_id int not null unique,
     		foreign key (category_id) references categories (id),
 			is_header_category tinyint(1) not null default 0,
-			allow_user_input tinyint(1) not null default 0
+			allow_user_input tinyint(1) not null default 0,
+			only int not null default 0,
+			max_len int not null default 0
 		);"
 
 	execute	"create table headervalues(
@@ -86,11 +90,11 @@ class CreateCategorystyles < ActiveRecord::Migration
 
 	execute "ALTER TABLE headervalues ADD CONSTRAINT UniqueValuePercategory UNIQUE (category_id,value);"
 
-	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1);"
+	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner, created_at) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1, '2017-12-13 07:16:35');"
 	execute "INSERT INTO collections (id, title, owner_user_id) values (1, 'Example collection',2);"
 	execute "INSERT INTO categories (id, title, collection_id) values (1, 'infinitive', 1),(2, 'adv2', 1);"
 	execute "INSERT INTO attributecats (id, name) values (1, 'a1'),(2,'a2');"
-	execute "INSERT INTO categoryattributes (id, category_id, attributecat_id, allow_user_input, mode,initial) values (1,2,1,0,2,1),(2,2,2,1,2,1);"
+	execute "INSERT INTO categoryattributes (id, category_id, attributecat_id, allow_user_input, mode,initial, only, max_len) values (1,2,1,0,2,1,0,0),(2,2,2,1,2,1,0,0);"
 	execute "INSERT INTO attributevalues (id, value) values (1,'v1'), (2, 'v2');"
 	execute "INSERT INTO attributes_to_values (id, categoryattribute_id, attributevalue_id) values (1,1,1), (2, 1, 2);"
 
@@ -101,10 +105,10 @@ class CreateCategorystyles < ActiveRecord::Migration
 	execute "INSERT INTO document_uploads (id, user_id, collection_id,file,status) values (1, 2, 1,'MS_844.ZIP','finished');"
 	execute "INSERT INTO categorystyles (colour, category_id) values ('#0901F3',1), ('#FF0000',2);"
 	execute "INSERT INTO categoryscopes (id, category_id, mode) values (1,1,2);"
+end
 
-  end
+def self.down
+    execute "DROP TABLE IF EXISTS attributes_to_values, valuestoattributesrelations, categoryscopes, attributevalues, categoryattributes, attributecats, categorystyles, headercategories, headervalues;"
+end
 
-  def self.down
-    execute "DROP TABLE IF EXISTS attributes_to_values, valuestoattributesrelations, categoryscopes, attributevalues, categoryattributes, attributecats, categorystyles;"
-  end
 end

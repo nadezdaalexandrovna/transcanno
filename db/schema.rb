@@ -60,9 +60,10 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   add_index "attributecats", ["name"], name: "name", unique: true, using: :btree
 
   create_table "attributes_to_values", force: true do |t|
-    t.integer "categoryattribute_id",          null: false
-    t.integer "attributevalue_id",             null: false
+    t.integer "categoryattribute_id",                          null: false
+    t.integer "attributevalue_id",                             null: false
     t.integer "valuestoattributesrelation_id"
+    t.boolean "is_default",                    default: false
   end
 
   add_index "attributes_to_values", ["attributevalue_id"], name: "attributevalue_id", using: :btree
@@ -91,6 +92,8 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.boolean "allow_user_input"
     t.integer "mode",             limit: 1, default: 2,     null: false
     t.boolean "initial",                    default: false, null: false
+    t.integer "only",                       default: 0,     null: false
+    t.integer "max_len",                    default: 0,     null: false
   end
 
   add_index "categoryattributes", ["attributecat_id"], name: "attributecat_id", using: :btree
@@ -210,6 +213,24 @@ ActiveRecord::Schema.define(version: 20170711090000) do
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
   add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
+
+  create_table "headercategories", force: true do |t|
+    t.integer "category_id",                        null: false
+    t.boolean "is_header_category", default: false, null: false
+    t.boolean "allow_user_input",   default: false, null: false
+    t.integer "only",               default: 0,     null: false
+    t.integer "max_len",            default: 0,     null: false
+  end
+
+  add_index "headercategories", ["category_id"], name: "category_id", unique: true, using: :btree
+
+  create_table "headervalues", force: true do |t|
+    t.integer "category_id",                 null: false
+    t.string  "value",                       null: false
+    t.boolean "is_default",  default: false, null: false
+  end
+
+  add_index "headervalues", ["category_id", "value"], name: "UniqueValuePercategory", unique: true, using: :btree
 
   create_table "ia_leaves", force: true do |t|
     t.integer  "ia_work_id"

@@ -27,16 +27,16 @@ class TranscribeController  < ApplicationController
     @categories = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=1 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
 
     #Then we select categories' attributes
-    sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
+    sqlS="SELECT categoryattributes.category_id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.only, categoryattributes.max_len FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=1 and pages.id="+params[:page_id];
     
     categorytypes=connection.execute(sqlS)
 
     @categoryTypesHash=Hash.new()
     categorytypes.each do |row|
       if @categoryTypesHash.key?(row[0]) #If this category is already in the hash
-          @categoryTypesHash[row[0]][row[1]]={'allow_user_input'=>row[2],'values'=>[], 'default'=>''}
+          @categoryTypesHash[row[0]][row[1]]={'allow_user_input'=>row[2],'values'=>[], 'default'=>'', 'only'=>row[3], 'max_len'=>row[4]}
       else #If this category is not yet in the hash
-        @categoryTypesHash[row[0]]={row[1]=>{'allow_user_input'=>row[2], 'values'=>[], 'default'=>''}}
+        @categoryTypesHash[row[0]]={row[1]=>{'allow_user_input'=>row[2], 'values'=>[], 'default'=>'', 'only'=>row[3], 'max_len'=>row[4]}}
       end
     end
 
@@ -60,15 +60,15 @@ class TranscribeController  < ApplicationController
     @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
 
     #Then we select categories' attributes
-    sqlAdv="SELECT categoryattributes.category_id,  categoryattributes.id, attributecats.name, categoryattributes.allow_user_input FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
+    sqlAdv="SELECT categoryattributes.category_id,  categoryattributes.id, attributecats.name, categoryattributes.allow_user_input, categoryattributes.only, categoryattributes.max_len FROM attributecats INNER JOIN `categoryattributes` ON attributecats.id=categoryattributes.attributecat_id INNER JOIN categories on categories.id=categoryattributes.category_id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where categoryattributes.mode!=0 and pages.id="+params[:page_id];
     categorytypesAdv=connection.execute(sqlAdv)
 
     @categoryTypesHashAdv=Hash.new()
     categorytypesAdv.each do |row|
       if @categoryTypesHashAdv.key?(row[0]) #If this category is already in the hash
-          @categoryTypesHashAdv[row[0]][row[1]]={'allow_user_input'=>row[3],'name'=>row[2],'values'=>{}, 'default'=>''}
+          @categoryTypesHashAdv[row[0]][row[1]]={'allow_user_input'=>row[3],'name'=>row[2],'values'=>{}, 'default'=>'', 'only'=>row[4], 'max_len'=>row[5]}
       else #If this category is not yet in the hash
-        @categoryTypesHashAdv[row[0]]={row[1]=>{'allow_user_input'=>row[3], 'name'=>row[2], 'values'=>{}, 'default'=>''}}
+        @categoryTypesHashAdv[row[0]]={row[1]=>{'allow_user_input'=>row[3], 'name'=>row[2], 'values'=>{}, 'default'=>'', 'only'=>row[4], 'max_len'=>row[5]}}
       end
     end
 
@@ -150,11 +150,11 @@ class TranscribeController  < ApplicationController
   #Get the header categories
   #headerCategories = Category.select(:id, :title, :allow_user_input).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=1')
 
-  sqlHC="select categories.id, categories.title, headercategories.allow_user_input from categories inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
+  sqlHC="select categories.id, categories.title, headercategories.allow_user_input, headercategories.only, headercategories.max_len from categories inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
   headerCategories=connection.execute(sqlHC)
 
   #Get the header categories values
-  sqlH="select categories.id, categories.title, headercategories.allow_user_input, headervalues.id, headervalues.value, headervalues.is_default from headervalues inner join categories on headervalues.category_id=categories.id inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
+  sqlH="select categories.id, categories.title, headercategories.allow_user_input, headervalues.id, headervalues.value, headervalues.is_default, headercategories.only, headercategories.max_len from headervalues inner join categories on headervalues.category_id=categories.id inner join headercategories on headercategories.category_id=categories.id inner join works on categories.collection_id=works.collection_id inner join pages on pages.work_id=works.id where headercategories.is_header_category=1 and pages.id="+params[:page_id];
   headerCategoriesValues=connection.execute(sqlH)
 
   @headerCatsHash={}
@@ -168,14 +168,14 @@ class TranscribeController  < ApplicationController
     if @headerCatsHash.key?(row[0])
       @headerCatsHash[row[0]][3][row[3]]=[row[4],row[5]]
     else
-      @headerCatsHash[row[0]]=[row[1], row[2], 0, {row[3]=>[row[4],row[5]]}]
+      @headerCatsHash[row[0]]=[row[1], row[2], 0, row[6], row[7], {row[3]=>[row[4],row[5]]}]
     end
   end
 
   #Add categories that don't have predefined values
   headerCategories.each do |row|
     if !@headerCatsHash.key?(row[0])
-      @headerCatsHash[row[0]]=[row[1], row[2],0]
+      @headerCatsHash[row[0]]=[row[1], row[2], 0, row[3], row[4]]
     end
   end
 
