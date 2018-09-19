@@ -51,7 +51,6 @@ var TranscriptionModule = (function () {
 
       //Parse the transcription text to transform it into XML
       var l=document.getElementById("page_source_text");
-      //var xml=l.textContent;
 
       //Take out the header
       var str = l.textContent.match("<textinfoheader>(.*?)</textinfoheader>");
@@ -60,6 +59,8 @@ var TranscriptionModule = (function () {
         fillHeaderCategoriesValues(str[1]);
       }
       var xml=l.textContent.replace(/\<textinfoheader>.*?\<\/textinfoheader\>/, '');
+
+      xml=xml.replace(/^\<div id=\"bigDiv\"\>(.*)\<\/div\>$/, "$1");
 
       xml = "<div id=\"bigDiv\">"+xml+"</div>";
       xml = xml.replace(/<\/br>/g, "");
@@ -79,8 +80,7 @@ var TranscriptionModule = (function () {
 
       var container = article.parentNode;
 
-      
-      
+        
       medium = new ExtendedMedium({
         element: article,
         activeElement: article,
@@ -3276,7 +3276,7 @@ var TranscriptionModule = (function () {
     //Add the transcription text to the form before sending it to the server
     function AddMediumValue(callback) {
       var mediumValue = medium.value();
-      
+
       mediumValue = mediumValue.replace(/<br>/g, "<br></br>");
 
       mediumValue = mediumValue.replace(/\u200B/g, ""); //Delete invisible caracters inserted for +h and +c actions, because otherwise didn't work in webkit (chrome, safari)
