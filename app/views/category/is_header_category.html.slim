@@ -7,10 +7,13 @@
       is a header category
 
     </br>is a header category  
-    =check_box_tag 'is_header_category','1', (@isheader==true ? 'checked' : nil)
+    =check_box_tag 'is_header_category','1', (@isheader==true ? 'checked' : nil), 'onclick': "showAllowUserInputRadio(this)"
 
-    </br></br>allow user input  
-    =check_box_tag 'allow_user_input','1', (@allow_user_input==true ? 'checked' : nil), 'onclick': 'showRadioButtons(this)'
+    </br>
+    <div id="only_user_input" style="#{@display}">
+      </br>allow user input  
+      =check_box_tag 'allow_user_input','1', (@allow_user_input==true ? 'checked' : nil), 'onclick': "showRadioButtons(this)"
+    </div>
 
     </br></br>
     <div id="only_radio_buttons" style="#{@display}">

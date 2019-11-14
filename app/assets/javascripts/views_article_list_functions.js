@@ -155,8 +155,19 @@
     }
 
     //For is_header_category.html.slim
-    function showRadioButtons(cb){
+    function showAllowUserInputRadio(hc){
+      if(hc.checked){
+        $("#only_user_input").show();
+        $("#only_user_input").setAttribute("style","");
+      }else{
+        $("#only_user_input").hide();
+        $("#only_user_input").setAttribute("style","display:none;");
+      }
       
+    }
+
+    //For is_header_category.html.slim
+    function showRadioButtons(cb){
       if(cb.checked){
         $("#only_radio_buttons").show();
         $("#only_radio_buttons").setAttribute("style","");
