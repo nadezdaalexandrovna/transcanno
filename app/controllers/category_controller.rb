@@ -239,6 +239,9 @@ class CategoryController < ApplicationController
         if @max_len==0
           @max_len=""
         end
+        if @isheader==false
+          @display="display:none;"
+        end
         if @allow_user_input==false
           @display="display:none;"
         end
