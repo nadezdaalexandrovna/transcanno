@@ -88,10 +88,11 @@ end
       @search_string = params[:search_string]
       # convert 'natural' search strings unless they're precise
       unless @search_string.match(/["+-]/)
-        @search_string.gsub!(/(\S+)/, '+\1*')
+        @search_string.gsub!(/(\S+)/, '%\1%')
       end
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
+      #@pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND search_text LIKE ?", @collection.id, @search_string]).paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end
