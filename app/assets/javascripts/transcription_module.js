@@ -2980,7 +2980,6 @@ var TranscriptionModule = (function () {
       alert("You have to fill in all the header fields before submitting the transcription. You forgot "+missedCategories.slice(0, -2)+".");
     }else{
       var ok=checkIfHeadCategoriesTextValuesCorrespondToFormat();
-      //document.getElementsByName("page[header_text]")[0].value=header;
       if (ok==true){
         submitTranscription();
       }
@@ -2995,6 +2994,10 @@ var TranscriptionModule = (function () {
       var headerCatInputsArray2=document.getElementsByClassName("inputHeaderCatInp");    
       var hcIALength2=headerCatInputsArray2.length;
       var trueOrFalseForAllHeaderCategoriesArray=[];
+
+      if(hcIALength2 == 0){
+        return true;
+      }
 
       var i;
       for (i=0; i<hcIALength2; i++) {
