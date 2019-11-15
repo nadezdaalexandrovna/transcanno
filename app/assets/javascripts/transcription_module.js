@@ -3220,7 +3220,7 @@ var TranscriptionModule = (function () {
 
     var text="";
     Object.keys(headerHash).forEach(function (catName) {
-      text+="<"+catName+">"+headerHash[catName]+"</"+catName+">";
+      text+="<"+catName+">"+headerHash[catName]+"</"+catName+"> ";
     })
 
     if (text.length<1){
