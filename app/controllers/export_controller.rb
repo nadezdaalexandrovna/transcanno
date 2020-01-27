@@ -82,6 +82,67 @@ class ExportController < ApplicationController
   def export_all_works
     cookies['download_finished'] = 'true'
     @collection = Collection.find_by(id: params[:collection_id])
+    @context = ExportContext.new
+    @works = Work.where(collection_id: @collection.id)
+
+#create a zip file which is automatically downloaded to the user's machine
+    respond_to do |format|
+      format.html
+      format.zip do
+      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+        @works.each do |work|
+          @work = work
+          @user_contributions = User.find_by_sql("SELECT  user_id user_id,
+                                users.print_name print_name,
+                                count(*) edit_count,
+                                min(page_versions.created_on) first_edit,
+                                max(page_versions.created_on) last_edit
+                        FROM    page_versions
+                        INNER JOIN pages
+                            ON page_versions.page_id = pages.id
+                        INNER JOIN users
+                            ON page_versions.user_id = users.id
+                        WHERE pages.work_id = #{@work.id}
+                          AND page_versions.transcription IS NOT NULL
+                        GROUP BY user_id
+                        ORDER BY count(*) DESC")
+
+          @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").all
+          @all_articles = @work.articles
+          @other_articles = []
+          @person_articles = []
+          @place_articles = []
+
+          @all_articles.each do |article|
+            other = true
+            if article.categories.where(:title => 'Places').count > 0
+              @place_articles << article
+              other = false
+            end
+            if article.categories.where(:title => 'People').count > 0
+              @person_articles << article
+              other = false
+            end
+            @other_articles << article if other
+          end
+          #render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
+          #export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
+          export_view = render_to_string(:layout => false, :content_type => "application/xml", :template => "export/tei.html.erb")
+          zos.put_next_entry "#{work.title}.xml"
+          zos.print export_view
+        end
+      end
+      #render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
+      compressed_filestream.rewind
+      send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
+      end
+    end
+
+  end
+
+  def export_all_works_old
+    cookies['download_finished'] = 'true'
+    @collection = Collection.find_by(id: params[:collection_id])
     @works = Work.where(collection_id: @collection.id)
 
 #create a zip file which is automatically downloaded to the user's machine
