@@ -7,7 +7,7 @@
       =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
         =svg_symbol '#icon-export', class: 'icon'
         span Export Subjects as CSV
-    span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+    span Click the button to export subjects with their descriptions and attributes.
 
 h2 Export All Works
 p.big 
@@ -17,7 +17,7 @@ p.big
       =svg_symbol '#icon-export', class: 'icon'
       span Export All Works
   
-  span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
+  span Click the button to export all works from the collection into a zip file containing each work as a TEI-XML file.
 
 
 h2 Export Individual Works
@@ -68,10 +68,6 @@ table.datagrid
         =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
-      td.nowrap
-        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'button', id: 'btnCsvTblExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span Table CSV
 
 =render({ :partial => '/shared/collection_footer' })
 

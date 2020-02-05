@@ -28,6 +28,39 @@ class Collection < ActiveRecord::Base
 
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|
+      csv << %w{ Category IsHeaderCat Description Attributes }
+      
+      self.categories.each do |category|
+        category_array = []
+        title = category.title
+        description = "no description"
+        is_header_category = "false"
+        if category.headercategory
+          is_header_category = category.headercategory.is_header_category
+        end
+
+        if category.categorydescription
+          description = category.categorydescription.description
+        end
+        category_attributes = []
+        category.categoryattributes.each do |attribute|
+          category_attributes << attribute.attributecat.name
+        end
+        category_attributes_string = "no attributes"
+        if category_attributes.length() > 0
+          category_attributes_string = category_attributes.join(";")
+        end
+        category_array = [title, is_header_category, description, category_attributes_string]
+        csv << category_array
+        #csv << [category_array.sort].flatten
+      end
+      #csv << [category_array.sort].flatten
+    end
+    csv_string
+  end
+
+  def export_subjects_as_csv_old
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << %w{ Work_Title Page_Title Page_Position Page_URL Subject Text Category Category Category }
       self.works.each do |work|
         work.pages.each do |page|
