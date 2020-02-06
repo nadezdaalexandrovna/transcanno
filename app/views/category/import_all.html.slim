@@ -1,0 +1,16 @@
+.litebox-embed(style="width:450px")
+  h1 Import All the Categories of Another Collection
+
+  =form_for(@new_collection, :url => { :action => 'import2' }, :html => { :onsubmit=>'return verifyValue()' }) do |f|
+    =hidden_field_tag(:new_collection_id, @new_collection.id)
+    =validation_summary @new_collection.errors
+
+    h5 What collection do you want to import categories from?
+
+    <div id="fields">
+      -@possibleColls.each do |pColl|
+        <input id="category_new_attr_scope_0" name="import_from_coll_id" value="#{pColl[1]}" type="radio">#{pColl[0]}<br>
+    </div>
+
+    .toolbar
+      .toolbar_group.aright =f.button 'Import Categories'

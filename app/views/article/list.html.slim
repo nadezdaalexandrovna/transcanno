@@ -77,11 +77,15 @@
               =link_to article.title, { :action => 'show', :article_id => article.id }
 -else
   -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox' => ''
+  =="<br>"
+  -import_other_coll_cats = link_to 'Import all categories from another collection', { :controller => 'category', :action => 'import_all', :collection_id => @collection.id }, 'data-litebox' => ''
+
   .nodata
     h4.nodata_title No Categories
     p.nodata_text
       =="There are no subject categories in the collection.<br>"
-      =="#{add_category} you'll use to group subjects." if user_signed_in? && current_user.like_owner?(@collection)
+      =="#{add_category}<br>" if user_signed_in? && current_user.like_owner?(@collection)     
+      =="#{import_other_coll_cats}" if user_signed_in? && current_user.like_owner?(@collection)
 
 =render({ :partial => '/shared/collection_footer' })
 

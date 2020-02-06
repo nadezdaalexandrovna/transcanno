@@ -19,7 +19,7 @@ def self.up
 		);"
 	execute "create table attributecats(
 			id int not null AUTO_INCREMENT,
-			name varchar(255) unique not null,
+			name varchar(255) not null,
 			primary key (id)
 		);"
 	execute "create table categoryattributes (
@@ -39,7 +39,7 @@ def self.up
 
 	execute "create table attributevalues (
 			id int not null AUTO_INCREMENT,
-			value varchar(255) unique not null,
+			value varchar(255) not null,
 			primary key (id)		
 		);"
 	execute	"create table categoryscopes(

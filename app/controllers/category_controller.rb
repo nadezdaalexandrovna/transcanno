@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
   protect_from_forgery
   
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories, :is_header_category, :define_header_values]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :import_all, :update, :create, :define_style, :define_description, :define_attributes, :define_attribute_values, :assign_category_scope, :define_attribute_sequences, :delete_all_categories, :is_header_category, :define_header_values]
 
   def edit
   end
@@ -22,6 +22,79 @@ class CategoryController < ApplicationController
     @new_category.parent = @category if @category.present?
     #By default the created category is not a header category
     @isheader=false
+  end
+
+  def import_all
+    @new_collection = Collection.find_by_id(@collection.id)
+    @new_collection_id = @collection.id
+    
+    connection = ActiveRecord::Base.connection
+    sqlA="SELECT DISTINCT collections.title, collections.id from collections where collections.id !=" + @new_collection_id.to_s
+    @possibleColls=connection.execute(sqlA)
+  end
+
+
+  def import2
+    @new_collection_id = params[:new_collection_id]
+    import_from_coll_id = params[:import_from_coll_id]
+
+    connection = ActiveRecord::Base.connection
+
+    categories_to_import = Category.where(collection_id:import_from_coll_id)
+    categories_to_import.each do |cat|
+      new_cat = Category.create(:title => cat.title, :collection_id => @new_collection_id)
+
+      if cat.categoryattributes
+        cat.categoryattributes.each do |catattr|
+          new_attributecat = Attributecat.create(:name => catattr.attributecat.name)
+          new_catattr = Categoryattribute.create(:category_id => new_cat.id, :attributecat_id => new_attributecat.id, :allow_user_input => catattr.allow_user_input, :mode => catattr.mode, :initial => catattr.initial, :only => catattr.only, :max_len => catattr.max_len)
+          
+          if catattr.attributes_to_values
+            catattr.attributes_to_values.each do |attr_to_val|
+              
+              sqlA="SELECT attributevalues.value from attributevalues where attributevalues.id =" + attr_to_val.attributevalue_id.to_s
+              @attrvalValues=connection.execute(sqlA)
+              @attrvalValues.each do |attrvalVal|
+                new_attribute_value = Attributevalue.create(:value => attrvalVal[0])
+                #I am NOT copying valuestoattributesrelations, because consequent attributes may not have been created yet
+                sqlB="INSERT into attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id, is_default) VALUES (" + new_attributecat.id.to_s + "," + new_attribute_value.id.to_s + ", NULL, " + attr_to_val.is_default.to_s + ")"
+                new_attr_to_val=connection.execute(sqlB)
+             
+              end
+            end
+          end
+        end
+      end
+
+      if cat.headercategory
+        Headercategory.create(:category_id => new_cat.id, :is_header_category => cat.headercategory.is_header_category, :allow_user_input => cat.headercategory.allow_user_input, :only => cat.headercategory.only, :max_len => cat.headercategory.max_len)
+      else
+        Headercategory.create(:category_id => new_cat.id, :is_header_category => 0, :allow_user_input => 0, :only => 0, :max_len => 0)
+      end
+
+      if cat.headervalues
+        cat.headervalues.each do |headervalue|
+          Headervalue.create(:category_id => new_cat.id, :value => headervalue.value, :is_default => headervalue.is_default)
+        end
+      end
+
+      if cat.categorydescription
+        Categorydescription.create(:category_id => new_cat.id, :description => cat.categorydescription.description)
+      end
+
+      if cat.categoryscope
+        Categoryscope.create(:category_id => new_cat.id, :mode => cat.categoryscope.mode)
+      end
+
+      if cat.categorystyle
+        Categorystyle.create(:category_id => new_cat.id, :textdecoration => cat.categorystyle.textdecoration, :fontstyle => cat.categorystyle.fontstyle, :colour => cat.categorystyle.colour)
+      end
+
+    end
+
+
+    @collection = Collection.find_by_id(@new_collection_id)
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#collection-#{@collection.id}"
   end
 
   def create
