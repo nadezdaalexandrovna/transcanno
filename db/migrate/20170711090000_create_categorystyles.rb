@@ -53,10 +53,14 @@ def self.up
 			id int not null AUTO_INCREMENT,
 			primary key (id),
 			attributevalue_id int not null,
-			consequent_attr_name varchar(255) not null,
+			consequent_attr_id int not null,
 			collection_id int not null,
-			foreign key (collection_id) references collections (id)
+			foreign key (collection_id) references collections (id),
+			foreign key (consequent_attr_id) references attributecats (id)
 		);"
+
+	execute "ALTER TABLE valuestoattributesrelations ADD CONSTRAINT UniqueValToAttrRel UNIQUE (attributevalue_id,consequent_attr_id);"
+
 	execute "create table attributes_to_values(
 			id int not null AUTO_INCREMENT,
 			primary key (id),
@@ -68,6 +72,9 @@ def self.up
 			is_default tinyint(1) default 0,
 			foreign key(valuestoattributesrelation_id ) references valuestoattributesrelations(id)
 		);"
+
+	execute "ALTER TABLE attributes_to_values ADD CONSTRAINT UniqueAttrToValRel UNIQUE (categoryattribute_id, attributevalue_id);"
+
 	execute	"create table headercategories(
 			id int not null AUTO_INCREMENT,
 			primary key (id),

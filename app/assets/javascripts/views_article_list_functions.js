@@ -156,18 +156,25 @@
 
     //For is_header_category.html.slim
     function showAllowUserInputRadio(hc){
+      console.log("showAllowUserInputRadio(hc)");
       if(hc.checked){
         $("#only_user_input").show();
         $("#only_user_input").setAttribute("style","");
       }else{
+        $("#allow_user_input").checked = false;
         $("#only_user_input").hide();
         $("#only_user_input").setAttribute("style","display:none;");
+        $("#only_radio_buttons").hide();
+        $("#only_radio_buttons").setAttribute("style","display:none;");
+        console.log("$(#allow_user_input).checked");
+        console.log($("#allow_user_input").checked);
       }
       
     }
 
     //For is_header_category.html.slim
     function showRadioButtons(cb){
+      console.log("showRadioButtons(hc)");
       if(cb.checked){
         $("#only_radio_buttons").show();
         $("#only_radio_buttons").setAttribute("style","");
@@ -347,7 +354,7 @@
     }
 
 
-    function addToValueSequences(comsequentAttributeName){
+    function addToValueSequences(comsequentAttributeId, comsequentAttributeName){
 
       //Disable the button that has just been pushed
       if(document.getElementById("button_possible_"+comsequentAttributeName)!=null){
@@ -367,7 +374,7 @@
       };
 
       //Add the values to a hidden input form field
-      var newInput='<input type="hidden" id="seq_'+activeAttributeId+'_'+activeValueId+'_'+comsequentAttributeName+'" name="seq['+activeAttributeId+'*#*'+activeValueId+'*#*'+activeValuename+'][]" value="'+comsequentAttributeName+'"/>';
+      var newInput='<input type="hidden" id="seq_'+activeAttributeId+'_'+activeValueId+'_'+comsequentAttributeName+'" name="seq['+activeAttributeId+'*#*'+activeValueId+'*#*'+activeValuename+'][]" value="'+comsequentAttributeId+'"/>';
       $("#sequences").append(newInput);
 
       $("#sequences_of_value_"+activeAttributeId+'_'+activeValueId).append(sequenceButton);

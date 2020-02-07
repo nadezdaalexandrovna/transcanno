@@ -57,8 +57,6 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.string "name", null: false
   end
 
-  add_index "attributecats", ["name"], name: "name", unique: true, using: :btree
-
   create_table "attributes_to_values", force: true do |t|
     t.integer "categoryattribute_id",                          null: false
     t.integer "attributevalue_id",                             null: false
@@ -67,14 +65,12 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   end
 
   add_index "attributes_to_values", ["attributevalue_id"], name: "attributevalue_id", using: :btree
-  add_index "attributes_to_values", ["categoryattribute_id"], name: "categoryattribute_id", using: :btree
+  add_index "attributes_to_values", ["categoryattribute_id", "attributevalue_id"], name: "UniqueAttrToValRel", unique: true, using: :btree
   add_index "attributes_to_values", ["valuestoattributesrelation_id"], name: "valuestoattributesrelation_id", using: :btree
 
   create_table "attributevalues", force: true do |t|
     t.string "value", null: false
   end
-
-  add_index "attributevalues", ["value"], name: "value", unique: true, using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "title"
@@ -605,12 +601,14 @@ ActiveRecord::Schema.define(version: 20170711090000) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "valuestoattributesrelations", force: true do |t|
-    t.integer "attributevalue_id",    null: false
-    t.string  "consequent_attr_name", null: false
-    t.integer "collection_id",        null: false
+    t.integer "attributevalue_id",  null: false
+    t.integer "consequent_attr_id", null: false
+    t.integer "collection_id",      null: false
   end
 
+  add_index "valuestoattributesrelations", ["attributevalue_id", "consequent_attr_id"], name: "UniqueValToAttrRel", unique: true, using: :btree
   add_index "valuestoattributesrelations", ["collection_id"], name: "collection_id", using: :btree
+  add_index "valuestoattributesrelations", ["consequent_attr_id"], name: "consequent_attr_id", using: :btree
 
   create_table "work_statistics", force: true do |t|
     t.integer  "work_id"

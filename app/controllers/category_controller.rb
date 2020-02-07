@@ -33,7 +33,7 @@ class CategoryController < ApplicationController
     @possibleColls=connection.execute(sqlA)
   end
 
-
+  #Imports all categories and their attributes and values from another collection
   def import2
     @new_collection_id = params[:new_collection_id]
     import_from_coll_id = params[:import_from_coll_id]
@@ -41,25 +41,55 @@ class CategoryController < ApplicationController
     connection = ActiveRecord::Base.connection
 
     categories_to_import = Category.where(collection_id:import_from_coll_id)
+
     categories_to_import.each do |cat|
       new_cat = Category.create(:title => cat.title, :collection_id => @new_collection_id)
+
+      hashCorrespOldNewAttributecatIds = Hash.new # old_attr_id => new_attr_id
+      hashCorrespOldNewAttributeValueIds = Hash.new # old_value_id => new_value_id
 
       if cat.categoryattributes
         cat.categoryattributes.each do |catattr|
           new_attributecat = Attributecat.create(:name => catattr.attributecat.name)
+          hashCorrespOldNewAttributecatIds[catattr.attributecat.id] = new_attributecat.id
+
           new_catattr = Categoryattribute.create(:category_id => new_cat.id, :attributecat_id => new_attributecat.id, :allow_user_input => catattr.allow_user_input, :mode => catattr.mode, :initial => catattr.initial, :only => catattr.only, :max_len => catattr.max_len)
           
           if catattr.attributes_to_values
             catattr.attributes_to_values.each do |attr_to_val|
               
               sqlA="SELECT attributevalues.value from attributevalues where attributevalues.id =" + attr_to_val.attributevalue_id.to_s
-              @attrvalValues=connection.execute(sqlA)
-              @attrvalValues.each do |attrvalVal|
+              attrvalValues=connection.execute(sqlA)
+              attrvalValues.each do |attrvalVal|
                 new_attribute_value = Attributevalue.create(:value => attrvalVal[0])
+
+                hashCorrespOldNewAttributeValueIds[attr_to_val.attributevalue_id] = new_attribute_value.id
                 #I am NOT copying valuestoattributesrelations, because consequent attributes may not have been created yet
                 sqlB="INSERT into attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id, is_default) VALUES (" + new_attributecat.id.to_s + "," + new_attribute_value.id.to_s + ", NULL, " + attr_to_val.is_default.to_s + ")"
                 new_attr_to_val=connection.execute(sqlB)
              
+              end
+            end
+          end
+        end
+      end
+
+      #Now that all the attributes of this category have been created, as well as their values, we can add valuestoattributesrelations
+      if cat.categoryattributes
+        cat.categoryattributes.each do |catattr|
+          if catattr.attributes_to_values
+            catattr.attributes_to_values.each do |attr_to_val|
+              
+              sqlC="SELECT attributevalues.id from attributevalues where attributevalues.id =" + attr_to_val.attributevalue_id.to_s
+              attrvalValues=connection.execute(sqlC)
+              attrvalValues.each do |attrvalId|
+                sqlD="SELECT valuestoattributesrelations.consequent_attr_id FROM valuestoattributesrelations where valuestoattributesrelations.attributevalue_id="+attrvalId[0].to_s
+                consequentAttrIds=connection.execute(sqlD)
+
+                consequentAttrIds.each do |cai|                  
+                  sqlE="INSERT IGNORE INTO valuestoattributesrelations (attributevalue_id, consequent_attr_id, collection_id) VALUES (" + hashCorrespOldNewAttributeValueIds[attrvalId[0]].to_s + "," + hashCorrespOldNewAttributecatIds[cai[0]].to_s + "," + @new_collection_id.to_s + ")"
+                  consequentAttrIds=connection.execute(sqlE)
+                end
               end
             end
           end
@@ -149,7 +179,11 @@ class CategoryController < ApplicationController
       end
 
       #Select sequences for the values of each attribute of this category
-      sql="SELECT DISTINCT attributevalues.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name, valuestoattributesrelations.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
+      #sql="SELECT DISTINCT attributevalues.id, attributevalues.value, attributecats.name, valuestoattributesrelations.id, attributecats.id FROM attributevalues INNER JOIN valuestoattributesrelations on attributevalues.id=valuestoattributesrelations.attributevalue_id INNER JOIN attributecats ON attributecats.id=valuestoattributesrelations.consequent_attr_id INNER JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id INNER JOIN categoryattributes ON categoryattributes.id = attributes_to_values.categoryattribute_id where categoryattributes.mode!=0 and categoryattributes.category_id="+params[:category_id]
+      
+      sql="SELECT valuestoattributesrelations.attributevalue_id, attributevalues.value, attributecats.name, valuestoattributesrelations.id, valuestoattributesrelations.consequent_attr_id, attributecats_initial.name, attributecats_initial.id FROM valuestoattributesrelations INNER JOIN attributevalues ON attributevalues.id = valuestoattributesrelations.attributevalue_id INNER JOIN attributecats ON attributecats.id=valuestoattributesrelations.consequent_attr_id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON attributes_to_values.categoryattribute_id=categoryattributes.id INNER JOIN attributecats attributecats_initial ON attributecats_initial.id=categoryattributes.attributecat_id WHERE categoryattributes.category_id="+params[:category_id]
+
+
       connection = ActiveRecord::Base.connection
       already_relations=connection.execute(sql)
 
@@ -159,16 +193,17 @@ class CategoryController < ApplicationController
       @alreadyRelsHash={}
       already_relations.each do |already_rel|
         if @alreadyRelsHash.key?(already_rel[0])
-          @alreadyRelsHash[already_rel[0]].push([already_rel[2],already_rel[3]])
+          puts [already_rel[2],already_rel[3],already_rel[4]]
+          @alreadyRelsHash[already_rel[0]].push([already_rel[2],already_rel[3],already_rel[4]]) # value id => [name of the consequent attribute, relation id, id of the consequent attribute
           excludeFromPossibleRelationsIds[already_rel[3]]=0
         else
-          @alreadyRelsHash[already_rel[0]]=[[already_rel[2],already_rel[3]]]
+          @alreadyRelsHash[already_rel[0]]=[[already_rel[2],already_rel[3],already_rel[4]]]
           excludeFromPossibleRelationsIds[already_rel[3]]=0
         end
       end
 
       #All the possible consequent attributes of each value, if these attributes can belong to this category
-      sqlS="SELECT DISTINCT valuestoattributesrelations.id, attributevalues.value, valuestoattributesrelations.consequent_attr_name FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE valuestoattributesrelations.collection_id="+params[:collection_id]+" AND categoryattributes.category_id="+params[:category_id]
+      sqlS="SELECT DISTINCT valuestoattributesrelations.id, attributevalues.value, attributecats.name, attributecats.id FROM valuestoattributesrelations INNER JOIN attributevalues ON valuestoattributesrelations.attributevalue_id=attributevalues.id INNER JOIN attributes_to_values ON attributes_to_values.attributevalue_id=attributevalues.id INNER JOIN attributecats ON attributecats.id=valuestoattributesrelations.consequent_attr_id INNER JOIN categoryattributes ON categoryattributes.id=attributes_to_values.categoryattribute_id WHERE valuestoattributesrelations.collection_id="+params[:collection_id]+" AND categoryattributes.category_id="+params[:category_id]
       possible_relations=connection.execute(sqlS)
 
       #All the possible consequent attributes of each value. Key: attribute_value, value: array of consequent attributes
@@ -176,9 +211,9 @@ class CategoryController < ApplicationController
       possible_relations.each do |pr|
         unless excludeFromPossibleRelationsIds.key?(pr[0])
           if @possibleRelationsHash.key?(pr[1])
-            @possibleRelationsHash[pr[1]].push(pr[2])
+            @possibleRelationsHash[pr[1]].push([pr[2],pr[3]])
           else
-            @possibleRelationsHash[pr[1]]=[pr[2]]
+            @possibleRelationsHash[pr[1]]=[[pr[2],pr[3]]]
           end
         end
       end
@@ -225,9 +260,9 @@ class CategoryController < ApplicationController
           valueId=arrayIdName[1]
           valueName=arrayIdName[2]
           attrsArray.each do |attr|
-            rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_name: attr, collection_id: category.collection_id)
-            sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
-            connection.execute(sqlCreate)
+            rel = Valuestoattributesrelation.find_or_create_by(attributevalue_id: valueId, consequent_attr_id: attr, collection_id: category.collection_id)
+            #sqlCreate="INSERT INTO attributes_to_values (categoryattribute_id, attributevalue_id, valuestoattributesrelation_id) values ("+activeAttrId.to_s+", "+valueId.to_s+", "+rel.id.to_s+")"
+            #connection.execute(sqlCreate)
           end
         end
       end

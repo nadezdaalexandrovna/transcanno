@@ -32,7 +32,7 @@
                   <div id="sequences_of_value_#{r[0]}_#{v.fetch(:valueid)}" class="sequences_of_value" style="display:none;">
                     -if @alreadyRelsHash.has_key?("#{v.fetch(:valueid)}".to_i)
                       -@alreadyRelsHash.fetch("#{v.fetch(:valueid)}".to_i).each do |consName|
-                        <button type="button" id="button_#{v.fetch(:valueid)}_#{consName[0]}" onclick="deleteSequenceFromAttrValue(#{r[0]},#{v.fetch(:valueid)},'#{consName[0]}',#{consName[1]})">#{consName[0]}</button>     
+                        <button type="button" id="button_#{v.fetch(:valueid)}_#{consName[0]}" onclick="deleteSequenceFromAttrValue(#{r[0]},#{v.fetch(:valueid)},'#{consName[0]}',#{consName[2]})">#{consName[0]}</button>     
                   </div>
                   <div id="title_of_possible_seqs_#{v.fetch(:valueid)}" class="title_of_poss_seq" style="display:none;">
                   h5 Suggestions for consequent attributes of the value <span class="attribute_name_span">#{v.fetch(:value)}</span>:
@@ -40,14 +40,14 @@
                   <div id="possible_sequences_of_value_#{v.fetch(:valueid)}" class="possible_sequences_of_value" style="display:none;">
                     -if @possibleRelationsHash.has_key?("#{v.fetch(:value)}")
                       -@possibleRelationsHash.fetch("#{v.fetch(:value)}").each do |consName|
-                        <button type="button" class="button_possible" id="button_possible_#{consName}" onclick="addToValueSequences('#{consName}')">#{consName}</button>     
+                        <button type="button" class="button_possible" id="button_possible_#{consName}" onclick="addToValueSequences('#{consName[1]}', '#{consName[0]}')">#{consName[0]}</button>     
                   </div>
         </div>
     <div id="possible_consequent_attrs_div" class="possible_consequent_attrs_div" style="display:none;">
       h5 Possible consequent attributes:
       <div class="already_type">
         -@categoryattributes.each do |ca|
-          <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[1]}" onclick="addToValueSequences('#{ca[1]}')">#{ca[1]}</button>
+          <button type="button" class="seq_attr_name_button" id="seq_attr_name_button#{ca[1]}" onclick="addToValueSequences('#{ca[0]}','#{ca[1]}')">#{ca[1]}</button>
       </div>
     </div>
     
