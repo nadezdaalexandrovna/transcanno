@@ -30,6 +30,16 @@ module ExportHelper
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
+  def xml_to_export_tei_no_anno(xml_text, page_id = "")
+
+    return "" if xml_text.blank?
+#    xml_text.gsub!(/\n/, "")
+    xml_text.gsub!('ISO-8859-15', 'UTF-8')
+    #transform_links(xml_text)
+
+    return xml_text.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+  end
+
   # def titles_to_divs(xml_text, context)
     # logger.debug("FOO #{context.div_stack.count}\n")
     # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
