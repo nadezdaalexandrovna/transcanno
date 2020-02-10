@@ -333,6 +333,7 @@ class CategoryController < ApplicationController
     if params[:category_id].scan(/\D/).empty?
       header=Headercategory.where(category_id: params[:category_id]).first
       @display=""
+      @display2=""
       if header==nil
         @isheader=false
         @allow_user_input=false
@@ -349,6 +350,7 @@ class CategoryController < ApplicationController
         end
         if @isheader==false
           @display="display:none;"
+          @display2="display:none;"
         end
         if @allow_user_input==false
           @display="display:none;"
