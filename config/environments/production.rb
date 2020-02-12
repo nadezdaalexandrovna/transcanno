@@ -3,8 +3,8 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = '127.0.0.1'
 
-  config.relative_url_root = "/transcanno"
-  #config.relative_url_root = "/"
+  #config.relative_url_root = "/transcanno"
+  config.relative_url_root = "/"
 
   #config.root = '/transcanno' #My invention, didn't read it anywhere
   #config.action_controller.asset_host = '/transcanno'

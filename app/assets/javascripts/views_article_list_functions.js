@@ -156,7 +156,6 @@
 
     //For is_header_category.html.slim
     function showAllowUserInputRadio(hc){
-      console.log("showAllowUserInputRadio(hc)");
       if(hc.checked){
         $("#only_user_input").show();
         $("#only_user_input").setAttribute("style","");
@@ -166,15 +165,12 @@
         $("#only_user_input").setAttribute("style","display:none;");
         $("#only_radio_buttons").hide();
         $("#only_radio_buttons").setAttribute("style","display:none;");
-        console.log("$(#allow_user_input).checked");
-        console.log($("#allow_user_input").checked);
       }
       
     }
 
     //For is_header_category.html.slim
     function showRadioButtons(cb){
-      console.log("showRadioButtons(hc)");
       if(cb.checked){
         $("#only_radio_buttons").show();
         $("#only_radio_buttons").setAttribute("style","");
@@ -183,6 +179,23 @@
         $("#only_radio_buttons").setAttribute("style","display:none;");
       }
       
+    }
+
+    //For the search function: in transcription with tags, in transcription without tags, in the header categories
+    function uncheckIncompatible(cb){
+      if(cb.checked){
+        if (cb.id=="header_cat_"){
+          $("#in_transc").prop("checked",false);
+        }else if(cb.id=="in_transc"){
+          $('input[type=checkbox][name="header_cat[]"').each(function(){
+            this.checked = false;
+          });
+
+          $("#in_text").prop("checked",false);
+        }else if(cb.id=="in_text"){
+          $("#in_transc").prop("checked",false);
+        }
+      }
     }
 
     function showRadioButtonsAttributeValues(cb, attr_id){

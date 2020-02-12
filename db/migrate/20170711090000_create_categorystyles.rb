@@ -95,6 +95,10 @@ def self.up
     		is_default tinyint(1) not null default 0
 		);"
 
+
+	execute	"ALTER TABLE pages ADD COLUMN original_text text;"
+		
+
 	execute "ALTER TABLE headervalues ADD CONSTRAINT UniqueValuePercategory UNIQUE (category_id,value);"
 
 	execute "INSERT INTO users (id, login, display_name, encrypted_password, password_salt, owner, created_at) values (2,'collection_owner','collection_owner', '8d68c043d13ad3c5f6cc386ac66143e1b7525c2e','pH5DjMrJB_F7frxyWKM-', 1, '2017-12-13 07:16:35');"

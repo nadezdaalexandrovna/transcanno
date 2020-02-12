@@ -45,6 +45,17 @@ class CollectionController < ApplicationController
     @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
     @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
     @top_ten_indexers     = build_user_array(Deed::PAGE_INDEXED)
+
+    connection = ActiveRecord::Base.connection
+    sql = "SELECT categories.id, categories.title FROM categories INNER JOIN `headercategories` ON categories.id=headercategories.category_id WHERE headercategories.is_header_category=1 AND categories.collection_id=" + @collection.id.to_s;
+    headercats = connection.execute(sql)
+    @headercategories = []
+    headercats.each do |hc|
+      @headercategories << [hc[0], hc[1], 0]
+    end
+
+    @in_transc = "0"
+    @in_text = "1"
   end
 
   def owners
@@ -104,6 +115,9 @@ class CollectionController < ApplicationController
     sqlDs="DELETE categories FROM categories WHERE categories.collection_id="+@collection.id.to_s
     connection.execute(sqlDs)
 
+    sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
+    connection.execute(sql2)
+
     #Delete attributecats that no longer have categories associated to them
     sqlD="DELETE attributecats FROM attributecats LEFT JOIN categoryattributes ON attributecats.id=categoryattributes.attributecat_id WHERE categoryattributes.attributecat_id IS NULL"
     connection.execute(sqlD)
@@ -112,9 +126,6 @@ class CollectionController < ApplicationController
     sql="DELETE attributevalues FROM attributevalues LEFT JOIN attributes_to_values ON attributevalues.id=attributes_to_values.attributevalue_id WHERE attributes_to_values.attributevalue_id IS NULL"
     connection.execute(sql)
 
-    sql2="DELETE valuestoattributesrelations FROM valuestoattributesrelations LEFT JOIN attributes_to_values ON valuestoattributesrelations.id=attributes_to_values.valuestoattributesrelation_id WHERE attributes_to_values.valuestoattributesrelation_id IS NULL"
-    connection.execute(sql2)
-    
     @collection.destroy
     redirect_to dashboard_owner_path
   end

@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
 
   before_update :process_source
   before_update :populate_search
+  before_update :populate_original
   validate :validate_source, :validate_source_translation
 
   belongs_to :work
@@ -36,6 +37,7 @@ class Page < ActiveRecord::Base
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+  attr_accessible :original_text
   
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -222,6 +224,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
+  end
+
+  def populate_original
+    self.original_text = SearchTranslator.original_text_from_xml(self.xml_text)
   end
 
 

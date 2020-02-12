@@ -442,6 +442,7 @@ ActiveRecord::Schema.define(version: 20170711090000) do
     t.text     "xml_translation"
     t.text     "search_text"
     t.string   "translation_status"
+    t.text     "original_text"
   end
 
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext

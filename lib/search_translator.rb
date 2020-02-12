@@ -8,6 +8,13 @@ module SearchTranslator
     search_translation_from_xml(xml_translation)    
   end
 
+  def self.original_text_from_xml(xml_transcript)
+    original_text = xml_transcript.clone
+    original_text.gsub!(/<textinfoheader>.*?<\/textinfoheader>/, '') 
+    re = /<("[^"]*"|'[^']*'|[^'">])*>/
+    original_text.gsub!(re, '')
+  end
+
   def self.search_verbatim_from_xml(xml_transcript)
     strip_markup(xml_transcript)
    end
