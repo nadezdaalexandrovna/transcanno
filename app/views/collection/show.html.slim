@@ -35,22 +35,22 @@
 
           -if @collection.subjects_disabled
             -unless progress_review == 0
-              -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
+              -wording = "#{progress_completed} #{completed}, #{progress_review} needs review"
             -else
-              -wording = "#{progress_completed}% #{completed}"
+              -wording = "#{progress_completed} #{completed}"
           -elsif progress_review == 0
-            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}"
+            -wording = "#{progress_annotated} indexed, #{progress_completed} #{completed}"
           -else
-            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}, #{progress_review}% needs review"
+            -wording = "#{progress_annotated} indexed, #{progress_completed} #{completed}, #{progress_review} needs review"
 
           span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{wording}"
           span
             span.progress
               -unless @collection.subjects_disabled
-                span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_completed - progress_annotated}%")
+                span(style="width:#{progress_annotated}")
+              span(style="width:#{progress_completed - progress_annotated}")
               -unless progress_review == 0
-                span(style="width:#{progress_review}%")
+                span(style="width:#{progress_review}")
 
     -if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }

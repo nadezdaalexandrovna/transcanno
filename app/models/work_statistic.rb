@@ -2,55 +2,64 @@ class WorkStatistic < ActiveRecord::Base
   belongs_to :work
 
   def pct_transcribed
-      raw = self[:transcribed_pages].to_f / self[:total_pages] * 100
+      #raw = self[:transcribed_pages].to_f / self[:total_pages] * 100
+      raw = self[:transcribed_pages].to_f
       raw = 0 if raw.nan?
       [[0, raw].max, 100].min
   end
 
   def pct_corrected
-    raw = self[:corrected_pages].to_f / self[:total_pages] * 100
+    #raw = self[:corrected_pages].to_f / self[:total_pages] * 100
+    raw = self[:corrected_pages].to_f
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_translated
-      raw = self[:translated_pages].to_f / self[:total_pages] * 100
+      #raw = self[:translated_pages].to_f / self[:total_pages] * 100
+      raw = self[:translated_pages].to_f
       raw = 0 if raw.nan?
       [[0, raw].max, 100].min
   end
 
   def pct_annotated
-    raw = (self[:annotated_pages].to_f + self[:blank_pages].to_f) / self[:total_pages] * 100
+    #raw = (self[:annotated_pages].to_f + self[:blank_pages].to_f) / self[:total_pages] * 100
+    raw = (self[:annotated_pages].to_f + self[:blank_pages].to_f)
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_translation_annotated
-    raw = (self[:translated_annotated].to_f + self[:translated_blank].to_f) / self[:total_pages] * 100
+    #raw = (self[:translated_annotated].to_f + self[:translated_blank].to_f) / self[:total_pages] * 100
+    raw = (self[:translated_annotated].to_f + self[:translated_blank].to_f)
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_needs_review
-    raw = self[:needs_review].to_f / self[:total_pages] * 100
+    #raw = self[:needs_review].to_f / self[:total_pages] * 100
+    raw = self[:needs_review].to_f
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_translation_needs_review
-    raw = self[:translated_review].to_f / self[:total_pages] * 100
+    #raw = self[:translated_review].to_f / self[:total_pages] * 100
+    raw = self[:translated_review].to_f
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_blank
-    raw = self[:blank_pages].to_f / self[:total_pages] * 100
+    #raw = self[:blank_pages].to_f / self[:total_pages] * 100
+    raw = self[:blank_pages].to_f
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_translation_blank
-    raw = self[:translated_blank].to_f / self[:total_pages] * 100
+    #raw = self[:translated_blank].to_f / self[:total_pages] * 100
+    raw = self[:translated_blank].to_f
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
