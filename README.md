@@ -62,3 +62,10 @@ Finally, start the application
 
     rails server
 
+
+### Branches
+
+VersionUsedSummer2018 is the version of Transc&Anno used to transcribe the SMS collection.
+
+The development branch contains the latest version of Transc&Anno where I tried to take into account most of the wishes I received from the 
+users of VersionUsedSummer2018. In this version the database was modified. It means that a collection transcribed with the VersionUsedSummer2018 cannot be uploaded into this new version.
