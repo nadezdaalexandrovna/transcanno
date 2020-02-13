@@ -14,12 +14,13 @@
         h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id, :document_set_id => @document_set.id }
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
-          -progress_annotated = work.work_statistic.pct_annotated.round
+          -num_transcribed = w.work_statistic.num_transcribed.round
+          -progress_annotated = w.work_statistic.pct_annotated.round
           -progress_transcribed = work.work_statistic.pct_transcribed.round
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_transcribed}% transcribed"
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{num_transcribed} transcribed, #{progress_transcribed}% transcribed"
           span
             span.progress
-              span(style="width:#{progress_annotated}%")
+              span(style="width:#{num_transcribed}%")
               span(style="width:#{progress_transcribed - progress_annotated}%")
 
     -unless @document_set.collection.categories.empty?

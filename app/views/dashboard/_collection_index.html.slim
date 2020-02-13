@@ -35,11 +35,11 @@
                         th.w100 Work Title
                         th Pages
                         -unless c.subjects_disabled
-                          th Indexed
-                        th Transcribed
+                          th Transcribed num
+                        th Transcribed %
                         th Progress
                       -works.each do |w|
-                        -progress_annotated = w.work_statistic.pct_annotated.round
+                        -progress_annotated = w.work_statistic.num_transcribed.round
                         -progress_transcribed = w.work_statistic.pct_transcribed.round
                         tr
                           td =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }

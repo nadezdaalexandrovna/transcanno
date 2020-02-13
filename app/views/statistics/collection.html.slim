@@ -35,6 +35,7 @@
   ul.collection-work-stats
     -@works.each do |w|
       -unless w.supports_translation
+        -num_transcribed = w.work_statistic.num_transcribed.round
         -progress_annotated = w.work_statistic.pct_annotated.round
         -progress_review = w.work_statistic.pct_needs_review.round
         -progress_completed = w.work_statistic.pct_completed.round
@@ -44,6 +45,7 @@
         -else
           -completed = "transcribed"
       -else
+        -num_transcribed = w.work_statistic.num_translation_annotated.round
         -progress_annotated = w.work_statistic.pct_translation_annotated.round
         -progress_review = w.work_statistic.pct_translation_needs_review.round
         -progress_completed = w.work_statistic.pct_translation_completed.round
@@ -53,21 +55,21 @@
         span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
         span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
         -unless @collection.subjects_disabled
-          span =="<b>#{progress_annotated}</b> indexed"
-        span =="<b>#{progress_completed}</b> #{completed}"
+          span =="<b>#{num_transcribed}</b> transcribed"
+        span =="<b>#{progress_completed}</b>% #{completed}"
         span =="<b>#{progress_review}</b> needs review" unless progress_review == 0
         span
           span.progress
             -unless @collection.subjects_disabled
-              span(style="width:#{progress_annotated}")
-              span(style="width:#{progress_completed - progress_annotated}")
+              span(style="width:#{progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
               -unless progress_review == 0
-                span(style="width:#{progress_review}")
+                span(style="width:#{progress_review}%")
 
             -else
-              span(style="width:#{progress_completed}")
+              span(style="width:#{progress_completed}%")
               -unless progress_review == 0
-                span(style="width:#{progress_review}")
+                span(style="width:#{progress_review}%")
 
 -if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
   h2 Collaborators
