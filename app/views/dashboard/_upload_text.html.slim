@@ -1,0 +1,17 @@
+    h3 Upload a ZIP archive containing images and their plain text transcriptions
+    p.big Using this form you can import your page images and their plain text transcriptions into FromThePage. You should select a target collection to import into and attach a ZIP file containing page images and their plain text transcriptions to be used for your project.
+    =form_for :document_upload, url: { action: 'new_upload_text' } do |f|
+      =validation_summary @document_upload.errors
+      table.form
+        tr
+          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), prompt: '- Select a collection -'
+        tr
+          td
+            .input-file
+              =f.file_field :file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed'
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              button(type="button") Browse
+      p You need to prepare a ZIP archive and inside this archive as many folders as there are transcribed documents. Each of these folders will contain one PDF document that can consist of any number of pages. Next to this PDF document, in the same folder, there will be as many plain text documents as there are pages in the PDF. Each plain text document will contain the transcription of one page in plain text format and its name will be as follows: [page_number].txt
+      
+      p.aright
+        =f.button 'Upload File', class: 'big'

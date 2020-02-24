@@ -1,5 +1,6 @@
 require 'image_helper'
 require 'open-uri' # TODO: Move elsewhere
+require 'uri'
 
 namespace :fromthepage do
 
@@ -18,14 +19,15 @@ namespace :fromthepage do
   IMAGE_FILE_EXTENSIONS = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG']
   IMAGE_FILE_EXTENSIONS_PATTERN = /jpg|JPG|jpeg|JPEG|png|PNG/
 
+  TEXT_FILE_EXTENSIONS = ['txt', 'TXT']
+  TEXT_FILE_EXTENSIONS_PATTERN = /txt|TXT/
+
   desc "Process a document upload"
   task :process_document_upload, [:document_upload_id] => :environment do |t,args|
     document_upload_id = args.document_upload_id
-    print "fetching upload with ID=#{document_upload_id}\n"
+    #print "fetching upload with ID=#{document_upload_id}\n"
     document_upload = DocumentUpload.find document_upload_id
-    
-    print "found document_upload for \n\tuser=#{document_upload.user.login}, \n\ttarget collection=#{document_upload.collection.title}, \n\tfile=#{document_upload.file}\n"
-    
+     
     document_upload.status = DocumentUpload::Status::PROCESSING
     document_upload.save
     
@@ -48,6 +50,60 @@ namespace :fromthepage do
 
   end
 
+  desc "Process a text upload"
+  task :process_text_upload, [:document_upload_id] => :environment do |t,args|
+    document_upload_id = args.document_upload_id
+    document_upload = DocumentUpload.find document_upload_id
+    
+    document_upload.status = DocumentUpload::Status::PROCESSING
+    document_upload.save
+    
+    process_batch_text(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+
+    document_upload.status = DocumentUpload::Status::FINISHED
+    document_upload.save
+
+    #if the upload processes correctly,
+    #remove the uploaded file to prevent filling up the disk
+    if document_upload.status = DocumentUpload::Status::FINISHED
+      document_upload.remove_file!
+      document_upload.save
+    end
+
+    if SMTP_ENABLED    
+        SystemMailer.upload_succeeded(document_upload).deliver!
+        UserMailer.upload_finished(document_upload).deliver!
+    end
+
+  end
+
+  desc "Process document downloaded"
+  task :process_document_downloaded, [:document_upload_id] => :environment do |t,args|
+    document_upload_id = args.document_upload_id
+    document_upload = DocumentUpload.find document_upload_id
+    
+    
+    document_upload.status = DocumentUpload::Status::PROCESSING
+    document_upload.save
+    
+    process_batch_downloaded(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+
+    document_upload.status = DocumentUpload::Status::FINISHED
+    document_upload.save
+
+    #if the upload processes correctly,
+    #remove the uploaded file to prevent filling up the disk
+    if document_upload.status = DocumentUpload::Status::FINISHED
+      document_upload.remove_file!
+      document_upload.save
+    end
+
+    if SMTP_ENABLED    
+        SystemMailer.upload_succeeded(document_upload).deliver!
+        UserMailer.upload_finished(document_upload).deliver!
+    end
+
+  end
 
   def process_batch(document_upload, path, temp_dir_seed)
     # copy to temp dir
@@ -65,26 +121,54 @@ namespace :fromthepage do
     # clean
     clean_tmp_dir(temp_dir)
   end
+
+  def process_batch_text(document_upload, path, temp_dir_seed)
+    # copy to temp dir
+    temp_dir = temp_dir_path(temp_dir_seed)
+    copy_to_temp_dir(path, temp_dir)
+
+    # unzip everything
+    unzip_tree(temp_dir)
+    # extract any pdfs
+    unpdf_tree(temp_dir)
+    # resize files
+    compress_tree(temp_dir)
+    # ingest
+    ingest_tree_text(document_upload, temp_dir)
+    # clean
+    clean_tmp_dir(temp_dir)
+  end
+
+  def process_batch_downloaded(document_upload, path, temp_dir_seed)
+    # copy to temp dir
+    temp_dir = temp_dir_path(temp_dir_seed)
+    copy_to_temp_dir(path, temp_dir)
+
+    # unzip everything
+    unzip_tree(temp_dir)
+    # extract any pdfs
+    unpdf_tree(temp_dir)
+    # resize files
+    compress_tree(temp_dir)
+    # ingest
+    ingest_tree_downloaded(document_upload, temp_dir)
+    # clean
+    clean_tmp_dir(temp_dir)
+  end
   
   def clean_tmp_dir(temp_dir)
-    print "Removing #{temp_dir}\n"
     FileUtils::rm_r(temp_dir)
   end
   
   def unzip_tree(temp_dir)
-    print "unzip_tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
-      print "\tunzip_tree considering #{path}\n"
       if Dir.exist? path
-        print "Found directory #{path}\n"
         unzip_tree(path) #recurse
       else
         if File.extname(path) == '.ZIP' || File.extname(path) == '.zip'
-          print "Found zipfile #{path}\n"
           #unzip and recur
           destination = File.join(File.dirname(path), File.basename(path).sub(File.extname(path),''))
-          print "Calling unzip_file(#{path}, #{destination})\n"
           ImageHelper.unzip_file(path, destination)
           unzip_tree(destination)  # recurse
         end
@@ -93,16 +177,12 @@ namespace :fromthepage do
   end
   
   def unpdf_tree(temp_dir)
-    print "unpdf_tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
-      print "\tunpdf_tree considering #{path})\n"
       if Dir.exist? path
-        print "Found directory #{path}\n"
         unpdf_tree(path) #recurse
       else
         if File.extname(path) == '.PDF' || File.extname(path) == '.pdf'
-          print "Found pdf #{path}\n"
           #extract 
           destination = ImageHelper.extract_pdf(path)
         end
@@ -110,16 +190,12 @@ namespace :fromthepage do
     end
   end
   def compress_tree(temp_dir)
-    print "compress tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
-      print "compress_tree handling #{path})\n"
       if Dir.exist? path
-        print "Found directory #{path}\n"
         compress_tree(path) #recurse
       else
         if File.extname(path).match IMAGE_FILE_EXTENSIONS_PATTERN
-          print "Found image #{path}\n"
           destination = ImageHelper.compress_image(path)
         end
       end
@@ -127,32 +203,134 @@ namespace :fromthepage do
   end
   
   def ingest_tree(document_upload, temp_dir) 
-    print "ingest_tree(#{temp_dir})\n"
     # first process all sub-directories
     ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
-      print "ingest_tree considering #{path})\n"
       if Dir.exist? path
-        print "Found directory #{path}\n"
         ingest_tree(document_upload, path) #recurse
       end
     end    
     # now process this directory if it contains image files
     image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
     if image_files.length > 0
-      print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
-      print "Finished converting files in #{temp_dir} to a work\n"
     end
-    print "Finished ingest_tree for #{temp_dir}\n"
     
   end
-  
-  def convert_to_work(document_upload, path)
-    print "convert_to_work creating database record for #{path}\n"
-    print "\tconvert_to_work owner = #{document_upload.user.login}\n"
-    print "\tconvert_to_work collection = #{document_upload.collection.title}\n"
-    print "\tconvert_to_work title = #{File.basename(path).ljust(3,'.')}\n"
+
+  def ingest_tree_text(document_upload, temp_dir) 
+    # first process all sub-directories
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
+    ls.each do |path|
+      if Dir.exist? path
+        ingest_tree_text(document_upload, path) #recurse
+      end
+    end    
+    # now process this directory if it contains image files
+    image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    text_files = Dir.glob(File.join(temp_dir, "*.{"+TEXT_FILE_EXTENSIONS.join(',')+"}"))
+
+    #if image_files.length > 0 and text_files.length > 0
+    if image_files.length > 0
+      convert_to_work_text(document_upload, temp_dir)
+    end
+    
+  end
+
+  def ingest_tree_downloaded(document_upload, temp_dir) 
+    # first process all sub-directories
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
+    ls.each do |path|
+      if Dir.exist? path
+        ingest_tree_downloaded(document_upload, path) #recurse
+      end
+    end    
+    # now process this directory if it contains image files
+    image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    text_files = Dir.glob(File.join(temp_dir, "*.{"+TEXT_FILE_EXTENSIONS.join(',')+"}"))
+
+    #if image_files.length > 0 and text_files.length > 0
+    if image_files.length > 0
+      convert_to_work_downloaded(document_upload, temp_dir)
+    end
+    
+  end
+
+  def convert_to_work_downloaded(document_upload, path)
+
+    path_array = path.split(File::SEPARATOR)
+    work_name = path_array[-2]
+
+#    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
+    User.current_user=document_upload.user
+    
+    work = Work.new
+    work.owner = document_upload.user
+    work.collection = document_upload.collection
+    work.title = work_name
+    work.save!
+    
+    new_dir_name = File.join(Rails.root,
+                             "public",
+                             "images",
+                             "uploaded",
+                             work.id.to_s)
+                             
+    FileUtils.mkdir_p(new_dir_name)
+    IMAGE_FILE_EXTENSIONS.each do |ext|
+      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+    end    
+
+    # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
+    work.description = work.title
+    ls = Dir.glob(File.join(new_dir_name, "*")).sort
+
+    #Ignore thumb images
+    regexp = "_thumb\.(" + IMAGE_FILE_EXTENSIONS.join('|') + ")$"
+    ls = ls.select { |n| !n.to_s.match(/#{regexp}/) }
+
+    GC.start
+    ls.each_with_index do |image_fn,i|
+      page = Page.new
+      page.title = "#{i+1}"
+      page.base_image = image_fn
+      image = Magick::ImageList.new(image_fn)
+      GC.start
+      page.base_height = image.rows
+      page.base_width = image.columns
+      image = nil
+      GC.start
+
+      last_part_path = URI(path).path.split('/').last
+      path_txt = File.join(path, ".." , page.title + ".txt")
+      if File.exist?(path_txt)
+        file_txt = File.open(path_txt)
+        text_from_file = file_txt.read
+
+        page.xml_text = text_from_file
+        source_text = text_from_file.dup
+
+        if !source_text.nil? && source_text.length!=0
+          source_text = source_text.gsub(/<\?xml version='1.0' encoding='UTF-8'\?>/, " ")
+          source_text = source_text.gsub(/<page>/, " ")
+          source_text = source_text.gsub(/<p>/, " ")
+          source_text = source_text.gsub(/<\/p>/, " ")
+          source_text = source_text.gsub(/<\/page>/, " ")
+        end
+
+        page.source_text = source_text
+        page.search_text = SearchTranslator.search_text_from_xml(text_from_file, "")
+        page.original_text = SearchTranslator.original_text_from_xml(text_from_file)
+
+        work.pages << page      
+      end
+    end
+    work.save!
+  end
+
+  def convert_to_work_text(document_upload, path)
+
 #    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     
@@ -167,14 +345,11 @@ namespace :fromthepage do
                              "images",
                              "uploaded",
                              work.id.to_s)
-    print "\tconvert_to_work creating #{new_dir_name}\n"
                              
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
-#      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
       FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
       Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
-#      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
@@ -183,22 +358,71 @@ namespace :fromthepage do
     GC.start
     ls.each_with_index do |image_fn,i|
       page = Page.new
-      print "\t\tconvert_to_work created new page\n"
       page.title = "#{i+1}"
       page.base_image = image_fn
-      print "\t\tconvert_to_work before Magick call \n"
       image = Magick::ImageList.new(image_fn)
       GC.start
-      print "\t\tconvert_to_work calculating base and height \n"
+      page.base_height = image.rows
+      page.base_width = image.columns
+      image = nil
+      GC.start
+
+      last_part_path = URI(path).path.split('/').last
+      path_txt = File.join(path, ".." , page.title + ".txt")
+      file_txt = File.open(path_txt)
+      text_from_file = file_txt.read
+
+      page.source_text = text_from_file
+      page.search_text = text_from_file
+      page.original_text = text_from_file
+
+      page.xml_text = "<?xml version='1.0' encoding='UTF-8'?><page><p>"+text_from_file+"</p></page>"
+
+      work.pages << page      
+    end
+    work.save!
+  end
+  
+  def convert_to_work(document_upload, path)
+
+#    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
+    User.current_user=document_upload.user
+    
+    work = Work.new
+    work.owner = document_upload.user
+    work.collection = document_upload.collection
+    work.title = File.basename(path).ljust(3,'.')
+    work.save!
+    
+    new_dir_name = File.join(Rails.root,
+                             "public",
+                             "images",
+                             "uploaded",
+                             work.id.to_s)
+                             
+    FileUtils.mkdir_p(new_dir_name)
+    IMAGE_FILE_EXTENSIONS.each do |ext|
+      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+    end    
+
+    # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
+    work.description = work.title
+    ls = Dir.glob(File.join(new_dir_name, "*")).sort
+    GC.start
+    ls.each_with_index do |image_fn,i|
+      page = Page.new
+      page.title = "#{i+1}"
+      page.base_image = image_fn
+      image = Magick::ImageList.new(image_fn)
+      GC.start
       page.base_height = image.rows
       page.base_width = image.columns
       image = nil
       GC.start
       work.pages << page      
-       print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
-    print "convert_to_work succeeded for #{work.title}\n"
   end
 
   
@@ -238,7 +462,6 @@ namespace :fromthepage do
       
       sc_manifest.save!
       
-      print "Ingesting manifest #{sc_manifest.sc_id}\n"
       begin
         manifest_string = open(sc_manifest.sc_id).read
         manifest_hash = JSON.parse(manifest_string)

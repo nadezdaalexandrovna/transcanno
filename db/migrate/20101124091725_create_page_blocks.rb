@@ -178,10 +178,6 @@ ACCOUNTLOGIN
         <dt>
           Password
         </dt>
-        <dd>
-          FromThePage is not a secure website.  We'll do our best, please <b>don't use the
-          same password you use for your online bank or favorite store.</b>
-        </dd>
         <dt>
           Confirm Password
         </dt>
@@ -199,19 +195,11 @@ ACCOUNTLOGIN
         <dt>
           Real Name
         </dt>
-        <dd>
-          When people print a work you helped transcribe, we'd like to give you credit.
-          You probably don't want "ChiliGuy68" to appear in print, even if you've used
-          it on message boards systems since the 90's.  So please enter the name you'd like
-          to appear in books and PDFs.
-        </dd>
         <dt>
           Email
         </dt>
         <dd>
-          We currently do nothing with this.  In the future, this may be used to send
-          you other people's comments on works you own, but FromThePage.com will never,
-          ever, ever sell or give it to a third party.
+          We currently do nothing with this.
         </dd>
         <dt>
           What's that funny image thing?
@@ -232,32 +220,22 @@ PAGEEDIT
   STATIC_SPLASH_LEFT = <<STATICSPLASHLEFT
   <div class="splash-block">
 
-<h3>What is FromThePage?</h3>
+<h3>What is Transc&amp;Anno?</h3>
 
 <p>
-FromThePage is free software that allows volunteers to collaborate to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. Because FromThePage runs in your browser, you can read and transcribe materials from anywhere -- including tablets and smart phones. The resulting text is hosted on the web, making documents easy to read and search.
+Transc&amp;Anno is free software that allows to transcribe and annotate scanned documents on-line. Because Transc&amp;Anno runs in your Firefox browser, you can read and transcribe materials from anywhere. The resulting text is hosted on the web, making documents easy to read and search. It was created by slightly modifying an open-source transcription tool FromThePage.
 </p>
 
 <p>
-<b>Features of FromThePage include:</b>
+<b>Features of Transc&Anno include:</b>
   <ul>
-    <li><b>Wiki-style editing:</b> Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
+    <li><b>Intuitive transcription and annotation environment:</b> Users add or edit transcriptions on one side of the screen while viewing a scanned image of the manuscript page on the other side.
     </li>
     <li><b>Version Control:</b> Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
     </li>
-    <li><b>Wikilinks:</b> Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
+    <li><b>Presentation:</b>  Readers can view transcriptions in a multi-page format or alongside page images.
     </li>
-    <li><b>Presentation:</b>  Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject.
-    </li>
-    <li><b>Automatic Markup:</b> FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
-    </li>
-    <li><b>Integrations:</b> FromThePage integrates easily with systems where your documents are already loaded, including the Internet Archive and Omeka.
-    </li>
-    <li><b>Translation:</b> FromThePage supports foreign language material which can be transcribed in full UTF-8. A translator's workflow allows creation of parallel texts.
-    </li>
-    <li><b>OCR Correction:</b> Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
-    </li>
-  </ul>
+    </ul>
 </p>
 </div>
 STATICSPLASHLEFT
@@ -273,13 +251,9 @@ STATICSPLASHLEFT
 <b>Start reading: </b>
 </p>
 <p>
-See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection">Your First User and Collection</a> on our wiki.
+See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection">Your First User and Collection</a> on FromThePage wiki.
 
-<a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
-</p>
-<p>
-Need help?  We offer the <a href="http://fromthepage.com/static/run_server">following services to help you run your FromThePage project</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
-  
+<a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work For Transcription</a> also has good information on how to get works into Transc&amp;Anno.
 </p>
 </div>
 

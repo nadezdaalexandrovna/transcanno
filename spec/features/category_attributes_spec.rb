@@ -52,10 +52,9 @@ describe "category attributes", :order => :defined do
     print "\npage.body:\n"
     puts page.body
     print "\n"
-    #fill_in "add_attribute_value[#{first_attribute_id}][]", with: 'first_value'
-    #fill_in "attribute_value_input_field", with: 'first_value'
-    #el=find(:xpath, "//input[@class='attribute_value_input_field'")
-    fill_in (:xpath, "//input[@class='attribute_value_input_field'"), with: 'first_value'
+
+    #fill_in (:xpath, "//input[@class='attribute_value_input_field'"), with: 'first_value'
+    fill_in ("//input[@class='attribute_value_input_field'"), with: 'first_value'
     click_button("Apply all changes")
 
     visit "/article/list?collection_id=#{@collection.id}#category-#{@category.id}"    

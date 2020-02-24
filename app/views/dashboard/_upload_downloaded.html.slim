@@ -1,0 +1,15 @@
+    h3 Upload a ZIP archive downloaded from Transc&Anno and containing page images and their transcriptions
+    p.big Using this form you can import your page images and their transcriptions into Transc&amp;Anno. You should select a target collection to import into and attach a ZIP file containing page images and their plain text transcriptions to be used for your project.
+    =form_for :document_upload, url: { action: 'new_upload_downloaded' } do |f|
+      =validation_summary @document_upload.errors
+      table.form
+        tr
+          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), prompt: '- Select a collection -'
+        tr
+          td
+            .input-file
+              =f.file_field :file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed'
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              button(type="button") Browse
+      p.aright
+        =f.button 'Upload File', class: 'big'

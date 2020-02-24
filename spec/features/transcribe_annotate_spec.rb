@@ -15,11 +15,14 @@ describe "category attributes", :order => :defined do
   ActionController::Base.asset_host = "http://localhost:3000"
   
   before :all do
-    @owner = User.find_by(login: OWNER)
-    @user = User.find_by(login: USER)
-    @collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
-    @collections = Collection.where(id: @collection_ids)
-    @collection = @collections.first
+    #@owner = User.find_by(login: OWNER)
+    @owner = User.find_by(login: "collection_owner")
+    #@user = User.find_by(login: USER)
+    @user = User.find_by(login: "guest_user")
+    #@collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
+    #@collections = Collection.where(id: @collection_ids)
+    @collection = Collection.first
+    #@collection = @collections.first
     @category = @collection.categories.first
     @work = @collection.works.first
     sleep(10)
@@ -56,7 +59,8 @@ describe "category attributes", :order => :defined do
     #@driver = Capybara.current_driver
     #@driver.find_element(:link_text, "Sign In").click
     sleep(10)
-    test_page = @work.pages.second
+    #test_page = @work.pages.second
+    test_page = @work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     #find_element(:link_text, "Student essays").click

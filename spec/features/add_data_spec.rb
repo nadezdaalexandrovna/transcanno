@@ -6,6 +6,7 @@ xdescribe "uploads data for collections", :order => :defined do
   before :all do
 
     @owner = User.find_by(login: OWNER)
+    #@owner = User.find_by(login: "collection_owner")
     @collections = @owner.all_owner_collections
     @collection = @collections.second
     @title = "This is an empty work"

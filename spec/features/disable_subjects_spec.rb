@@ -7,8 +7,10 @@ describe "disable subject linking", :order => :defined do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
-    @work = @collection.works.second
-    @title = @work.pages.third.title
+    #@work = @collection.works.second
+    @work = @collection.works.first
+    #@title = @work.pages.third.title
+    @title = @work.pages.first.title
   end
 
   before :each do

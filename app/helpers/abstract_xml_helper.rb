@@ -7,7 +7,14 @@ module AbstractXmlHelper
   end
 
   def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
+    print "\n in xml_to_html"
+    print "\nxml_text:\n"
+    puts xml_text
+
     return "" if xml_text.blank?
+
+    print "\nnot blank\n"
+
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     xml_text.gsub!(/\<textinfoheader>.*?\<\/textinfoheader\>/, "")
@@ -83,11 +90,12 @@ module AbstractXmlHelper
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
+
     my_display_html.gsub!("<br/></p>", "</p>")
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
 
-    my_display_html.gsub!("&amp\;nbsp\;","&nbsp\;") # I added this
+    my_display_html.gsub!("&amp\;nbsp\;","&nbsp\;") # Nadia added this
     return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
   end
 

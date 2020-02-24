@@ -4,8 +4,10 @@ describe "document sets", :order => :defined do
 
   before :all do
 
-    @owner = User.find_by(login: 'margaret')
-    @user = User.find_by(login: 'eleanor')
+    #@owner = User.find_by(login: 'margaret')
+    #@user = User.find_by(login: 'eleanor')
+    @owner = User.find_by(login: OWNER)
+    @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
   end

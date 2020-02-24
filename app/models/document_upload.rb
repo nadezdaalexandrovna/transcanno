@@ -7,6 +7,7 @@ class DocumentUpload < ActiveRecord::Base
   validates :collection_id, :file, :presence => true
 
   mount_uploader :file, DocumentUploader
+  mount_uploader :file, TextUploader
   
   module Status 
     NEW = 'new'
@@ -16,9 +17,32 @@ class DocumentUpload < ActiveRecord::Base
   end
   
   def submit_process
+    puts "in submit_process"
     self.status = Status::QUEUED
     self.save
     rake_call = "#{RAKE} debug fromthepage:process_document_upload[#{self.id}]  --trace"
+    #rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
+    logger.info rake_call
+    logger.debug rake_call
+    system(rake_call)
+  end
+
+  def submit_process_text
+    puts "in submit_process_text"
+    self.status = Status::QUEUED
+    self.save
+    rake_call = "#{RAKE} debug fromthepage:process_text_upload[#{self.id}]  --trace"
+    #rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
+    logger.info rake_call
+    logger.debug rake_call
+    system(rake_call)
+  end
+
+  def submit_process_downloaded
+    puts "in submit_process_downloaded"
+    self.status = Status::QUEUED
+    self.save
+    rake_call = "#{RAKE} debug fromthepage:process_document_downloaded[#{self.id}]  --trace"
     #rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
     logger.info rake_call
     logger.debug rake_call

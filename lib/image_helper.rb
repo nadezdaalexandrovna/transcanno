@@ -20,14 +20,25 @@ module ImageHelper
         outfile = File.join(destination, f.name)
         FileUtils.mkdir_p(File.dirname(outfile))
  
-        print "\textracting #{outfile}\n"
+        #print "\textracting #{outfile}\n"
         zip_file.extract(f, outfile)
       end
     end
     
   end
   
+  def self.extract_txt(filename)
+    pattern = Regexp.new(File.extname(filename) + "$")
+    destination = filename.gsub(pattern, '')
+    FileUtils.mkdir(destination) unless File.exists?(destination)
 
+    #new_filename = File.rename(filename, "page_%04d.txt")
+    #FileUtils.cp(new_filename, destination)
+
+    FileUtils.cp(filename, destination)
+
+    destination
+  end
   
   def self.extract_pdf(filename)
     pattern = Regexp.new(File.extname(filename) + "$")
@@ -35,7 +46,7 @@ module ImageHelper
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
     gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
-    print gs
+    #print gs
     system(gs)
     # convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
     # print("#{convert}\n")
@@ -75,7 +86,7 @@ module ImageHelper
         p "Compressed file is now #{File.size(working_file)} at quality #{percent}"
 
         unless needs_compression? working_file
-          print "compressed.write('#{filename}')  { self.quality = #{percent} }"
+          #print "compressed.write('#{filename}')  { self.quality = #{percent} }"
           break #we're done here
         end
       end

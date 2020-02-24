@@ -104,8 +104,11 @@ Capybara.javascript_driver = :headless_chrome
 =end
 #end of added by nadya
 
-REST_USER = "george"
-USER = "eleanor"
-OWNER = "margaret"
+#REST_USER = "george"
+REST_USER = "collection_owner"
+#USER = "eleanor"
+USER = "collection_owner"
+#OWNER = "margaret"
+OWNER = "collection_owner"
 NEW_OWNER = "harry"
 ADMIN = "julia"

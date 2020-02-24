@@ -99,12 +99,10 @@ html
     =(yield :content_below).force_encoding 'UTF-8'
 
     footer.footer
-      .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
+      .footer_copyright &copy; #{Time.now.year} #{link_to 'Transc&Anno', root_path}
       .footer_nav
         =link_to 'About', { controller: 'static', action: 'about' }
-        =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
-        =link_to 'Privacy Policy', { controller: 'static', action: 'privacy' }
-        =mail_to 'benwbrum@gmail.com', 'Contact Us'
+        =mail_to 'applinglt@scientificnet.onmicrosoft.com', 'Contact Us'
 
     .page-busy-overlay
 

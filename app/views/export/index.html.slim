@@ -1,13 +1,13 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection.id }})
 
 -unless @collection.subjects_disabled
-  h2.nomargin Export Subject Index
+  h2.nomargin Export Annotation Categories Index
   p.big
     span.fright(style="margin-left: 30px")
       =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
         =svg_symbol '#icon-export', class: 'icon'
-        span Export Subjects as CSV
-    span Click the button to export subjects with their descriptions and attributes.
+        span Export Annotation Categories as CSV
+    span Click the button to export annotation categories with their descriptions and attributes.
 
 h2 Export All Works
 p.big 
@@ -18,6 +18,15 @@ p.big
       span Export All Works XML
   
   span Click the button to export all works from the collection into a zip file containing each work as a TEI-XML file.
+
+p.big 
+  span.fright(style="margin-left: 30px")
+
+    =link_to({ :controller => 'export', :action => 'export_all_works_with_images', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+      =svg_symbol '#icon-export', class: 'icon'
+      span Export All Works Uploadable
+  
+  span Click the button to export all works from the collection into a zip file that you will be able to directly upload into another collection on Transc&Anno. The zip will contain each work in a separate folder, inside a file per page transcription and a subfolder with page images.
 
 p.big
   span.fright(style="margin-left: 30px")

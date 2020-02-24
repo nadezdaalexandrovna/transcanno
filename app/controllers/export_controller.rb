@@ -119,7 +119,43 @@ class ExportController < ApplicationController
       end
     end
   end
-  
+
+
+  def export_all_works_with_images
+    cookies['download_finished'] = 'true'
+    @collection = Collection.find_by(id: params[:collection_id])
+    @context = ExportContext.new
+    @works = Work.where(collection_id: @collection.id)
+
+    file_name = "#{@collection.title}.zip"
+    t = Tempfile.new('mio-file-temp-2016-02-19 10:41:53 +0100')
+    Zip::OutputStream.open(t.path) do |z|
+      @works.each do |work|
+        Dir["./public/images/uploaded/#{work.id}/*"].each do |image_file_path|
+          filename = URI(image_file_path).path.split('/').last
+          z.put_next_entry("#{work.title}/pages/" + filename)
+          z.print IO.read(image_file_path)
+        end
+
+        work.pages.each do |page|
+          export_view = " "
+
+          unless page.xml_text.nil? || page.xml_text.length == 0
+            export_view += page.xml_text
+          end
+
+          z.put_next_entry("#{work.title}/#{page.title}.txt")
+          z.print export_view
+
+        end
+
+      end
+    end
+    send_file t.path, :type => 'application/zip', :disposition => 'attachment', :filename => file_name
+    t.close
+
+  end
+ 
 
   def export_all_works_no_annotations
     cookies['download_finished'] = 'true'

@@ -6,7 +6,8 @@ xdescribe "owner actions", :order => :defined do
 
   before :all do
 
-    @user = User.find_by(login: 'minerva')
+    #@user = User.find_by(login: 'minerva')
+    @user = User.find_by(login: 'collection_owner')
     @collections = @user.all_owner_collections
     @collection = @collections.last
     @works = @user.owner_works

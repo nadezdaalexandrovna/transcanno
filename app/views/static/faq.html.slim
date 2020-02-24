@@ -17,7 +17,7 @@ h5.underline
 
 p
   b What is a collection?  
-  |  A collection is a set of documents (works) that have been collected together to form a unit.  Each work must belong to a collection, each page to a work.  Collections and works can be translated as well as transcribed.  By default a collection is visible to anyone accessing FromThePage from the internet.  This can be changed by the owner of a collection.  
+  |  A collection is a set of documents (works) that have been collected together to form a unit.  Each work must belong to a collection, each page to a work.  Collections and works can be translated as well as transcribed.  By default a collection is visible to anyone accessing Transc&amp;Anno from the internet.  This can be changed by the owner of a collection: the owner can make a collection private and only allow access to it to certain users.  
 p 
   b What is a work? 
   |  A work is an individual item (book, article, journal, letter, etc.) that is uploaded into a collection. A work belongs to a single collection.
@@ -31,11 +31,11 @@ p
   b What are document sets? 
   |  Document sets are subsets of works in a collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.  These can be created by the owner of a collection.
 p 
-  b What are subjects? 
-  |  Subjects are topics within a document which could be grouped within a category. Subjects work similarly to tags.  You can create subjects when you are transcribing pages or after you have transcribed them by going into a collection and selecting the subjects tab.
+  b What are annotation categories? 
+  |  Annotation categories are tags that will be used to annotate transcribed documents. Categories are created by the owner of the collection and only for this collection. However, they can be copied from one collection to another within the same instance of Transc&amp;Anno.
 p 
-  b What are categories? 
-  |  Categories are groups of related subjects/information.  Categories allow you to visualize relationships between subjects (topics) within a collection.  For example, you can visualize the frequency of a subjects's occurence in a collection and compare that with the frequencies of other subjects' occurrences within the collection.  Categories and subjects only search and link within a single collection.  Categories are created by the owner of the collection.
+  b What are annotation categories attributes? 
+  |  Annotation categories attributes allow to add useful information to the annotations. They are the same as XML attributes. Each category has its own set of attributes.
 
 
 h5.underline 
@@ -52,7 +52,7 @@ p
   |  Collaborators transcribe or translate pages in a work/collection.  They can also edit page titles if the work owner has given them permission to do so.
 p 
   b Who can transcribe a work? 
-  |  Anyone with a FromThePage account can transcribe any work, unless collaborators have been restricted by the owner of the work.
+  |  Anyone with a Transc&amp;Anno account can transcribe any work, unless collaborators have been restricted by the owner of the work.
 
 
 h5.underline
@@ -60,33 +60,11 @@ h5.underline
   | Transcription Instructions
 
 p 
-  b How do I transcribe a document in FromThePage?  
+  b How do I transcribe a document in Transc&amp;Anno?  
   |  Documents are transcribed by the individual pages.  From a collection, choose the work and page that you are interested in.  Click on the Transcribe tab to begin transcribing.  Transcription conventions (described below) explain what to do if you are not sure what a word or section of the document says.  Any specific transcription conventions for the work are located toward the bottom of the individual page.  
 p 
   b What are transcription conventions? 
   |  Transcription conventions are the formatting and standards used when a page is transcribed.  Specific conventions for a collection/work can be set by the owner.  The specific conventions for a work are found toward the bottom of a page being transcribed.
-  p 
-    b Examples of transcription conventions include: 
-    ul  
-      li Using one carriage return for a line break and two carriage returns for a paragraph break.
-      li Using HTML markup in FromThePage
-      li 
-        | Basic HTML markup tags include:
-        ul
-          li &lt;s&gt;text&lt;/s&gt; or &lt;strike&gt;text&lt;/strike&gt; for strikethrough
-          li &lt;u&gt;text&lt;/u&gt; for underline
-          li &lt;strong&gt;text&lt;/strong&gt; or &lt;b&gt;text&lt;/b&gt; for bold
-          li &lt;i&gt;text&lt;/i&gt; for italic
-          li &lt;a href="URL"&gt;link text&lt;/a&gt; for hyperlink
-      li 
-        | Conventions for transcription uncertainty or editorial intervention
-        ul
-          li Word that you think you know but aren't sure: follow with a question mark - so "Smith?"
-          li Word for which you can only understand a few letters or none: between square brackets, put as many dots as you think there are letters, inserting actual letters only where legible - so [B..w..n]
-          li Editorial comments such as "above the line", "in blue ink", or "illegible": place in curly brackets, with any text preserved in quotes, after a colon - so {in a second hand above the line: "recently"}; for carats, write {carat: "insertion"}
-  p 
-  b How do I create subject URL links in a document?  
-  |  While transcribing, you can use double square brackets to create URL links for subjects.  [[Jane Doe]] will link the text "Jane Doe" to the subject Jane Doe, while [[Jane Doe]Jane] will link the text Jane to the subject Jane Doe.
 
 h5.underline
   a name="Managing" 
@@ -149,13 +127,9 @@ h5.underline
   a name="Imports" 
   | Imports
 p 
-  b How do I import a collection from the Internet Archive? 
-  |  First, on the website www.archive.org, locate the book you want to import.  Copy the URL of the book.  In the Owner Dashboard, choose the Start a Project tab.  Click the "Import from Archive.org" link.  In the popup window, paste the URL from archive.org and click Import Work.  This will take a few minutes.  Once the work is imported, the archive.org book will need to be reviewed and converted.  For more information on this process, please see 
-  a href="https://github/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive#import-the-internet-archive-book" Import the Internet Archive Book
-  | .
-p 
-  b How do I import from an IIIF Repository?
-  |  In the Owner Dashboard, choose the Start a Project tab.  If you already have a manifest URL, copy it into the text box at the bottom of the "Import from a IIIF Repository" section and click import.  Otherwise, click the link for the relevant institution.  This will take a few minutes.  Once the list of institutions appears, click on the manifest of interest.  A description will appear, and at the bottom, you can click the Import button.  The next screen will give you an option of the collection to import into, and then you can click import.
+  b How do I import a collection from another instance of Transc&amp;Anno? 
+  |  First, go to the Export tab of the collection you want to transfer to another instance of Transc&amp;Anno. Push the button Export All Works Uploadable. This will download the content of the collection in a ZIP archive. Now go to the Add Work tab of a new and empty collection and Upload a ZIP archive downloaded from Transc&Anno and containing page images and transcriptions.
+
 
 h5.underline
   a name="Access" 
@@ -171,7 +145,7 @@ p
   |  After you sign in, go to the Owner Dashboard by clicking the Dashboard button.  Click the link for the work you would like to restrict. In the Settings tab for the work, select the "Restrict collaborators" checkbox and then hit apply.  Once collaborators are restricted, a dropdown box appears where collaborators can be added.
 p 
   b Who can transcribe a work? 
-  |  Anyone with a FromThePage account can transcribe any work, unless "restrict collaborators" is checked by the owner in the Work Settings tab.  If collaborators are restricted, the owner will need to add each collaborator to the work in the Settings tab within the work.
+  |  Anyone with a Transc&amp;Anno account can transcribe any work, unless "restrict collaborators" is checked by the owner in the Work Settings tab.  If collaborators are restricted, the owner will need to add each collaborator to the work in the Settings tab within the work.
 
 p 
   b Further information can also be found in the <a href="https://github.com/benwbrum/fromthepage/wiki">FromThePage wiki</a>.
