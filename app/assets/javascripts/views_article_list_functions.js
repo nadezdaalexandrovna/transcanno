@@ -183,16 +183,22 @@
 
     //For the search function: in transcription with tags, in transcription without tags, in the header categories
     function uncheckIncompatible(cb){
+
       if(cb.checked){
         if (cb.id=="header_cat_"){
+
           $("#in_transc").prop("checked",false);
+
         }else if(cb.id=="in_transc"){
+
           $('input[type=checkbox][name="header_cat[]"').each(function(){
             this.checked = false;
           });
 
           $("#in_text").prop("checked",false);
+
         }else if(cb.id=="in_text"){
+
           $("#in_transc").prop("checked",false);
         }
       }
