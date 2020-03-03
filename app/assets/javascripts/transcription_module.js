@@ -3306,8 +3306,6 @@ var TranscriptionModule = (function () {
         }else{
           document.getElementsByName("page[source_text]")[0].value=mediumValue;
         }
-
-        console.log(mediumValue);
         
       }else{
         alert("The transcription contains tagging errors. Please, verify the work you've done during the last 3 minutes:\n"+mediumValue);
