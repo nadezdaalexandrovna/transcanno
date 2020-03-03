@@ -3294,6 +3294,10 @@ var TranscriptionModule = (function () {
 
       mediumValue = mediumValue.replace(/<\/lb><\/div><div><lb>/g, "</lb><lb>");
       mediumValue = mediumValue.replace(/<lb>\s*<\/lb>/g, "");
+
+      if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
+        mediumValue = "<div id=\"bigDiv\">"+mediumValue+"<\/div>";
+      }
         
       if(isXML(mediumValue)){
         mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
