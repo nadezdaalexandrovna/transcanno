@@ -3290,10 +3290,11 @@ var TranscriptionModule = (function () {
 
       mediumValue = mediumValue.replace(/&nbsp;/g, " "); // &nbsp; is not valid XML
 
-      if(mediumValue.match(/^<div id=\"bigDiv\">/)==null){
-        mediumValue = "<div id=\"bigDiv\">"+mediumValue+"<\/div>";
-      }
+      mediumValue = mediumValue.replace(/[ ]*\r\n[ ]*/g, " ");
 
+      mediumValue = mediumValue.replace(/<\/lb><\/div><div><lb>/g, "</lb><lb>");
+      mediumValue = mediumValue.replace(/<lb>\s*<\/lb>/g, "");
+        
       if(isXML(mediumValue)){
         mediumValue = mediumValue.replace(/^<div id=\"bigDiv\">/, '');
         mediumValue = mediumValue.replace(/<\/div>$/, '');
@@ -3305,10 +3306,13 @@ var TranscriptionModule = (function () {
         }else{
           document.getElementsByName("page[source_text]")[0].value=mediumValue;
         }
+
+        console.log(mediumValue);
         
       }else{
         alert("The transcription contains tagging errors. Please, verify the work you've done during the last 3 minutes:\n"+mediumValue);
       }
+      
 
       if(callback){
         callback();
