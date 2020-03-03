@@ -32,23 +32,27 @@
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
-      </br>whole word
-      | &nbsp;
+      </br>
       =check_box_tag 'whole_word','1', (@whole_word=="1" ? 'checked' : nil)
-      </br>
-      </br>search in transcriptions including tags
       | &nbsp;
+      whole word
+      </br>
+      </br>
       =check_box_tag 'in_transc','1', (@in_transc=="1" ? 'checked' : nil), 'onclick': "uncheckIncompatible(this)"
-      </br>
-      </br>search in transcriptions excluding tags
       | &nbsp;
+      search in transcriptions including tags
+      </br>
+      </br>
       =check_box_tag 'in_text','1', (@in_text=="1" ? 'checked' : nil), 'onclick': "uncheckIncompatible(this)"
+      | &nbsp;
+      search in transcriptions excluding tags
       </br>
       </br>Search in header category values
       -@headercategories.each do |hc|
-        </br>#{hc[1]}
-        | &nbsp;
+        </br>
         =check_box_tag "header_cat[]", ["#{hc[0]}","#{hc[1]}"], ("#{hc[2]}"=="1" ? 'checked' : nil), 'onclick': "uncheckIncompatible(this)"
+        | &nbsp; #{hc[1]}
+        
       =button_tag 'Search'
 
     .user-label
