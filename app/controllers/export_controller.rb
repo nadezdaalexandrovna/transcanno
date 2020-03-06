@@ -104,8 +104,8 @@ class ExportController < ApplicationController
             work.pages.each do |page|
               export_view += "Page_title:\n" + page.title
               export_view += "\n"
-              if page.search_text
-                export_view += "Page_text:\n" + page.search_text
+              if page.original_text
+                export_view += "Page_text:\n" + page.original_text.strip!
               end
               export_view += "\n\n"
             end

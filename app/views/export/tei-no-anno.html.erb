@@ -134,7 +134,7 @@ xml:id="export">
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
           <fw type="pageNum"><%= page.title %></fw>
-          <%= raw(xml_to_export_tei_no_anno(page.search_text, page.id))%>
+          <%= raw(xml_to_export_tei_no_anno(page.original_text.strip!, page.id))%>
           <% notes = page.notes %>
           <% if notes && notes.length > 0 %>
             <% notes.each do |note| %>
@@ -153,7 +153,7 @@ xml:id="export">
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
       <% end%>
         <fw type="pageNum"><%= page.title %></fw>
-        <%= raw(xml_to_export_tei_no_anno(page.search_text, page.id))%>
+        <%= raw(xml_to_export_tei_no_anno(page.original_text.strip!, page.id))%>
         <% notes = page.notes %>
         <% if notes && notes.length > 0 %>
           <% notes.each do |note| %>
