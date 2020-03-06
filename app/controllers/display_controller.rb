@@ -111,7 +111,7 @@ class DisplayController < ApplicationController
         end
       end
 
-      if params[:header_cat] and (!params[:in_text] or params[:in_text]=="0") # looking only in the header categories' values
+      if params[:header_cat] and (!params[:in_text] or params[:in_text]=="0") and  (!params[:in_transc] or params[:in_transc]=="0")# looking only in the header categories' values
         @headercategories.each do |hc_array|
           regexpHeaderCats += hc_array[1]+"|"
         end
@@ -153,6 +153,9 @@ class DisplayController < ApplicationController
          
         elsif !params[:header_cat] and params[:in_text]=="1" # If looking for a string only in the transcription without tags, not in the header categories
           @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND original_text REGEXP ?", @collection.id, search_s]).paginate(page: params[:page])
+        
+        elsif params[:header_cat] and (!params[:in_text] or params[:in_text]=="0") and  (!params[:in_transc] or params[:in_transc]=="0") # If looking only in the header categories
+          @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND source_text REGEXP ?", @collection.id, search_s]).paginate(page: params[:page])
         
         else # If looking for a string in the header categories and in the transcription without tags
           @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND search_text REGEXP ?", @collection.id, search_s]).paginate(page: params[:page])
