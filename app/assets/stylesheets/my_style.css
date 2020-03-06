@@ -296,7 +296,7 @@ label[for="207"] span {
 
 #verticalMediumClickableSpans, #verticalMediumClickableSpansAdv {
   position: absolute;
-  right: 4vw;
+  right: 1vw;
   top: 330px;
   max-width: 20vw;
   z-index: 9997;
@@ -307,26 +307,26 @@ label[for="207"] span {
 
 #use_advanced_mode_div{
   position: absolute;
-  right: 4vw;
+  right: 1vw;
   top: 205px;
+  width: 20vw;
+}
 
+#use_advanced_mode_label{
+  margin-right: 4px;
+  font-size: medium;
 }
 
 #final_button_div{
   position: absolute;
-  right: 4vw;
+  right: 1vw;
   top: 105px;
-
+  width: 20vw;
 
   button{
     color: red;
   }
   
-}
-
-#use_advanced_mode_label{
-  margin-right: 4px;
-  font-size: large;
 }
 
 .undo, .delete_tag, .change_tag, .show_change_hotkeys, .show_saving_time, .insert_lower_quote, .insert_upper_quote{
@@ -532,10 +532,16 @@ label[for="207"] span {
      box-shadow:none!important;
 }
 
+.page-nav{
+  position: absolute;
+  right: 4vw!important;
+  width: 15vw;
+  top: 160px;
+}
 
 #headerCategories{
   position: absolute;
-  right: 30vw;
+  right: 25vw;
   top: 87px;
   width: 25vw;
   max-width: 25vw;
