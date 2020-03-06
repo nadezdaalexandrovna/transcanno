@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection.id }})
 
--unless @collection.subjects_disabled
+-unless @collection.subjects_disabled || !current_user.owner
   h2.nomargin Export Annotation Categories Index
   p.big
     span.fright(style="margin-left: 30px")
@@ -9,92 +9,92 @@
         span Export Annotation Categories as CSV
     span Click the button to export annotation categories with their descriptions and attributes.
 
-h2 Export All Works
-p.big 
-  span.fright(style="margin-left: 30px")
+  h2 Export All Works
+  p.big 
+    span.fright(style="margin-left: 30px")
 
-    =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
-      =svg_symbol '#icon-export', class: 'icon'
-      span Export All Works XML
+      =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Works XML
   
-  span Click the button to export all works from the collection into a zip file containing each work as a TEI-XML file.
+    span Click the button to export all works from the collection into a zip file containing each work as a TEI-XML file.
 
-p.big 
-  span.fright(style="margin-left: 30px")
+  p.big 
+    span.fright(style="margin-left: 30px")
 
-    =link_to({ :controller => 'export', :action => 'export_all_works_with_images', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
-      =svg_symbol '#icon-export', class: 'icon'
-      span Export All Works Uploadable
+      =link_to({ :controller => 'export', :action => 'export_all_works_with_images', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Works Uploadable
   
-  span Click the button to export all works from the collection into a zip file that you will be able to directly upload into another collection on Transc&Anno. The zip will contain each work in a separate folder, inside a file per page transcription and a subfolder with page images.
+    span Click the button to export all works from the collection into a zip file that you will be able to directly upload into another collection on Transc&Anno. The zip will contain each work in a separate folder, inside a file per page transcription and a subfolder with page images.
 
-p.big
-  span.fright(style="margin-left: 30px")
+  p.big
+    span.fright(style="margin-left: 30px")
 
-    =link_to({ :controller => 'export', :action => 'export_all_works_no_annotations', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
-      =svg_symbol '#icon-export', class: 'icon'
-      span Export All Works XML-TXT
+      =link_to({ :controller => 'export', :action => 'export_all_works_no_annotations', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Works XML-TXT
   
-  span Click the button to export all works from the collection into a zip file containing each work as TEI-XML file, but without annotations, only the original text.
+    span Click the button to export all works from the collection into a zip file containing each work as TEI-XML file, but without annotations, only the original text.
 
-p.big
-  span.fright(style="margin-left: 30px")
+  p.big
+    span.fright(style="margin-left: 30px")
 
-    =link_to({ :controller => 'export', :action => 'export_all_works_plain_text', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
-      =svg_symbol '#icon-export', class: 'icon'
-      span Export All Works TXT
+      =link_to({ :controller => 'export', :action => 'export_all_works_plain_text', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Works TXT
   
-  span Click the button to export all works from the collection into a zip file containing each work as a plain text file.
+    span Click the button to export all works from the collection into a zip file containing each work as a plain text file.
 
 
-h2 Export Individual Works
-p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.
-table.datagrid
-  tr
-    th.w80 Work Title
-    th Pages
-    -unless @collection.subjects_disabled
-      th Indexed
-    th #{@header}
-    th Review
-    th.w100 Progress
-    th(colspan="3") Export As
-  -for work in @collection.works
-    -unless work.supports_translation
-      -progress_annotated = work.work_statistic.pct_annotated.round
-      -progress_completed = work.work_statistic.pct_completed.round
-      -progress_review = work.work_statistic.pct_needs_review.round
-    -else
-      -progress_annotated = work.work_statistic.pct_translation_annotated.round
-      -progress_completed = work.work_statistic.pct_translation_completed.round
-      -progress_review = work.work_statistic.pct_translation_needs_review.round
-
+  h2 Export Individual Works
+  p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.
+  table.datagrid
     tr
-      td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-      td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
+      th.w80 Work Title
+      th Pages
       -unless @collection.subjects_disabled
-        td.nowrap.fgfaded.tocenter ="#{progress_annotated}%"
-      td.nowrap.fgfaded.tocenter ="#{progress_completed}%"
-      td.nowrap.fgfaded.tocenter ="#{progress_review}%"
-      td
-        .progress
-          -unless @collection.subjects_disabled
-            span(style="width:#{progress_annotated}%")
-            span(style="width:#{progress_completed - progress_annotated}%")
-            span(style="width:#{progress_review}%")
+        th Indexed
+      th #{@header}
+      th Review
+      th.w100 Progress
+      th(colspan="3") Export As
+    -for work in @collection.works
+      -unless work.supports_translation
+        -progress_annotated = work.work_statistic.pct_annotated.round
+        -progress_completed = work.work_statistic.pct_completed.round
+        -progress_review = work.work_statistic.pct_needs_review.round
+      -else
+        -progress_annotated = work.work_statistic.pct_translation_annotated.round
+        -progress_completed = work.work_statistic.pct_translation_completed.round
+        -progress_review = work.work_statistic.pct_translation_needs_review.round
 
-          -else
-            span(style="width:#{progress_completed}%")
-            span(style="width:#{progress_review}%")
+      tr
+        td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+        td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
+        -unless @collection.subjects_disabled
+          td.nowrap.fgfaded.tocenter ="#{progress_annotated}%"
+        td.nowrap.fgfaded.tocenter ="#{progress_completed}%"
+        td.nowrap.fgfaded.tocenter ="#{progress_review}%"
+        td
+          .progress
+            -unless @collection.subjects_disabled
+              span(style="width:#{progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
+              span(style="width:#{progress_review}%")
 
-      td.nowrap
-        =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
-          =svg_symbol '#icon-export', class: 'icon'
-          span XHTML
-      td.nowrap
-        =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
-          =svg_symbol '#icon-export', class: 'icon'
-          span TEI
+            -else
+              span(style="width:#{progress_completed}%")
+              span(style="width:#{progress_review}%")
+
+        td.nowrap
+          =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
+            =svg_symbol '#icon-export', class: 'icon'
+            span XHTML
+        td.nowrap
+          =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
+            =svg_symbol '#icon-export', class: 'icon'
+            span TEI
 
 =render({ :partial => '/shared/collection_footer' })
 
