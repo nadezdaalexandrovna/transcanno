@@ -7,13 +7,13 @@ module AbstractXmlHelper
   end
 
   def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
-    print "\n in xml_to_html"
-    print "\nxml_text:\n"
-    puts xml_text
+    #print "\n in xml_to_html"
+    #print "\nxml_text:\n"
+    #puts xml_text
 
     return "" if xml_text.blank?
 
-    print "\nnot blank\n"
+    #print "\nnot blank\n"
 
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')

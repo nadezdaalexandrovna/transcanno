@@ -1,15 +1,43 @@
--tabs = [{\
-  :name => 'Your Projects',
-  :selected => 1,
-  :options => {\
-    :action => 'watchlist',
-  },
-}]
+-if user_signed_in?
+  -tabs = [{\
+    :name => 'Start A Project',
+    :selected => 5,
+    :options => {\
+      :action => 'startproject',
+    },
+  },{\
+    :name => 'Your Works',
+    :selected => 1,
+    :options => {\
+      :action => 'owner',
+    },
+  }]
+-else
+  -tabs = [{\
+    :name => 'Your Works',
+    :selected => 1,
+    :options => {\
+      :action => 'owner',
+    },
+  }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Collaborator Dashboard"
+-content_for :page_title, "#{selected_tab} - Owner Dashboard"
 
-h1 Collaborator Dashboard
+.headline
+  h1.headline_title Owner Dashboard
+  .headline_aside
+    dl.dropdown.right
+      dt.h5
+        span Actions
+        =svg_symbol '#big-menu', class: 'icon icon-big'
+      dd
+        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
+
+section.owner-counters
+  .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
+  .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
+
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]

@@ -1,4 +1,4 @@
--if user_signed_in? && current_user.like_owner?(@collection) && current_user.id==@collection.owner_user_id
+-if user_signed_in?
   -tabs = [{\
     :name => 'Start A Project',
     :selected => 5,
@@ -32,7 +32,6 @@
         span Actions
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        -unless current_user.all_owner_collections.empty?
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
 
 section.owner-counters
