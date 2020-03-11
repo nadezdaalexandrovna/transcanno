@@ -36,6 +36,7 @@ module ExportHelper
 #    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     #transform_links(xml_text)
+    xml_text.strip!
 
     return xml_text.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
