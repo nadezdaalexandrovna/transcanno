@@ -55,6 +55,15 @@
     },
   }]
 
+-if user_signed_in? && current_user.owner?
+  -tabs += [{\
+    :name => 'Export',
+    :selected => 10,
+    :options => {\
+      :controller => 'export',
+      :action => 'tei',
+    }}]
+
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
 -tab_title = ([1,3,5].include? selected) ? "#{selected_tab.downcase} work" : "work #{selected_tab.downcase}"
