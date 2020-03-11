@@ -1957,6 +1957,7 @@ var TranscriptionModule = (function () {
 
     //Remove forbidden characters from an attribute's value
     function cleanAttrValueRestrict(val, only, length, userInputAttrValueFunctionType, textbox, medium, varTag, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton){
+
       var defaultValue=categoryTable[num][3];
       var categoryTypesTable=categoryTable[num][2];
 
@@ -1966,11 +1967,17 @@ var TranscriptionModule = (function () {
         return "";
       }else{
         val=val.replace(/[<&"'>]+/g, "_");
+
         if (length!=0 && val.length!=length){
           var okOrNot=checkIfInputValueCorrespondsToRestrictionsLength(only.toString(), val, "the attribute", length);
+          if(okOrNot==true){
+            return val;
+          }else{
 
-          launchNewInput(textbox, medium, varTag, userInputAttrValueFunctionType, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
-          
+            launchNewInput(textbox, medium, varTag, userInputAttrValueFunctionType, userChosenAttributesAndValues, attrName, num,categoryTable, focusOffset,focusNode, notCollapsedArgsTable,coords,onButton);
+
+          }
+
         }else{
           var okOrNot=checkIfInputValueCorrespondsToRestrictions(only.toString(), val, "the attribute", length);
           if(okOrNot==true){
@@ -3072,13 +3079,6 @@ var TranscriptionModule = (function () {
     var unicodeLetterRegex2=/[\u0041-\u005A\u0061-\u007A\u00C0-\u01BF\u01C4-\u02B8\u0373\u0376\u0377\u037F\u0386\u0388\u0389\u038A\u038C\u038E-\u03A1\u03A3-\u0481\u048A-\u052F\u0531-\u0556\u0561-\u0587\u05C6\u05D0-\u05EA\u05F0-\u05F2\u060E-\u060F\u0620-\u064A\u066E\u066F\u0676-\u06D3\u06EE-\u06FF\u0710-\u072F\u074D-\u07B1]/;
     var noUnicodeLetterRegex=/^[^\u0041-\u005A\u0061-\u007A\u00C0-\u01BF\u01C4-\u02B8\u0373\u0376\u0377\u037F\u0386\u0388\u0389\u038A\u038C\u038E-\u03A1\u03A3-\u0481\u048A-\u052F\u0531-\u0556\u0561-\u0587\u05C6\u05D0-\u05EA\u05F0-\u05F2\u060E-\u060F\u0620-\u064A\u066E\u066F\u0676-\u06D3\u06EE-\u06FF\u0710-\u072F\u074D-\u07B1]+$/;
     var digitsRegex=/^\d+$/;
-
-    /*
-    console.log("value.match(unicodeLetterRegex2):");
-    console.log(value.match(unicodeLetterRegex2));
-    console.log("unicodeLetterRegex2.test(value):");
-    console.log(unicodeLetterRegex2.test(value));
-    */
 
     switch(only) {
       case "0":
