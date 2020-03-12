@@ -55,6 +55,9 @@ class TranscribeController  < ApplicationController
 
     @categoryTypesHash=@categoryTypesHash.to_json
 
+    puts "@categoryTypesHash"
+    puts @categoryTypesHash
+
     #For the advanced mode
     #First we only select categories, because maybe they don't have attributes
     @categoriesAdv = Category.select(:title,:id).joins('inner join works on categories.collection_id=works.collection_id').joins('inner join pages on pages.work_id=works.id').where('pages.id=?',params[:page_id]).joins('left join categoryscopes on categoryscopes.category_id=categories.id').where('categoryscopes.mode!=0 OR categoryscopes.category_id IS NULL').joins('left join headercategories on headercategories.category_id=categories.id').where('headercategories.is_header_category=0 OR headercategories.is_header_category IS NULL')
@@ -165,11 +168,15 @@ class TranscribeController  < ApplicationController
   headerCatExistsDefault={}
 
   headerCategoriesValues.each do |row|
+    #puts "row:"
+    #puts row
     if row[5].to_i==1
       headerCatExistsDefault[row[0]]=1
     end
     if @headerCatsHash.key?(row[0])
-      @headerCatsHash[row[0]][3][row[3]]=[row[4],row[5]]
+      #puts "@headerCatsHash:"
+      #puts @headerCatsHash
+      @headerCatsHash[row[0]][5][row[3]]=[row[4],row[5]]
     else
       @headerCatsHash[row[0]]=[row[1], row[2], 0, row[6], row[7], {row[3]=>[row[4],row[5]]}]
     end

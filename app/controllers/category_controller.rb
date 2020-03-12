@@ -332,6 +332,11 @@ class CategoryController < ApplicationController
     #Checking for sql injection: the category_id and the collection_id should only contain numbers
     if params[:category_id].scan(/\D/).empty?
       header=Headercategory.where(category_id: params[:category_id]).first
+      attributes=Categoryattribute.where(category_id: params[:category_id]).first
+      @cannotBeHeader=false
+      if attributes!=nil
+        @cannotBeHeader=true
+      end
       @display=""
       @display2=""
       if header==nil
