@@ -71,7 +71,7 @@ The development branch contains the latest version of Transc&Anno where I tried 
 users of VersionUsedSummer2018. In this version the database was modified. It means that a collection transcribed with the VersionUsedSummer2018 cannot be directly uploaded into this new version.
 
 ```
-@ARTICLE{palmeromorettitint,
+@ARTICLE{okininanicolastranscanno,
        author = {{Okinina}, N., {Nicolas}, L. and {Lyding}, V.},
         title = "{Transc&Anno: A Graphical Tool for the Transcription and On-the-Fly Annotation of Handwritten Documents}",
       volume = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
