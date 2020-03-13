@@ -4,7 +4,7 @@ In was developed on the basis of the FromThePage collaboration transcription too
 
 For configuration instructions refer to the FromThePage wiki: https://github.com/benwbrum/fromthepage/wiki/
 
-For usage instructions refer to the user guide available on this page: fromthepage_user_guide.pdf
+For usage instructions refer to the user guide available on this page: transcanno_user_guide.pdf
 
 
 ### Features
@@ -34,7 +34,7 @@ Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
 
-    git clone git://github.com/commul/fromthepage.git
+    git clone https://github.com/commul/transcanno.git
 
 Install required gems
 
@@ -68,4 +68,15 @@ Finally, start the application
 VersionUsedSummer2018 is the version of Transc&Anno used to transcribe the SMS collection.
 
 The development branch contains the latest version of Transc&Anno where I tried to take into account most of the wishes I received from the 
-users of VersionUsedSummer2018. In this version the database was modified. It means that a collection transcribed with the VersionUsedSummer2018 cannot be uploaded into this new version.
+users of VersionUsedSummer2018. In this version the database was modified. It means that a collection transcribed with the VersionUsedSummer2018 cannot be directly uploaded into this new version.
+
+
+@ARTICLE{palmeromorettitint,
+       author = {{Okinina}, N., {Nicolas}, L. and {Lyding}, V.},
+        title = "{Transc&Anno: A Graphical Tool for the Transcription and On-the-Fly Annotation of Handwritten Documents}",
+      volume = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
+     keywords = {transcription tools - annotation tools - learner corpora},
+         year = 2018,
+        month = May,
+       adsurl = {https://www.aclweb.org/anthology/L18-1112}
+}
