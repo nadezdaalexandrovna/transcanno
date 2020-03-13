@@ -70,7 +70,7 @@ VersionUsedSummer2018 is the version of Transc&Anno used to transcribe the SMS c
 The development branch contains the latest version of Transc&Anno where I tried to take into account most of the wishes I received from the 
 users of VersionUsedSummer2018. In this version the database was modified. It means that a collection transcribed with the VersionUsedSummer2018 cannot be directly uploaded into this new version.
 
-
+```
 @ARTICLE{palmeromorettitint,
        author = {{Okinina}, N., {Nicolas}, L. and {Lyding}, V.},
         title = "{Transc&Anno: A Graphical Tool for the Transcription and On-the-Fly Annotation of Handwritten Documents}",
@@ -80,3 +80,4 @@ users of VersionUsedSummer2018. In this version the database was modified. It me
         month = May,
        adsurl = {https://www.aclweb.org/anthology/L18-1112}
 }
+```
