@@ -34,7 +34,7 @@ Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
 
-    git clone https://github.com/commul/transcanno.git
+    git clone https://github.com/nadezdaalexandrovna/transcanno.git
 
 Install required gems
 
